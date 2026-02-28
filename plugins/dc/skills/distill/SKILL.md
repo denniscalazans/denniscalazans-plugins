@@ -5,7 +5,6 @@ description: >
   Also use when the user shares a brainstorm, thought dump, meeting notes, or long-form content
   and wants it transformed into a reader-friendly format.
   Triggers: "distill this", "extract insights", "make this clearer", "restructure for readability".
-argument-hint: [content or filename]
 ---
 
 # Distill

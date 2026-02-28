@@ -1,10 +1,9 @@
 ---
 name: dictionary-service-awareness
 description: >
-  Dictionary Service API reference for Akelius Angular apps. Load when working
-  with DS translation keys, imports, migrations, or auth. Contains endpoint
-  contracts, safety rules, and auth setup. App-specific conventions (CSV format,
-  key naming, locale codes) live in the per-app skill (e.g. ffa-translations).
+  Use when working with Dictionary Service API: translation key imports, env migrations, auth setup, or endpoint contracts.
+  Use when checking safe write patterns, banned operations, or DS URL for Akelius Angular apps.
+  Triggers: DS API, PATCH translations, migration-diff, DS_WRITE_TOKEN, 401 Unauthorized.
 ---
 
 # Dictionary Service — API Awareness

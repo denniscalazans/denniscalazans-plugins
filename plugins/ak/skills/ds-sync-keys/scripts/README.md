@@ -1,4 +1,4 @@
-# dictionary-service-keys/scripts
+# ds-sync-keys/scripts
 
 Dictionary Service utility scripts. No `package.json` needed — run with `npx tsx`.
 
@@ -11,9 +11,9 @@ Reads local `en.json`/`sv.json`, fetches DS prod keys (no auth), and generates a
 **Prerequisite:** Run from a project root that contains `public/i18n/en.json` and `public/i18n/sv.json`.
 
 ```bash
-npx tsx dictionary-service-keys/scripts/collect.ts
+npx tsx ds-sync-keys/scripts/collect.ts
 # Optional: custom output path
-npx tsx dictionary-service-keys/scripts/collect.ts --output=.dictionary-service/pending-import.csv
+npx tsx ds-sync-keys/scripts/collect.ts --output=.dictionary-service/pending-import.csv
 ```
 
 ### `client.ts` — DS write API
@@ -34,8 +34,8 @@ export DS_WRITE_TOKEN="<value>"
 Uses Node.js built-in `node:test` — no extra dependencies.
 
 ```bash
-npx tsx dictionary-service-keys/scripts/collect.spec.ts
-npx tsx dictionary-service-keys/scripts/client.spec.ts
+npx tsx ds-sync-keys/scripts/collect.spec.ts
+npx tsx ds-sync-keys/scripts/client.spec.ts
 ```
 
 Expected output: `# pass N  # fail 0`

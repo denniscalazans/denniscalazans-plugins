@@ -1,5 +1,5 @@
 ---
-name: ds-keys
+name: ds-sync-keys
 description: >
   Use before opening a PR that adds or modifies i18n translation keys in FFA.
   Use when running translation gap detection, DS key sync, or CSV import workflows.

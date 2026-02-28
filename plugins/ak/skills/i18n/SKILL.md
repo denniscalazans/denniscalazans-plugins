@@ -1,9 +1,9 @@
 ---
 name: ffa-translations
 description: >
-  FFA-specific translation workflow: key naming, 4-language CSV format,
-  Swedish domain vocabulary, and pre-PR DS sync using /dictionary-service-keys command.
-  Load when adding or editing i18n keys in the Forest Flow frontend.
+  Use when adding or editing i18n translation keys in Forest Flow.
+  Use when naming keys, translating to Swedish, formatting CSV for Dictionary Service import,
+  or validating before a PR. Triggers: key naming, 4-language CSV, Swedish vocabulary, i18n validate, DS sync.
 ---
 
 # FFA Translation Conventions

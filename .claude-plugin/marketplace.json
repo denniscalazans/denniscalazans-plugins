@@ -1,6 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "denniscalazans-plugins",
+  "version": "1.0.0",
   "description": "Personal Claude Code plugins by Dennis Calazans",
   "owner": {
     "name": "Dennis Calazans"
