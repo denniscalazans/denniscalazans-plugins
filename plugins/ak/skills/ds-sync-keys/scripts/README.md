@@ -1,7 +1,6 @@
-# Dictionary Service Scripts
+# dictionary-service-keys/scripts
 
-Dictionary Service utility scripts bundled with the `ak` plugin.
-No `package.json` needed — run with `npx tsx`.
+Dictionary Service utility scripts. No `package.json` needed — run with `npx tsx`.
 
 ## Scripts
 
@@ -12,18 +11,16 @@ Reads local `en.json`/`sv.json`, fetches DS prod keys (no auth), and generates a
 **Prerequisite:** Run from a project root that contains `public/i18n/en.json` and `public/i18n/sv.json`.
 
 ```bash
-npx tsx <path-to-this-directory>/collect.ts
+npx tsx dictionary-service-keys/scripts/collect.ts
 # Optional: custom output path
-npx tsx <path-to-this-directory>/collect.ts --output=.dictionary-service/pending-import.csv
+npx tsx dictionary-service-keys/scripts/collect.ts --output=.dictionary-service/pending-import.csv
 ```
 
 ### `client.ts` — DS write API
 
-Typed module for writing to Dictionary Service.
-Imported by orchestrating scripts or commands — not run directly.
+Typed module for writing to Dictionary Service. Imported by orchestrating scripts or commands — not run directly.
 
-> `APP_ID` is hardcoded to `"FFA"` — a personal pragmatic choice reflecting primary usage.
-> The module can be adapted for other apps by parameterizing `appId`.
+> `APP_ID` is hardcoded to `"FFA"` — a personal pragmatic choice reflecting primary usage. The module can be adapted for other apps by parameterizing `appId`.
 
 **Auth setup** (token expires ~24h):
 ```bash
@@ -37,8 +34,8 @@ export DS_WRITE_TOKEN="<value>"
 Uses Node.js built-in `node:test` — no extra dependencies.
 
 ```bash
-npx tsx --test collect.spec.ts
-npx tsx --test client.spec.ts
+npx tsx dictionary-service-keys/scripts/collect.spec.ts
+npx tsx dictionary-service-keys/scripts/client.spec.ts
 ```
 
 Expected output: `# pass N  # fail 0`
@@ -54,5 +51,4 @@ Expected output: `# pass N  # fail 0`
 
 ## Related
 
-- `../SKILL.md` — DS key sync workflow
-- `../../dictionary-service-awareness/SKILL.md` — DS API reference
+- `../ds-guide/SKILL.md` — DS API reference

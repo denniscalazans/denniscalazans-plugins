@@ -6,8 +6,8 @@
  * computes the gap, and writes a ready-to-import CSV.
  *
  * Usage (from FFA repo root):
- *   npx tsx <path-to-plugin>/skills/dictionary-service-keys/scripts/collect.ts
- *   npx tsx <path-to-plugin>/skills/dictionary-service-keys/scripts/collect.ts --output=.dictionary-service/pending-import.csv
+ *   npx tsx ~/.claude/scripts/dictionary-service/collect.ts
+ *   npx tsx ~/.claude/scripts/dictionary-service/collect.ts --output=.dictionary-service/pending-import.csv
  */
 
 import fs from 'fs';

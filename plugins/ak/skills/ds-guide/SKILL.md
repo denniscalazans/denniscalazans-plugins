@@ -1,5 +1,5 @@
 ---
-name: ds-ref
+name: dictionary-service-awareness
 description: >
   Dictionary Service API reference for Akelius Angular apps. Load when working
   with DS translation keys, imports, migrations, or auth. Contains endpoint
@@ -128,7 +128,7 @@ App-specific locale columns (e.g. FFA's `en;en-CA;en_UK;sv`) are defined per-app
 
 | Script | Auth | Purpose |
 |--------|------|---------|
-| `../dictionary-service-keys/scripts/collect.ts` | None | Gap detection + CSV generation |
-| `../dictionary-service-keys/scripts/client.ts` | `DS_WRITE_TOKEN` | Typed write API (pushKey, importCsv, migrateEnv) |
+| `../ds-sync-keys/scripts/collect.ts` | None | Gap detection + CSV generation |
+| `../ds-sync-keys/scripts/client.ts` | `DS_WRITE_TOKEN` | Typed write API (pushKey, importCsv, migrateEnv) |
 
-Run with: `npx tsx <path-to-plugin>/skills/dictionary-service-keys/scripts/<script>.ts`
+Scripts are bundled in the `ds-sync-keys` sibling skill.

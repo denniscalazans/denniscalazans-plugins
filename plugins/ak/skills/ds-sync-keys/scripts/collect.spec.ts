@@ -1,7 +1,7 @@
 /**
  * collect.spec.ts — unit tests for pure functions in collect.ts
  *
- * Run with: npx tsx --test collect.spec.ts
+ * Run with: npx tsx ~/.claude/scripts/dictionary-service/collect.spec.ts
  * (uses Node.js built-in test runner — no extra dependencies)
  */
 

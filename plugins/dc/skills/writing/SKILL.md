@@ -1,5 +1,5 @@
 ---
-name: writing
+name: markdown-writing
 description: Apply the markdown writing convention before writing any markdown, PR descriptions, code comments, or documentation. Use this skill whenever you're about to write or edit `.md` files, compose PR descriptions, write code comments, or produce any written content. The convention ensures consistency and readability across all written output.
 compatibility: None
 ---

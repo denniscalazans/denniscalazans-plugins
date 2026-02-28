@@ -1,8 +1,8 @@
 ---
-name: translations
+name: ffa-translations
 description: >
   FFA-specific translation workflow: key naming, 4-language CSV format,
-  Swedish domain vocabulary, and pre-PR DS sync using /ak:ds-keys command.
+  Swedish domain vocabulary, and pre-PR DS sync using /dictionary-service-keys command.
   Load when adding or editing i18n keys in the Forest Flow frontend.
 ---
 
@@ -137,9 +137,9 @@ Must exit 0 before proceeding.
 ### Step 3: Sync to DS (before opening PR)
 DS prod must have all keys before PR is merged.
 ```
-/ak:ds-keys
+/ak:ds-sync-keys
 ```
-This command:
+This skill:
 1. Runs `collect.ts` to detect gap vs DS prod
 2. Infers translations using the vocabulary above
 3. Generates `.dictionary-service/import-YYYY-MM-DD.csv` (gitignored)
@@ -152,10 +152,10 @@ This command:
 
 | Script | Auth | What it does |
 |--------|------|--------------|
-| `../dictionary-service-keys/scripts/collect.ts` | None | Gap detection + CSV generation |
-| `../dictionary-service-keys/scripts/client.ts` | `DS_WRITE_TOKEN` | DS write API (pushKey, importCsv, migrateEnv) |
+| `../ds-sync-keys/scripts/collect.ts` | None | Gap detection + CSV generation |
+| `../ds-sync-keys/scripts/client.ts` | `DS_WRITE_TOKEN` | DS write API (pushKey, importCsv, migrateEnv) |
 
-Run from FFA repo root: `npx tsx <path-to-plugin>/skills/dictionary-service-keys/scripts/collect.ts`
+Run from FFA repo root using the script path from the `ds-sync-keys` sibling skill.
 
 ## Snackbar Translations Note
 
@@ -164,5 +164,5 @@ Snackbar keys (e.g. `siteDetails.snackbar.softDeleteSite.text`) are served by th
 ## Validate Before Every PR
 
 1. `npm run i18n:validate` — checks missing/unused/malformed keys
-2. `/ak:ds-keys` — detects DS gap and generates import CSV
-3. After uploading CSV to DS: re-run collect.ts to confirm gap is closed
+2. `/ak:ds-sync-keys` — detects DS gap and generates import CSV
+3. After uploading CSV to DS: re-run `collect.ts` from the `ds-sync-keys` sibling skill to confirm gap is closed

@@ -1,7 +1,7 @@
 /**
  * client.spec.ts — unit tests for safety constraints in client.ts
  *
- * Run with: npx tsx --test client.spec.ts
+ * Run with: npx tsx ~/.claude/scripts/dictionary-service/client.spec.ts
  *
  * Tests the runtime safety guards that prevent destructive operations.
  * HTTPS calls are NOT mocked here (no external dependency) — they are

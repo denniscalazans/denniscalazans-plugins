@@ -1,5 +1,5 @@
 ---
-name: login
+name: auth0-login
 description: Securely log into Auth0-protected apps using playwright-cli with 1Password CLI. Use when the user asks to open/load an app that requires authentication, log in as a specific role, or manage browser sessions for different users.
 allowed-tools: Bash(playwright-cli:*), Bash(op run:*)
 ---

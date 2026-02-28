@@ -7,7 +7,7 @@ description: >
   "missing keys", "prepare translations for PR".
 ---
 
-# /ak:ds-keys — Dictionary Service key sync
+# Dictionary Service Key Sync
 
 Detects translation keys missing from DS prod, infers translations, generates a ready-to-import CSV, and optionally pushes via API.
 
@@ -18,19 +18,24 @@ Detects translation keys missing from DS prod, infers translations, generates a 
 ## Phase 1 — Validate local JSON (no network)
 
 1. Run `npm run i18n:validate` from the FFA repo root.
-2. If it exits non-zero → **stop**. Fix missing/malformed/unused keys first.
+
+2. If it exits non-zero — **stop**. Fix missing/malformed/unused keys first.
+
 3. Confirm both `public/i18n/en.json` and `public/i18n/sv.json` have all new keys filled in (not empty strings).
 
 ## Phase 2 — Detect DS gap (public GET, no auth)
 
 1. Invoke the `ffa-translations` skill for project-specific conventions.
+
 2. Run from the FFA repo root:
    ```
    npx tsx scripts/collect.ts
    ```
-   (Where `scripts/` is relative to this skill's directory.)
-3. If output says "No gap" → all keys already in DS prod. PR is ready. **Stop.**
-4. If gap found → script writes `.dictionary-service/import-YYYY-MM-DD.csv` and prints the missing keys.
+   (where `scripts/` is relative to this skill directory)
+
+3. If output says "No gap" — all keys already in DS prod. PR is ready. **Stop.**
+
+4. If gap found — script writes `.dictionary-service/import-YYYY-MM-DD.csv` and prints the missing keys.
 
 ## Phase 3 — Infer translations (LLM reasoning)
 
@@ -83,7 +88,7 @@ Only proceed here if the developer explicitly says "push via API".
 ### Push steps
 
 ```typescript
-import { importCsv, getMigrationDiff, migrateEnv } from './scripts/client.ts';
+import { importCsv, getMigrationDiff, migrateEnv } from './scripts/client';
 import fs from 'fs';
 
 // 1. Push CSV to DS dev

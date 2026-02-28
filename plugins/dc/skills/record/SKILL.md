@@ -1,5 +1,5 @@
 ---
-name: record
+name: record-video
 description: Use when the user asks to record a video, screen recording, demo, or screencast of a web application flow. Also use when the user mentions recording browser interactions, creating PR evidence videos, or capturing UI workflows. Triggers on phrases like "record a video of", "make a recording", "screen record", "film a demo", "capture a screencast".
 ---
 
@@ -142,4 +142,4 @@ If the app requires login:
 
 The template utility functions (interpolation, timestamp, framerate computation, ffmpeg args) are unit tested.
 
-Run: `npx tsx --test references/recording-utils.spec.ts`
+Run: `npx tsx --test references/recording-utils.spec.ts` (from the skill directory)
