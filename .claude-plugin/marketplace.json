@@ -1,0 +1,22 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "denniscalazans-plugins",
+  "description": "Personal Claude Code plugins by Dennis Calazans",
+  "owner": {
+    "name": "Dennis Calazans"
+  },
+  "plugins": [
+    {
+      "name": "dc",
+      "description": "General-purpose skills for git workflow, knowledge distillation, video recording, markdown writing, and strategic thinking",
+      "source": "./plugins/dc",
+      "category": "productivity"
+    },
+    {
+      "name": "ak",
+      "description": "Akelius Forest Flow workflow tools: Auth0 login, translation management, Dictionary Service integration",
+      "source": "./plugins/ak",
+      "category": "development"
+    }
+  ]
+}
