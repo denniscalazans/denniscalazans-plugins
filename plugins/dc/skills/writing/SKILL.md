@@ -1,7 +1,6 @@
 ---
 name: markdown-writing
-description: Apply the markdown writing convention before writing any markdown, PR descriptions, code comments, or documentation. Use this skill whenever you're about to write or edit `.md` files, compose PR descriptions, write code comments, or produce any written content. The convention ensures consistency and readability across all written output.
-compatibility: None
+description: Use when writing or editing markdown files, PR descriptions, code comments, or documentation. Also use when producing commit bodies, README updates, or any written content that must follow the one-sentence-per-line convention.
 ---
 
 # Markdown Writing Convention
@@ -36,7 +35,8 @@ This is a new paragraph. This is the second line of the second paragraph.
 
 ## How to Apply
 
-When writing markdown or comments, after finishing a sentence, press Enter to put the next sentence on a new line. When moving to a new paragraph or idea, add a blank line (two newlines total) before starting.
+When writing markdown or comments, after finishing a sentence, press Enter to put the next sentence on a new line.
+When moving to a new paragraph or idea, add a blank line (two newlines total) before starting.
 
 **In code comments:**
 
