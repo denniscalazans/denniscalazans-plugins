@@ -3,3 +3,7 @@ node_modules/
 *.log
 .dictionary-service/
 .videos/
+
+# Override global gitignore — .claude/CLAUDE.md is the contribution guide
+!.claude/
+!.claude/CLAUDE.md
