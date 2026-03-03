@@ -1,3 +1,45 @@
+# denniscalazans-plugins
+
+A Claude Code plugin marketplace containing personal skills and agents.
+
+## Architecture
+
+The repo is a **marketplace** — a registry of **plugins**, each containing **skills** and/or **agents**.
+
+```
+.claude-plugin/marketplace.json   ← marketplace manifest (lists all plugins)
+plugins/<name>/
+  .claude-plugin/plugin.json      ← plugin manifest
+  skills/<dir>/SKILL.md           ← skill (slash command: /name:dir)
+  agents/<agent>.md               ← agent definition
+```
+
+**Slash command mapping:** the plugin name and skill directory name form the command.
+
+`plugins/dc/skills/reset/` → `/dc:reset`.
+
+## Development Commands
+
+**Run tests** (only one spec exists today):
+
+```bash
+npx tsx --test plugins/dc/skills/record/references/recording-utils.spec.ts
+```
+
+**Install a plugin locally:**
+
+```bash
+/plugins install <name>@denniscalazans-plugins
+```
+
+## Current Plugins
+
+| Plugin | Description | Skills | Agents |
+|--------|-------------|--------|--------|
+| `dc` | General-purpose: git workflow, distillation, video recording, markdown writing, strategic thinking | `reset`, `distill`, `writing`, `record` | `strategic-thinking-partner` |
+
+---
+
 # Marketplace Contribution Guide
 
 ## Skill Placement
