@@ -12,12 +12,6 @@
       "description": "General-purpose skills for git workflow, knowledge distillation, video recording, markdown writing, and strategic thinking",
       "source": "./plugins/dc",
       "category": "productivity"
-    },
-    {
-      "name": "ak",
-      "description": "Akelius Forest Flow workflow tools: Auth0 login, translation management, Dictionary Service integration",
-      "source": "./plugins/ak",
-      "category": "development"
     }
   ]
 }

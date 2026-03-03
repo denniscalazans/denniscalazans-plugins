@@ -17,23 +17,11 @@ Git workflow, knowledge distillation, video recording, markdown conventions, and
 
 **Agent:** `strategic-thinking-partner` -- proactive strategic oversight and assumption challenging.
 
-### ak -- Akelius Forest Flow
-
-Auth0 login, translation management, and Dictionary Service integration.
-
-| Command | Description |
-|---------|-------------|
-| `/ak:login` | Auth0 login via playwright-cli + 1Password |
-| `/ak:i18n` | FFA translation conventions and workflow |
-| `/ak:ds-guide` | Dictionary Service API reference |
-| `/ak:ds-sync-keys` | Detect DS gaps and generate import CSV |
-
 ## Installation
 
 ```bash
 /plugin marketplace add ~/Akelius/git/denniscalazans-plugins
 /plugin install dc@denniscalazans-plugins
-/plugin install ak@denniscalazans-plugins
 ```
 
 ## Contributing

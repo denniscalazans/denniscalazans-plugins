@@ -1,3 +1,45 @@
+# denniscalazans-plugins
+
+A Claude Code plugin marketplace containing personal skills and agents.
+
+## Architecture
+
+The repo is a **marketplace** — a registry of **plugins**, each containing **skills** and/or **agents**.
+
+```
+.claude-plugin/marketplace.json   ← marketplace manifest (lists all plugins)
+plugins/<name>/
+  .claude-plugin/plugin.json      ← plugin manifest
+  skills/<dir>/SKILL.md           ← skill (slash command: /name:dir)
+  agents/<agent>.md               ← agent definition
+```
+
+**Slash command mapping:** the plugin name and skill directory name form the command.
+
+`plugins/dc/skills/reset/` → `/dc:reset`.
+
+## Development Commands
+
+**Run tests** (only one spec exists today):
+
+```bash
+npx tsx --test plugins/dc/skills/record/references/recording-utils.spec.ts
+```
+
+**Install a plugin locally:**
+
+```bash
+/plugins install <name>@denniscalazans-plugins
+```
+
+## Current Plugins
+
+| Plugin | Description | Skills | Agents |
+|--------|-------------|--------|--------|
+| `dc` | General-purpose: git workflow, distillation, video recording, markdown writing, strategic thinking | `reset`, `distill`, `writing`, `record` | `strategic-thinking-partner` |
+
+---
+
 # Marketplace Contribution Guide
 
 ## Skill Placement
@@ -5,8 +47,7 @@
 | Scope | Plugin | When to use |
 |-------|--------|-------------|
 | General-purpose | `dc` | Portable across any project: git workflow, distillation, video recording, markdown conventions |
-| Akelius-specific | `ak` | Forest Flow / Akelius tooling: Auth0 login, translations, Dictionary Service |
-| New plugin | `plugins/<name>/` | A distinct domain that doesn't fit `dc` or `ak` (e.g. a "devops" plugin for CI/CD skills) |
+| New plugin | `plugins/<name>/` | A distinct domain that doesn't fit `dc` (e.g. a "devops" plugin for CI/CD skills) |
 
 When creating or migrating a skill, present the recommendation before placing it:
 
@@ -18,7 +59,7 @@ Ask before placing the skill if the placement is ambiguous.
 
 ## When to Create a New Plugin
 
-Create a new plugin (instead of adding to `dc` or `ak`) when ALL three criteria are met:
+Create a new plugin (instead of adding to `dc`) when ALL three criteria are met:
 
 1. **Domain boundary** -- the skills serve a distinct domain not covered by existing plugins
 2. **No keyword overlap** -- the skills' trigger keywords don't overlap with existing plugin skills
