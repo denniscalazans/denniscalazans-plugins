@@ -1,0 +1,9 @@
+# Example .env with 1Password secret references
+# These are safe to commit — they contain references, not values
+#
+# Usage: op run --env-file=.env -- <your-command>
+
+DB_HOST=op://Development/Database/host
+DB_USER=op://Development/Database/username
+DB_PASSWORD=op://Development/Database/password
+API_KEY=op://Development/API-Service/credential
