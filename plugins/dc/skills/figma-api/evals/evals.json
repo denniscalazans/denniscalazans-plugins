@@ -1,0 +1,44 @@
+{
+  "skill_name": "figma-api",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Can you check if my Figma API token is working? Just verify I'm authenticated.",
+      "expected_output": "Should use the helper script to call GET /v1/me via a sub-agent, confirm with user about 1Password biometric, and return the user's name/email without exposing the token.",
+      "files": [],
+      "expectations": [
+        "Mentions 1Password or biometric confirmation before making the API call",
+        "Uses op run (not op read or op inject) for token resolution",
+        "Calls the GET /v1/me endpoint",
+        "Delegates the actual API call to a sub-agent",
+        "Does not include a raw token value in any visible command or output"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I have this Figma file: https://www.figma.com/design/ABC123xyz/My-Design-System?node-id=0-1. Can you tell me what pages it has and list the top-level frames on each page?",
+      "expected_output": "Should parse the URL to extract file key 'ABC123xyz', convert node-id from '0-1' to '0:1', use the helper script to call GET /v1/files/ABC123xyz?depth=2 via a sub-agent, and return a structured list of pages and frames.",
+      "files": [],
+      "expectations": [
+        "Extracts file key ABC123xyz from the Figma URL",
+        "Converts node-id from URL format 0-1 to API format 0:1",
+        "Uses the depth query parameter to limit response size",
+        "Delegates the actual API call to a sub-agent",
+        "Instructs sub-agent to extract page names and frame names specifically"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "I need to get all the published components from my Figma team library. My team ID is 12345. List them with their names and keys.",
+      "expected_output": "Should use the helper script to call GET /v1/teams/12345/components via a sub-agent, and return a clean list/table of component names and keys. Should handle pagination if needed.",
+      "files": [],
+      "expectations": [
+        "Uses the GET /v1/teams/12345/components endpoint",
+        "Mentions or handles pagination for large result sets",
+        "Delegates the actual API call to a sub-agent",
+        "Requests component names and keys from the sub-agent",
+        "Plans to present results as a table or structured list"
+      ]
+    }
+  ]
+}
