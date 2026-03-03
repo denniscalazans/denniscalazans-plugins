@@ -20,22 +20,26 @@ METHOD="${1:?Usage: figma-api.sh METHOD PATH [BODY]}"
 API_PATH="${2:?Usage: figma-api.sh METHOD PATH [BODY]}"
 BODY="${3:-}"
 
-# Build curl arguments
-CURL_ARGS=(-s -w '\n%{http_code}' -H "X-Figma-Token: \$FIGMA_API_KEY")
-
-if [[ "$METHOD" == "POST" || "$METHOD" == "PUT" || "$METHOD" == "PATCH" || "$METHOD" == "DELETE" ]]; then
-  CURL_ARGS+=(-X "$METHOD")
-  if [[ -n "$BODY" ]]; then
-    CURL_ARGS+=(-H "Content-Type: application/json" -d "$BODY")
-  fi
-fi
-
 # Build the full URL (handle paths that already include query params)
 FULL_URL="${BASE_URL}${API_PATH}"
 
+# Build the curl command string with proper quoting for bash -c.
+# Array expansion inside bash -c loses quoting, so we build the string directly.
+CURL_CMD="curl -s -w '"'\n%{http_code}'"' -H 'X-Figma-Token: '\"'\$FIGMA_API_KEY'\""
+
+if [[ "$METHOD" != "GET" ]]; then
+  CURL_CMD="$CURL_CMD -X $METHOD"
+  if [[ -n "$BODY" ]]; then
+    ESCAPED_BODY=$(printf '%s' "$BODY" | sed "s/'/'\\\\''/g")
+    CURL_CMD="$CURL_CMD -H 'Content-Type: application/json' -d '$ESCAPED_BODY'"
+  fi
+fi
+
+CURL_CMD="$CURL_CMD '$FULL_URL'"
+
 # Execute via op run — token is injected as env var, never exposed to stdout
 RESPONSE=$(op run --env "FIGMA_API_KEY=$FIGMA_OP_REF" -- \
-  bash -c "curl ${CURL_ARGS[*]} \"$FULL_URL\"")
+  bash -c "$CURL_CMD")
 
 # Extract HTTP status code (last line) and body (everything else)
 HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
