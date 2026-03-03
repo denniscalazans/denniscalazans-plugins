@@ -12,12 +12,6 @@
       "description": "General-purpose skills for git workflow, knowledge distillation, video recording, markdown writing, and strategic thinking",
       "source": "./plugins/dc",
       "category": "productivity"
-    },
-    {
-      "name": "ak",
-      "description": "Proprietary workflow tools",
-      "source": "./plugins/ak",
-      "category": "development"
     }
   ]
 }
