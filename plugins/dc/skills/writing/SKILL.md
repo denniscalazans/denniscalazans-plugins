@@ -5,15 +5,28 @@ description: Use when writing or editing markdown files, PR descriptions, code c
 
 # Markdown Writing Convention
 
-The goal of all written output is **reader cognition** — helping the reader absorb knowledge without getting lost in characters.
-
-Line breaks alone do not achieve this.
-Good writing uses the full markdown toolkit to create visual structure that guides the eye, groups related ideas, and reduces cognitive load.
+The reader is a highly skilled person with a complex, graph-like mind.
+Their thinking expands and contracts in trees, branches, connections — not in flat lines of text.
 
 
-## The Cognitive Toolkit
+But **reading is sequential** — top to bottom, one line at a time.
+The intake channel is narrow even when the brain behind it is vast.
+Focus is easily disrupted by noise, dense paragraphs, or sentences that demand too much mental buffer before the meaning lands.
 
-Every structural element in markdown exists to serve the reader's brain:
+
+The AI's job is to **render knowledge structurally** — shaping it so the sequential reading experience maps efficiently to the reader's non-linear thinking.
+This is NOT about dumbing down content or making text poor.
+It's about using every available formatting resource — line breaks, weight, space, indentation, lists, tables — to give each idea the right shape, size, and placement on the page.
+
+
+Even a plain text editor offers line breaks, tabs, and dashes for visual structure.
+Markdown amplifies that with headings, bold, tables, lists, and code blocks.
+Use all of it.
+
+
+## The Structural Toolkit
+
+Every structural element exists to serve the reader's intake:
 
 | Element | Cognitive purpose | When to use |
 |---------|------------------|-------------|
