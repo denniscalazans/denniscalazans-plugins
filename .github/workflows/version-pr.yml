@@ -1,0 +1,97 @@
+name: Version PR
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - 'plugins/**'
+      - '.claude-plugin/**'
+      - '.claude/CLAUDE.md'
+
+permissions:
+  contents: write
+
+jobs:
+  version-bump:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get main branch version
+        id: main-version
+        run: |
+          # Fetch the version from main branch plugin.json
+          # `git show` reads a file from a specific ref without checking it out
+          MAIN_VERSION=$(git show origin/main:plugins/dc/.claude-plugin/plugin.json | node -e "
+            let data = '';
+            process.stdin.on('data', chunk => data += chunk);
+            process.stdin.on('end', () => console.log(JSON.parse(data).version));
+          ")
+          echo "version=$MAIN_VERSION" >> "$GITHUB_OUTPUT"
+          echo "Main version: $MAIN_VERSION"
+
+      - name: Compute PR pre-release version
+        id: pr-version
+        env:
+          MAIN_VERSION: ${{ steps.main-version.outputs.version }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          # Strip any existing pre-release suffix to get the base version
+          # `%%` removes the longest match of `-*` from the end of the string
+          BASE_VERSION="${MAIN_VERSION%%-*}"
+
+          # Split into major.minor.patch using IFS (internal field separator)
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$BASE_VERSION"
+
+          # Auto-increment patch for PR pre-release
+          NEXT_PATCH=$((PATCH + 1))
+          PR_VERSION="${MAJOR}.${MINOR}.${NEXT_PATCH}-pr.${PR_NUMBER}"
+
+          echo "version=$PR_VERSION" >> "$GITHUB_OUTPUT"
+          echo "PR version: $PR_VERSION"
+
+      - name: Check if version already set
+        id: check
+        env:
+          DESIRED: ${{ steps.pr-version.outputs.version }}
+        run: |
+          CURRENT=$(node -e "console.log(require('./plugins/dc/.claude-plugin/plugin.json').version)")
+          echo "current=$CURRENT" >> "$GITHUB_OUTPUT"
+          # Skip commit if the version is already what we want
+          if [ "$CURRENT" = "$DESIRED" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Update plugin.json version
+        if: steps.check.outputs.skip == 'false'
+        env:
+          PR_VERSION: ${{ steps.pr-version.outputs.version }}
+        run: |
+          # `node -e` with inline script to update the JSON file in place
+          node -e "
+            const fs = require('fs');
+            const path = './plugins/dc/.claude-plugin/plugin.json';
+            const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
+            pkg.version = process.env.PR_VERSION;
+            fs.writeFileSync(path, JSON.stringify(pkg, null, 2) + '\n');
+          "
+          echo "Updated to $PR_VERSION"
+
+      - name: Commit version bump
+        if: steps.check.outputs.skip == 'false'
+        env:
+          PR_VERSION: ${{ steps.pr-version.outputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add plugins/dc/.claude-plugin/plugin.json
+          git commit -m "chore: bump version to ${PR_VERSION}"
+          git push

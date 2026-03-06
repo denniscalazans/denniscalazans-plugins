@@ -38,6 +38,26 @@ npx tsx --test plugins/dc/skills/record/references/recording-utils.spec.ts
 |--------|-------------|--------|--------|
 | `dc` | General-purpose: git workflow, distillation, video recording, markdown writing, strategic thinking | `reset`, `distill`, `writing`, `record` | `strategic-thinking-partner` |
 
+## Versioning
+
+Version source of truth: `plugins/dc/.claude-plugin/plugin.json`.
+
+**Automatic patch bumps:**
+- PR opened/updated with plugin changes -> `X.Y.(Z+1)-pr.N` (pre-release)
+- PR merged to main -> strips pre-release suffix, creates git tag `vX.Y.Z` + GitHub Release
+
+**Manual major/minor bumps:**
+
+```bash
+node scripts/bump-version.mjs --version 2.0.0
+```
+
+**Test a PR version locally:**
+
+```bash
+/plugins install dc@denniscalazans-plugins#<pr-branch>
+```
+
 ---
 
 # Marketplace Contribution Guide
