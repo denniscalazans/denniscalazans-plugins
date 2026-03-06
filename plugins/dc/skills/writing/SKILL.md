@@ -5,9 +5,28 @@ description: Use when writing or editing markdown files, PR descriptions, code c
 
 # Markdown Writing Convention
 
-You are about to write markdown or code comments. Follow this convention consistently.
+The goal of all written output is **reader cognition** — helping the reader absorb knowledge without getting lost in characters.
 
-## The Rule
+Line breaks alone do not achieve this.
+Good writing uses the full markdown toolkit to create visual structure that guides the eye, groups related ideas, and reduces cognitive load.
+
+
+## The Cognitive Toolkit
+
+Every structural element in markdown exists to serve the reader's brain:
+
+| Element | Cognitive purpose | When to use |
+|---------|------------------|-------------|
+| **Headings** | Navigation landmarks — the reader knows where they are | Sections, topic shifts, named concepts |
+| **Bold** | Emphasis and scannability — the eye catches key terms instantly | Key terms, pivotal phrases, critical warnings (use sparingly) |
+| **Lists** | Parallel items — the brain processes them as a group, not a sequence | Steps, options, requirements, any set of 3+ related items |
+| **Tables** | Comparison — the brain maps rows/columns faster than prose | Comparisons, mappings, don't/do pairs, reference data |
+| **Short paragraphs** | Digestibility — each block is one idea the brain can hold | Every paragraph: 2–4 sentences max |
+| **White space** | Breathing room — visual rest between ideas | Double blank lines between paragraphs |
+| **Code blocks** | Literal precision — no ambiguity about syntax or format | Commands, file paths, configuration, code |
+
+
+## Sentence Formatting Rules
 
 - **One sentence per line** — each sentence appears on its own line
 - **Group related sentences** — sentences about the same idea sit together with only a newline between them (no blank line), forming a visual block
@@ -16,6 +35,21 @@ You are about to write markdown or code comments. Follow this convention consist
 - **Never isolate every sentence** — putting a blank line after every sentence destroys paragraph structure and makes text harder to scan
 - **No multiple sentences on a single line** — never write `"Sentence one. Sentence two."`
 - **Applies to:** `.md` files, PR descriptions, code comments (TypeScript, Java, etc.), documentation
+
+
+## Choosing the Right Structure
+
+Before writing a paragraph, ask: **what structure would help the reader absorb this fastest?**
+
+| Content type | Best structure | Why |
+|-------------|---------------|-----|
+| A sequence of steps | Numbered list | The reader sees order and progress |
+| A set of parallel items | Bullet list | The brain processes them as a group |
+| A comparison (A vs B) | Table | Side-by-side is faster than back-and-forth prose |
+| A definition or explanation | Bold term + short paragraph | The reader anchors on the term, then reads the explanation |
+| A warning or critical rule | Bold or blockquote | Stands out from the surrounding text |
+| A long block of prose (5+ sentences) | Break into sub-sections with headings | Headings give the reader navigation landmarks |
+
 
 ## Examples
 
@@ -66,38 +100,38 @@ For many applications, a single well-optimized LLM call is enough.
 Workflows are systems where LLMs follow predefined paths. Agents are systems where the LLM decides dynamically.
 ```
 
-## How to Decide What Goes in One Block
-
-A paragraph block groups sentences that share the same **topic or logical unit**.
-
-Ask: "Does this next sentence continue the same idea, or start a new one?"
-If it continues — newline with trailing two spaces.
-If it starts a new idea — double blank line.
-
-## How to Apply
-
-**In code comments:**
-
-```typescript
-// This is the first sentence about authentication.
-// This adds detail about the token flow.
-//
-//
-// This is a new paragraph about error handling.
-// It continues with retry logic.
-```
-
-**In markdown:**
+❌ **Incorrect — wall of prose when a table or list would be clearer:**
 
 ```
-This is the opening sentence about the feature.··
-This is additional context about the same idea.··
-This completes the thought.
-
-
-This is a new paragraph introducing a different aspect.··
-It continues with more detail on the new topic.
+There are three types of routing. The first is content-based routing where
+the input is classified by topic. The second is complexity-based routing
+where simple questions go to cheaper models. The third is priority-based
+routing where urgent requests skip the queue.
 ```
+
+✅ **Correct — same content as a table:**
+
+```
+| Routing type | How it works |
+|-------------|-------------|
+| Content-based | Input classified by topic |
+| Complexity-based | Simple questions → cheaper models |
+| Priority-based | Urgent requests skip the queue |
+```
+
+
+## Common Mistakes
+
+| Don't | Do | Why |
+|-------|-----|-----|
+| Isolate every sentence with blank lines | Group related sentences into blocks | Isolated sentences destroy paragraph structure |
+| Use only prose for everything | Use lists, tables, headings, bold | Different structures serve different cognitive purposes |
+| Write 5+ sentences in one block | Break into 2–4 sentence paragraphs | Large blocks overwhelm working memory |
+| Use single blank line between paragraphs | Use double blank line (two empty lines) | Single blank line doesn't create enough visual separation |
+| Skip trailing two spaces on sentence lines | End each line with `  ` | Without them, rendered markdown joins lines together |
+| Bold entire sentences | Bold only key terms or phrases | Over-bolding defeats the purpose — nothing stands out |
+| Use headings for emphasis | Use headings for navigation | Headings are landmarks, not decoration |
+
 
 ---
 
