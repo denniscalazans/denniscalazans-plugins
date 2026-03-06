@@ -60,11 +60,29 @@ jobs:
         id: check
         env:
           DESIRED: ${{ steps.pr-version.outputs.version }}
+          MAIN_VERSION: ${{ steps.main-version.outputs.version }}
         run: |
           CURRENT=$(node -e "console.log(require('./plugins/dc/.claude-plugin/plugin.json').version)")
           echo "current=$CURRENT" >> "$GITHUB_OUTPUT"
-          # Skip commit if the version is already what we want
+
+          # Skip if already at the desired version
           if [ "$CURRENT" = "$DESIRED" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Skip if the PR branch has a manual bump higher than main
+          # (e.g. manual bump to 2.0.0 when main is 1.0.1)
+          # Strip pre-release suffixes for comparison
+          CURRENT_BASE="${CURRENT%%-*}"
+          MAIN_BASE="${MAIN_VERSION%%-*}"
+          HIGHER=$(node -e "
+            const [a, b] = ['$CURRENT_BASE', '$MAIN_BASE'].map(v => v.split('.').map(Number));
+            const gt = a[0] > b[0] || (a[0] === b[0] && a[1] > b[1]) || (a[0] === b[0] && a[1] === b[1] && a[2] > b[2]);
+            console.log(gt ? 'true' : 'false');
+          ")
+          if [ "$HIGHER" = "true" ]; then
+            echo "PR branch version $CURRENT is higher than main $MAIN_VERSION — skipping auto-bump"
             echo "skip=true" >> "$GITHUB_OUTPUT"
           else
             echo "skip=false" >> "$GITHUB_OUTPUT"
