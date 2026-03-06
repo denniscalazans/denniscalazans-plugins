@@ -1,14 +1,6 @@
 ---
 name: figma-api
-description: >
-  Use when interacting with the Figma REST API to read design files, extract components, export images,
-  list projects, read variables, manage comments, or query any Figma design data programmatically.
-  Also use when the user provides a Figma URL and wants to inspect its structure, extract design tokens,
-  or export assets from it.
-  Use this skill instead of the Figma MCP server when you need raw API access, batch operations,
-  or endpoints the MCP doesn't cover (comments, versions, projects, team components, variables, dev resources).
-  Triggers: "figma api", "figma file", "figma components", "figma export", "figma tokens",
-  "figma variables", "design tokens from figma", "figma comments", "figma versions".
+description: 'Use when interacting with the Figma REST API to read design files, extract components, export images, list projects, read variables, manage comments, or query any Figma design data programmatically. Also use when the user provides a Figma URL and wants to inspect its structure, extract design tokens, or export assets from it. Use this skill instead of the Figma MCP server when you need raw API access, batch operations, or endpoints the MCP doesn''t cover (comments, versions, projects, team components, variables, dev resources). Triggers: "figma api", "figma file", "figma components", "figma export", "figma tokens", "figma variables", "design tokens from figma", "figma comments", "figma versions".'
 ---
 
 # Figma REST API

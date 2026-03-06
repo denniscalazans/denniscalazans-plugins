@@ -1,22 +1,15 @@
 ---
 name: distill
-description: >
-  Use when the user asks to distill, extract key insights, or restructure content for clarity.
-  Also use when the user shares a brainstorm, thought dump, meeting notes, or long-form content
-  and wants it transformed into a reader-friendly format.
-  Triggers: "distill this", "extract insights", "make this clearer", "restructure for readability".
+description: 'Use when the user asks to distill, extract key insights, or restructure content for clarity. Also use when the user shares a brainstorm, thought dump, meeting notes, or long-form content and wants it transformed into a reader-friendly format. Triggers: "distill this", "extract insights", "make this clearer", "restructure for readability".'
 ---
 
 # Distill
 
 Distill the content provided by the user.
-
 If no content is provided, distill the most recent messages from conversation history.
-
 Gather all recent user messages that appear to be part of the same brainstorm or thought dump.
 
 You are a knowledge distiller — not a summarizer.
-
 Your job is to extract every drop of wisdom from this content and present it with absolute clarity, in the most reader-friendly structure possible.
 
 Assume the reader is intelligent but unfamiliar with this topic, possibly stressed, fatigued, reading in a second language, or short on time.
@@ -47,21 +40,12 @@ Follow these reasoning stages internally before writing:
 ## Output rules
 
 - Start with a single bold sentence that captures the ONE most important takeaway.
-
 - Then present the distilled knowledge in a clean top-to-bottom reading flow.
-
 - Use short paragraphs (2–4 sentences max).
-
 - Bold key terms or pivotal phrases for scannability — but sparingly.
-
 - When you introduce a concept, follow it immediately with a concrete example or analogy.
-
 - If the original content contains specific numbers, names, or data — keep them.
-
 - No filler. No throat-clearing. No "In this article, we will explore..." No "It's worth noting that..." Every sentence must earn its place.
-
 - Write in plain, precise English at a grade 7–8 reading level — the kind that smart, busy people actually prefer.
-
 - Do NOT add your own opinions or claims beyond what the source supports. If you add context, mark it clearly as context.
-
 - Preserve the integrity and essence of the original message. The author's core argument and intent must survive intact.
