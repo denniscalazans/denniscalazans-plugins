@@ -1,9 +1,6 @@
 ---
 name: op
-description: >
-  Use when working with 1Password CLI: injecting secrets into apps, managing vault items,
-  or setting up shell plugins for biometric auth.
-  Triggers: "1password", "op run", "secrets", "vault", "biometric auth".
+description: 'Use when working with 1Password CLI - injecting secrets into apps, managing vault items, or setting up shell plugins for biometric auth. Triggers: "1password", "op run", "secrets", "vault", "biometric auth".'
 allowed-tools: Bash(op run:*), Bash(op vault:*), Bash(op item:*), Bash(op plugin:*), Bash(op whoami:*), Bash(op account:*)
 ---
 
