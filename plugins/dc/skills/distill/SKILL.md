@@ -1,10 +1,6 @@
 ---
 name: distill
-description: >
-  Use when the user asks to distill, extract key insights, or restructure content for clarity.
-  Also use when the user shares a brainstorm, thought dump, meeting notes, or long-form content
-  and wants it transformed into a reader-friendly format.
-  Triggers: "distill this", "extract insights", "make this clearer", "restructure for readability".
+description: Use when the user asks to distill, extract key insights, or restructure content for clarity. Also use when the user shares a brainstorm, thought dump, meeting notes, or long-form content and wants it transformed into a reader-friendly format. Triggers: "distill this", "extract insights", "make this clearer", "restructure for readability".
 ---
 
 # Distill
