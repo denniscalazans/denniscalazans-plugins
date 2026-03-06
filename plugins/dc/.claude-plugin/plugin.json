@@ -1,7 +1,17 @@
 {
   "name": "dc",
   "description": "General-purpose skills for git workflow, knowledge distillation, video recording, markdown writing, and strategic thinking",
-  "version": "1.0.0",
-  "author": { "name": "Dennis Calazans" },
-  "keywords": ["skills", "git", "distill", "video-recording", "markdown", "1password", "op"]
+  "version": "1.0.1-pr.4",
+  "author": {
+    "name": "Dennis Calazans"
+  },
+  "keywords": [
+    "skills",
+    "git",
+    "distill",
+    "video-recording",
+    "markdown",
+    "1password",
+    "op"
+  ]
 }

@@ -1,0 +1,95 @@
+name: Version Release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'plugins/**'
+      - '.claude-plugin/**'
+      - '.claude/CLAUDE.md'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Read current version
+        id: current
+        run: |
+          VERSION=$(node -e "console.log(require('./plugins/dc/.claude-plugin/plugin.json').version)")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Current version: $VERSION"
+
+      - name: Compute release version
+        id: release
+        env:
+          VERSION: ${{ steps.current.outputs.version }}
+        run: |
+          # Strip pre-release suffix (e.g. 1.0.1-pr.3 -> 1.0.1)
+          # `%%` removes the longest match of `-*` from the end
+          RELEASE_VERSION="${VERSION%%-*}"
+
+          # Check if this is already a clean semver (no pre-release suffix)
+          if [ "$VERSION" = "$RELEASE_VERSION" ]; then
+            echo "Already a clean version, checking if tag exists"
+            if git rev-parse "v${RELEASE_VERSION}" >/dev/null 2>&1; then
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+              echo "Tag v${RELEASE_VERSION} already exists, skipping"
+              exit 0
+            fi
+          fi
+
+          echo "version=$RELEASE_VERSION" >> "$GITHUB_OUTPUT"
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+          echo "Release version: $RELEASE_VERSION"
+
+      - name: Update plugin.json to clean version
+        if: steps.release.outputs.skip == 'false'
+        env:
+          RELEASE_VERSION: ${{ steps.release.outputs.version }}
+          CURRENT_VERSION: ${{ steps.current.outputs.version }}
+        run: |
+          # Only commit if the version actually changed (had a pre-release suffix)
+          if [ "$CURRENT_VERSION" != "$RELEASE_VERSION" ]; then
+            node -e "
+              const fs = require('fs');
+              const path = './plugins/dc/.claude-plugin/plugin.json';
+              const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
+              pkg.version = process.env.RELEASE_VERSION;
+              fs.writeFileSync(path, JSON.stringify(pkg, null, 2) + '\n');
+            "
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add plugins/dc/.claude-plugin/plugin.json
+            git commit -m "chore: release v${RELEASE_VERSION}"
+            git push
+          fi
+
+      - name: Create git tag
+        if: steps.release.outputs.skip == 'false'
+        env:
+          RELEASE_VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          git tag "v${RELEASE_VERSION}"
+          # Push the tag to remote so it appears in GitHub
+          git push origin "v${RELEASE_VERSION}"
+
+      - name: Create GitHub Release
+        if: steps.release.outputs.skip == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          # `gh release create` with --generate-notes auto-generates
+          # a changelog from commits since the last tag
+          gh release create "v${RELEASE_VERSION}" \
+            --title "v${RELEASE_VERSION}" \
+            --generate-notes
