@@ -2,7 +2,7 @@
 name: reset-to-main
 description: >
   Use when finishing a task and wanting to return to main branch with a clean working directory, switching context between tasks, or starting fresh after a PR.
-  Triggers: "reset", "switch to main", "start fresh", "back to main", "done with this task".
+  Triggers: "reset", "switch to main", "start fresh", "back to main", "done with this task", "clean up workspace", "done with branch", "close this task".
 ---
 
 # Reset to Main

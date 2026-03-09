@@ -1,6 +1,6 @@
 ---
 name: distill
-description: 'Use when the user asks to distill, extract key insights, or restructure content for clarity. Also use when the user shares a brainstorm, thought dump, meeting notes, or long-form content and wants it transformed into a reader-friendly format. Triggers: "distill this", "extract insights", "make this clearer", "restructure for readability".'
+description: 'Use when the user asks to distill, extract key insights, or restructure content for clarity. Also use when the user shares a brainstorm, thought dump, meeting notes, or long-form content and wants it transformed into a reader-friendly format. Triggers: "distill this", "extract insights", "make this clearer", "restructure for readability", "summarize this", "TL;DR", "key takeaways", "simplify this text", "clean this up", "organize my notes", "break this down".'
 ---
 
 # Distill
@@ -49,3 +49,14 @@ Follow these reasoning stages internally before writing:
 - Write in plain, precise English at a grade 7–8 reading level — the kind that smart, busy people actually prefer.
 - Do NOT add your own opinions or claims beyond what the source supports. If you add context, mark it clearly as context.
 - Preserve the integrity and essence of the original message. The author's core argument and intent must survive intact.
+
+## Common Mistakes
+
+| Don't | Do |
+|-------|-----|
+| Shorten aggressively and drop details | Preserve 100% of the knowledge — distillation is not summarization |
+| Follow the author's original structure | Restructure by importance and logical flow for the reader |
+| Add your own opinions or conclusions | Only include what the source supports; mark added context explicitly |
+| Use jargon without explanation | Define technical terms immediately when essential |
+| Write long paragraphs | Keep paragraphs to 2–4 sentences max |
+| Turn "may cause" into "causes" | Preserve qualifications, hedges, and causal directions exactly |
