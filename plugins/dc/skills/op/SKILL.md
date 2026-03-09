@@ -109,7 +109,7 @@ op plugin inspect      # Check current configuration
 
 3. Show the `op run --env-file=.env -- <command>` pattern.
 
-4. Confirm with user before executing — biometric prompt will appear.
+4. **STOP and use `AskUserQuestion`** before executing any `op` command. Do not proceed until the user confirms. The command will trigger a biometric prompt on their device.
 
 ### B. Managing items (metadata only)
 

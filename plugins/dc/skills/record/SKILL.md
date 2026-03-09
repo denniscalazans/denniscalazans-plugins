@@ -21,7 +21,7 @@ Frames are stitched into MP4 with ffmpeg using wall-clock timestamps for correct
 
 ## Quick start
 
-1. Read `references/recording-template.ts` (relative to the skill directory) — this is the full working template
+1. Read the `recording-template.ts` reference bundled with this skill — this is the full working template
 2. Copy it into the project root as `record-<ticket>.ts`
 3. Set `BASE_URL` and `TICKET` constants
 4. Replace the `REPLACE FLOW STEPS BELOW` section with the user's flow
