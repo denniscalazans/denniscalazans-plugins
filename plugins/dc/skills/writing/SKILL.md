@@ -1,6 +1,6 @@
 ---
 name: markdown-writing
-description: 'Use when writing or editing markdown files, PR descriptions, code comments, or documentation. Also use when producing commit bodies, README updates, or any written content that must follow the one-sentence-per-line convention. Triggers: "format this", "write a PR description", "one sentence per line", "markdown convention", "writing style", "fix formatting".'
+description: 'Use when writing or editing markdown files, PR descriptions, code comments, or documentation. Also use when producing commit bodies, README updates, or deciding whether content should be a table, list, or paragraph. Triggers: "format this", "write a PR description", "one sentence per line", "markdown convention", "writing style", "fix formatting", "paragraph spacing", "trailing spaces", "table or list".'
 ---
 
 # Markdown Writing Convention
@@ -147,5 +147,3 @@ routing where urgent requests skip the queue.
 
 
 ---
-
-Now that you've reviewed the convention, apply it as you write.

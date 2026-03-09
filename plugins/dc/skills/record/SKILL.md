@@ -1,11 +1,11 @@
 ---
 name: record-video
-description: 'Use when the user asks to record a video, screen recording, demo, or screencast of a web application flow. Also use when the user mentions recording browser interactions, creating PR evidence videos, or capturing UI workflows. Triggers: "record a video", "make a recording", "screen record", "film a demo", "capture a screencast", "PR evidence video", "record this flow".'
+description: 'Use when the user asks to record a video, screen recording, demo, GIF, or screencast of a web application flow. Also use when the user mentions recording browser interactions, creating PR evidence videos, or capturing UI workflows. Triggers: "record a video", "make a recording", "screen record", "film a demo", "capture a screencast", "PR evidence video", "record this flow", "record a GIF", "make a demo GIF", "capture my changes".'
 ---
 
 # Record Video — CDP Screencast with Retina Cursor
 
-Generate and run Playwright scripts that capture Retina-quality browser recordings with a visible red-dot cursor, then produce MP4 for GitHub PRs.
+Generate and run Playwright scripts that capture Retina-quality browser recordings with a visible red-dot cursor, then produce MP4 or GIF for GitHub PRs.
 
 ## How it works
 
@@ -25,7 +25,7 @@ Frames are stitched into MP4 with ffmpeg using wall-clock timestamps for correct
 2. Copy it into the project root as `record-<ticket>.ts`
 3. Set `BASE_URL` and `TICKET` constants
 4. Replace the `REPLACE FLOW STEPS BELOW` section with the user's flow
-5. Run: `npx tsx record-<ticket>.ts`
+5. Run: `npx tsx record-<ticket>.ts` (append `--gif` to also generate a GIF)
 6. Report the MP4 path with file size
 
 ## Determining the ticket and base URL
@@ -137,6 +137,17 @@ CRF 22 keeps text crisp (CRF 26+ makes text blurry at Retina resolution).
 If the app requires login:
 - Pre-authenticate the dev server session before recording
 - Or use the `auth0-login` skill first if available
+
+## Common Mistakes
+
+| Don't | Do |
+|-------|-----|
+| Use `page.click()` directly | Use `clickElement(page, selector)` for visible cursor movement |
+| Skip `waitForTimeout` between steps | Add 500–1000ms pauses so viewers can follow the flow |
+| Set CRF above 25 | Use CRF 22 to keep text crisp at Retina resolution |
+| Forget to start the dev server | Verify the dev server is running at `BASE_URL` before executing |
+| Use Playwright's `recordVideo` option | Omit it entirely — CDP screencast replaces it |
+| Interact with new page content immediately after navigation | Use `waitForURL` or `waitForSelector` first |
 
 ## Running tests
 

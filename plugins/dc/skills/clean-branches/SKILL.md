@@ -2,9 +2,8 @@
 name: clean-branches
 description: >
   Use when cleaning up local branches whose content is already in the default branch.
-  Scans all local branches using content-based detection that catches every merge strategy (merge, squash, rebase, cherry-pick).
-  Also use when the user wants to clean up after merging PRs.
-  Triggers: "clean up branches", "prune branches", "clean branches", "delete integrated branches", "clean up old branches".
+  Also use when the user wants to clean up after merging PRs or remove branches that were squash-merged or rebased.
+  Triggers: "clean up branches", "prune branches", "clean branches", "delete integrated branches", "clean up old branches", "remove merged branches", "delete stale branches".
 ---
 
 # Clean Integrated Branches
