@@ -28,9 +28,11 @@ import { execFileSync } from 'child_process';
 // --- CONFIGURATION (agent fills these in) ---
 const BASE_URL = 'http://localhost:4200';
 const TICKET = 'demo';
-const VIDEO_DIR = path.resolve(__dirname, '.videos');
+const SUMMARY = 'site-creation'; // 2-4 word kebab-case slug derived from user's request
+const VIDEO_DIR = path.resolve('.agents.tmp', 'recordings');
 const FRAME_DIR = path.join(VIDEO_DIR, '_frames');
-const TRACE_PATH = path.resolve(__dirname, 'trace.zip');
+const FILE_STEM = [new Date().toISOString().slice(0, 10).replace(/-/g, ''), TICKET, SUMMARY].filter(Boolean).join('-');
+const TRACE_PATH = path.join(VIDEO_DIR, `${FILE_STEM}-trace.zip`);
 const PRODUCE_GIF = process.argv.includes('--gif');
 
 // --- Viewport: 1440x900 at 2x = 2880x1800 Retina frames ---
@@ -303,8 +305,8 @@ async function main(): Promise<void> {
   const inputFps = String(Math.round(effectiveFps));
   console.log(`Using input framerate: ${inputFps} fps (matches wall-clock time)`);
 
-  const mp4Path = path.join(VIDEO_DIR, `${TICKET}.mp4`);
-  const gifPath = path.join(VIDEO_DIR, `${TICKET}.gif`);
+  const mp4Path = path.join(VIDEO_DIR, `${FILE_STEM}.mp4`);
+  const gifPath = path.join(VIDEO_DIR, `${FILE_STEM}.gif`);
   const framePattern = path.join(FRAME_DIR, 'frame_%05d.png');
 
   // GIF only when explicitly requested (--gif flag).

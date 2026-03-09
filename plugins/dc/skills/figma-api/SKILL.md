@@ -7,11 +7,16 @@ description: 'Use when interacting with the Figma REST API to read design files,
 
 Query the Figma REST API securely using 1Password for token management and sub-agents for API call isolation.
 
+## Setup
+
+This skill requires a Figma API token stored in 1Password.
+
+By default, the token is read from `op://Development/Figma/credential`.
+To use a different vault path, set the `FIGMA_OP_REF` environment variable to your `op://` reference before invoking the skill.
+
 ## Security Model
 
-The Figma API token lives in 1Password at `op://Development/Figma/credential`.
-
-It is resolved at runtime via `op run` and injected as an environment variable into the curl subprocess.
+The Figma API token is resolved at runtime via `op run` and injected as an environment variable into the curl subprocess.
 
 The token never appears in command arguments, shell history, or LLM context.
 

@@ -1,6 +1,6 @@
 ---
 name: op
-description: 'Use when working with 1Password CLI - injecting secrets into apps, managing vault items, or setting up shell plugins for biometric auth. Triggers: "1password", "op run", "secrets", "vault", "biometric auth".'
+description: 'Use when working with 1Password CLI - injecting secrets into apps, managing vault items, or setting up shell plugins for biometric auth. Triggers: "1password", "op run", "op://", "secrets", "vault", "biometric auth", "inject secrets", "environment variables", "secure credentials", ".env setup", "MCP server secrets".'
 allowed-tools: Bash(op run:*), Bash(op vault:*), Bash(op item:*), Bash(op plugin:*), Bash(op whoami:*), Bash(op account:*)
 ---
 
@@ -109,7 +109,7 @@ op plugin inspect      # Check current configuration
 
 3. Show the `op run --env-file=.env -- <command>` pattern.
 
-4. Confirm with user before executing — biometric prompt will appear.
+4. **STOP and use `AskUserQuestion`** before executing any `op` command. Do not proceed until the user confirms. The command will trigger a biometric prompt on their device.
 
 ### B. Managing items (metadata only)
 

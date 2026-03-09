@@ -1,11 +1,11 @@
 ---
 name: record-video
-description: Use when the user asks to record a video, screen recording, demo, or screencast of a web application flow. Also use when the user mentions recording browser interactions, creating PR evidence videos, or capturing UI workflows. Triggers on phrases like "record a video of", "make a recording", "screen record", "film a demo", "capture a screencast".
+description: 'Use when the user asks to record a video, screen recording, demo, GIF, or screencast of a web application flow. Also use when the user mentions recording browser interactions, creating PR evidence videos, or capturing UI workflows. Triggers: "record a video", "make a recording", "screen record", "film a demo", "capture a screencast", "PR evidence video", "record this flow", "record a GIF", "make a demo GIF", "capture my changes".'
 ---
 
 # Record Video — CDP Screencast with Retina Cursor
 
-Generate and run Playwright scripts that capture Retina-quality browser recordings with a visible red-dot cursor, then produce MP4 for GitHub PRs.
+Generate and run Playwright scripts that capture Retina-quality browser recordings with a visible red-dot cursor, then produce MP4 or GIF for GitHub PRs.
 
 ## How it works
 
@@ -21,19 +21,31 @@ Frames are stitched into MP4 with ffmpeg using wall-clock timestamps for correct
 
 ## Quick start
 
-1. Read `references/recording-template.ts` (relative to the skill directory) — this is the full working template
+1. Read the `recording-template.ts` reference bundled with this skill — this is the full working template
 2. Copy it into the project root as `record-<ticket>.ts`
-3. Set `BASE_URL` and `TICKET` constants
+3. Set `BASE_URL`, `TICKET`, and `SUMMARY` constants
 4. Replace the `REPLACE FLOW STEPS BELOW` section with the user's flow
-5. Run: `npx tsx record-<ticket>.ts`
+5. Run: `npx tsx record-<ticket>.ts` (append `--gif` to also generate a GIF)
 6. Report the MP4 path with file size
 
 ## Determining the ticket and base URL
 
-**Ticket:** Extract from the current branch name (e.g., `feat/ffa-475-...` → `ffa-475`) or from the conversation context.
+**Ticket resolution (in priority order):**
+
+1. **Branch name** — extract the ticket pattern (e.g., `feat/ffa-475-...` → `ffa-475`)
+2. **Conversation context** — if only one ticket is mentioned, use it
+3. **Multiple candidates** — if branch and conversation yield different tickets, or multiple tickets appear in conversation, ask the user which one to use via `AskUserQuestion`
+4. **No ticket found** — use `recording` as fallback
+
+**Summary slug:** Derive a 2-4 word kebab-case slug from the user's request describing what the recording shows.
+Example: "record me creating a new site" → `site-creation`.
+
+**Output filename pattern:** `YYYYMMDD-<ticket>-<summary>.ext`
+- With ticket: `20260309-ffa-475-site-creation.mp4`
+- Without ticket: `20260309-recording-login-flow.mp4`
 
 **Base URL:** Check the project for common patterns:
-- Angular Nx: look for `serve` target in `project.json` (Forest Flow uses port 4488)
+- Angular Nx: look for `serve` target in `project.json` — the port is defined there
 - Default fallback: `http://localhost:4200`
 
 ## Template helpers
@@ -89,14 +101,14 @@ await page.waitForTimeout(1500);
 ## Output
 
 **Default (MP4 only):**
-- `.videos/<ticket>.mp4` — 12 fps, H.264, CRF 22, Retina quality (~60-200 KB)
+- `.agents.tmp/recordings/YYYYMMDD-<ticket>-<summary>.mp4` — 12 fps, H.264, CRF 22, Retina quality (~60-200 KB)
 
 **With `--gif` flag:**
-- `.videos/<ticket>.gif` — 6 fps, viewport-width, denoised, palette-optimized (~80-150 KB)
+- `.agents.tmp/recordings/YYYYMMDD-<ticket>-<summary>.gif` — 6 fps, viewport-width, denoised, palette-optimized (~80-150 KB)
 
 Both formats render inline on GitHub PRs.
 
-The `.videos/` directory should be gitignored.
+The `.agents.tmp/` directory should be gitignored.
 
 ## Prerequisites
 
@@ -137,6 +149,19 @@ CRF 22 keeps text crisp (CRF 26+ makes text blurry at Retina resolution).
 If the app requires login:
 - Pre-authenticate the dev server session before recording
 - Or use the `auth0-login` skill first if available
+
+## Common Mistakes
+
+| Don't | Do |
+|-------|-----|
+| Use `page.click()` directly | Use `clickElement(page, selector)` for visible cursor movement |
+| Skip `waitForTimeout` between steps | Add 500–1000ms pauses so viewers can follow the flow |
+| Set CRF above 25 | Use CRF 22 to keep text crisp at Retina resolution |
+| Forget to start the dev server | Verify the dev server is running at `BASE_URL` before executing |
+| Use Playwright's `recordVideo` option | Omit it entirely — CDP screencast replaces it |
+| Interact with new page content immediately after navigation | Use `waitForURL` or `waitForSelector` first |
+| Guess the ticket when multiple candidates exist | Ask the user via `AskUserQuestion` when branch and conversation disagree or multiple tickets appear |
+| Leave `TICKET` as `demo` when no ticket is found | Use `recording` as fallback so output is `YYYYMMDD-recording.mp4` |
 
 ## Running tests
 
