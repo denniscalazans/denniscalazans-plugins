@@ -1,0 +1,45 @@
+{
+  "skill_name": "reset-to-main",
+  "evals": [
+    {
+      "id": 1,
+      "name": "clean-squash-merged-branch",
+      "prompt": "First run `bash /Users/denniscalazans/git/denniscalazans-plugins/plugins/dc/skills/reset-workspace/setup-test-repo.sh clean` to set up the test repo, then cd into /tmp/reset-skill-test. Now follow the reset-to-main skill to reset to main. When asked questions, choose the default/recommended option.",
+      "expected_output": "Should detect clean working directory, show branch is integrated into main, switch to main, pull with prune, detect 3 [gone] branches (feature/auth as squash-merged, fix/typo as merged, experiment/new-api as NOT merged), only offer to delete the 2 integrated ones, and report final state.",
+      "assertions": [
+        {"text": "Shows 'Working directory is clean' or equivalent", "type": "output_contains"},
+        {"text": "Detects feature/auth as squash-merged or merged", "type": "output_contains"},
+        {"text": "Detects fix/typo as merged", "type": "output_contains"},
+        {"text": "Detects experiment/new-api as NOT merged", "type": "output_contains"},
+        {"text": "Does NOT offer to delete experiment/new-api", "type": "output_not_contains"},
+        {"text": "Shows final git branch -v output", "type": "output_contains"}
+      ]
+    },
+    {
+      "id": 2,
+      "name": "dirty-integrated-branch",
+      "prompt": "First run `bash /Users/denniscalazans/git/denniscalazans-plugins/plugins/dc/skills/reset-workspace/setup-test-repo.sh dirty-integrated` to set up the test repo, then cd into /tmp/reset-skill-test. Now follow the reset-to-main skill to reset to main. When asked questions, choose 'stash everything'.",
+      "expected_output": "Should show categorized dirty state (staged: staged.txt, unstaged: auth.ts, untracked: notes.txt), detect branch is integrated, offer simplified options (no worktree), stash everything, switch to main, clean up branches.",
+      "assertions": [
+        {"text": "Shows staged files category with staged.txt", "type": "output_contains"},
+        {"text": "Shows unstaged files category with auth.ts", "type": "output_contains"},
+        {"text": "Shows untracked files category with notes.txt", "type": "output_contains"},
+        {"text": "Indicates branch is integrated into main", "type": "output_contains"},
+        {"text": "Does NOT offer worktree option (branch is integrated)", "type": "output_not_contains"},
+        {"text": "Runs git stash push --include-untracked", "type": "output_contains"}
+      ]
+    },
+    {
+      "id": 3,
+      "name": "dirty-wip-unmerged-branch",
+      "prompt": "First run `bash /Users/denniscalazans/git/denniscalazans-plugins/plugins/dc/skills/reset-workspace/setup-test-repo.sh dirty-wip` to set up the test repo, then cd into /tmp/reset-skill-test. Now follow the reset-to-main skill to reset to main. When asked questions, choose 'stash everything'.",
+      "expected_output": "Should show dirty state, detect branch is NOT integrated, offer all 4 options including worktree, stash when user chooses, switch to main, clean up branches.",
+      "assertions": [
+        {"text": "Shows unstaged and untracked files", "type": "output_contains"},
+        {"text": "Indicates branch is NOT integrated into main", "type": "output_contains"},
+        {"text": "Offers worktree option", "type": "output_contains"},
+        {"text": "Offers all 4 options (stash, worktree, discard, abort)", "type": "output_contains"}
+      ]
+    }
+  ]
+}

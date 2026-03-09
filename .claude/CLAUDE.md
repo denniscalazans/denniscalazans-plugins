@@ -36,7 +36,7 @@ npx tsx --test plugins/dc/skills/record/references/recording-utils.spec.ts
 
 | Plugin | Description | Skills | Agents |
 |--------|-------------|--------|--------|
-| `dc` | General-purpose: git workflow, distillation, video recording, markdown writing, strategic thinking | `reset`, `distill`, `writing`, `record` | `strategic-thinking-partner` |
+| `dc` | General-purpose: git workflow, distillation, video recording, markdown writing, strategic thinking | `reset`, `clean-branches`, `distill`, `writing`, `record` | `strategic-thinking-partner` |
 
 ## Versioning
 
