@@ -23,7 +23,7 @@ Frames are stitched into MP4 with ffmpeg using wall-clock timestamps for correct
 
 1. Read the `recording-template.ts` reference bundled with this skill — this is the full working template
 2. Copy it into the project root as `record-<ticket>.ts`
-3. Set `BASE_URL` and `TICKET` constants
+3. Set `BASE_URL`, `TICKET`, and `SUMMARY` constants
 4. Replace the `REPLACE FLOW STEPS BELOW` section with the user's flow
 5. Run: `npx tsx record-<ticket>.ts` (append `--gif` to also generate a GIF)
 6. Report the MP4 path with file size
@@ -35,7 +35,14 @@ Frames are stitched into MP4 with ffmpeg using wall-clock timestamps for correct
 1. **Branch name** — extract the ticket pattern (e.g., `feat/ffa-475-...` → `ffa-475`)
 2. **Conversation context** — if only one ticket is mentioned, use it
 3. **Multiple candidates** — if branch and conversation yield different tickets, or multiple tickets appear in conversation, ask the user which one to use via `AskUserQuestion`
-4. **No ticket found** — use `recording` as fallback (output becomes `YYYYMMDD-recording.mp4`)
+4. **No ticket found** — use `recording` as fallback
+
+**Summary slug:** Derive a 2-4 word kebab-case slug from the user's request describing what the recording shows.
+Example: "record me creating a new site" → `site-creation`.
+
+**Output filename pattern:** `YYYYMMDD-<ticket>-<summary>.ext`
+- With ticket: `20260309-ffa-475-site-creation.mp4`
+- Without ticket: `20260309-recording-login-flow.mp4`
 
 **Base URL:** Check the project for common patterns:
 - Angular Nx: look for `serve` target in `project.json` — the port is defined there
@@ -94,10 +101,10 @@ await page.waitForTimeout(1500);
 ## Output
 
 **Default (MP4 only):**
-- `.agents.tmp/recordings/YYYYMMDD-<ticket>.mp4` — 12 fps, H.264, CRF 22, Retina quality (~60-200 KB)
+- `.agents.tmp/recordings/YYYYMMDD-<ticket>-<summary>.mp4` — 12 fps, H.264, CRF 22, Retina quality (~60-200 KB)
 
 **With `--gif` flag:**
-- `.agents.tmp/recordings/YYYYMMDD-<ticket>.gif` — 6 fps, viewport-width, denoised, palette-optimized (~80-150 KB)
+- `.agents.tmp/recordings/YYYYMMDD-<ticket>-<summary>.gif` — 6 fps, viewport-width, denoised, palette-optimized (~80-150 KB)
 
 Both formats render inline on GitHub PRs.
 
