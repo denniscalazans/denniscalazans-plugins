@@ -1,7 +1,7 @@
 {
   "name": "dc",
   "description": "General-purpose skills for git workflow, knowledge distillation, video recording, markdown writing, and strategic thinking",
-  "version": "2.0.2-pr.7",
+  "version": "2.0.2",
   "author": {
     "name": "Dennis Calazans"
   },
