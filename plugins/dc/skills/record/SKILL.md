@@ -30,7 +30,12 @@ Frames are stitched into MP4 with ffmpeg using wall-clock timestamps for correct
 
 ## Determining the ticket and base URL
 
-**Ticket:** Extract from the current branch name (e.g., `feat/ffa-475-...` → `ffa-475`) or from the conversation context.
+**Ticket resolution (in priority order):**
+
+1. **Branch name** — extract the ticket pattern (e.g., `feat/ffa-475-...` → `ffa-475`)
+2. **Conversation context** — if only one ticket is mentioned, use it
+3. **Multiple candidates** — if branch and conversation yield different tickets, or multiple tickets appear in conversation, ask the user which one to use via `AskUserQuestion`
+4. **No ticket found** — use `recording` as fallback (output becomes `YYYYMMDD-recording.mp4`)
 
 **Base URL:** Check the project for common patterns:
 - Angular Nx: look for `serve` target in `project.json` — the port is defined there
@@ -148,6 +153,8 @@ If the app requires login:
 | Forget to start the dev server | Verify the dev server is running at `BASE_URL` before executing |
 | Use Playwright's `recordVideo` option | Omit it entirely — CDP screencast replaces it |
 | Interact with new page content immediately after navigation | Use `waitForURL` or `waitForSelector` first |
+| Guess the ticket when multiple candidates exist | Ask the user via `AskUserQuestion` when branch and conversation disagree or multiple tickets appear |
+| Leave `TICKET` as `demo` when no ticket is found | Use `recording` as fallback so output is `YYYYMMDD-recording.mp4` |
 
 ## Running tests
 
