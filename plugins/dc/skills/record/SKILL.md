@@ -89,14 +89,14 @@ await page.waitForTimeout(1500);
 ## Output
 
 **Default (MP4 only):**
-- `.videos/<ticket>.mp4` — 12 fps, H.264, CRF 22, Retina quality (~60-200 KB)
+- `.agents.tmp/recordings/YYYYMMDD-<ticket>.mp4` — 12 fps, H.264, CRF 22, Retina quality (~60-200 KB)
 
 **With `--gif` flag:**
-- `.videos/<ticket>.gif` — 6 fps, viewport-width, denoised, palette-optimized (~80-150 KB)
+- `.agents.tmp/recordings/YYYYMMDD-<ticket>.gif` — 6 fps, viewport-width, denoised, palette-optimized (~80-150 KB)
 
 Both formats render inline on GitHub PRs.
 
-The `.videos/` directory should be gitignored.
+The `.agents.tmp/` directory should be gitignored.
 
 ## Prerequisites
 
