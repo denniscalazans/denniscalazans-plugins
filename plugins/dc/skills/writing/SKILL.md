@@ -1,6 +1,6 @@
 ---
 name: markdown-writing
-description: Use when writing or editing markdown files, PR descriptions, code comments, or documentation. Also use when producing commit bodies, README updates, or any written content that must follow the one-sentence-per-line convention.
+description: 'Use when writing or editing markdown files, PR descriptions, code comments, or documentation. Also use when producing commit bodies, README updates, or any written content that must follow the one-sentence-per-line convention. Triggers: "format this", "write a PR description", "one sentence per line", "markdown convention", "writing style", "fix formatting".'
 ---
 
 # Markdown Writing Convention

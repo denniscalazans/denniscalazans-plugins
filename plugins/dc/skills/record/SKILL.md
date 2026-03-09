@@ -1,6 +1,6 @@
 ---
 name: record-video
-description: Use when the user asks to record a video, screen recording, demo, or screencast of a web application flow. Also use when the user mentions recording browser interactions, creating PR evidence videos, or capturing UI workflows. Triggers on phrases like "record a video of", "make a recording", "screen record", "film a demo", "capture a screencast".
+description: 'Use when the user asks to record a video, screen recording, demo, or screencast of a web application flow. Also use when the user mentions recording browser interactions, creating PR evidence videos, or capturing UI workflows. Triggers: "record a video", "make a recording", "screen record", "film a demo", "capture a screencast", "PR evidence video", "record this flow".'
 ---
 
 # Record Video — CDP Screencast with Retina Cursor
@@ -33,7 +33,7 @@ Frames are stitched into MP4 with ffmpeg using wall-clock timestamps for correct
 **Ticket:** Extract from the current branch name (e.g., `feat/ffa-475-...` → `ffa-475`) or from the conversation context.
 
 **Base URL:** Check the project for common patterns:
-- Angular Nx: look for `serve` target in `project.json` (Forest Flow uses port 4488)
+- Angular Nx: look for `serve` target in `project.json` — the port is defined there
 - Default fallback: `http://localhost:4200`
 
 ## Template helpers
