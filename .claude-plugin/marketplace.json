@@ -12,6 +12,12 @@
       "description": "General-purpose skills for git workflow, knowledge distillation, video recording, markdown writing, and strategic thinking",
       "source": "./plugins/dc",
       "category": "productivity"
+    },
+    {
+      "name": "code-quality",
+      "description": "SonarQube-driven code quality skills for checking quality gates, browsing issues, fixing violations, verifying fixes locally, and triaging false positives",
+      "source": "./plugins/code-quality",
+      "category": "productivity"
     }
   ]
 }
