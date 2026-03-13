@@ -53,8 +53,9 @@ If unreachable, suggest common causes:
 
 ### Step 3: Check MCP tool availability
 
-Search for SonarQube MCP tools using ToolSearch.
-Look for `search_sonar_issues_in_projects` (standalone) and `analyze_file_list` (IDE-connected).
+Use ToolSearch to find SonarQube MCP tools by searching for `sonarqube`.
+The tools may be prefixed with `mcp__sonarqube__` or `mcp__sonar__` depending on the user's config.
+Check for `search_sonar_issues_in_projects` (standalone) and `analyze_file_list` (IDE-connected).
 
 Report findings as a table:
 
@@ -156,6 +157,14 @@ If MCP tools are not found, show the config snippet:
 ```
 
 On **Linux**, add `"--network=host"` to the args array (before `"mcp/sonarqube"`) so the Docker container can reach SonarQube for IDE on localhost.
+
+
+## References
+
+For deeper documentation on tool schemas, bug guardrails, and operational patterns:
+- `references/sonarqube-mcp-tools.md` — full tool catalogue with response schemas and call examples
+- `references/sonarqube-mcp-guide.md` — modes, taxonomy, token management, metrics cheat sheet
+- `references/official-docs.md` — links to SonarSource documentation and community discussions
 
 
 ## Common Mistakes

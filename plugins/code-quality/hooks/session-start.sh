@@ -33,7 +33,7 @@ if [[ -n "${SONARQUBE_IDE_PORT:-}" ]]; then
     warnings+=("SONARQUBE_IDE_PORT=${SONARQUBE_IDE_PORT} is set but nothing is listening — is your IDE running?")
   fi
 else
-  # Auto-discover: scan port range 64120-64130 (0.3s timeout per port)
+  # Auto-discover: first active port only (sonar-setup skill scans all ports)
   for port in $(seq 64120 64130); do
     if curl -sf --connect-timeout 0.3 -o /dev/null "http://localhost:${port}" 2>/dev/null; then
       ide_port="$port"
@@ -64,9 +64,13 @@ if [[ ${#info[@]} -gt 0 ]]; then
   done
 fi
 
-# Only output if there's something to report
+# Fallback: always announce if plugin is loaded but nothing is configured
+if [[ -z "$message" && ${#warnings[@]} -eq 0 && ${#info[@]} -eq 0 ]]; then
+  message="code-quality plugin: SonarQube not configured. Run /code-quality:sonar-setup to get started."
+fi
+
+# Escape for JSON and output
 if [[ -n "$message" ]]; then
-  # Escape for JSON
   message=$(echo -n "$message" | sed 's/"/\\"/g' | tr '\n' ' ')
   echo "{\"systemMessage\": \"${message}\"}"
 fi
