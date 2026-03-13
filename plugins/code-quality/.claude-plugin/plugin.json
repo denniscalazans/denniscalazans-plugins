@@ -12,6 +12,7 @@
     "sonar-verify",
     "sonar-triage",
     "sonar-rule",
+    "sonar-setup",
     "mcp"
   ]
 }
