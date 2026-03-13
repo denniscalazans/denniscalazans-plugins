@@ -40,17 +40,27 @@ npx tsx --test plugins/dc/skills/record/references/recording-utils.spec.ts
 
 ## Versioning
 
-Version source of truth: `plugins/dc/.claude-plugin/plugin.json`.
+Each plugin is versioned independently.
+Version source of truth: each plugin's `.claude-plugin/plugin.json`.
+
+
+**Tag convention:** `<plugin>-v<version>` (e.g. `dc-v2.0.5`, `code-quality-v1.0.1`).
+Old `v*` tags are kept as historical artifacts.
+
 
 **Automatic patch bumps:**
-- PR opened/updated with plugin changes -> `X.Y.(Z+1)-pr.N` (pre-release)
-- PR merged to main -> strips pre-release suffix, creates git tag `vX.Y.Z` + GitHub Release
+- PR opened/updated with plugin changes -> each changed plugin gets `X.Y.(Z+1)-pr.N` (pre-release)
+- PR merged to main -> strips pre-release suffix, creates git tag `<plugin>-v<version>` + GitHub Release
+
 
 **Manual major/minor bumps:**
 
 ```bash
-node scripts/bump-version.mjs --version 2.0.0
+node scripts/bump-version.mjs --version 2.0.0 --plugin dc
+node scripts/bump-version.mjs --version 1.1.0 --plugin code-quality
+node scripts/bump-version.mjs --version 3.0.0   # defaults to dc
 ```
+
 
 **Test a PR version locally:**
 
