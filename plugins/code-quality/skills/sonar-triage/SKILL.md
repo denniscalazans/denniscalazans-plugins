@@ -38,6 +38,9 @@ Ask the user which status to set:
 
 Before triaging, suggest looking up the rule first (`show_rule`) to make an informed decision.
 
+**Wait for the user's explicit confirmation before executing.**
+Do not auto-select a status based on context — triage is a server mutation that cannot be easily undone.
+
 ### Step 3: Execute
 
 Call `change_sonar_issue_status` with the issue key and chosen status:

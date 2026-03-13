@@ -47,9 +47,9 @@ Found 238 open issues (showing page 1 of 5)
 
 | Severity | Rule   | File                    | Line | Message                           |
 |----------|--------|-------------------------|------|-----------------------------------|
-| CRITICAL | S2004  | containers/details.ts   | 42   | Refactor to reduce deep nesting   |
-| MAJOR    | S3358  | store/site.store.ts     | 62   | Ternary operators not nested      |
-| MINOR    | S3863  | tabs/details-tab.ts     | 4    | Imported multiple times            |
+| CRITICAL | S2004  | components/dashboard.ts | 42   | Refactor to reduce deep nesting   |
+| MAJOR    | S3358  | services/auth.service.ts| 62   | Ternary operators not nested      |
+| MINOR    | S3863  | utils/helpers.ts        | 4    | Imported multiple times            |
 ```
 
 Use short file paths — strip the project prefix from `component.split(':')[1]` and show only the last 2-3 path segments.

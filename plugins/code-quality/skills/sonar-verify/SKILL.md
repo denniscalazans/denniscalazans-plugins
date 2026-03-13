@@ -89,12 +89,15 @@ Format as a table grouped by status — GREEN first (wins), then RED (still brok
 ```
 RED/GREEN Verification Report
 
-| Status | Rule   | File                  | Line | Message                        |
-|--------|--------|-----------------------|------|--------------------------------|
-| 🟢     | S3358  | store/site.store.ts   | 62   | Ternary operators not nested   |
-| 🟢     | S3863  | tabs/details-tab.ts   | 4    | Imported multiple times         |
-| 🔴     | S2004  | containers/details.ts | 42   | Refactor to reduce nesting     |
-| 🆕     | —      | utils/helpers.ts      | 15   | Unused import detected          |
+| Status | Rule   | File                     | Line | Message                        |
+|--------|--------|--------------------------|------|--------------------------------|
+| 🟢     | S3358  | services/auth.service.ts | 62   | Ternary operators not nested   |
+| 🟢     | S3863  | utils/helpers.ts         | 4    | Imported multiple times         |
+| 🔴     | S2004  | components/dashboard.ts  | 42   | Refactor to reduce nesting     |
+| 🆕     | —      | models/user.ts           | 15   | Unused import detected          |
+
+Rule column shows the server rule key for RED/GREEN rows.
+NEW rows have no rule — local findings lack this field.
 
 Summary: 2 fixed (🟢), 1 remaining (🔴), 1 new (🆕)
 ```

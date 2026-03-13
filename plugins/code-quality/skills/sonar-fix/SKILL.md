@@ -74,6 +74,8 @@ Show what changed:
 - Whether the issue is verified resolved (local) or pending server verification
 - Any new findings introduced (if verification ran)
 
+If the user is fixing multiple issues in a batch, suggest running `sonar-verify` afterwards for a comprehensive RED/GREEN cross-reference.
+
 ## Bug Guardrails
 
 - When verifying, `analyze_file_list` returns only 4 fields (no `rule` key).
