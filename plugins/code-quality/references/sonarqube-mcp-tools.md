@@ -4,6 +4,21 @@ Complete tool reference with response schemas, matching algorithm, and call exam
 Skills read specific sections on demand via progressive disclosure.
 
 
+## Tool Discovery
+
+SonarQube MCP tools are registered under the name the user chose for their MCP server configuration.
+The full tool name follows the pattern `mcp__<server-name>__<base-tool-name>`.
+
+For example, `search_sonar_issues_in_projects` might be registered as:
+- `mcp__sonarqube__search_sonar_issues_in_projects`
+- `mcp__sonar__search_sonar_issues_in_projects`
+- `mcp__sq__search_sonar_issues_in_projects`
+
+**Always discover tools by their base name suffix.**
+Never hardcode a prefix — look for a tool whose name ends with the base name listed in this catalogue.
+If no matching tool is found, the SonarQube MCP server is not configured.
+
+
 ## Tool Catalogue
 
 ### Default Toolsets (enabled without `SONARQUBE_TOOLSETS`)

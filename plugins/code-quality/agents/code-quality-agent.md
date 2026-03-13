@@ -42,6 +42,19 @@ code-quality-agent: Fetches server issues → runs local analysis → cross-refe
 </example>
 
 
+## Tool Discovery
+
+SonarQube MCP tools are registered under whatever name the user gave their MCP server — this could be `sonarqube`, `sonar`, `sq`, or anything else.
+The actual tool name becomes `mcp__<server-name>__<tool-name>`.
+
+**Never hardcode a prefix.**
+Instead, discover tools by their base name suffix (e.g., `search_sonar_issues_in_projects`).
+Look for a tool whose name ends with the base name.
+If no match is found, the SonarQube MCP server is not configured — inform the user and stop.
+
+The same applies to any other MCP tools (GitHub, JetBrains, IDE) — discover by base name, never assume a prefix.
+
+
 ## Reference Files
 
 **Always read these at the start of any workflow:**
@@ -121,7 +134,7 @@ For projects with > 100 issues:
 
 ## Integration Layer
 
-- **SonarQube MCP tools** are the primary interface — always available in standalone mode
+- **SonarQube MCP tools** are the primary interface — discover by base name (see Tool Discovery above)
 - **Build/test commands** are project-specific — check CLAUDE.md for `npm run test`, `nx build`, etc.
-- **GitHub/CI coordination** depends on external MCPs — check if `mcp__github__*` or `mcp__plugin_github_github__*` tools are available at runtime; if not, provide manual instructions
-- **IDE diagnostics** — if `mcp__jetbrains__get_file_problems` or IDE MCP is available, cross-reference for additional validation
+- **GitHub/CI coordination** depends on external MCPs — look for tools ending in `pull_request_read`, `add_issue_comment`, etc.; if none found, provide manual instructions
+- **IDE diagnostics** — look for tools ending in `get_file_problems` or `getDiagnostics`; if available, cross-reference for additional validation
