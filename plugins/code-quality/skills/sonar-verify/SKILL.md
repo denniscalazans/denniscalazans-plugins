@@ -42,7 +42,7 @@ search_sonar_issues_in_projects {
 
 **Never pass `severities`** — it crashes the MCP server.
 
-If `total > 50`, paginate and write each page to `.agents.tmp/sonar-verify/server-issues.jsonl`.
+If `total > 50`, paginate and write each page to `.agents.tmp/code-quality/verify/server-issues.jsonl`.
 For small result sets (≤ 50), keep in context.
 
 ### Step 2: Extract unique files
@@ -107,7 +107,7 @@ Summary: 2 fixed (🟢), 1 remaining (🔴), 1 new (🆕)
 - **Never pass `severities`** when fetching server issues.
 - Local findings have no `rule` field — match by message text.
 - Line tolerance ±5 accounts for local edits shifting lines.
-- For large projects (> 100 issues), use subagents and `.agents.tmp/` to stay within token budget.
+- For large projects (> 100 issues), use subagents and `.agents.tmp/code-quality/` to stay within token budget.
   See `references/sonarqube-mcp-tools.md` for the full token-safe collection workflow.
 
 ## Common Mistakes

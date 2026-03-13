@@ -64,11 +64,11 @@ Showing 50 of 238 issues (page 1 of 5). Want me to fetch the next page?
 
 ### Step 5: Large result sets
 
-If `total > 100`, write results to `.agents.tmp/sonar-issues/` as JSONL and use `jq` for queries:
+If `total > 100`, write results to `.agents.tmp/code-quality/issues/` as JSONL and use `jq` for queries:
 
 ```bash
 jq -r 'select(.severity == "CRITICAL") | [.rule, .component, .textRange.startLine, .message] | @tsv' \
-  .agents.tmp/sonar-issues/issues.jsonl
+  .agents.tmp/code-quality/issues/issues.jsonl
 ```
 
 Never read full JSONL files into the conversation context.

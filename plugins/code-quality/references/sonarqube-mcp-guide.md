@@ -58,7 +58,7 @@ Large result sets can exceed the MCP transport limit or blow up the conversation
 Follow these patterns to stay safe.
 
 1. **Paginate with `ps=50`** — never exceed 50 per page.
-2. **Write large results to `.agents.tmp/`** — e.g., `.agents.tmp/sonar-issues/issues-p1.jsonl`.
+2. **Write large results to `.agents.tmp/code-quality/`** — e.g., `.agents.tmp/code-quality/issues/issues-p1.jsonl`.
 3. **Extract with `jq`** — unique files, severity counts, rule distributions.
 4. **Never read full JSONL into context** — always process with shell tools or subagents.
 

@@ -208,20 +208,20 @@ For projects with > 100 issues, use this 4-step process to stay within token bud
 Step 1 — Collect (subagent, write to disk):
   For p in range(1, ceil(total/50) + 1):
     page = search_sonar_issues_in_projects(ps=50, p=p)
-    append page.issues to .agents.tmp/sonar-verify/issues.jsonl
+    append page.issues to .agents.tmp/code-quality/verify/issues.jsonl
 
 Step 2 — Extract unique files (shell):
-  jq -r '.component' .agents.tmp/sonar-verify/issues.jsonl | sort -u
-    → .agents.tmp/sonar-verify/unique-files.txt
+  jq -r '.component' .agents.tmp/code-quality/verify/issues.jsonl | sort -u
+    → .agents.tmp/code-quality/verify/unique-files.txt
 
 Step 3 — Local analysis (per-file):
   For each file in unique-files.txt:
     findings = analyze_file_list([absolute_path])
-    append findings to .agents.tmp/sonar-verify/local-findings.jsonl
+    append findings to .agents.tmp/code-quality/verify/local-findings.jsonl
 
 Step 4 — Cross-reference (shell + jq):
   Match issues.jsonl × local-findings.jsonl using algorithm above
-    → .agents.tmp/sonar-verify/red-green-report.md
+    → .agents.tmp/code-quality/verify/red-green-report.md
 ```
 
 **Never read the full JSONL into conversation context — always process with `jq` in subagents.**

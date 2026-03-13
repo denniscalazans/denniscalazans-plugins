@@ -126,7 +126,7 @@ These are non-negotiable rules for every workflow:
 
 For projects with > 100 issues:
 
-1. Paginate with `ps=50` — write each page to `.agents.tmp/code-quality/issues-pN.jsonl`
+1. Paginate with `ps=50` — write each page to `.agents.tmp/code-quality/issues/issues-pN.jsonl`
 2. Extract unique files with shell tools: `jq -r '.component' issues.jsonl | sort -u`
 3. Process with `jq` — never read full JSONL into context
 4. Use subagents for independent file analysis
