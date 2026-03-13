@@ -23,93 +23,95 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get main branch version
-        id: main-version
+      - name: Detect changed plugins
+        id: detect
         run: |
-          # Fetch the version from main branch plugin.json
-          # `git show` reads a file from a specific ref without checking it out
-          MAIN_VERSION=$(git show origin/main:plugins/dc/.claude-plugin/plugin.json | node -e "
-            let data = '';
-            process.stdin.on('data', chunk => data += chunk);
-            process.stdin.on('end', () => console.log(JSON.parse(data).version));
-          ")
-          echo "version=$MAIN_VERSION" >> "$GITHUB_OUTPUT"
-          echo "Main version: $MAIN_VERSION"
+          # Runs the detect script to find which plugins have changes vs main
+          CHANGED=$(node scripts/detect-changed-plugins.mjs --base origin/main)
+          echo "plugins=$CHANGED" >> "$GITHUB_OUTPUT"
+          echo "Changed plugins: $CHANGED"
 
-      - name: Compute PR pre-release version
-        id: pr-version
+      - name: Bump versions for changed plugins
         env:
-          MAIN_VERSION: ${{ steps.main-version.outputs.version }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
+          CHANGED_PLUGINS: ${{ steps.detect.outputs.plugins }}
         run: |
-          # Strip any existing pre-release suffix to get the base version
-          # `%%` removes the longest match of `-*` from the end of the string
-          BASE_VERSION="${MAIN_VERSION%%-*}"
+          # Parse changed plugins JSON into a bash-iterable format
+          # `jq -c '.[]'` outputs one JSON object per line
+          PLUGIN_COUNT=$(echo "$CHANGED_PLUGINS" | node -e "
+            let d=''; process.stdin.on('data',c=>d+=c);
+            process.stdin.on('end',()=>console.log(JSON.parse(d).length));
+          ")
 
-          # Split into major.minor.patch using IFS (internal field separator)
-          IFS='.' read -r MAJOR MINOR PATCH <<< "$BASE_VERSION"
-
-          # Auto-increment patch for PR pre-release
-          NEXT_PATCH=$((PATCH + 1))
-          PR_VERSION="${MAJOR}.${MINOR}.${NEXT_PATCH}-pr.${PR_NUMBER}"
-
-          echo "version=$PR_VERSION" >> "$GITHUB_OUTPUT"
-          echo "PR version: $PR_VERSION"
-
-      - name: Check if version already set
-        id: check
-        env:
-          DESIRED: ${{ steps.pr-version.outputs.version }}
-          MAIN_VERSION: ${{ steps.main-version.outputs.version }}
-        run: |
-          CURRENT=$(node -e "console.log(require('./plugins/dc/.claude-plugin/plugin.json').version)")
-          echo "current=$CURRENT" >> "$GITHUB_OUTPUT"
-
-          # Skip if already at the desired version
-          if [ "$CURRENT" = "$DESIRED" ]; then
-            echo "skip=true" >> "$GITHUB_OUTPUT"
+          if [ "$PLUGIN_COUNT" = "0" ]; then
+            echo "No plugins changed, skipping version bump"
             exit 0
           fi
 
-          # Skip if the PR branch has a manual bump higher than main
-          # (e.g. manual bump to 2.0.0 when main is 1.0.1)
-          # Strip pre-release suffixes for comparison
-          CURRENT_BASE="${CURRENT%%-*}"
-          MAIN_BASE="${MAIN_VERSION%%-*}"
-          HIGHER=$(node -e "
-            const [a, b] = ['$CURRENT_BASE', '$MAIN_BASE'].map(v => v.split('.').map(Number));
-            const gt = a[0] > b[0] || (a[0] === b[0] && a[1] > b[1]) || (a[0] === b[0] && a[1] === b[1] && a[2] > b[2]);
-            console.log(gt ? 'true' : 'false');
-          ")
-          if [ "$HIGHER" = "true" ]; then
-            echo "PR branch version $CURRENT is higher than main $MAIN_VERSION — skipping auto-bump"
-            echo "skip=true" >> "$GITHUB_OUTPUT"
+          echo "$CHANGED_PLUGINS" | node -e "
+            let d=''; process.stdin.on('data',c=>d+=c);
+            process.stdin.on('end',()=>{
+              const plugins=JSON.parse(d);
+              plugins.forEach(p=>console.log(p.name+'|'+p.path));
+            });
+          " | while IFS='|' read -r NAME PATH; do
+            PLUGIN_JSON="${PATH}/.claude-plugin/plugin.json"
+
+            # Get version from main branch for this plugin
+            MAIN_VERSION=$(git show origin/main:"${PLUGIN_JSON}" 2>/dev/null | node -e "
+              let d=''; process.stdin.on('data',c=>d+=c);
+              process.stdin.on('end',()=>console.log(JSON.parse(d).version));
+            " 2>/dev/null || echo "1.0.0")
+
+            # Compute pre-release version: X.Y.(Z+1)-pr.N
+            BASE_VERSION="${MAIN_VERSION%%-*}"
+            IFS='.' read -r MAJOR MINOR PATCH <<< "$BASE_VERSION"
+            NEXT_PATCH=$((PATCH + 1))
+            PR_VERSION="${MAJOR}.${MINOR}.${NEXT_PATCH}-pr.${PR_NUMBER}"
+
+            # Read current version on PR branch
+            CURRENT=$(node -e "console.log(require('./${PLUGIN_JSON}').version)")
+
+            # Skip if already at desired version
+            if [ "$CURRENT" = "$PR_VERSION" ]; then
+              echo "Plugin ${NAME}: already at ${PR_VERSION}, skipping"
+              continue
+            fi
+
+            # Skip if PR branch has a manual bump higher than main
+            CURRENT_BASE="${CURRENT%%-*}"
+            MAIN_BASE="${MAIN_VERSION%%-*}"
+            HIGHER=$(node -e "
+              const [a,b]=['$CURRENT_BASE','$MAIN_BASE'].map(v=>v.split('.').map(Number));
+              const gt=a[0]>b[0]||(a[0]===b[0]&&a[1]>b[1])||(a[0]===b[0]&&a[1]===b[1]&&a[2]>b[2]);
+              console.log(gt?'true':'false');
+            ")
+            if [ "$HIGHER" = "true" ]; then
+              echo "Plugin ${NAME}: version ${CURRENT} is higher than main ${MAIN_VERSION}, skipping"
+              continue
+            fi
+
+            # Update plugin.json
+            node -e "
+              const fs=require('fs');
+              const pkg=JSON.parse(fs.readFileSync('${PLUGIN_JSON}','utf8'));
+              pkg.version='${PR_VERSION}';
+              fs.writeFileSync('${PLUGIN_JSON}',JSON.stringify(pkg,null,2)+'\n');
+            "
+            echo "Plugin ${NAME}: bumped to ${PR_VERSION}"
+            git add "${PLUGIN_JSON}"
+
+            # Track bumped plugin names for commit message
+            echo "${NAME}" >> /tmp/bumped_plugins.txt
+          done
+
+          # Commit all bumped plugins in one commit
+          if [ -f /tmp/bumped_plugins.txt ]; then
+            NAMES=$(paste -sd', ' /tmp/bumped_plugins.txt)
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git commit -m "chore: bump version for ${NAMES}"
+            git push
           else
-            echo "skip=false" >> "$GITHUB_OUTPUT"
+            echo "No plugins needed version bumping"
           fi
-
-      - name: Update plugin.json version
-        if: steps.check.outputs.skip == 'false'
-        env:
-          PR_VERSION: ${{ steps.pr-version.outputs.version }}
-        run: |
-          # `node -e` with inline script to update the JSON file in place
-          node -e "
-            const fs = require('fs');
-            const path = './plugins/dc/.claude-plugin/plugin.json';
-            const pkg = JSON.parse(fs.readFileSync(path, 'utf8'));
-            pkg.version = process.env.PR_VERSION;
-            fs.writeFileSync(path, JSON.stringify(pkg, null, 2) + '\n');
-          "
-          echo "Updated to $PR_VERSION"
-
-      - name: Commit version bump
-        if: steps.check.outputs.skip == 'false'
-        env:
-          PR_VERSION: ${{ steps.pr-version.outputs.version }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add plugins/dc/.claude-plugin/plugin.json
-          git commit -m "chore: bump version to ${PR_VERSION}"
-          git push
