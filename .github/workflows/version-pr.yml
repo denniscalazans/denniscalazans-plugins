@@ -28,91 +28,17 @@ jobs:
         with:
           node-version: 22
 
-      - name: Detect changed plugins
-        id: detect
-        run: |
-          # Runs the detect script to find which plugins have changes vs main
-          CHANGED=$(node scripts/detect-changed-plugins.mjs --base origin/main)
-          echo "plugins=$CHANGED" >> "$GITHUB_OUTPUT"
-          echo "Changed plugins: $CHANGED"
-
       - name: Bump versions for changed plugins
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
-          CHANGED_PLUGINS: ${{ steps.detect.outputs.plugins }}
         run: |
-          # Parse changed plugins JSON into a bash-iterable format
-          # `jq -c '.[]'` outputs one JSON object per line
-          PLUGIN_COUNT=$(echo "$CHANGED_PLUGINS" | node -e "
-            let d=''; process.stdin.on('data',c=>d+=c);
-            process.stdin.on('end',()=>console.log(JSON.parse(d).length));
-          ")
+          # Detects changed plugins vs main and bumps each to X.Y.(Z+1)-pr.N
+          node scripts/bump-pr-versions.mjs --base origin/main --pr "$PR_NUMBER"
 
-          if [ "$PLUGIN_COUNT" = "0" ]; then
-            echo "No plugins changed, skipping version bump"
-            exit 0
-          fi
-
-          echo "$CHANGED_PLUGINS" | node -e "
-            let d=''; process.stdin.on('data',c=>d+=c);
-            process.stdin.on('end',()=>{
-              const plugins=JSON.parse(d);
-              plugins.forEach(p=>console.log(p.name+'|'+p.path));
-            });
-          " | while IFS='|' read -r NAME PATH; do
-            PLUGIN_JSON="${PATH}/.claude-plugin/plugin.json"
-
-            # Get version from main branch for this plugin
-            MAIN_VERSION=$(git show origin/main:"${PLUGIN_JSON}" 2>/dev/null | node -e "
-              let d=''; process.stdin.on('data',c=>d+=c);
-              process.stdin.on('end',()=>console.log(JSON.parse(d).version));
-            " 2>/dev/null || echo "1.0.0")
-
-            # Compute pre-release version: X.Y.(Z+1)-pr.N
-            BASE_VERSION="${MAIN_VERSION%%-*}"
-            IFS='.' read -r MAJOR MINOR PATCH <<< "$BASE_VERSION"
-            NEXT_PATCH=$((PATCH + 1))
-            PR_VERSION="${MAJOR}.${MINOR}.${NEXT_PATCH}-pr.${PR_NUMBER}"
-
-            # Read current version on PR branch
-            CURRENT=$(node -e "console.log(require('./${PLUGIN_JSON}').version)")
-
-            # Skip if already at desired version
-            if [ "$CURRENT" = "$PR_VERSION" ]; then
-              echo "Plugin ${NAME}: already at ${PR_VERSION}, skipping"
-              continue
-            fi
-
-            # Skip if PR branch has a manual bump higher than main
-            CURRENT_BASE="${CURRENT%%-*}"
-            MAIN_BASE="${MAIN_VERSION%%-*}"
-            HIGHER=$(node -e "
-              const [a,b]=['$CURRENT_BASE','$MAIN_BASE'].map(v=>v.split('.').map(Number));
-              const gt=a[0]>b[0]||(a[0]===b[0]&&a[1]>b[1])||(a[0]===b[0]&&a[1]===b[1]&&a[2]>b[2]);
-              console.log(gt?'true':'false');
-            ")
-            if [ "$HIGHER" = "true" ]; then
-              echo "Plugin ${NAME}: version ${CURRENT} is higher than main ${MAIN_VERSION}, skipping"
-              continue
-            fi
-
-            # Update plugin.json
-            node -e "
-              const fs=require('fs');
-              const pkg=JSON.parse(fs.readFileSync('${PLUGIN_JSON}','utf8'));
-              pkg.version='${PR_VERSION}';
-              fs.writeFileSync('${PLUGIN_JSON}',JSON.stringify(pkg,null,2)+'\n');
-            "
-            echo "Plugin ${NAME}: bumped to ${PR_VERSION}"
-            git add "${PLUGIN_JSON}"
-
-            # Track bumped plugin names for commit message
-            echo "${NAME}" >> /tmp/bumped_plugins.txt
-          done
-
-          # Commit all bumped plugins in one commit
-          if [ -f /tmp/bumped_plugins.txt ]; then
-            NAMES=$(paste -sd', ' /tmp/bumped_plugins.txt)
+          # The script writes bumped plugin names to .bumped-plugins
+          if [ -f .bumped-plugins ]; then
+            NAMES=$(cat .bumped-plugins)
+            rm .bumped-plugins
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git commit -m "chore: bump version for ${NAMES}"
