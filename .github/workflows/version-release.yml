@@ -21,103 +21,15 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Detect changed plugins
-        id: detect
-        run: |
-          # Uses HEAD~1 because on merge to main, we compare the merge commit
-          # against its parent to find what the PR changed
-          CHANGED=$(node scripts/detect-changed-plugins.mjs --base HEAD~1)
-          echo "plugins=$CHANGED" >> "$GITHUB_OUTPUT"
-          echo "Changed plugins: $CHANGED"
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
 
       - name: Release changed plugins
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CHANGED_PLUGINS: ${{ steps.detect.outputs.plugins }}
         run: |
-          PLUGIN_COUNT=$(echo "$CHANGED_PLUGINS" | node -e "
-            let d=''; process.stdin.on('data',c=>d+=c);
-            process.stdin.on('end',()=>console.log(JSON.parse(d).length));
-          ")
-
-          if [ "$PLUGIN_COUNT" = "0" ]; then
-            echo "No plugins changed, skipping release"
-            exit 0
-          fi
-
-          echo "$CHANGED_PLUGINS" | node -e "
-            let d=''; process.stdin.on('data',c=>d+=c);
-            process.stdin.on('end',()=>{
-              const plugins=JSON.parse(d);
-              plugins.forEach(p=>console.log(p.name+'|'+p.path));
-            });
-          " | while IFS='|' read -r NAME PATH; do
-            PLUGIN_JSON="${PATH}/.claude-plugin/plugin.json"
-            VERSION=$(node -e "console.log(require('./${PLUGIN_JSON}').version)")
-
-            # Strip pre-release suffix (e.g. 1.0.1-pr.3 -> 1.0.1)
-            # `%%` removes the longest match of `-*` from the end
-            RELEASE_VERSION="${VERSION%%-*}"
-            TAG_NAME="${NAME}-v${RELEASE_VERSION}"
-
-            # Skip if this tag already exists
-            if git rev-parse "${TAG_NAME}" >/dev/null 2>&1; then
-              echo "Plugin ${NAME}: tag ${TAG_NAME} already exists, skipping"
-              continue
-            fi
-
-            # Update plugin.json if it had a pre-release suffix
-            if [ "$VERSION" != "$RELEASE_VERSION" ]; then
-              node -e "
-                const fs=require('fs');
-                const pkg=JSON.parse(fs.readFileSync('${PLUGIN_JSON}','utf8'));
-                pkg.version='${RELEASE_VERSION}';
-                fs.writeFileSync('${PLUGIN_JSON}',JSON.stringify(pkg,null,2)+'\n');
-              "
-              git add "${PLUGIN_JSON}"
-              echo "true" > /tmp/needs_commit
-            fi
-
-            # Store tag info for later creation
-            echo "${TAG_NAME}|${NAME}" >> /tmp/tags_to_create.txt
-            echo "Plugin ${NAME}: will release as ${TAG_NAME}"
-          done
-
-          # Single commit for all version cleanups
-          if [ -f /tmp/needs_commit ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git commit -m "chore: release versions"
-            git push
-          fi
-
-          # Create tags and GitHub releases
-          if [ -f /tmp/tags_to_create.txt ]; then
-            while IFS='|' read -r TAG_NAME NAME; do
-              git tag "${TAG_NAME}"
-              git push origin "${TAG_NAME}"
-
-              # Find previous tag for this plugin to scope the changelog
-              # First try plugin-prefixed tags, then fall back to old v* tags
-              PREV_TAG=$(git tag --list "${NAME}-v*" --sort=-v:refname | head -n 2 | tail -n 1 || true)
-              if [ -z "$PREV_TAG" ] || [ "$PREV_TAG" = "$TAG_NAME" ]; then
-                # No previous plugin-prefixed tag; fall back to latest v* tag
-                PREV_TAG=$(git tag --list "v*" --sort=-v:refname | head -n 1 || true)
-              fi
-
-              if [ -n "$PREV_TAG" ]; then
-                # `--notes-start-tag` scopes the auto-generated changelog
-                # to commits since the specified tag
-                gh release create "${TAG_NAME}" \
-                  --title "${TAG_NAME}" \
-                  --generate-notes \
-                  --notes-start-tag "${PREV_TAG}"
-              else
-                gh release create "${TAG_NAME}" \
-                  --title "${TAG_NAME}" \
-                  --generate-notes
-              fi
-
-              echo "Created release ${TAG_NAME}"
-            done < /tmp/tags_to_create.txt
-          fi
+          # Detects changed plugins vs previous commit, strips pre-release
+          # suffixes, creates git tags and GitHub Releases
+          node scripts/release-versions.mjs --base HEAD~1
