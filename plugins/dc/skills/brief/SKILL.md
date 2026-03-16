@@ -61,6 +61,11 @@ Do NOT show this classification.
 - BUILD / FIX / REFACTOR / CONFIG → act at 90%, ask what's missing
 - Irreversible actions (deploy, delete, send, publish) → require 99%, confirm everything
 
+**Problem count:** When the user describes multiple related-but-distinct problems,
+don't consolidate them into one.
+List each problem separately — even if they share a root cause.
+A mismatch detection script and a broken sync workflow are two problems, not one.
+
 **Clarity:**
 - CLEAR → skip to Phase 3
 - AMBIGUOUS → needs 1-3 clarifications, go to Phase 2
@@ -145,6 +150,12 @@ Surface both: "You mentioned [X] here and [Y] there — which one is correct?"
 **Risky assumptions:** If they're basing a decision on something that might be wrong:
 "Before proceeding: you're assuming [X]. Is that correct? Because if not, it changes [Y]."
 
+**Embedded decisions:** If the input contains an unresolved choice — even inside a BUILD, FIX, or PLAN task —
+surface it as a ranked options table.
+The user said "idk if hook or CI" — that's a decision hiding inside a build task.
+Don't just put it in Open Questions.
+Do your homework: research the trade-offs and present ranked candidates so the user can react instead of think from scratch.
+
 ---
 
 ## Interpreting Chaotic Input
@@ -189,6 +200,11 @@ for a coding agent (Claude Code, Cursor, etc.), use this format:
 
 > **NEVER add your own opinions, recommendations, or scope beyond what the developer said or implied.**
 > If a decision is unresolved, put it in Open Questions — do not pick a side.
+
+> **Exception: unresolved decisions.**
+> If the user explicitly flagged indecision ("idk", "not sure if", "maybe X or Y"),
+> present a ranked Decision Table instead of just listing it as an Open Question.
+> This is not adding opinions — it's doing homework the user asked for.
 
 > **NEVER paraphrase exact technical terms.**
 > Preserve `public/i18n/FFA_dev_translations.csv` exactly — do not write "the translations CSV".
@@ -236,17 +252,29 @@ Omit empty sections — if the user didn't describe a current state, skip that s
 **PLAN** → Numbered steps with checkpoints.
 Mark dependencies between steps.
 
-**THINK / brainstorm** → Options with pros/cons.
-Do NOT choose for the user unless asked.
+**THINK / brainstorm** → Options with pros, cons, and relative weight.
+Rank candidates: Recommended #1, Recommended #2, etc.
+The user thinks faster when options are pre-ranked — they can accept, reject, or reorder.
 
-**DECIDE** → Present options with clear trade-offs.
-Make a recommendation only if asked, and show reasoning.
+**DECIDE** → Present options with pros, cons, and relative weight.
+Always rank candidates: Recommended #1, Recommended #2, etc.
+Show reasoning for the ranking — why #1 beats #2.
+The user can override, but starting from a ranked list saves cognitive work.
 
 **WRITE** → Produce the text directly.
 Refinements come later.
 
 **MULTI** → Split into separate, numbered sections.
 Ask which to tackle first.
+
+**Decision Table** (use inside any task type when a decision is detected):
+
+| # | Option | Pros | Cons | Weight |
+|---|--------|------|------|--------|
+| Recommended #1 | [option] | [pros] | [cons] | [High/Medium/Low] |
+| Recommended #2 | [option] | [pros] | [cons] | [High/Medium/Low] |
+
+**Why this ranking:** [1-2 sentences explaining why #1 beats #2]
 
 ---
 
@@ -288,3 +316,4 @@ Ask which to tackle first.
 | Ask "can you clarify?" for garbled voice input | Decode it yourself — homophones, filler words, mangled terms |
 | Produce a coding brief for a non-code task | Match output format to the detected task type |
 | Assume high confidence when input is chaotic | Follow the confidence thresholds per task type |
+| Put decisions in Open Questions without analysis | Detect the decision, research trade-offs, present ranked candidates |
