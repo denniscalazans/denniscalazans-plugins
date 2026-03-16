@@ -116,7 +116,7 @@ These are non-negotiable rules for every workflow:
 
 1. **Never pass `severities`** to `search_sonar_issues_in_projects` — crashes the MCP server
 2. **Use `ps=50` max** for issue queries — `ps=500` exceeds the transport limit
-3. **Write results > 50 issues** to `.agents.tmp/code-quality/` as JSONL
+3. **Always delegate issue fetching to subagents** — write results to `.agents.tmp/code-quality/` as JSONL
 4. **Use `get_component_measures` for accurate counts** — `search_sonar_issues_in_projects` totals may differ from the dashboard due to taxonomy double-counting
 5. **Local findings have no `rule` field** — match by file + line(±5) + message text
 6. **Never pass `severities`** — this is repeated intentionally because it is the most dangerous bug
@@ -124,12 +124,21 @@ These are non-negotiable rules for every workflow:
 
 ## Token Management
 
-For projects with > 100 issues:
+All MCP calls that return issue lists MUST happen in subagents:
 
-1. Paginate with `ps=50` — write each page to `.agents.tmp/code-quality/issues/issues-pN.jsonl`
-2. Extract unique files with shell tools: `jq -r '.component' issues.jsonl | sort -u`
-3. Process with `jq` — never read full JSONL into context
-4. Use subagents for independent file analysis
+- `search_sonar_issues_in_projects` → always in subagent, write to `.agents.tmp/code-quality/`
+- `analyze_file_list` (batch, multiple files) → always in subagent, write to `.agents.tmp/code-quality/`
+
+Subagent returns summaries only (counts, severity breakdown, formatted tables).
+The orchestrator context NEVER sees raw JSON from MCP tools.
+
+Safe to call inline (small responses):
+
+- `get_project_quality_gate_status`
+- `get_component_measures`
+- `show_rule`
+- `change_sonar_issue_status`
+- `change_security_hotspot_status`
 
 
 ## Integration Layer

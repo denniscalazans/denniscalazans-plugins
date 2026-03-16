@@ -27,47 +27,35 @@ If unavailable, inform the user and stop: "RED/GREEN verification requires IDE-c
 
 ## Process
 
-### Step 1: Collect server issues
+### Step 1: Collect server issues (subagent)
 
-Fetch issues with `search_sonar_issues_in_projects`:
+Delegate issue collection to a subagent:
 
-```
-search_sonar_issues_in_projects {
-  projects: ["<your-project>"],
-  issueStatuses: ["OPEN"],
-  p: 1,
-  ps: 50
-}
-```
+1. Subagent calls `search_sonar_issues_in_projects` with `ps=50`, paginating all pages.
+   **Never pass `severities`** — it crashes the MCP server.
+2. Subagent writes issues to `.agents.tmp/code-quality/verify/server-issues.jsonl` (one JSON object per line).
+3. Subagent extracts unique files: `jq -r '.component' | sort -u` → `.agents.tmp/code-quality/verify/unique-files.txt`.
+4. Subagent converts `component` fields to absolute paths using the workspace root:
+   `component.split(':')[1]` → relative path → workspace root + relative path → absolute path.
+5. Subagent returns **ONLY** a summary: total count, severity breakdown, unique file count.
 
-**Never pass `severities`** — it crashes the MCP server.
+The main context NEVER sees the raw issue JSON.
 
-If `total > 50`, paginate and write each page to `.agents.tmp/code-quality/verify/server-issues.jsonl`.
-For small result sets (≤ 50), keep in context.
+### Step 2: Analyze locally (subagent)
 
-### Step 2: Extract unique files
+Delegate local analysis to a subagent:
 
-Get unique file paths from server issues.
-Convert `component` field to absolute paths using the workspace root:
+1. Subagent reads `unique-files.txt`.
+2. Subagent calls `analyze_file_list` for each file.
+3. Subagent writes findings to `.agents.tmp/code-quality/verify/local-findings.jsonl` (one JSON object per line).
+4. Subagent returns **ONLY**: finding count, files with findings.
 
-```
-component.split(':')[1] → relative path
-workspace root + relative path → absolute path
-```
+### Step 3: Cross-reference (subagent)
 
-### Step 3: Analyze locally
+Delegate cross-referencing to a subagent:
 
-Call `analyze_file_list` for each unique file:
-
-```
-analyze_file_list { file_absolute_paths: ["/absolute/path/to/file.ts"] }
-```
-
-Collect all findings.
-
-### Step 4: Cross-reference
-
-Apply the matching algorithm from `references/sonarqube-mcp-tools.md`:
+1. Subagent reads both JSONL files (`server-issues.jsonl` and `local-findings.jsonl`).
+2. Subagent applies the matching algorithm from `references/sonarqube-mcp-tools.md`:
 
 ```
 same_file   = local_finding.filePath ends with server_issue.component.split(':')[1]
@@ -82,7 +70,10 @@ msg_overlap = normalize(local_finding.message) contains normalize(server_issue.m
 - Server issue with no local match → 🟢 GREEN (fixed locally)
 - Local finding with no server match → 🆕 NEW (newly introduced)
 
-### Step 5: Present report
+3. Subagent writes the full report to `.agents.tmp/code-quality/verify/report.md`.
+4. Subagent returns the report content — this IS the final output shown to the user.
+
+### Step 4: Present report
 
 Format as a table grouped by status — GREEN first (wins), then RED (still broken), then NEW (watch out):
 
@@ -107,8 +98,8 @@ Summary: 2 fixed (🟢), 1 remaining (🔴), 1 new (🆕)
 - **Never pass `severities`** when fetching server issues.
 - Local findings have no `rule` field — match by message text.
 - Line tolerance ±5 accounts for local edits shifting lines.
-- For large projects (> 100 issues), use subagents and `.agents.tmp/code-quality/` to stay within token budget.
-  See `references/sonarqube-mcp-tools.md` for the full token-safe collection workflow.
+- Always use subagents for issue collection and local analysis — the main context must never see raw MCP JSON.
+  See `references/sonarqube-mcp-tools.md` for the subagent return contract.
 
 ## Common Mistakes
 
@@ -116,6 +107,6 @@ Summary: 2 fixed (🟢), 1 remaining (🔴), 1 new (🆕)
 |-------|-----|
 | Match by exact line number | Use ±5 tolerance — local edits shift lines |
 | Expect `rule` field in local findings | Match by message text — local findings have no rule key |
-| Load all issues into context | Paginate and write to disk for large result sets |
+| Load issues into main context | Always delegate to subagents — write to disk, return summaries only |
 | Run without IDE-connected mode | Check if `analyze_file_list` is available first — stop if not |
 | Show RED issues first | Show GREEN first — the user wants to see their wins |

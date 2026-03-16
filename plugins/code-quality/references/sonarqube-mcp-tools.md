@@ -202,7 +202,8 @@ Remaining local findings with no server match → 🆕 NEW
 
 ## Token-Safe Collection Workflow
 
-For projects with > 100 issues, use this 4-step process to stay within token budget.
+All issue-fetching MCP calls must run in subagents, regardless of result set size.
+Even 10 issues produce ~120 tokens of JSON each — this adds up fast.
 
 ```
 Step 1 — Collect (subagent, write to disk):
@@ -214,17 +215,30 @@ Step 2 — Extract unique files (shell):
   jq -r '.component' .agents.tmp/code-quality/verify/issues.jsonl | sort -u
     → .agents.tmp/code-quality/verify/unique-files.txt
 
-Step 3 — Local analysis (per-file):
+Step 3 — Local analysis (subagent, per-file):
   For each file in unique-files.txt:
     findings = analyze_file_list([absolute_path])
     append findings to .agents.tmp/code-quality/verify/local-findings.jsonl
 
-Step 4 — Cross-reference (shell + jq):
+Step 4 — Cross-reference (subagent):
   Match issues.jsonl × local-findings.jsonl using algorithm above
     → .agents.tmp/code-quality/verify/red-green-report.md
 ```
 
 **Never read the full JSONL into conversation context — always process with `jq` in subagents.**
+
+
+## Subagent Return Contract
+
+When a subagent collects issues or findings, it returns ONLY:
+
+- Total count
+- Severity breakdown (e.g., "3 CRITICAL, 12 MAJOR, 35 MINOR")
+- Unique file count
+- File path to the JSONL on disk
+- Pre-formatted markdown table (if the skill needs to show results to the user)
+
+The subagent NEVER returns raw JSON issue objects to the parent context.
 
 
 ## Quick Call Examples

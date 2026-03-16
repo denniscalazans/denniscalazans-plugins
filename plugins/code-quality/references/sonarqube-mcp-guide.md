@@ -219,17 +219,21 @@ An issue with MEDIUM maintainability + LOW reliability impact appears in both re
 | Accurate severity counts | Fetch all issues, group by each issue's `severity` field | Legacy severity is included per issue |
 
 
-## Token Management
+## Token Management — Subagent Delegation
 
-Large result sets can exceed the MCP transport limit or blow up the conversation context.
-Follow these patterns to stay safe.
+MCP tools that return issue lists (`search_sonar_issues_in_projects`, `analyze_file_list` in batch) must ALWAYS run in subagents.
+The subagent writes results to disk and returns only a summary.
+
+This applies regardless of result set size — even 10 issues produce ~120 tokens of JSON each.
+The main conversation should never see raw MCP JSON responses.
 
 1. **Paginate with `ps=50`** — never exceed 50 per page.
-2. **Write large results to `.agents.tmp/code-quality/`** — e.g., `.agents.tmp/code-quality/issues/issues-p1.jsonl`.
+2. **Always write results to `.agents.tmp/code-quality/`** — e.g., `.agents.tmp/code-quality/issues/issues-p1.jsonl`.
 3. **Extract with `jq`** — unique files, severity counts, rule distributions.
 4. **Never read full JSONL into context** — always process with shell tools or subagents.
+5. **Subagents return summaries only** — counts, severity breakdowns, formatted tables, file paths to JSONL on disk.
 
-For projects with > 100 issues, use the token-safe collection workflow described in `sonarqube-mcp-tools.md`.
+See `sonarqube-mcp-tools.md` for the subagent return contract and token-safe collection workflow.
 
 
 ## Permission-Blocked Tools

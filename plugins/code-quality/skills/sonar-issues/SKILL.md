@@ -19,28 +19,24 @@ Browse SonarQube issues with safe pagination and severity filtering.
 Determine the project key, branch or PR, and any optional filters (severity, file path, rule).
 If the project key is not in context, ask the user.
 
-### Step 2: Fetch first page
+### Step 2: Fetch issues (subagent)
 
-Call `search_sonar_issues_in_projects` with safe parameters:
+Delegate issue fetching to a subagent:
 
-```
-search_sonar_issues_in_projects {
-  projects: ["<your-project>"],
-  issueStatuses: ["OPEN"],
-  p: 1,
-  ps: 50
-}
-```
+1. Subagent calls `search_sonar_issues_in_projects` with `ps=50`, `p=1`.
+   For PR-specific issues, adds `pullRequestId: "123"`.
+   **CRITICAL: Never pass the `severities` parameter** — crashes the MCP server (string → List type cast).
+2. Subagent writes issues to `.agents.tmp/code-quality/issues/page-1.jsonl` (one JSON object per line).
+3. Subagent formats a markdown table grouped by severity (CRITICAL → MAJOR → MINOR → INFO):
+   - Columns: Severity, Rule, File (short path — last 2-3 segments), Line, Message.
+   - Strip the project prefix from `component.split(':')[1]`.
+4. Subagent returns **ONLY**: the formatted table + paging metadata (total, pages remaining).
 
-For PR-specific issues, add `pullRequestId: "123"`.
-
-**CRITICAL: Never pass the `severities` parameter.**
-It crashes the MCP server due to a type-cast bug (string → List).
-Filter by severity client-side after fetching.
+The main context receives the pre-formatted table, not raw JSON.
 
 ### Step 3: Present issues
 
-Format as a table grouped by severity (CRITICAL → MAJOR → MINOR → INFO):
+Show the table returned by the subagent:
 
 ```
 Found 238 open issues (showing page 1 of 5)
@@ -52,26 +48,14 @@ Found 238 open issues (showing page 1 of 5)
 | MINOR    | S3863  | utils/helpers.ts        | 4    | Imported multiple times            |
 ```
 
-Use short file paths — strip the project prefix from `component.split(':')[1]` and show only the last 2-3 path segments.
-
 ### Step 4: Offer pagination
 
-If `total > 50`, tell the user how many pages remain and offer to fetch the next page:
+If `total > 50`, tell the user how many pages remain and offer to fetch the next page.
+Each additional page follows the same subagent pattern — fetch, write to disk, return formatted table.
 
 ```
 Showing 50 of 238 issues (page 1 of 5). Want me to fetch the next page?
 ```
-
-### Step 5: Large result sets
-
-If `total > 100`, write results to `.agents.tmp/code-quality/issues/` as JSONL and use `jq` for queries:
-
-```bash
-jq -r 'select(.severity == "CRITICAL") | [.rule, .component, .textRange.startLine, .message] | @tsv' \
-  .agents.tmp/code-quality/issues/issues.jsonl
-```
-
-Never read full JSONL files into the conversation context.
 
 ## Bug Guardrails
 
@@ -86,5 +70,5 @@ Never read full JSONL files into the conversation context.
 |-------|-----|
 | Pass `severities` param to `search_sonar_issues_in_projects` | Filter by severity client-side after fetching |
 | Use `ps` greater than 50 | Paginate with `ps=50` — 5 pages for ~250 issues |
-| Read full JSONL into conversation context | Use `jq` in subagents for large result sets |
+| Fetch issues inline in main context | Always delegate to subagents — write to disk, return formatted tables only |
 | Show full component paths | Show short paths — last 2-3 segments only |
