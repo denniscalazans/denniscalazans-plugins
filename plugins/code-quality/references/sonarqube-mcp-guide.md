@@ -34,6 +34,131 @@ Start with standalone — it covers 90% of daily use: checking PRs, browsing iss
 Add IDE-connected mode when you want to catch issues before pushing.
 
 
+## Three Workflows
+
+These are the three ways you'll use the MCP server day-to-day.
+Each builds on the previous.
+
+
+### 1. Remote analysis — "Did my PR pass?"
+
+**When:** After you push a branch or open a PR.
+Your CI pipeline runs the Sonar scan automatically.
+Use the MCP to check the result without opening the web UI.
+
+**Check the quality gate:**
+
+```
+get_project_quality_gate_status { projectKey: "<your-project>", pullRequest: "123" }
+```
+
+For a feature branch (not yet a PR):
+
+```
+get_project_quality_gate_status { projectKey: "<your-project>", branch: "feat/my-feature" }
+```
+
+**See what issues were found:**
+
+```
+search_sonar_issues_in_projects {
+  projects: ["<your-project>"],
+  pullRequestId: "123",
+  issueStatuses: ["OPEN"],
+  ps: 50
+}
+```
+
+**Get the dashboard numbers** (coverage, bugs, smells):
+
+```
+get_component_measures {
+  component: "<your-project>",
+  metricKeys: ["coverage", "code_smells", "bugs", "vulnerabilities", "ncloc"],
+  branch: "main"
+}
+```
+
+**Understand a rule** you've never seen before:
+
+```
+show_rule { key: "typescript:S3863" }
+```
+
+This returns the full rule description with noncompliant and compliant code examples.
+Much faster than searching the web.
+
+
+**Triage a false positive** (marks it on the server so it won't flag again):
+
+```
+change_sonar_issue_status { key: "<issue-uuid>", status: "falsepositive" }
+```
+
+You get the issue `key` (UUID) from `search_sonar_issues_in_projects`.
+
+
+### 2. Fix while coding — "What's still broken in my local files?"
+
+**When:** You've fixed some issues locally and want to verify before pushing.
+Requires **IDE-connected mode** (`SONARQUBE_IDE_PORT` set).
+
+**Analyze local files:**
+
+```
+analyze_file_list {
+  file_absolute_paths: [
+    "/absolute/path/to/your-component.ts",
+    "/absolute/path/to/another-file.ts"
+  ]
+}
+```
+
+This runs SonarQube for IDE on your local files using the **same ruleset** as the server.
+The file does not need to be open in the editor.
+
+**What you get back:**
+
+```json
+{
+  "findings": [
+    {
+      "severity": "MINOR",
+      "message": "'@my-project/ui' imported multiple times.",
+      "filePath": "/absolute/path/to/your-component.ts",
+      "textRange": { "startLine": 4, "endLine": 4 }
+    }
+  ],
+  "findingsCount": 1
+}
+```
+
+**Important limitation:** local findings have only 4 fields — `severity`, `message`, `filePath`, `textRange`.
+There is **no `rule` key** and **no issue UUID**.
+You cannot triage a local finding directly — you need the server issue UUID from `search_sonar_issues_in_projects`.
+
+
+### 3. RED/GREEN validation — "Which server issues did I actually fix?"
+
+**When:** The server has N issues from the last CI scan.
+You've fixed some locally.
+You want to know which are resolved and which remain — before pushing.
+
+Cross-reference server issues with local analysis:
+
+| State | Meaning |
+|-------|---------|
+| 🔴 **RED** | Issue on server AND still found locally — not fixed yet |
+| 🟢 **GREEN** | Issue on server but NOT found locally — your fix works, push it |
+| 🆕 **NEW** | Found locally but NOT on server — you introduced something new |
+
+**How matching works:** same file + line within ±5 + similar message text.
+The ±5 tolerance accounts for local edits shifting line numbers relative to the last scan.
+
+This workflow is most useful when you're working through a batch of issues and want confidence before pushing.
+See `sonarqube-mcp-tools.md` for the full matching algorithm and token-safe collection workflow.
+
+
 ## IDE-Connected Mode — How It Works
 
 ### The embedded server
@@ -260,9 +385,15 @@ You cannot triage a local finding directly.
 To triage: find the matching server issue via `search_sonar_issues_in_projects` (match by file + line + message), then use its `key` to call `change_sonar_issue_status`.
 
 
-## Setup Minimum
+## Setup FAQ
 
-Two environment variables give you quality gates, issue search, rule lookup, metrics, and triage — everything except local file analysis.
+These are the questions that come up most often during setup and onboarding.
+
+
+### "What's the minimum config to get started?"
+
+Two environment variables.
+This gives you quality gates, issue search, rule lookup, metrics, and issue triage — everything except local file analysis.
 
 Generate your token at `https://<your-sonarqube>/account/security/`.
 
@@ -273,7 +404,11 @@ Generate your token at `https://<your-sonarqube>/account/security/`.
     "sonarqube": {
       "command": "docker",
       "args": [
-        "run", "--init", "--pull=always", "-i", "--rm",
+        "run",
+        "--init",          // proper signal handling for clean shutdown
+        "--pull=always",   // always use latest MCP server image
+        "-i",              // keep stdin open (required for MCP protocol)
+        "--rm",            // remove container when done (ephemeral)
         "-e", "SONARQUBE_TOKEN",
         "-e", "SONARQUBE_URL",
         "mcp/sonarqube"
@@ -287,15 +422,27 @@ Generate your token at `https://<your-sonarqube>/account/security/`.
 }
 ```
 
-**Full-power config** (adds local analysis, debug logging, optional toolsets):
+**What's enabled:** 10 of 15 toolsets with 17 tools (projects, analysis, issues, quality-gates, rules, measures, duplications, security-hotspots, coverage, dependency-risks).
+Without `SONARQUBE_IDE_PORT`, `analysis` gives you `analyze_code_snippet` (snippet-only analysis).
+No need to set `SONARQUBE_TOOLSETS`, `STORAGE_PATH`, or any other variable.
+
+
+### "What's the full-power config?"
+
+Add IDE-connected mode for local analysis, debug logging, and opt-in toolsets (`sources`, `languages`).
 
 ```jsonc
+// Full power — IDE-connected mode + all useful toolsets + debug logging
 {
   "mcpServers": {
     "sonarqube": {
       "command": "docker",
       "args": [
-        "run", "--init", "--pull=always", "-i", "--rm",
+        "run",
+        "--init",
+        "--pull=always",
+        "-i",
+        "--rm",
         "-e", "SONARQUBE_TOKEN",
         "-e", "SONARQUBE_URL",
         "-e", "SONARQUBE_IDE_PORT",
@@ -315,12 +462,57 @@ Generate your token at `https://<your-sonarqube>/account/security/`.
 }
 ```
 
+**What this adds over minimum:**
+
 | Variable | What it unlocks |
 |----------|----------------|
-| `SONARQUBE_IDE_PORT` | `analyze_file_list` + `toggle_automatic_analysis` — the port the MCP server connects TO on the IDE's embedded server (range: 64120–64130, not configurable). See "IDE-Connected Mode" section above. |
-| `SONARQUBE_TOOLSETS` | `sources`, `coverage`, `languages` — disabled by default to reduce context overhead |
-| `SONARQUBE_DEBUG_ENABLED` | Logs to STDERR + file — useful for troubleshooting MCP connection issues |
-| `SONARQUBE_READ_ONLY` | Set to `true` to disable all write operations (triaging, webhooks) |
+| `SONARQUBE_IDE_PORT` | `analyze_file_list` + `toggle_automatic_analysis` — local pre-push analysis via SonarQube for IDE. The port the MCP server connects TO on the IDE's embedded server (range: 64120–64130, not configurable). See "IDE-Connected Mode" section above. |
+| `SONARQUBE_TOOLSETS` | `sources` (view indexed files), `languages` (list supported languages) — disabled by default to reduce context overhead |
+| `SONARQUBE_DEBUG_ENABLED` | Logs to STDERR + `STORAGE_PATH/logs/mcp.log` — useful for troubleshooting MCP connection issues |
+
+> **Linux Docker only:** add `"--network=host"` to the `args` array so the container can reach the IDE server on localhost.
+> macOS doesn't need this — Docker Desktop handles it automatically.
+
+
+### "Do I need to set `SONARQUBE_TOOLSETS`?"
+
+**No.** When not set, 10 of 15 toolsets are enabled by default — covering issues, quality gates, rules, measures, security hotspots, duplications, coverage, analysis, dependency-risks, and projects (always on).
+Setting it **overrides the defaults entirely** (except `projects`, which is always on).
+Only set it if you specifically need `sources` or `languages`, or if you want to drop the 4 dead toolsets.
+([source](https://docs.sonarsource.com/sonarqube-mcp-server/build-and-configure/environment-variables))
+
+**IDE port effect on `analysis` toolset:** Without `SONARQUBE_IDE_PORT`, you get `analyze_code_snippet` (1 tool).
+With it, the server swaps to `analyze_file_list` + `toggle_automatic_analysis` (2 tools).
+They are mutually exclusive — you never get both.
+
+See `sonarqube-mcp-tools.md` for the recommended value and the full dead-toolsets list.
+
+
+### "Do I need to set `STORAGE_PATH`?"
+
+**Not with Docker.** The container image pre-sets it to `/app/storage` internally.
+Only set it if you run the JAR directly (non-Docker).
+([source: Dockerfile](https://github.com/SonarSource/sonarqube-mcp-server))
+
+
+### "Can I make it read-only?"
+
+Yes. Add `SONARQUBE_READ_ONLY=true` to disable all write operations (triaging issues, creating webhooks).
+Useful for shared tokens or demo environments.
+
+```jsonc
+// Add to env block:
+"SONARQUBE_READ_ONLY": "true"
+```
+
+
+### "What you DON'T need to set"
+
+| Variable | Why not |
+|----------|---------|
+| `STORAGE_PATH` | Docker image pre-sets `/app/storage` — only set for JAR mode |
+| `SONARQUBE_PROJECT_KEY` | Omit to query any project; set only to lock to one project |
+| `SONARQUBE_ORG` | SonarQube Cloud only — not needed for self-hosted instances |
 
 
 ## Metrics Cheat Sheet

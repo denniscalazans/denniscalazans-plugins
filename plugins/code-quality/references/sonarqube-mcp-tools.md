@@ -23,55 +23,59 @@ If no matching tool is found, the SonarQube MCP server is not configured.
 
 ### Default Toolsets (enabled without `SONARQUBE_TOOLSETS`)
 
-#### `projects` (always on)
+#### `projects` (always on) — 2 tools
 
 | Tool | Key Parameters | Notes |
 |------|---------------|-------|
 | `search_my_sonarqube_projects` | `q`, `page`, `pageSize` | Search projects by name fragment |
 | `list_pull_requests` | `projectKey` | List all PRs for a project |
 
-#### `analysis`
+#### `analysis` — 1 tool (no IDE) / 2 tools (with IDE)
 
-| Tool | Key Parameters | Notes |
-|------|---------------|-------|
-| `analyze_file_list` | `file_absolute_paths[]` | Local analysis via SonarQube for IDE — requires `SONARQUBE_IDE_PORT`. The MCP server delegates analysis to the IDE's embedded HTTP server on `localhost:<SONARQUBE_IDE_PORT>`. It does NOT analyze independently. |
-| `toggle_automatic_analysis` | `enabled` (bool) | Enable/disable auto-analysis as files change. Also requires `SONARQUBE_IDE_PORT`. |
+The `analysis` toolset registers **different tools** depending on whether `SONARQUBE_IDE_PORT` is set.
+`analyze_code_snippet` and `analyze_file_list` are **mutually exclusive** — the server swaps one for the other based on IDE connectivity.
 
-#### `issues`
+| Tool | Without IDE port | With IDE port | Notes |
+|------|:---:|:---:|-------|
+| `analyze_code_snippet` | ✅ Registered | ❌ Not registered | Snippet-only analysis — no file context |
+| `analyze_file_list` | ❌ Not registered | ✅ Registered | Local analysis via SonarQube for IDE — the MCP server delegates to the IDE's embedded HTTP server on `localhost:<SONARQUBE_IDE_PORT>` |
+| `toggle_automatic_analysis` | ❌ Not registered | ✅ Registered | Enable/disable auto-analysis as files change |
+
+#### `issues` — 2 tools
 
 | Tool | Key Parameters | Notes |
 |------|---------------|-------|
 | `search_sonar_issues_in_projects` | `projects[]`, `pullRequestId`, `issueStatuses[]`, `impactSoftwareQualities[]`, `p`, `ps` | **Never pass `severities`** — crashes the MCP server. Use `ps=50` max. |
 | `change_sonar_issue_status` | `key`, `status` (`accept` / `falsepositive` / `reopen`) | Triage server issues |
 
-#### `quality-gates`
+#### `quality-gates` — 2 tools
 
 | Tool | Key Parameters | Notes |
 |------|---------------|-------|
 | `get_project_quality_gate_status` | `projectKey`, `branch`, `pullRequest` | Returns OK/ERROR + condition details |
 | `list_quality_gates` | — | List all available quality gates |
 
-#### `rules`
+#### `rules` — 1 tool
 
 | Tool | Key Parameters | Notes |
 |------|---------------|-------|
 | `show_rule` | `key` (e.g., `typescript:S3358`) | Full rule detail with noncompliant/compliant examples |
 
-#### `measures`
+#### `measures` — 2 tools
 
 | Tool | Key Parameters | Notes |
 |------|---------------|-------|
 | `get_component_measures` | `component`, `metricKeys[]`, `branch`, `pullRequest` | Dashboard metrics — always matches the web UI |
 | `search_metrics` | `p`, `ps` | List all available metric keys |
 
-#### `duplications`
+#### `duplications` — 2 tools
 
 | Tool | Key Parameters | Notes |
 |------|---------------|-------|
 | `get_duplications` | `key` (file key), `pullRequest` | Duplication blocks for a specific file |
 | `search_duplicated_files` | `projectKey`, `pageIndex`, `pageSize`, `pullRequest` | Project-wide duplication report |
 
-#### `security-hotspots`
+#### `security-hotspots` — 3 tools
 
 | Tool | Key Parameters | Notes |
 |------|---------------|-------|
@@ -79,7 +83,7 @@ If no matching tool is found, the SonarQube MCP server is not configured.
 | `show_security_hotspot` | `hotspotKey` | Rule details, code context, flows, comments |
 | `change_security_hotspot_status` | `hotspotKey`, `status`, `resolution` (`FIXED`/`SAFE`/`ACKNOWLEDGED`), `comment` | Review hotspots |
 
-#### `coverage` (default since MCP 1.10)
+#### `coverage` (default since MCP 1.10) — 2 tools
 
 | Tool | Key Parameters | Notes |
 |------|---------------|-------|
@@ -88,18 +92,68 @@ If no matching tool is found, the SonarQube MCP server is not configured.
 
 ### Optional Toolsets (must add to `SONARQUBE_TOOLSETS`)
 
-#### `sources`
+#### `sources` — 2 tools
 
 | Tool | Key Parameters | Notes |
 |------|---------------|-------|
 | `get_raw_source` | `key` (file key), `pullRequest` | File source as SonarQube indexed it |
 | `get_scm_info` | `key`, `from`, `to`, `commits_by_line` | Per-line datetime (author/revision may be empty) |
 
-#### `languages`
+#### `languages` — 1 tool
 
 | Tool | Key Parameters | Notes |
 |------|---------------|-------|
 | `list_languages` | `q` (optional filter) | All languages the instance can analyze |
+
+
+### Dead Toolsets (do NOT enable)
+
+These toolsets register tools that always fail or register nothing.
+Enabling them wastes context tokens without adding functionality.
+
+| Toolset | Tools registered | Why dead |
+|---------|:---:|----------|
+| `dependency-risks` | **0** | Registers zero tools — requires Enterprise edition 2025.4+ |
+| `portfolios` | 1 (`list_portfolios`) | Always returns 404 — endpoint doesn't exist on non-Enterprise editions |
+| `webhooks` | 2 (`list_webhooks`, `create_webhook`) | Always returns 403 — requires `Administer` permission on the project |
+| `system` | 5 (but 4 are 403) | Only `get_system_status` works without admin token — not worth the context overhead |
+
+
+### Tool Count Summary
+
+Probe-verified counts (2026-03-16) via MCP `tools/list` JSON-RPC request to isolated Docker containers.
+
+| Configuration | Tools registered |
+|---------------|:---:|
+| Bare minimum (`SONARQUBE_URL` + `SONARQUBE_TOKEN`) | **17** |
+| With `SONARQUBE_IDE_PORT` | **18** (swap `analyze_code_snippet` → `analyze_file_list`, add `toggle_automatic_analysis`) |
+| All 15 toolsets, no IDE | **28** |
+| All 15 toolsets + IDE | **29** |
+
+
+### Recommended `SONARQUBE_TOOLSETS` Value
+
+Drop the 4 dead toolsets to avoid registering tools that always fail:
+
+```
+SONARQUBE_TOOLSETS=analysis,issues,security-hotspots,projects,quality-gates,rules,duplications,measures,coverage,sources,languages
+```
+
+**Important:** setting `SONARQUBE_TOOLSETS` **overrides the defaults entirely** (except `projects`, which is always on).
+If you only set `SONARQUBE_TOOLSETS=sources`, you lose all default tools.
+Always include the full set you want.
+
+
+### Write / Mutate Tools
+
+These tools modify state on the SonarQube server.
+Set `SONARQUBE_READ_ONLY=true` to disable all of them.
+
+| Tool | Toolset | What it does | Status |
+|------|---------|-------------|--------|
+| `change_sonar_issue_status` | `issues` | Triage issues: `accept`, `falsepositive`, `reopen` | Works with standard tokens |
+| `change_security_hotspot_status` | `security-hotspots` | Review hotspots: `FIXED`, `SAFE`, `ACKNOWLEDGED` | Works with standard tokens |
+| `create_webhook` | `webhooks` | Create project webhooks | Always 403 — requires `Administer` permission |
 
 
 ## Response Schemas
@@ -129,7 +183,7 @@ Severity values: `CRITICAL`, `MAJOR`, `MINOR`, `INFO` (legacy taxonomy).
 ### `search_sonar_issues_in_projects` — paging object
 
 ```json
-{ "pageIndex": 1, "pageSize": 50, "total": 238 }
+{ "pageIndex": 1, "pageSize": 50, "total": 142 }
 ```
 
 ### `analyze_file_list` — response object
