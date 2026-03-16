@@ -14,7 +14,7 @@ Git workflow, knowledge distillation, video recording, markdown conventions, and
 | `/dc:reset` | Return to main branch with a clean working directory |
 | `/dc:clean-branches` | Delete local branches already integrated into the default branch |
 | `/dc:distill` | Extract key insights and restructure content for human readers |
-| `/dc:brief` | Turn brain dumps and messy thoughts into structured briefs for AI agents |
+| `/dc:brief` | Process chaotic input (voice transcription, brain dumps, messy notes) into structured, actionable output |
 | `/dc:record` | Record Retina-quality browser screencasts via CDP |
 | `/dc:writing` | Apply one-sentence-per-line markdown convention |
 | `/dc:figma-api` | Interact with the Figma REST API for design data, tokens, and exports |
