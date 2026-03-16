@@ -23,7 +23,8 @@ If unavailable, inform the user and stop: "RED/GREEN verification requires IDE-c
 |-------|---------|
 | 🔴 RED | Issue on server AND still found locally — not fixed yet |
 | 🟢 GREEN | Issue on server but NOT found locally — fix works, push it |
-| 🆕 NEW | Found locally but NOT on server — newly introduced |
+| 🆕 NEW | Found locally, NOT on server, AND in code you changed — newly introduced |
+| 📋 PRE-EXISTING | Found locally, NOT on server, but in code you did NOT change — existed before your work |
 
 ## Process
 
@@ -68,14 +69,17 @@ msg_overlap = normalize(local_finding.message) contains normalize(server_issue.m
 
 - If all three match → 🔴 RED (still broken)
 - Server issue with no local match → 🟢 GREEN (fixed locally)
-- Local finding with no server match → 🆕 NEW (newly introduced)
+- Local finding with no server match → check git diff (see below)
 
-3. Subagent writes the full report to `.agents.tmp/code-quality/verify/report.md`.
-4. Subagent returns the report content — this IS the final output shown to the user.
+3. For unmatched local findings, subagent runs `git diff <base-branch>...HEAD` to get changed line ranges.
+   - If the finding's line falls within a changed hunk → 🆕 NEW (you introduced this)
+   - If the finding's line is in unchanged code → 📋 PRE-EXISTING (existed before your work — the server didn't report it because it only analyzes PR-changed lines)
+4. Subagent writes the full report to `.agents.tmp/code-quality/verify/report.md`.
+5. Subagent returns the report content — this IS the final output shown to the user.
 
 ### Step 4: Present report
 
-Format as a table grouped by status — GREEN first (wins), then RED (still broken), then NEW (watch out):
+Format as a table grouped by status — GREEN first (wins), then RED (still broken), then NEW (watch out), then PRE-EXISTING (informational):
 
 ```
 RED/GREEN Verification Report
@@ -86,12 +90,16 @@ RED/GREEN Verification Report
 | 🟢     | S3863  | utils/helpers.ts         | 4    | Imported multiple times         |
 | 🔴     | S2004  | components/dashboard.ts  | 42   | Refactor to reduce nesting     |
 | 🆕     | —      | models/user.ts           | 15   | Unused import detected          |
+| 📋     | —      | services/auth.service.ts | 19   | Prefer optional chain expression|
 
 Rule column shows the server rule key for RED/GREEN rows.
-NEW rows have no rule — local findings lack this field.
+NEW/PRE-EXISTING rows have no rule — local findings lack this field.
 
-Summary: 2 fixed (🟢), 1 remaining (🔴), 1 new (🆕)
+Summary: 2 fixed (🟢), 1 remaining (🔴), 1 new (🆕), 1 pre-existing (📋)
 ```
+
+📋 PRE-EXISTING issues are shown last — they are informational only.
+The server didn't flag them because they are outside the PR diff scope (only changed lines are analyzed server-side).
 
 ## Bug Guardrails
 
@@ -110,3 +118,4 @@ Summary: 2 fixed (🟢), 1 remaining (🔴), 1 new (🆕)
 | Load issues into main context | Always delegate to subagents — write to disk, return summaries only |
 | Run without IDE-connected mode | Check if `analyze_file_list` is available first — stop if not |
 | Show RED issues first | Show GREEN first — the user wants to see their wins |
+| Label all unmatched local findings as NEW | Check git diff first — findings in unchanged code are PRE-EXISTING, not new |
