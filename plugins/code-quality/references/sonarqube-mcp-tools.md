@@ -34,8 +34,8 @@ If no matching tool is found, the SonarQube MCP server is not configured.
 
 | Tool | Key Parameters | Notes |
 |------|---------------|-------|
-| `analyze_file_list` | `file_absolute_paths[]` | Local analysis via SonarQube for IDE — requires `SONARQUBE_IDE_PORT` |
-| `toggle_automatic_analysis` | `enabled` (bool) | Enable/disable auto-analysis as files change |
+| `analyze_file_list` | `file_absolute_paths[]` | Local analysis via SonarQube for IDE — requires `SONARQUBE_IDE_PORT`. The MCP server delegates analysis to the IDE's embedded HTTP server on `localhost:<SONARQUBE_IDE_PORT>`. It does NOT analyze independently. |
+| `toggle_automatic_analysis` | `enabled` (bool) | Enable/disable auto-analysis as files change. Also requires `SONARQUBE_IDE_PORT`. |
 
 #### `issues`
 
