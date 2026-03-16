@@ -1,7 +1,7 @@
 {
   "name": "code-quality",
   "description": "SonarQube-driven code quality skills for checking quality gates, browsing issues, fixing violations, verifying fixes locally, and triaging false positives",
-  "version": "1.1.1-pr.14",
+  "version": "1.1.1",
   "author": {
     "name": "Dennis Calazans"
   },
