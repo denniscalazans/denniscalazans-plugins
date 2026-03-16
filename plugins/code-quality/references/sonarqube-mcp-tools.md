@@ -174,26 +174,41 @@ Cross-reference server issues with local findings to determine fix status.
 |-------|---------|
 | 🔴 RED | Issue on server AND still found locally — not fixed yet |
 | 🟢 GREEN | Issue on server but NOT found locally — fix works, push it |
-| 🆕 NEW | Found locally but NOT on server — newly introduced |
+| 🆕 NEW | Found locally, NOT on server, AND in code you changed — newly introduced |
+| 📋 PRE-EXISTING | Found locally, NOT on server, but in code you did NOT change — existed before your work |
+
+### Why PRE-EXISTING exists
+
+The server (in PR mode) only analyzes **changed lines** — it intentionally ignores pre-existing issues outside the diff.
+The IDE's local analyzer (`analyze_file_list`) scans the **entire file**, including untouched code.
+Without the git-diff check, every pre-existing issue in an unchanged line would be mislabeled as 🆕 NEW — confusing users into thinking they introduced it.
 
 ### Algorithm
 
 ```
-For each server_issue in search_sonar_issues_in_projects:
-  server_file = server_issue.component.split(':')[1]
-  server_line = server_issue.textRange.startLine
+Step 1 — Get changed line ranges:
+  git diff <base-branch>...HEAD --unified=0 -- <file>
+  Parse hunk headers (@@ -a,b +c,d @@) to build a set of changed line ranges per file.
 
-  For each local_finding in analyze_file_list(absolute_path):
-    same_file   = local_finding.filePath ends with server_file
-    line_near   = abs(local_finding.textRange.startLine - server_line) <= 5
-    msg_overlap = normalize(local_finding.message) contains normalize(server_issue.message)
-                  OR vice versa
+Step 2 — Match server issues to local findings:
+  For each server_issue in search_sonar_issues_in_projects:
+    server_file = server_issue.component.split(':')[1]
+    server_line = server_issue.textRange.startLine
 
-    If same_file AND line_near AND msg_overlap → MATCH (🔴 RED)
+    For each local_finding in analyze_file_list(absolute_path):
+      same_file   = local_finding.filePath ends with server_file
+      line_near   = abs(local_finding.textRange.startLine - server_line) <= 5
+      msg_overlap = normalize(local_finding.message) contains normalize(server_issue.message)
+                    OR vice versa
 
-  If no match found → 🟢 GREEN (fixed locally)
+      If same_file AND line_near AND msg_overlap → MATCH (🔴 RED)
 
-Remaining local findings with no server match → 🆕 NEW
+    If no match found → 🟢 GREEN (fixed locally)
+
+Step 3 — Classify unmatched local findings:
+  For each local finding with no server match:
+    If finding.startLine falls within a changed hunk → 🆕 NEW
+    Else → 📋 PRE-EXISTING
 ```
 
 **Message normalization:** lowercase, strip backticks, strip trailing punctuation.
@@ -202,7 +217,8 @@ Remaining local findings with no server match → 🆕 NEW
 
 ## Token-Safe Collection Workflow
 
-For projects with > 100 issues, use this 4-step process to stay within token budget.
+All issue-fetching MCP calls must run in subagents, regardless of result set size.
+Even 10 issues produce ~120 tokens of JSON each — this adds up fast.
 
 ```
 Step 1 — Collect (subagent, write to disk):
@@ -214,17 +230,30 @@ Step 2 — Extract unique files (shell):
   jq -r '.component' .agents.tmp/code-quality/verify/issues.jsonl | sort -u
     → .agents.tmp/code-quality/verify/unique-files.txt
 
-Step 3 — Local analysis (per-file):
+Step 3 — Local analysis (subagent, per-file):
   For each file in unique-files.txt:
     findings = analyze_file_list([absolute_path])
     append findings to .agents.tmp/code-quality/verify/local-findings.jsonl
 
-Step 4 — Cross-reference (shell + jq):
+Step 4 — Cross-reference (subagent):
   Match issues.jsonl × local-findings.jsonl using algorithm above
     → .agents.tmp/code-quality/verify/red-green-report.md
 ```
 
 **Never read the full JSONL into conversation context — always process with `jq` in subagents.**
+
+
+## Subagent Return Contract
+
+When a subagent collects issues or findings, it returns ONLY:
+
+- Total count
+- Severity breakdown (e.g., "3 CRITICAL, 12 MAJOR, 35 MINOR")
+- Unique file count
+- File path to the JSONL on disk
+- Pre-formatted markdown table (if the skill needs to show results to the user)
+
+The subagent NEVER returns raw JSON issue objects to the parent context.
 
 
 ## Quick Call Examples
