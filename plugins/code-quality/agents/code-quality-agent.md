@@ -114,12 +114,10 @@ Quality assessment of a specific pull request.
 
 These are non-negotiable rules for every workflow:
 
-1. **Never pass `severities`** to `search_sonar_issues_in_projects` — crashes the MCP server
-2. **Use `ps=50` max** for issue queries — `ps=500` exceeds the transport limit
-3. **Always delegate issue fetching to subagents** — write results to `.agents.tmp/code-quality/` as JSONL
-4. **Use `get_component_measures` for accurate counts** — `search_sonar_issues_in_projects` totals may differ from the dashboard due to taxonomy double-counting
-5. **Local findings have no `rule` field** — match by file + line(±5) + message text
-6. **Never pass `severities`** — this is repeated intentionally because it is the most dangerous bug
+1. **Use `ps=50` max** for issue queries — `ps=500` exceeds the transport limit
+2. **Always delegate issue fetching to subagents** — write results to `.agents.tmp/code-quality/` as JSONL
+3. **Use `get_component_measures` for accurate counts** — `search_sonar_issues_in_projects` totals may differ from the dashboard due to taxonomy double-counting
+4. **Local findings have no `rule` field** — match by file + line(±5) + message text
 
 
 ## Token Management

@@ -45,7 +45,7 @@ The `analysis` toolset registers **different tools** depending on whether `SONAR
 
 | Tool | Key Parameters | Notes |
 |------|---------------|-------|
-| `search_sonar_issues_in_projects` | `projects[]`, `pullRequestId`, `issueStatuses[]`, `impactSoftwareQualities[]`, `p`, `ps` | **Never pass `severities`** — crashes the MCP server. Use `ps=50` max. |
+| `search_sonar_issues_in_projects` | `projects[]`, `pullRequestId`, `issueStatuses[]`, `impactSoftwareQualities[]`, `severities[]`, `p`, `ps` | Use `ps=50` max. `severities` accepts legacy values: `BLOCKER`, `CRITICAL`, `MAJOR`, `MINOR`, `INFO`. |
 | `change_sonar_issue_status` | `key`, `status` (`accept` / `falsepositive` / `reopen`) | Triage server issues |
 
 #### `quality-gates` — 2 tools
@@ -131,6 +131,35 @@ Probe-verified counts (2026-03-16) via MCP `tools/list` JSON-RPC request to isol
 | All 15 toolsets + IDE | **29** |
 
 
+### Per-Toolset Isolation Probe
+
+Each toolset tested in isolation (2026-03-16) — `SONARQUBE_TOOLSETS` set to that single toolset plus `projects` (always on).
+Shows exact tools registered and whether the IDE toggles any.
+
+| Toolset | Tools (no IDE) | Tools (with IDE) | Tool names |
+|---------|:-:|:-:|------------|
+| `projects` | 2 | 2 | `search_my_sonarqube_projects`, `list_pull_requests` |
+| `analysis` | 1 | 2 | Without IDE: `analyze_code_snippet`. With IDE: `analyze_file_list`, `toggle_automatic_analysis` |
+| `issues` | 2 | 2 | `search_sonar_issues_in_projects`, `change_sonar_issue_status` |
+| `quality-gates` | 2 | 2 | `get_project_quality_gate_status`, `list_quality_gates` |
+| `rules` | 1 | 1 | `show_rule` |
+| `measures` | 2 | 2 | `get_component_measures`, `search_metrics` |
+| `duplications` | 2 | 2 | `get_duplications`, `search_duplicated_files` |
+| `security-hotspots` | 3 | 3 | `search_security_hotspots`, `show_security_hotspot`, `change_security_hotspot_status` |
+| `coverage` | 2 | 2 | `search_files_by_coverage`, `get_file_coverage_details` |
+| `dependency-risks` | 0 | 0 | Nothing registered — requires Enterprise 2025.4+ |
+| `sources` | 2 | 2 | `get_raw_source`, `get_scm_info` |
+| `languages` | 1 | 1 | `list_languages` |
+| `portfolios` | 1 | 1 | `list_portfolios` (always 404 on non-Enterprise) |
+| `webhooks` | 2 | 2 | `list_webhooks`, `create_webhook` (always 403) |
+| `system` | 5 | 5 | `get_system_status`, `ping_system`, `get_system_health`, `get_system_info`, `get_system_logs` (4 of 5 are 403) |
+
+**Key observations:**
+- Only `analysis` changes tool registration based on IDE connectivity.
+- `projects` toolset is always on — it appears even when not listed in `SONARQUBE_TOOLSETS`.
+- `dependency-risks` registers zero tools — the endpoint doesn't exist on non-Enterprise editions.
+
+
 ### Recommended `SONARQUBE_TOOLSETS` Value
 
 Drop the 4 dead toolsets to avoid registering tools that always fail:
@@ -154,6 +183,60 @@ Set `SONARQUBE_READ_ONLY=true` to disable all of them.
 | `change_sonar_issue_status` | `issues` | Triage issues: `accept`, `falsepositive`, `reopen` | Works with standard tokens |
 | `change_security_hotspot_status` | `security-hotspots` | Review hotspots: `FIXED`, `SAFE`, `ACKNOWLEDGED` | Works with standard tokens |
 | `create_webhook` | `webhooks` | Create project webhooks | Always 403 — requires `Administer` permission |
+
+**`SONARQUBE_READ_ONLY=true` effect:**
+Reduces registered tools from 17 → 15 by removing `change_sonar_issue_status` and `change_security_hotspot_status`.
+`show_security_hotspot` (viewing) is kept — only status-change tools are blocked.
+`create_webhook` is unaffected (it belongs to the `webhooks` toolset, which is not default-enabled).
+
+
+### Token Type Scope
+
+The SonarQube token type determines which tools succeed at runtime.
+Probe-verified (2026-03-16) against isolated Docker containers with each token type.
+
+| Token type | Tools denied at runtime | Notes |
+|-----------|------------------------|-------|
+| **User Token** | **0** | Full access to all tools the user's permissions allow |
+| **Project Analysis Token** | 4–6 (varies by toolset config) | Denied: `search_files_by_coverage`, `get_file_coverage_details`, `search_security_hotspots`, `show_security_hotspot`, `get_duplications`, `search_duplicated_files` |
+| **Global Analysis Token** | 4–6 (varies by toolset config) | Same denials as Project Analysis Token — analysis tokens lack Browse permission on project data |
+
+**Why analysis tokens lose tools:** Analysis tokens are scoped to push analysis results only.
+They lack the Browse permission required by coverage, security hotspot, and duplication endpoints.
+The tools register normally but return 403 at call time — no error at startup.
+
+**Recommendation:** Always use a **User Token** — it is the only type with zero denials.
+Generate one at `https://<your-sonarqube>/account/security/`.
+
+
+### `SONARQUBE_PROJECT_KEY` Effect
+
+Setting `SONARQUBE_PROJECT_KEY` as an environment variable changes tool schemas at registration time.
+Probe-verified (2026-03-16) via `tools/list` JSON-RPC diff between containers with and without the variable.
+
+**Tools where `projectKey` is REMOVED from the schema (4 tools):**
+
+| Tool | Toolset | Effect |
+|------|---------|--------|
+| `search_sonar_issues_in_projects` | `issues` | `projects` param removed — locked to the configured project |
+| `get_project_quality_gate_status` | `quality-gates` | `projectKey` param removed |
+| `list_pull_requests` | `projects` | `projectKey` param removed |
+| `search_files_by_coverage` | `coverage` | `projectKey` param removed |
+
+**Tools where `projectKey` stays optional (5 tools):**
+
+| Tool | Toolset | Why kept |
+|------|---------|----------|
+| `search_security_hotspots` | `security-hotspots` | Also accepts `files`, `resolution` — needs explicit project when combining filters |
+| `search_duplicated_files` | `duplications` | Supports `pageIndex`, `pageSize` — project key is part of a larger query |
+| `get_component_measures` | `measures` | Uses `component` (not `projectKey`) — accepts any component key |
+| `get_duplications` | `duplications` | Uses `key` (file key, not project key) |
+| `search_dependency_risks` | `dependency-risks` | Uses `projectKey` but also `branchKey`, `pullRequestKey` |
+
+19 tools are unaffected — they use `key`, `hotspotKey`, `file_absolute_paths`, or no project identifier at all.
+
+**Recommendation:** Set `SONARQUBE_PROJECT_KEY` in per-project MCP configs.
+It simplifies prompts by removing `projectKey` from 4 frequently-used tools.
 
 
 ## Response Schemas
