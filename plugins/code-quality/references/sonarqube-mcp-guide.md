@@ -314,11 +314,10 @@ They are not documented in the MCP server README.
 
 | Bug | What happens | Workaround |
 |-----|-------------|------------|
-| `severities` param crashes the server | Type-cast failure (string → List) kills the MCP process | **Never pass `severities`.** Fetch all, filter client-side. |
 | `ps=500` exceeds transport limit | ~122K chars → auto-saved to temp file, not returned inline | **Use `ps=50` max.** Paginate: 5 pages of 50 for ~250 issues. |
 
-**These guardrails are non-negotiable.**
-Every skill that calls `search_sonar_issues_in_projects` must enforce them.
+**This guardrail is non-negotiable.**
+Every skill that calls `search_sonar_issues_in_projects` must enforce it.
 
 
 ## Legacy vs Clean Code Taxonomy
@@ -513,6 +512,127 @@ Useful for shared tokens or demo environments.
 | `STORAGE_PATH` | Docker image pre-sets `/app/storage` — only set for JAR mode |
 | `SONARQUBE_PROJECT_KEY` | Omit to query any project; set only to lock to one project |
 | `SONARQUBE_ORG` | SonarQube Cloud only — not needed for self-hosted instances |
+
+
+### "Which token type should I use?"
+
+**Always use a User Token.**
+
+SonarQube offers three token types: User Token, Project Analysis Token, and Global Analysis Token.
+Analysis tokens are designed for CI pipelines pushing scan results — they lack the Browse permission needed by many MCP tools.
+
+With an analysis token, 4–6 tools silently fail at call time (403) — including coverage, security hotspots, and duplications.
+The tools still register normally at startup, so there's no warning until you try to use them.
+
+A User Token inherits your full user permissions and has **zero tool denials**.
+Generate one at `https://<your-sonarqube>/account/security/`.
+
+See `sonarqube-mcp-tools.md` → "Token Type Scope" for the full denial table per token type.
+
+
+### "Should I set `SONARQUBE_PROJECT_KEY`?"
+
+**Yes — in per-project configs.**
+
+Setting `SONARQUBE_PROJECT_KEY` removes the `projectKey` parameter from 4 frequently-used tool schemas: issue search, quality gate status, PR listing, and coverage search.
+This means simpler prompts and fewer chances for the AI to pass the wrong project key.
+
+19 tools are unaffected (they use `key`, `hotspotKey`, etc.), and 5 tools keep `projectKey` as optional even when the variable is set.
+
+Set it in your project-level `.mcp.json` (not your global config) so it's scoped to the right project.
+See `sonarqube-mcp-tools.md` → "`SONARQUBE_PROJECT_KEY` Effect" for the full schema diff.
+
+
+### "Can I share config with my team?"
+
+Use a project-level `.mcp.json` file — it's committable and team-shareable.
+
+```jsonc
+// .mcp.json (project root — commit this)
+{
+  "mcpServers": {
+    "sonarqube": {
+      "command": "docker",
+      "args": [
+        "run", "--init", "--pull=always", "-i", "--rm",
+        "-e", "SONARQUBE_TOKEN",
+        "-e", "SONARQUBE_URL",
+        "-e", "SONARQUBE_PROJECT_KEY",
+        "-e", "SONARQUBE_IDE_PORT",
+        "-e", "SONARQUBE_TOOLSETS",
+        "mcp/sonarqube"
+      ],
+      "env": {
+        "SONARQUBE_URL": "https://<your-sonarqube>",
+        "SONARQUBE_PROJECT_KEY": "<your-project>",
+        "SONARQUBE_TOOLSETS": "analysis,issues,security-hotspots,projects,quality-gates,rules,duplications,measures,coverage,sources,languages"
+      }
+    }
+  }
+}
+```
+
+**Critical:** The token must be per-user — **never commit tokens** to version control.
+Each developer sets `SONARQUBE_TOKEN` in their personal config (e.g., `~/.claude.json` or shell env).
+The `"SONARQUBE_TOKEN"` entry in `args` (without a value in `env`) tells Docker to inherit the variable from the host environment.
+
+`SONARQUBE_IDE_PORT` is also per-user (it depends on which IDE instance owns which port).
+Include it in `args` for passthrough, but let each developer set the value in their personal config.
+
+
+## Troubleshooting
+
+Common issues encountered during setup and daily use.
+
+
+### "Failed to reconnect to sonarqube"
+
+**Symptoms:** MCP server logs show reconnection failures or timeouts.
+
+**Causes and fixes:**
+
+| Cause | Fix |
+|-------|-----|
+| Docker not running | Start Docker Desktop or the Docker daemon |
+| Invalid or expired token | Generate a new User Token at `https://<your-sonarqube>/account/security/` |
+| Network/VPN issue | Verify you can reach `<your-sonarqube>` from your machine (`curl -s https://<your-sonarqube>/api/system/status`) |
+| Wrong URL | Check `SONARQUBE_URL` — must include `https://` and no trailing slash |
+
+
+### "`analyze_file_list` not available"
+
+**Symptoms:** The tool doesn't appear in the MCP tool list, or you get `analyze_code_snippet` instead.
+
+**Causes and fixes:**
+
+| Cause | Fix |
+|-------|-----|
+| `SONARQUBE_IDE_PORT` not set | Add it to your MCP config — see "Full-power config" above |
+| IDE not running | Start your IDE (VS Code / IntelliJ) with SonarQube for IDE installed |
+| Port mismatch | Run `lsof -iTCP:64120-64130 -sTCP:LISTEN -P -n` to find the actual port, then update `SONARQUBE_IDE_PORT` |
+| Linux Docker networking | Add `"--network=host"` to Docker args so the container can reach `localhost` |
+
+
+### "IDE port keeps changing"
+
+The embedded server port range (64120–64130) is **hardcoded** in `sonarlint-core`.
+Port allocation is first-come, first-served — restarting an IDE can grab a different port.
+
+**Mitigations:**
+- Start your primary IDE first to get a consistent port (usually 64120).
+- After IDE restarts, re-check with `lsof -iTCP:64120-64130 -sTCP:LISTEN -P -n`.
+- VS Code's Quick Install button auto-updates the port in MCP config; IntelliJ and Claude Code require manual updates.
+
+
+### "Numbers don't match the web UI exactly"
+
+The MCP API uses the **Clean Code taxonomy** by default, while the SonarQube web UI shows the **legacy taxonomy**.
+These count issues differently — an issue with multiple impact qualities (e.g., MEDIUM maintainability + LOW reliability) can appear in multiple severity buckets in the API, inflating totals.
+
+**The fix:** Use `get_component_measures` for accurate counts that always match the web UI.
+Use `search_sonar_issues_in_projects` for issue details (file, line, message, rule), but don't rely on its severity totals matching the dashboard.
+
+See the "Legacy vs Clean Code Taxonomy" section above for the full breakdown.
 
 
 ## Metrics Cheat Sheet

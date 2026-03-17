@@ -25,7 +25,7 @@ Delegate issue fetching to a subagent:
 
 1. Subagent calls `search_sonar_issues_in_projects` with `ps=50`, `p=1`.
    For PR-specific issues, adds `pullRequestId: "123"`.
-   **CRITICAL: Never pass the `severities` parameter** — crashes the MCP server (string → List type cast).
+   To filter by severity, pass `severities: ["CRITICAL"]` (legacy values: `BLOCKER`, `CRITICAL`, `MAJOR`, `MINOR`, `INFO`).
 2. Subagent writes issues to `.agents.tmp/code-quality/issues/page-1.jsonl` (one JSON object per line).
 3. Subagent formats a markdown table grouped by severity (CRITICAL → MAJOR → MINOR → INFO):
    - Columns: Severity, Rule, File (short path — last 2-3 segments), Line, Message.
@@ -59,7 +59,6 @@ Showing 50 of 238 issues (page 1 of 5). Want me to fetch the next page?
 
 ## Bug Guardrails
 
-- **Never pass `severities`** — crashes the MCP server (string → List type cast failure).
 - **Use `ps=50` max** — `ps=500` exceeds the transport limit (~122K chars).
 - Severity counts from this tool may not match the dashboard due to Clean Code taxonomy multi-impact double-counting.
   See `references/sonarqube-mcp-guide.md` for explanation.
@@ -68,7 +67,6 @@ Showing 50 of 238 issues (page 1 of 5). Want me to fetch the next page?
 
 | Don't | Do |
 |-------|-----|
-| Pass `severities` param to `search_sonar_issues_in_projects` | Filter by severity client-side after fetching |
 | Use `ps` greater than 50 | Paginate with `ps=50` — 5 pages for ~250 issues |
 | Fetch issues inline in main context | Always delegate to subagents — write to disk, return formatted tables only |
 | Show full component paths | Show short paths — last 2-3 segments only |

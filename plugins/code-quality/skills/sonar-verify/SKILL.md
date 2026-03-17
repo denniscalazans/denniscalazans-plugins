@@ -33,7 +33,6 @@ If unavailable, inform the user and stop: "RED/GREEN verification requires IDE-c
 Delegate issue collection to a subagent:
 
 1. Subagent calls `search_sonar_issues_in_projects` with `ps=50`, paginating all pages.
-   **Never pass `severities`** — it crashes the MCP server.
 2. Subagent writes issues to `.agents.tmp/code-quality/verify/server-issues.jsonl` (one JSON object per line).
 3. Subagent extracts unique files: `jq -r '.component' | sort -u` → `.agents.tmp/code-quality/verify/unique-files.txt`.
 4. Subagent converts `component` fields to absolute paths using the workspace root:
@@ -103,7 +102,6 @@ The server didn't flag them because they are outside the PR diff scope (only cha
 
 ## Bug Guardrails
 
-- **Never pass `severities`** when fetching server issues.
 - Local findings have no `rule` field — match by message text.
 - Line tolerance ±5 accounts for local edits shifting lines.
 - Always use subagents for issue collection and local analysis — the main context must never see raw MCP JSON.
