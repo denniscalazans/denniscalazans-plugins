@@ -26,10 +26,13 @@ jobs:
         with:
           node-version: 22
 
+      - name: Install dependencies
+        run: npm ci
+
       - name: Release changed plugins
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Detects changed plugins vs previous commit, strips pre-release
           # suffixes, creates git tags and GitHub Releases
-          node scripts/release-versions.mjs --base HEAD~1
+          npx tsx scripts/release-versions.ts --base HEAD~1

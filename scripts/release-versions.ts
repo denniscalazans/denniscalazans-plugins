@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env npx tsx
 
 /**
  * Release changed plugins: strip pre-release suffixes, create tags, and GitHub releases.
@@ -7,15 +7,16 @@
  * creates a git tag <name>-v<version>, and a GitHub Release.
  *
  * Usage:
- *   node scripts/release-versions.mjs --base HEAD~1
+ *   npx tsx scripts/release-versions.ts --base HEAD~1
  *
  * Requires GH_TOKEN environment variable for `gh release create`.
  */
 
-import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { execFileSync } from 'child_process';
+import { computeReleaseVersion } from './lib/versioning.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -28,22 +29,36 @@ const baseIndex = args.indexOf('--base');
 const baseRef = baseIndex !== -1 ? args[baseIndex + 1] : undefined;
 
 if (!baseRef) {
-  console.error('Usage: node scripts/release-versions.mjs --base <git-ref>');
+  console.error('Usage: npx tsx scripts/release-versions.ts --base <git-ref>');
   process.exit(1);
 }
 
 // -- Helper: run a command and return trimmed stdout --------------------------
 
-function run(cmd, cmdArgs, opts = {}) {
+function run(cmd: string, cmdArgs: string[], opts: Record<string, unknown> = {}): string {
   return execFileSync(cmd, cmdArgs, { cwd: ROOT, encoding: 'utf8', ...opts }).trim();
 }
 
 // -- Discover changed plugins -------------------------------------------------
 
-const marketplace = JSON.parse(readFileSync(MARKETPLACE_JSON, 'utf8'));
-const plugins = marketplace.plugins || [];
+interface MarketplacePlugin {
+  name: string;
+  source: string;
+}
 
-const changed = [];
+interface Marketplace {
+  plugins?: MarketplacePlugin[];
+}
+
+const marketplace: Marketplace = JSON.parse(readFileSync(MARKETPLACE_JSON, 'utf8'));
+const plugins = marketplace.plugins ?? [];
+
+interface ChangedPlugin {
+  name: string;
+  path: string;
+}
+
+const changed: ChangedPlugin[] = [];
 
 for (const plugin of plugins) {
   const sourcePath = plugin.source.replace(/^\.\//, '');
@@ -65,57 +80,51 @@ if (changed.length === 0) {
 // -- Process each changed plugin ----------------------------------------------
 
 let needsCommit = false;
-const tagsToCreate = [];
+
+interface TagToCreate {
+  tagName: string;
+  name: string;
+}
+
+const tagsToCreate: TagToCreate[] = [];
+
+function tagExists(tag: string): boolean {
+  try {
+    run('git', ['rev-parse', tag]);
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 for (const { name, path } of changed) {
   const pluginJsonPath = `${path}/.claude-plugin/plugin.json`;
   const pluginJsonAbsolute = resolve(ROOT, pluginJsonPath);
 
   const pkg = JSON.parse(readFileSync(pluginJsonAbsolute, 'utf8'));
-  const version = pkg.version;
+  const version: string = pkg.version;
 
-  // Strip pre-release suffix (e.g. 1.0.1-pr.3 -> 1.0.1)
-  let releaseVersion = version.replace(/-.*$/, '');
-  let tagName = `${name}-v${releaseVersion}`;
+  const result = computeReleaseVersion(name, version, tagExists);
 
-  // If tag already exists, auto-bump patch.
-  // This handles the race condition where a PR is merged before the
-  // PR version-bump workflow pushes its commit back to the branch.
-  let tagExists = false;
-  try {
-    run('git', ['rev-parse', tagName]);
-    tagExists = true;
-  } catch {
-    // Tag doesn't exist — proceed with current version
+  if (result === null) {
+    console.log(`Plugin ${name}: tag already exists, skipping`);
+    continue;
   }
 
-  if (tagExists) {
-    const [major, minor, patch] = releaseVersion.split('.').map(Number);
-    releaseVersion = `${major}.${minor}.${patch + 1}`;
-    tagName = `${name}-v${releaseVersion}`;
-
-    // Check the bumped tag too — skip only if both exist
-    try {
-      run('git', ['rev-parse', tagName]);
-      console.log(`Plugin ${name}: tag ${tagName} already exists, skipping`);
-      continue;
-    } catch {
-      // Good — bumped tag doesn't exist
-    }
-
-    console.log(`Plugin ${name}: tag ${name}-v${version.replace(/-.*$/, '')} exists, auto-bumping to ${releaseVersion}`);
+  if (result.autoBumped) {
+    console.log(`Plugin ${name}: existing tag found, auto-bumping to ${result.version}`);
   }
 
   // Update plugin.json if version changed
-  if (version !== releaseVersion) {
-    pkg.version = releaseVersion;
+  if (version !== result.version) {
+    pkg.version = result.version;
     writeFileSync(pluginJsonAbsolute, JSON.stringify(pkg, null, 2) + '\n');
     run('git', ['add', pluginJsonPath]);
     needsCommit = true;
   }
 
-  tagsToCreate.push({ tagName, name });
-  console.log(`Plugin ${name}: will release as ${tagName}`);
+  tagsToCreate.push({ tagName: result.tag, name });
+  console.log(`Plugin ${name}: will release as ${result.tag}`);
 }
 
 // -- Commit version cleanups --------------------------------------------------
@@ -171,6 +180,6 @@ for (const { tagName, name } of tagsToCreate) {
     run('gh', releaseArgs);
     console.log(`Created release ${tagName}`);
   } catch (err) {
-    console.error(`Failed to create release ${tagName}: ${err.message}`);
+    console.error(`Failed to create release ${tagName}: ${(err as Error).message}`);
   }
 }

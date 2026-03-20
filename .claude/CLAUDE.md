@@ -20,10 +20,16 @@ plugins/<name>/
 
 ## Development Commands
 
-**Run tests** (only one spec exists today):
+**Run all tests:**
 
 ```bash
-npx tsx --test plugins/dc/skills/record/references/recording-utils.spec.ts
+npm test
+```
+
+**Run versioning script tests only:**
+
+```bash
+npm run test:scripts
 ```
 
 **Install a plugin locally:**
@@ -56,9 +62,9 @@ Old `v*` tags are kept as historical artifacts.
 **Manual major/minor bumps:**
 
 ```bash
-node scripts/bump-version.mjs --version 2.0.0 --plugin dc
-node scripts/bump-version.mjs --version 1.1.0 --plugin code-quality
-node scripts/bump-version.mjs --version 3.0.0   # defaults to dc
+npx tsx scripts/bump-version.ts --version 2.0.0 --plugin dc
+npx tsx scripts/bump-version.ts --version 1.1.0 --plugin code-quality
+npx tsx scripts/bump-version.ts --version 3.0.0   # defaults to dc
 ```
 
 

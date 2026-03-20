@@ -1,12 +1,12 @@
-#!/usr/bin/env node
+#!/usr/bin/env npx tsx
 
 /**
  * Manual version bump script for major/minor releases.
  *
  * Usage:
- *   node scripts/bump-version.mjs --version 2.0.0
- *   node scripts/bump-version.mjs --version 1.1.0 --plugin code-quality
- *   node scripts/bump-version.mjs --version 3.0.0 --plugin dc
+ *   npx tsx scripts/bump-version.ts --version 2.0.0
+ *   npx tsx scripts/bump-version.ts --version 1.1.0 --plugin code-quality
+ *   npx tsx scripts/bump-version.ts --version 3.0.0 --plugin dc
  */
 
 import { readFileSync, writeFileSync } from 'fs';
@@ -22,7 +22,7 @@ const args = process.argv.slice(2);
 const versionIndex = args.indexOf('--version');
 
 if (versionIndex === -1 || !args[versionIndex + 1]) {
-  console.error('Usage: node scripts/bump-version.mjs --version <X.Y.Z> [--plugin <name>]');
+  console.error('Usage: npx tsx scripts/bump-version.ts --version <X.Y.Z> [--plugin <name>]');
   process.exit(1);
 }
 
@@ -44,11 +44,20 @@ if (!SEMVER_RE.test(newVersion)) {
 
 // -- Resolve plugin path from marketplace.json --------------------------------
 
-const marketplace = JSON.parse(readFileSync(MARKETPLACE_JSON, 'utf8'));
-const pluginEntry = (marketplace.plugins || []).find(p => p.name === pluginName);
+interface MarketplacePlugin {
+  name: string;
+  source: string;
+}
+
+interface Marketplace {
+  plugins?: MarketplacePlugin[];
+}
+
+const marketplace: Marketplace = JSON.parse(readFileSync(MARKETPLACE_JSON, 'utf8'));
+const pluginEntry = (marketplace.plugins ?? []).find(p => p.name === pluginName);
 
 if (!pluginEntry) {
-  const available = (marketplace.plugins || []).map(p => p.name).join(', ');
+  const available = (marketplace.plugins ?? []).map(p => p.name).join(', ');
   console.error(`Plugin "${pluginName}" not found in marketplace.json. Available: ${available}`);
   process.exit(1);
 }
@@ -59,7 +68,7 @@ const PLUGIN_JSON = resolve(__dirname, '..', sourcePath, '.claude-plugin/plugin.
 // -- Update plugin.json -------------------------------------------------------
 
 const pkg = JSON.parse(readFileSync(PLUGIN_JSON, 'utf8'));
-const oldVersion = pkg.version;
+const oldVersion: string = pkg.version;
 pkg.version = newVersion;
 writeFileSync(PLUGIN_JSON, JSON.stringify(pkg, null, 2) + '\n');
 
