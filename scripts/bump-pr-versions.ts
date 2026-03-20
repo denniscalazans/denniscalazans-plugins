@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env npx tsx
 
 /**
  * Bump versions for changed plugins in a PR context.
@@ -8,7 +8,7 @@
  * correct version or have been manually bumped higher.
  *
  * Usage:
- *   node scripts/bump-pr-versions.mjs --base origin/main --pr 12
+ *   npx tsx scripts/bump-pr-versions.ts --base origin/main --pr 12
  *
  * Outputs space-separated list of bumped plugin names to stdout (for commit message).
  * Exits with code 0 even if no plugins were bumped.
@@ -18,6 +18,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { execFileSync } from 'child_process';
+import { parseVersion, isHigher, computePrVersion } from './lib/versioning.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
@@ -27,7 +28,7 @@ const MARKETPLACE_JSON = resolve(ROOT, '.claude-plugin/marketplace.json');
 
 const args = process.argv.slice(2);
 
-function getArg(name) {
+function getArg(name: string): string | undefined {
   const idx = args.indexOf(name);
   return idx !== -1 ? args[idx + 1] : undefined;
 }
@@ -36,23 +37,37 @@ const baseRef = getArg('--base');
 const prNumber = getArg('--pr');
 
 if (!baseRef || !prNumber) {
-  console.error('Usage: node scripts/bump-pr-versions.mjs --base <git-ref> --pr <number>');
+  console.error('Usage: npx tsx scripts/bump-pr-versions.ts --base <git-ref> --pr <number>');
   process.exit(1);
 }
 
 // -- Discover changed plugins -------------------------------------------------
 
-const marketplace = JSON.parse(readFileSync(MARKETPLACE_JSON, 'utf8'));
-const plugins = marketplace.plugins || [];
+interface MarketplacePlugin {
+  name: string;
+  source: string;
+}
 
-const changed = [];
+interface Marketplace {
+  plugins?: MarketplacePlugin[];
+}
+
+const marketplace: Marketplace = JSON.parse(readFileSync(MARKETPLACE_JSON, 'utf8'));
+const plugins = marketplace.plugins ?? [];
+
+interface ChangedPlugin {
+  name: string;
+  path: string;
+}
+
+const changed: ChangedPlugin[] = [];
 
 for (const plugin of plugins) {
   const sourcePath = plugin.source.replace(/^\.\//, '');
   try {
     const diff = execFileSync(
       'git', ['diff', '--name-only', `${baseRef}...HEAD`, '--', sourcePath],
-      { cwd: ROOT, encoding: 'utf8' }
+      { cwd: ROOT, encoding: 'utf8' },
     ).trim();
     if (diff.length > 0) {
       changed.push({ name: plugin.name, path: sourcePath });
@@ -69,19 +84,7 @@ if (changed.length === 0) {
 
 // -- Bump versions ------------------------------------------------------------
 
-function parseVersion(v) {
-  const base = v.replace(/-.*$/, '');
-  const [major, minor, patch] = base.split('.').map(Number);
-  return { major, minor, patch, full: v, base };
-}
-
-function isHigher(a, b) {
-  if (a.major !== b.major) return a.major > b.major;
-  if (a.minor !== b.minor) return a.minor > b.minor;
-  return a.patch > b.patch;
-}
-
-const bumped = [];
+const bumped: string[] = [];
 
 for (const { name, path } of changed) {
   const pluginJsonPath = `${path}/.claude-plugin/plugin.json`;
@@ -92,7 +95,7 @@ for (const { name, path } of changed) {
   try {
     const mainContent = execFileSync(
       'git', ['show', `${baseRef}:${pluginJsonPath}`],
-      { cwd: ROOT, encoding: 'utf8' }
+      { cwd: ROOT, encoding: 'utf8' },
     );
     mainVersionStr = JSON.parse(mainContent).version;
   } catch {
@@ -100,11 +103,11 @@ for (const { name, path } of changed) {
   }
 
   const mainVersion = parseVersion(mainVersionStr);
-  const prVersion = `${mainVersion.major}.${mainVersion.minor}.${mainVersion.patch + 1}-pr.${prNumber}`;
+  const prVersion = computePrVersion(mainVersionStr, Number(prNumber));
 
   // Read current version on PR branch
   const currentPkg = JSON.parse(readFileSync(pluginJsonAbsolute, 'utf8'));
-  const current = currentPkg.version;
+  const current: string = currentPkg.version;
 
   // Skip if already at desired version
   if (current === prVersion) {
