@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "test": "npx tsx --test scripts/lib/*.spec.ts plugins/dc/skills/record/references/*.spec.ts",
-    "test:scripts": "npx tsx --test scripts/lib/*.spec.ts"
+    "test:scripts": "npx tsx --test scripts/lib/*.spec.ts",
+    "test:coverage": "mkdir -p coverage && npx tsx --test --experimental-test-coverage --test-coverage-lines=0 --test-reporter=lcov --test-reporter-destination=coverage/lcov.info --test-reporter=spec --test-reporter-destination=stdout scripts/lib/*.spec.ts"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
