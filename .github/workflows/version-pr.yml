@@ -3,18 +3,34 @@ name: Version PR
 on:
   pull_request:
     types: [opened, synchronize]
-    paths:
-      - 'plugins/**'
-      - '.claude-plugin/**'
-      - '.claude/CLAUDE.md'
 
 permissions:
   contents: write
 
 jobs:
-  version-bump:
+  # Detects which paths changed so version-bump can be skipped
+  # for PRs that only touch scripts, workflows, or project config.
+  changes:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.head.repo.full_name == github.repository
+    outputs:
+      needs-bump: ${{ steps.filter.outputs.plugin-paths }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            plugin-paths:
+              - 'plugins/**'
+              - '.claude-plugin/**'
+              - '.claude/CLAUDE.md'
+
+  version-bump:
+    needs: changes
+    if: >-
+      needs.changes.outputs.needs-bump == 'true'
+      && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout PR branch
         uses: actions/checkout@v4
@@ -48,4 +64,23 @@ jobs:
             git push
           else
             echo "No plugins needed version bumping"
+          fi
+
+  # Gate job: required status check for branch protection.
+  # Passes when version-bump succeeds OR is skipped (non-plugin PR).
+  # Fails when version-bump fails or is cancelled.
+  version-bump-gate:
+    needs: version-bump
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check version-bump result
+        run: |
+          result="${{ needs.version-bump.result }}"
+          echo "version-bump result: $result"
+          if [[ "$result" == "success" || "$result" == "skipped" ]]; then
+            echo "Gate passed"
+          else
+            echo "Gate failed — version-bump result was: $result"
+            exit 1
           fi
