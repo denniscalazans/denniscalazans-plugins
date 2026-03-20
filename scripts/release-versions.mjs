@@ -75,19 +75,38 @@ for (const { name, path } of changed) {
   const version = pkg.version;
 
   // Strip pre-release suffix (e.g. 1.0.1-pr.3 -> 1.0.1)
-  const releaseVersion = version.replace(/-.*$/, '');
-  const tagName = `${name}-v${releaseVersion}`;
+  let releaseVersion = version.replace(/-.*$/, '');
+  let tagName = `${name}-v${releaseVersion}`;
 
-  // Skip if this tag already exists
+  // If tag already exists, auto-bump patch.
+  // This handles the race condition where a PR is merged before the
+  // PR version-bump workflow pushes its commit back to the branch.
+  let tagExists = false;
   try {
     run('git', ['rev-parse', tagName]);
-    console.log(`Plugin ${name}: tag ${tagName} already exists, skipping`);
-    continue;
+    tagExists = true;
   } catch {
-    // Tag doesn't exist — proceed
+    // Tag doesn't exist — proceed with current version
   }
 
-  // Update plugin.json if it had a pre-release suffix
+  if (tagExists) {
+    const [major, minor, patch] = releaseVersion.split('.').map(Number);
+    releaseVersion = `${major}.${minor}.${patch + 1}`;
+    tagName = `${name}-v${releaseVersion}`;
+
+    // Check the bumped tag too — skip only if both exist
+    try {
+      run('git', ['rev-parse', tagName]);
+      console.log(`Plugin ${name}: tag ${tagName} already exists, skipping`);
+      continue;
+    } catch {
+      // Good — bumped tag doesn't exist
+    }
+
+    console.log(`Plugin ${name}: tag ${name}-v${version.replace(/-.*$/, '')} exists, auto-bumping to ${releaseVersion}`);
+  }
+
+  // Update plugin.json if version changed
   if (version !== releaseVersion) {
     pkg.version = releaseVersion;
     writeFileSync(pluginJsonAbsolute, JSON.stringify(pkg, null, 2) + '\n');
