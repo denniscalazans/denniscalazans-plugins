@@ -19,6 +19,7 @@ Git workflow, knowledge distillation, video recording, markdown conventions, and
 | `/dc:writing` | Apply one-sentence-per-line markdown convention |
 | `/dc:figma-api` | Interact with the Figma REST API for design data, tokens, and exports |
 | `/dc:op` | Manage 1Password CLI secrets with safe `op run` patterns |
+| `/dc:investigate` | Explore codebase patterns and constraints before implementing, producing a TODAY IS / EXPECTED IS report |
 | `/dc:grill` | Stress-test a plan, design, or architecture through relentless prepared questioning |
 
 **Agent:** `strategic-thinking-partner` -- proactive strategic oversight and assumption challenging.
