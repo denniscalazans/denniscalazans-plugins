@@ -47,19 +47,22 @@ These work together as a pipeline: **brief** decodes messy input, **investigate*
 | `/dc:reset` | Return to main branch with a clean working directory |
 | `/dc:clean-branches` | Delete local branches already integrated into the default branch |
 | `/dc:writing` | Apply one-sentence-per-line markdown convention |
-| `/dc:record` | Record Retina-quality browser screencasts via CDP |
 | `/dc:figma-api` | Interact with the Figma REST API for design data, tokens, and exports |
 | `/dc:op` | Manage 1Password CLI secrets with safe `op run` patterns |
 
-#### Browser testing skills
+#### Browser skills
+
+These form a pipeline: **browser-login** authenticates, **navigate** generates flows, **record** captures evidence, **playwright-healer** fixes failures.
 
 | Command | What it does |
 |---------|-------------|
 | `/dc:browser-login` | Manage persistent browser sessions with playwright-cli and 1Password for authenticated apps |
 | `/dc:navigate` | Generate disposable Playwright .flow.ts files for exploratory browser testing |
+| `/dc:record` | Record Retina-quality browser screencasts via CDP |
 
-**Agents:** `strategic-thinking-partner` — proactive strategic oversight and assumption challenging.
-`playwright-healer` — debug and fix failing Playwright tests automatically.
+**Agents:**
+- `strategic-thinking-partner` — proactive strategic oversight and assumption challenging
+- `playwright-healer` — debug and fix failing Playwright tests automatically
 
 
 ### code-quality — SonarQube Integration
