@@ -21,6 +21,10 @@
     "grill",
     "design-interview",
     "investigate",
-    "codebase-discovery"
+    "codebase-discovery",
+    "browser-login",
+    "navigate",
+    "playwright",
+    "playwright-healer"
   ]
 }

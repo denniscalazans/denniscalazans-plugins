@@ -51,7 +51,15 @@ These work together as a pipeline: **brief** decodes messy input, **investigate*
 | `/dc:figma-api` | Interact with the Figma REST API for design data, tokens, and exports |
 | `/dc:op` | Manage 1Password CLI secrets with safe `op run` patterns |
 
-**Agent:** `strategic-thinking-partner` — proactive strategic oversight and assumption challenging.
+#### Browser testing skills
+
+| Command | What it does |
+|---------|-------------|
+| `/dc:browser-login` | Manage persistent browser sessions with playwright-cli and 1Password for authenticated apps |
+| `/dc:navigate` | Generate disposable Playwright .flow.ts files for exploratory browser testing |
+
+**Agents:** `strategic-thinking-partner` — proactive strategic oversight and assumption challenging.
+`playwright-healer` — debug and fix failing Playwright tests automatically.
 
 
 ### code-quality — SonarQube Integration
