@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/denniscalazans/denniscalazans-plugins/actions/workflows/ci.yml/badge.svg)](https://github.com/denniscalazans/denniscalazans-plugins/actions/workflows/ci.yml)
 [![SonarCloud](https://sonarcloud.io/api/project_badges/measure?project=denniscalazans_denniscalazans-plugins&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=denniscalazans_denniscalazans-plugins)
-[![codecov](https://codecov.io/gh/denniscalazans/denniscalazans-plugins/graph/badge.svg)](https://codecov.io/gh/denniscalazans/denniscalazans-plugins)
+[![codecov](https://codecov.io/gh/denniscalazans/denniscalazans-plugins/branch/main/graph/badge.svg?token=VS511CJ3HQ)](https://codecov.io/gh/denniscalazans/denniscalazans-plugins)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A personal collection of Claude Code plugins shaped by daily use.
