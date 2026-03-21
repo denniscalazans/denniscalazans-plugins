@@ -1,7 +1,7 @@
 {
   "name": "dc",
   "description": "General-purpose skills for git workflow, knowledge distillation, video recording, markdown writing, design interviews, and strategic thinking",
-  "version": "2.2.0",
+  "version": "2.2.1-pr.35",
   "author": {
     "name": "Dennis Calazans"
   },
@@ -21,6 +21,10 @@
     "grill",
     "design-interview",
     "investigate",
-    "codebase-discovery"
+    "codebase-discovery",
+    "browser-login",
+    "navigate",
+    "playwright",
+    "playwright-healer"
   ]
 }
