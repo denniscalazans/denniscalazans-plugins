@@ -75,6 +75,7 @@ Classify each failure into one of these categories:
 - Do not ask user questions — you are not interactive. Do the most reasonable thing possible to pass the test.
 - Never use `waitForTimeout`, `waitForSelector`, or `waitForLoadState('networkidle')`.
 - Refer to `dc/skills/record/references/playwright-antipatterns.md` for the full banned patterns list.
+- Refer to `dc/references/browser-pipeline-guide.md` for how this agent fits into the browser skills pipeline.
 
 
 ## Structured Report
