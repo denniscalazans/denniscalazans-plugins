@@ -4,15 +4,108 @@ on:
   push:
     branches: [main]
   pull_request:
+    types: [opened, synchronize]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
+  # ---------------------------------------------------------------------------
+  # Phase 1: Detect changes and bump versions (PR only)
+  # ---------------------------------------------------------------------------
+
+  # Detects which paths changed so version-bump can be skipped
+  # for PRs that only touch scripts, workflows, or project config.
+  changes:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    outputs:
+      needs-bump: ${{ steps.filter.outputs.plugin-paths }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          filters: |
+            plugin-paths:
+              - 'plugins/**'
+              - '.claude-plugin/**'
+              - '.claude/CLAUDE.md'
+
+  version-bump:
+    needs: changes
+    if: >-
+      needs.changes.outputs.needs-bump == 'true'
+      && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Bump versions for changed plugins
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          npx tsx scripts/bump-pr-versions.ts --base origin/main --pr "$PR_NUMBER"
+
+          if [ -f .bumped-plugins ]; then
+            NAMES=$(cat .bumped-plugins)
+            rm .bumped-plugins
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git commit -m "chore: bump version for ${NAMES}"
+            git push
+          else
+            echo "No plugins needed version bumping"
+          fi
+
+  # Gate job: required status check for branch protection.
+  # Passes when version-bump succeeds OR is skipped (push to main, non-plugin PR).
+  # Fails when version-bump fails or is cancelled.
+  version-bump-gate:
+    needs: version-bump
+    if: always() && !cancelled()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check version-bump result
+        env:
+          BUMP_RESULT: ${{ needs.version-bump.result }}
+        run: |
+          echo "version-bump result: $BUMP_RESULT"
+          if [[ "$BUMP_RESULT" == "success" || "$BUMP_RESULT" == "skipped" ]]; then
+            echo "Gate passed"
+          else
+            echo "Gate failed — version-bump result was: $BUMP_RESULT"
+            exit 1
+          fi
+
+  # ---------------------------------------------------------------------------
+  # Phase 2: Test and scan (runs AFTER version-bump on PR, directly on push)
+  # ---------------------------------------------------------------------------
+
   test:
+    needs: [version-bump]
+    # always() ensures this runs even when version-bump is skipped (push to main).
+    # !cancelled() prevents running if the workflow was manually cancelled.
+    if: always() && !cancelled()
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          # On PR: github.head_ref = branch name (includes bump commit).
+          # On push: github.head_ref is empty, falls back to github.ref.
+          ref: ${{ github.head_ref || github.ref }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -36,3 +129,32 @@ jobs:
           fail_ci_if_error: false
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: denniscalazans/denniscalazans-plugins
+
+  sonarcloud:
+    needs: [version-bump]
+    if: >-
+      always() && !cancelled()
+      && github.actor != 'dependabot[bot]'
+      && (github.event.pull_request.head.repo.full_name == github.repository || github.event_name == 'push')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref || github.ref }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests with coverage
+        run: npm run test:coverage
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarqube-scan-action@v7
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
