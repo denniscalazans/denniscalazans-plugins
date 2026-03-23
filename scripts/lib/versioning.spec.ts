@@ -4,7 +4,6 @@ import {
   parseVersion,
   isHigher,
   stripPreRelease,
-  computePrVersion,
   computeReleaseVersion,
   type SemVer,
 } from './versioning.js';
@@ -66,21 +65,6 @@ describe('stripPreRelease', () => {
 
   it('handles complex pre-release suffixes', () => {
     assert.strictEqual(stripPreRelease('1.0.0-beta.1.rc.2'), '1.0.0');
-  });
-});
-
-
-describe('computePrVersion', () => {
-  it('bumps patch and adds pr suffix from base version', () => {
-    assert.strictEqual(computePrVersion('2.1.0', 19), '2.1.1-pr.19');
-  });
-
-  it('bumps patch from a version that already has pre-release', () => {
-    assert.strictEqual(computePrVersion('1.0.0-pr.5', 12), '1.0.1-pr.12');
-  });
-
-  it('works with version 1.0.0 and PR 1', () => {
-    assert.strictEqual(computePrVersion('1.0.0', 1), '1.0.1-pr.1');
   });
 });
 
