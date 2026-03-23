@@ -148,7 +148,9 @@ CRF 22 keeps text crisp (CRF 26+ makes text blurry at Retina resolution).
 
 If the app requires login:
 - Pre-authenticate the dev server session before recording
-- Or use the `auth0-login` skill first if available
+- Or use the `dc:browser-login` skill first
+
+For a full overview of how the browser skills connect, see `dc/references/browser-pipeline-guide.md`.
 
 ## Common Mistakes
 
