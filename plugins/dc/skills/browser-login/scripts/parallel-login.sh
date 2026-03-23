@@ -34,7 +34,8 @@ fi
 PROFILES_DIR=".agents.local/login"
 SCRIPTS_DIR="$(cd "$(dirname "$0")" && pwd)"
 LOGIN_SCRIPT="${SCRIPTS_DIR}/login.sh"
-LOG_DIR=$(mktemp -d "/tmp/parallel-login-XXXXXX")
+LOG_DIR=".agents.tmp/.parallel-login/$(date +%Y%m%d-%H%M%S)-$$"
+mkdir -p "$LOG_DIR"
 
 # --- Validate all profiles exist (fail fast) ---
 MISSING=0
