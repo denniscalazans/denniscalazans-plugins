@@ -188,6 +188,8 @@ This makes `parallel-login.sh` safe to re-run.
 - **dc:record** — pre-authenticate before recording browser flows
 - **dc:navigate** — persistent sessions for exploratory flow files (if installed)
 
+For a full overview of how these skills connect, see `dc/references/browser-pipeline-guide.md`.
+
 
 ## Troubleshooting
 

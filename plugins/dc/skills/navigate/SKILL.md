@@ -218,6 +218,8 @@ Copy these into your project's Playwright helpers directory and import as needed
 - **dc:record** — record flows as MP4/GIF for PR evidence
 - **dc:op** — inject credentials securely via 1Password
 
+For a full overview of how these skills connect, see `dc/references/browser-pipeline-guide.md`.
+
 
 ## Limitations
 
