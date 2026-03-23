@@ -28,11 +28,6 @@ export function stripPreRelease(version: string): string {
   return version.replace(/-.*$/, '');
 }
 
-export function computePrVersion(mainVersion: string, prNumber: number): string {
-  const { major, minor, patch } = parseVersion(mainVersion);
-  return `${major}.${minor}.${patch + 1}-pr.${prNumber}`;
-}
-
 export function computeReleaseVersion(
   pluginName: string,
   currentVersion: string,

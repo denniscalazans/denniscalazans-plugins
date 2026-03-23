@@ -56,8 +56,7 @@ Old `v*` tags are kept as historical artifacts.
 
 
 **Automatic patch bumps:**
-- PR opened/updated with plugin changes -> each changed plugin gets `X.Y.(Z+1)-pr.N` (pre-release)
-- PR merged to main -> strips pre-release suffix, creates git tag `<plugin>-v<version>` + GitHub Release
+- PR merged to main -> auto-bumps patch if tag exists, creates git tag `<plugin>-v<version>` + GitHub Release
 
 
 **Manual major/minor bumps:**
@@ -66,13 +65,6 @@ Old `v*` tags are kept as historical artifacts.
 npx tsx scripts/bump-version.ts --version 2.0.0 --plugin dc
 npx tsx scripts/bump-version.ts --version 1.1.0 --plugin code-quality
 npx tsx scripts/bump-version.ts --version 3.0.0   # defaults to dc
-```
-
-
-**Test a PR version locally:**
-
-```bash
-/plugins install dc@denniscalazans-plugins#<pr-branch>
 ```
 
 ---
