@@ -1,7 +1,7 @@
 {
   "name": "dc",
   "description": "General-purpose skills for thinking workflows, browser automation, git workflow, knowledge distillation, markdown writing, and code quality",
-  "version": "2.2.3-pr.37",
+  "version": "2.2.4-pr.39",
   "author": {
     "name": "Dennis Calazans"
   },
