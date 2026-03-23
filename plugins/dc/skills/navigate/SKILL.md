@@ -93,19 +93,31 @@ Write the `.flow.ts` file.
 
 ```typescript
 import { test as base, type Page } from '@playwright/test';
+import * as fs from 'fs';
 
 const FLOW_DIR = '.agents.tmp/<ticket>/playwright/<flow-name>';
 const SCREENSHOTS_DIR = `${FLOW_DIR}/screenshots`;
 
-// Simple test fixture — adapt auth as needed for your project.
-const test = base;
+// Auth injected via environment — one flow file, multiple roles.
+const role = process.env.FLOW_ROLE || 'default';
+const app = process.env.FLOW_APP || 'app';
+
+// Input validation (path traversal prevention).
+if (!/^[a-zA-Z0-9_-]+$/.test(role)) throw new Error(`Invalid FLOW_ROLE: ${role}`);
+if (!/^[a-zA-Z0-9_-]+$/.test(app)) throw new Error(`Invalid FLOW_APP: ${app}`);
+
+const authPath = `.agents.tmp/.auth/${app}-${role}.json`;
+
+// Use storageState if auth file exists, otherwise run unauthenticated.
+const test = fs.existsSync(authPath)
+  ? base.extend({ storageState: authPath })
+  : base;
 
 test('<flow description>', async ({ page }) => {
   await page.goto('<route>');
 
   // ... interactions ...
 
-  // Take a screenshot at a key moment.
   await page.screenshot({
     path: `${SCREENSHOTS_DIR}/01-step-name.png`,
     animations: 'disabled',
@@ -113,7 +125,10 @@ test('<flow description>', async ({ page }) => {
 });
 ```
 
-If the project provides `createFlowTest()` from a helpers bundle, use it for authentication:
+**FLOW_ROLE is the preferred approach for role-agnostic flows.**
+Set `FLOW_ROLE` and `FLOW_APP` as environment variables; the template resolves auth automatically.
+
+If the project provides `createFlowTest()` from a helpers bundle, use it as an alternative:
 
 ```typescript
 import { createFlowTest, screenshot } from '../../.claude/skills/navigate/helpers/flow-helpers';
@@ -163,6 +178,21 @@ npx playwright test --config .claude/skills/navigate/playwright.config.ts <path-
 
 When a specific file is passed, Playwright ignores `testMatch` and `testDir` from the config — only `use`, `timeout`, and `outputDir` settings apply.
 
+### Running with a specific role
+
+```bash
+FLOW_ROLE=partner FLOW_APP=myapp npx playwright test <path-to-flow-file>
+```
+
+### Running across multiple roles
+
+Use the bundled `run-flow-roles.sh` script to run the same flow as different roles and compare results:
+
+```bash
+SCRIPTS_DIR="${CLAUDE_SKILL_DIR}/scripts"
+"$SCRIPTS_DIR/run-flow-roles.sh" <path-to-flow-file> <app> <role1> <role2> ...
+```
+
 
 ## Screenshot Guidelines
 
@@ -184,9 +214,15 @@ Copy these into your project's Playwright helpers directory and import as needed
 
 ## Integration with Other Skills
 
-- **dc:browser-login** — authenticate before running flows that require login
+- **dc:browser-login** — authenticate before running flows that require login; use `export-auth.ts` to extract storageState for role-agnostic flows
 - **dc:record** — record flows as MP4/GIF for PR evidence
 - **dc:op** — inject credentials securely via 1Password
+
+
+## Limitations
+
+- **storageState** exports cookies and localStorage only — NOT IndexedDB, SessionStorage, or Service Workers.
+If the app stores auth tokens in IndexedDB (e.g., MSAL, Auth0 SPA), use playwright-cli persistent sessions directly instead of storageState.
 
 
 ## Banned Patterns
@@ -197,5 +233,17 @@ Key rules:
 - **Never** use `waitForTimeout` — masks real timing issues
 - **Never** use `waitForLoadState('networkidle')` — unreliable with live content
 - **Never** use inflated timeouts — find and fix the actual cause
+- **Never** read, cat, or display `.agents.tmp/.auth/*.json` files — they contain session tokens.
+Reference auth files by path only; let Playwright load them internally.
 - **Prefer** `expect(locator).toBeVisible()` over manual boolean checks
 - **Use** `Promise.all([waitForResponse, action])` for mutation operations
+
+
+## Common Mistakes
+
+| Do NOT | Do instead |
+|--------|-----------|
+| Read `.agents.tmp/.auth/*.json` to check auth | Use `fs.existsSync()` to check existence only |
+| Print storageState contents in flow files | Reference auth path; Playwright loads it internally |
+| Hardcode role credentials in flow files | Use `FLOW_ROLE` env var with the storageState template |
+| Use `waitForTimeout` for timing | Use `expect(locator).toBeVisible()` or `waitForResponse` |
