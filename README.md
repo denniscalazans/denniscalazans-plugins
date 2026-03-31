@@ -83,6 +83,25 @@ SonarQube-driven code quality workflows via MCP.
 **Agent:** `code-quality-agent` — orchestrates multi-step quality workflows (audits, batch fixes, PR reviews).
 
 
+### browser — Unified Browser Automation
+
+Context-efficient browser automation combining [agent-browser](https://github.com/anthropics/agent-browser) for lightweight exploration with Playwright for Retina recording — both on a shared Chrome session.
+
+| Command | What it does |
+|---------|-------------|
+| `/browser:login` | Authenticate into web apps using agent-browser + 1Password |
+| `/browser:explore` | Inspect pages, generate replayable flows, record Retina videos — three modes, one skill |
+
+**Agent:** `playwright-healer` — debug and fix failing Playwright flows using interaction log context
+
+**Requires:** `npm i -g agent-browser && agent-browser install`
+
+**Install:**
+```bash
+/plugins install browser@denniscalazans-plugins
+```
+
+
 ## Contributing
 
 Contributions are welcome.

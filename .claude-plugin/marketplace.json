@@ -18,6 +18,12 @@
       "description": "SonarQube-driven code quality skills for checking quality gates, browsing issues, fixing violations, verifying fixes locally, and triaging false positives",
       "source": "./plugins/code-quality",
       "category": "productivity"
+    },
+    {
+      "name": "browser",
+      "description": "Unified browser automation: lightweight exploration via agent-browser + Retina recording via Playwright on a shared Chrome session",
+      "source": "./plugins/browser",
+      "category": "productivity"
     }
   ]
 }
