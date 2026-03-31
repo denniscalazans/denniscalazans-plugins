@@ -60,6 +60,7 @@ if (!pluginEntry) {
   const available = (marketplace.plugins ?? []).map(p => p.name).join(', ');
   console.error(`Plugin "${pluginName}" not found in marketplace.json. Available: ${available}`);
   process.exit(1);
+  throw new Error('unreachable');
 }
 
 const sourcePath = pluginEntry.source.replace(/^\.\//, '');
