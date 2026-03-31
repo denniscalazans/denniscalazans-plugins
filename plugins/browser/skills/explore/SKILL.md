@@ -84,12 +84,13 @@ Map each log entry to Playwright API calls using captured selectors.
 Connect to the existing Chrome session via `connectOverCDP` — never launch a new browser.
 
 Read `references/flow-template.ts` in this skill's directory for the full template.
+Read `references/playwright-antipatterns.md` for banned patterns to avoid in generated flows.
 
 ### Step 3: Write the flow file
 
 Output path: `.agents.tmp/<ticket>/playwright/<flow-name>/<flow-name>.flow.ts`
 
-**Two-track architecture:**
+Flows follow a two-track model that separates exploratory work from committed tests.
 
 | | Track 2 — Exploratory Flows | Track 1 — Committed Tests |
 |---|---|---|

@@ -1,8 +1,8 @@
 ---
 name: playwright-healer
 description: >
-  Use this agent to debug and fix failing Playwright flows automatically.
-  Runs failing flows, diagnoses root causes using agent-browser snapshots and the interaction log,
+  Use this agent when a Playwright flow is failing and needs automated diagnosis and repair.
+  Diagnoses root causes using agent-browser snapshots and the interaction log,
   edits flow code, and re-runs until flows pass.
   Also use when the explore skill's flow or record mode produces a failing flow file.
   Triggers: "heal tests", "fix playwright", "tests are failing", "debug e2e",
@@ -68,7 +68,7 @@ When updating selectors, follow the priority order:
 5. Structural CSS
 6. Role + accessible name (last resort — fragile with translations)
 
-Read `references/selector-strategy.md` for details.
+Read `skills/explore/references/selector-strategy.md` for details.
 
 ## Key Principles
 
@@ -78,7 +78,7 @@ Read `references/selector-strategy.md` for details.
 - Do not ask user questions — make the most reasonable fix.
 - If the error persists and you have high confidence the flow is correct, mark it as `test.fixme()`.
 - Never use `waitForTimeout` in test assertions (OK in recording flows for pacing).
-- Refer to `references/playwright-antipatterns.md` for banned patterns.
+- Refer to `skills/explore/references/playwright-antipatterns.md` for banned patterns.
 
 ## Structured Report
 

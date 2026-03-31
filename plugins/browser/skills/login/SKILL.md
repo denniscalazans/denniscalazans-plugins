@@ -6,8 +6,7 @@ description: >
   named agent-browser sessions.
   Handles automated login via snapshot+refs discovery, session reuse, parallel multi-role login,
   and already-authenticated detection.
-  agent-browser's fill command uses CDP Input.insertText which bypasses Auth0 and Angular Material
-  JS event listeners — unlike playwright-cli which gets blocked.
+  Handles form-based login including Auth0 and Angular Material via agent-browser's fill command.
   Triggers: "login", "browser session", "authenticate", "agent-browser", "persistent session",
   "op run", "log in as", "switch user", "open app", "browser login".
 ---
