@@ -1,0 +1,22 @@
+{
+  "name": "browser",
+  "description": "Unified browser automation: lightweight exploration via agent-browser + Retina recording via Playwright on a shared Chrome session",
+  "version": "1.0.0",
+  "author": {
+    "name": "Dennis Calazans"
+  },
+  "keywords": [
+    "browser",
+    "agent-browser",
+    "playwright",
+    "explore",
+    "login",
+    "record",
+    "screencast",
+    "snapshot",
+    "refs",
+    "connectOverCDP",
+    "1password",
+    "op"
+  ]
+}

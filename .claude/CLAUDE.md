@@ -44,6 +44,7 @@ npm run test:scripts
 |--------|-------------|--------|--------|
 | `dc` | General-purpose: git workflow, distillation, video recording, markdown writing, design interviews, codebase investigation, browser testing, strategic thinking | `reset`, `clean-branches`, `distill`, `brief`, `writing`, `record`, `figma-api`, `op`, `grill`, `investigate`, `browser-login`, `navigate` | `strategic-thinking-partner`, `playwright-healer` |
 | `code-quality` | SonarQube-driven code quality workflows via MCP | `sonar-status`, `sonar-issues`, `sonar-fix`, `sonar-verify`, `sonar-triage`, `sonar-rule`, `sonar-setup`, `sonar-env` | `code-quality-agent` |
+| `browser` | Unified browser automation: agent-browser exploration + Playwright recording on shared Chrome | `login`, `explore` | `playwright-healer` |
 
 ## Versioning
 
