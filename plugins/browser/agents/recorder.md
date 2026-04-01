@@ -138,7 +138,7 @@ Check file sizes are reasonable (MP4 > 10 KB, GIF > 5 KB).
 
 ## Quality Standards
 
-- **Selector priority:** `data-test-id` > `id` > `name` + tag > `formcontrolname` > structural CSS > role + accessible name.
+- **Selector priority:** `data-test-id` / `data-testid` > `id` > `name` + tag > `formcontrolname` > structural CSS > role + accessible name.
 - **No banned patterns:** read `skills/explore/references/playwright-antipatterns.md` before generating flows.
 - **Viewport setup:** run `agent-browser set viewport 1440 900 2` before connecting Playwright — sets Retina (2x) directly. The recording template still uses CDP `Emulation.setDeviceMetricsOverride` as a fallback when the viewport command is unavailable.
 - **Cursor injection:** red dot (20px), yellow flash on click — via `page.evaluate()`, not `addInitScript()`.
