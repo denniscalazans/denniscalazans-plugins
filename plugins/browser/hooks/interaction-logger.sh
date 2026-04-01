@@ -97,9 +97,9 @@ case "$AB_CMD" in
     formControl: el.getAttribute('formcontrolname') || '',
     role: el.getAttribute('role') || el.tagName.toLowerCase(),
     text: (el.textContent || '').trim().substring(0, 30),
-    selector: el.id ? '#' + el.id
-      : el.getAttribute('data-test-id') ? '[data-test-id="' + el.getAttribute('data-test-id') + '"]'
+    selector: el.getAttribute('data-test-id') ? '[data-test-id="' + el.getAttribute('data-test-id') + '"]'
       : el.getAttribute('data-testid') ? '[data-testid="' + el.getAttribute('data-testid') + '"]'
+      : el.id ? '#' + el.id
       : el.getAttribute('name') ? el.tagName.toLowerCase() + '[name="' + el.getAttribute('name') + '"]'
       : el.getAttribute('formcontrolname') ? '[formcontrolname="' + el.getAttribute('formcontrolname') + '"]'
       : ''
