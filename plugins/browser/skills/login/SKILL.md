@@ -76,12 +76,14 @@ The `op run` wrapper:
 ### Step 4: Verify authentication
 
 ```bash
-agent-browser wait --load networkidle
-agent-browser wait 3000
+agent-browser wait --text "Dashboard" || agent-browser wait --load networkidle
 agent-browser get url
 ```
 
+Prefer `wait --text` with a known post-login indicator (e.g., "Dashboard", "Welcome") over `wait --load networkidle`.
 If the URL is on the app domain (not an auth provider URL), login succeeded.
+
+If verification times out, check `agent-browser dialog status` — auth flows sometimes trigger JS dialogs that block all commands.
 
 ### Already-authenticated detection
 
@@ -188,3 +190,5 @@ agent-browser close --all
 | Assume the login form is immediately visible | Snapshot first; the app may have a landing page |
 | Use `agent-browser type` for auth forms | Use `agent-browser fill` — it bypasses JS listeners |
 | Skip `--session` flag | Always name sessions for reusability: `--session <app>-<role>` |
+| Use `wait 3000` after login submission | Use `wait --text "Dashboard"` or `wait --url "**/dashboard"` for reliable verification |
+| Ignore timeouts during login | Check `agent-browser dialog status` — auth dialogs block all commands silently |

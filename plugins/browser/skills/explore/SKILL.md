@@ -50,6 +50,20 @@ If a required tool is missing, report it clearly before proceeding.
 | **Flow** | "create a flow", "make this replayable" | agent-browser then Playwright `connectOverCDP` | `.flow.ts` |
 | **Record** | "record this", `--record`, "make a video" | agent-browser then Playwright `connectOverCDP` + CDP screencast | `.flow.ts` + MP4/GIF |
 
+### Phase order: Inspect → Generate → Run → Heal
+
+Modes are **sequential phases**, not alternatives.
+Flow and Record mode **require a complete interaction log** before they start.
+
+1. **Inspect** — explore the app with agent-browser. Every command is auto-logged. Continue until all intended interactions are captured.
+2. **Generate** — read the complete log, write the complete `.flow.ts` in one pass. Do NOT run the flow between writing steps.
+3. **Run** — execute the finished `.flow.ts` once.
+4. **Heal** — if the run fails, dispatch `browser:playwright-healer` to fix the flow and re-run.
+
+If the user says "record this" or "create a flow" but no interaction log exists yet, **start with Inspect mode first**.
+Explore the app, build the log, then proceed to Generate.
+Never write flow steps incrementally while exploring — the log is the handoff between phases.
+
 
 ## Inspect Mode
 
@@ -57,13 +71,26 @@ Use agent-browser commands directly against the shared Chrome session.
 
 - `agent-browser open <url>` — navigate to a URL.
 - `agent-browser snapshot -i` — capture current page state (aria tree, refs, text).
+- `agent-browser screenshot --annotate` — visual snapshot with numbered labels on interactive elements; use when `snapshot -i` is insufficient (canvas, icon buttons, spatial layouts). Refs are cached — interact immediately after.
 - `agent-browser click @ref` — click an element by its ref id.
-- `agent-browser fill @ref` — type into an input by ref.
+- `agent-browser fill @ref "text"` — type into an input by ref.
 - `agent-browser scroll` — scroll the page.
-- `agent-browser wait` — wait for a condition or timeout.
+- `agent-browser wait --text "Welcome"` — wait for visible text (preferred). Also: `--url "**/path"`, `--fn "expression"`, `@ref`, `--load networkidle` (last resort).
 - `agent-browser eval` — execute JavaScript for DOM inspection.
 - `agent-browser screenshot` — visual capture of the current viewport.
-- `agent-browser diff snapshot` — compare two snapshots to detect state changes.
+- `agent-browser diff snapshot` — text diff of accessibility tree after an interaction.
+- `agent-browser diff screenshot --baseline before.png` — pixel diff with mismatch percentage.
+- `agent-browser dialog status` — check for pending JS dialogs. Use `dialog accept` / `dialog dismiss` to unblock. Dialogs block all commands until dismissed.
+
+**Efficiency:** chain independent commands with `&&` when intermediate output is not needed:
+
+```bash
+agent-browser open <url> && agent-browser wait --load networkidle && agent-browser snapshot -i
+```
+
+For longer known sequences, pipe a JSON array to `agent-browser batch --json`.
+
+**Security:** enable `AGENT_BROWSER_CONTENT_BOUNDARIES=1` to wrap page output in nonce-tagged markers — guards against prompt injection from untrusted pages.
 
 No files are generated in Inspect mode.
 No Playwright is involved.
@@ -72,11 +99,14 @@ The interaction logger hook auto-logs every command to `.agents.tmp/.browser-log
 
 ## Flow Mode
 
-When a replayable flow is needed, translate the interaction log into a Playwright `.flow.ts` file.
+When a replayable flow is needed, translate the **complete** interaction log into a Playwright `.flow.ts` file in **one pass**.
+Do NOT write a step, run the flow, append the next step, run again — that causes O(n²) cumulative replay.
+Write the complete file, then run it once.
 
-### Step 1: Read the interaction log
+### Step 1: Read the complete interaction log
 
 Read `.agents.tmp/.browser-log/session.jsonl` — it contains selectors, element metadata, and interaction order captured automatically during Inspect mode.
+If the log is empty or missing, go back to Inspect mode first — Flow mode cannot start without a complete log.
 
 ### Step 2: Translate to Playwright
 
@@ -85,6 +115,9 @@ Connect to the existing Chrome session via `connectOverCDP` — never launch a n
 
 Read `references/flow-template.ts` in this skill's directory for the full template.
 Read `references/playwright-antipatterns.md` for banned patterns to avoid in generated flows.
+
+In generated flows, prefer `page.getByText('Welcome').waitFor()` over `page.waitForLoadState('networkidle')` when a specific UI state is expected.
+Use `agent-browser wait --text` during Inspect mode to discover the right text anchor before codifying it in the flow.
 
 ### Step 3: Write the flow file
 
@@ -114,10 +147,23 @@ The flow template reads `.agents.tmp/.auth/<app>-<role>.json` when the file exis
 ## Record Mode
 
 Record mode is Flow mode plus CDP screencast.
+**This mode is token-intensive** — dispatch to the `browser:recorder` agent to keep the main context lean.
 
-Read `references/recording-template.ts` in this skill's directory for the full template.
+### Dispatch to recorder agent
 
-### Key technical details
+When the user triggers Record mode, dispatch to the `browser:recorder` agent with:
+
+- **ticket** — extract from branch name (e.g., `feat/ffa-475-...` → `ffa-475`); fallback to `recording`.
+- **summary** — 2-4 word kebab-case slug from the user's request (e.g., `site-creation`).
+- **app URL** — the base URL of the app being recorded.
+- **interaction log path** — `.agents.tmp/.browser-log/session.jsonl`.
+- **produce GIF** — `true` if the user said `--gif` or asked for a GIF.
+- **flow description** — what the recording should demonstrate.
+
+The recorder agent reads the interaction log, generates a Playwright recording flow from `references/recording-template.ts`, executes it with CDP screencast, stitches frames via ffmpeg, and returns the output path.
+If the flow fails, the recorder agent invokes the `browser:playwright-healer` agent internally.
+
+### What happens inside the recorder agent
 
 - **Viewport:** 1440x900 at `deviceScaleFactor: 2` = 2880x1800 Retina frames.
 - **Cursor:** Red dot (20px), yellow flash on click, MutationObserver re-creation on DOM changes.
@@ -125,7 +171,7 @@ Read `references/recording-template.ts` in this skill's directory for the full t
 - **CDP screencast:** `Page.startScreencast` at Retina resolution — yields PNG frames with wall-clock timestamps.
 - **ffmpeg MP4:** 12fps, H.264, CRF 22, `-tune animation` — keeps text crisp at Retina resolution.
 - **ffmpeg GIF:** 6fps, `hqdn3d` denoise, palette-optimized — append `--gif` to also generate a GIF.
-- **After every navigation:** call `navigateAndInject()` instead of `page.goto()` to re-inject cursor and keep-rendering scripts.
+- **After every navigation:** `navigateAndInject()` re-injects cursor and keep-rendering scripts.
 - **Disconnect:** reset viewport and disconnect Playwright after recording completes.
 
 ### Output paths
@@ -135,10 +181,10 @@ Read `references/recording-template.ts` in this skill's directory for the full t
 .agents.tmp/recordings/YYYYMMDD-<ticket>-<summary>.gif   (with --gif)
 ```
 
-**Filename derivation:**
+### What the main agent receives
 
-1. **Ticket** — extract from branch name (e.g., `feat/ffa-475-...` → `ffa-475`); fallback to `recording`.
-2. **Summary** — 2-4 word kebab-case slug from the user's request (e.g., `site-creation`).
+The recorder agent returns a structured report with the output file path(s) and file sizes.
+No frame data, ffmpeg logs, or healing iterations leak into the main context.
 
 
 ## Selector Strategy
@@ -194,3 +240,8 @@ Same agent-browser session means no additional auth wiring for flows or recordin
 | Skip the interaction log | Read it first — it has selectors and element metadata |
 | Use text-based selectors as first choice | Follow selector priority: test-id > id > name > formcontrol > CSS > role |
 | Commit `.agents.tmp/` files | Track 2 is gitignored; promote to Track 1 when proven |
+| Default to `wait --load networkidle` for every wait | Use `wait --text`, `wait --url`, or `wait @ref` when a specific condition is known |
+| Ignore unexpected command timeouts | Check `agent-browser dialog status` — a pending dialog blocks everything |
+| Issue many single-command Bash calls for a known sequence | Chain with `&&` or use `agent-browser batch --json` |
+| Write flow steps incrementally, running after each append | Write the complete `.flow.ts` from the log in one pass, run once at the end |
+| Start Flow/Record mode without a complete interaction log | Complete Inspect mode first — the log is the handoff between phases |

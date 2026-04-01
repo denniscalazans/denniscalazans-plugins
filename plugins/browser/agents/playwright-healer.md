@@ -40,7 +40,11 @@ When a selector fails, compare the flow's Playwright selector against the intera
 3. **Run the flow** with `npx tsx <flow-file>` to see the actual error.
 4. **Diagnose** using agent-browser:
    - `agent-browser snapshot -i` to see the current page state
+   - `agent-browser screenshot --annotate` when spatial layout or visual elements matter
    - `agent-browser eval` to inspect specific elements
+   - `agent-browser diff snapshot` to compare before/after an attempted fix
+   - `agent-browser diff screenshot --baseline before.png` for visual regression checks
+   - `agent-browser dialog status` to check for pending JS dialogs blocking the flow
    - Compare actual page state against the flow's expected selectors
 5. **Fix the flow code** — update selectors, fix assertions, improve timing.
 6. **Re-run** to verify the fix.
@@ -53,7 +57,8 @@ Classify each failure:
 | Category | Symptoms | Typical Fix |
 |---|---|---|
 | **Selector** | Element not found, strict mode violation | Update selector using interaction log's captured metadata |
-| **Timing** | Timeout waiting for element/response | Add `page.waitForTimeout()` or `expect(locator).toBeVisible()` |
+| **Timing** | Timeout waiting for element/response | Add `expect(locator).toBeVisible()` or `page.getByText('...').waitFor()` — prefer text/element waits over `waitForTimeout` |
+| **Dialog** | Commands hang, unexpected timeout | Check `agent-browser dialog status` — a pending dialog blocks all commands; use `dialog accept` or `dialog dismiss` |
 | **Auth** | Redirected to login, 401 errors | Re-run `/browser:login` to refresh the agent-browser session |
 | **Navigation** | Wrong URL, page not loading | Fix URL, check dev server, use `navigateAndInject()` for recording flows |
 | **Data** | Assertion mismatch on dynamic values | Use regex matchers, make assertions resilient |
