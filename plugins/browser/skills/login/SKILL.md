@@ -158,8 +158,9 @@ This is expected behavior; approve each prompt as it appears.
 
 ### List sessions
 
-There is no built-in `agent-browser session list` equivalent.
-Use `agent-browser get url` to check if a session is active.
+```bash
+agent-browser session list
+```
 
 ### Close a session
 

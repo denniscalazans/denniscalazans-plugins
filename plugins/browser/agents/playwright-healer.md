@@ -20,7 +20,7 @@ description: >
   assistant: "I'll use the playwright-healer agent to update the selectors."
   </example>
 tools: Glob, Grep, Read, LS, Edit, MultiEdit, Write, Bash
-model: sonnet
+model: inherit
 color: orange
 ---
 
