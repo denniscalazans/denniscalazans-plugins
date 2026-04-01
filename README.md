@@ -92,7 +92,9 @@ Context-efficient browser automation combining [agent-browser](https://github.co
 | `/browser:login` | Authenticate into web apps using agent-browser + 1Password |
 | `/browser:explore` | Inspect pages, generate replayable flows, record Retina videos — three modes, one skill |
 
-**Agent:** `playwright-healer` — debug and fix failing Playwright flows using interaction log context
+**Agents:**
+- `recorder` — generates and executes Retina recordings as a subagent, keeping the main context lean
+- `playwright-healer` — debug and fix failing Playwright flows using interaction log context
 
 **Requires:** `npm i -g agent-browser && agent-browser install`
 
