@@ -7,7 +7,6 @@ description: >
   Tool-aware — detects available analysis tools and degrades gracefully.
   Triggers: "evaluate code", "check implementation", "adversarial review".
 tools: Read, Grep, Glob, Bash
-model: sonnet
 color: orange
 ---
 

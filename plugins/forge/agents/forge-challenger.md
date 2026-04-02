@@ -6,7 +6,6 @@ description: >
   Autonomous — does its own homework instead of asking questions.
   Triggers: "challenge the plan", "find gaps", "adversarial review", "stress test PRD".
 tools: Read, Grep, Glob, Bash, WebSearch, WebFetch
-model: sonnet
 color: purple
 ---
 

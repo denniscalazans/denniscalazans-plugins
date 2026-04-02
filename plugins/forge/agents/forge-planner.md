@@ -6,7 +6,6 @@ description: >
   Read-only — analyzes codebase patterns but never writes implementation code.
   Triggers: "plan implementation", "design approach", "create implementation plan".
 tools: Read, Grep, Glob, WebSearch, WebFetch
-model: sonnet
 color: blue
 ---
 
