@@ -1,10 +1,9 @@
 ---
 name: forge-challenger
 description: >
-  Use this agent to adversarially review an investigation report or PRD before implementation.
+  Use this agent when an investigation report or PRD needs adversarial review before implementation.
   Finds edge cases, missed codebase patterns, gaps in requirements, and ignored conventions.
   Autonomous — does its own homework instead of asking questions.
-  Returns a structured challenge report with findings and refined requirements.
   Triggers: "challenge the plan", "find gaps", "adversarial review", "stress test PRD".
 tools: Read, Grep, Glob, Bash, WebSearch, WebFetch
 model: sonnet

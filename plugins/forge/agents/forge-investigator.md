@@ -1,9 +1,9 @@
 ---
 name: forge-investigator
 description: >
-  Use this agent to explore a codebase systematically before implementation.
-  Produces a "TODAY IS / EXPECTED IS" report grounded in file paths, finds existing
-  patterns and conventions, and auto-generates evaluator-criteria.md if none exists.
+  Use this agent when codebase exploration is needed before implementation.
+  Use this agent when evaluator-criteria.md does not exist and needs auto-generation.
+  Produces a "TODAY IS / EXPECTED IS" report grounded in file paths.
   Read-only — never writes code or proposes implementations.
   Triggers: "investigate codebase", "explore before implementing", "map patterns",
   "generate evaluator criteria".

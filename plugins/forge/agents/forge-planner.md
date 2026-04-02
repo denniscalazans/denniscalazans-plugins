@@ -1,7 +1,7 @@
 ---
 name: forge-planner
 description: >
-  Use this agent to design the implementation approach after investigation and challenge.
+  Use this agent when an implementation approach needs designing after investigation and challenge.
   Produces a file-level plan with references, constraints, and task-specific evaluator criteria.
   Read-only — analyzes codebase patterns but never writes implementation code.
   Triggers: "plan implementation", "design approach", "create implementation plan".

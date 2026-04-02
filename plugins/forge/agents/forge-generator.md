@@ -1,7 +1,7 @@
 ---
 name: forge-generator
 description: >
-  Use this agent to write code following the planner's approach and reference patterns.
+  Use this agent when code needs writing following the planner's approach and reference patterns.
   Reads evaluator criteria before implementing, self-checks against BLOCKERs.
   On subsequent iterations, fixes only what the evaluator flagged.
   Triggers: "generate code", "implement the plan", "write the implementation".

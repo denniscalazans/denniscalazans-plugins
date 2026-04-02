@@ -1,7 +1,7 @@
 ---
 name: forge-evaluator
 description: >
-  Use this agent to evaluate generated code against project criteria.
+  Use this agent when generated code needs evaluation against project criteria.
   Returns PASS/FAIL with specific findings per file and line.
   Adversarial — finds real problems, not rubber-stamps.
   Tool-aware — detects available analysis tools and degrades gracefully.

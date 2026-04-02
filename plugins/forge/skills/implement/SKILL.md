@@ -1,12 +1,12 @@
 ---
 name: implement
 description: >
-  Adversarial implementation pipeline — orchestrates investigator, challenger, planner,
-  generator, and evaluator agents in a GAN-inspired loop.
-  Routes dynamically: trivial tasks skip early agents, clear PRDs skip investigation.
-  Auto-generates evaluator criteria on first run in a project.
-  Triggers: "implement", "forge implement", "adversarial pipeline",
-  "build with forge", "implement feature".
+  Use when implementing features, fixes, or infrastructure changes that modify code.
+  Use when the user wants adversarial quality checking before committing.
+  Do not use for trivial single-file changes like typos or comment edits.
+  Triggers: "implement", "forge implement", "implement this ticket",
+  "build this feature", "start implementing", "implement feature",
+  "adversarial pipeline", "build with forge".
 ---
 
 # /forge:implement — Adversarial Implementation Pipeline
@@ -32,7 +32,7 @@ Use judgment: if the task touches 1 file with an obvious change, just do it dire
 
 ## Audit Trail
 
-Each invocation writes a feedback file at `.agents.tmp/forge/feedback-{timestamp}.md`.
+Each invocation writes a feedback file at `.agents.tmp/forge/feedback-YYYYMMDD-{description}.md`.
 This records each agent's output, evaluator findings, iteration count, and tool availability.
 Git-auditable trail of every pipeline run.
 
@@ -128,7 +128,7 @@ Spawn the `forge-evaluator` agent with:
 - Report success to the user
 - Show the evaluator's summary (BLOCKERs: 0, WARNINGs: N)
 - Show tool availability (what was checked vs. skipped)
-- Write audit trail to `.agents.tmp/forge/feedback-{timestamp}.md`
+- Write audit trail to `.agents.tmp/forge/feedback-YYYYMMDD-{description}.md`
 
 ### If verdict is FAIL and iteration < 3:
 - Show the evaluator's findings briefly
@@ -160,7 +160,7 @@ Spawn the `forge-evaluator` agent with:
 - **Each agent gets full context** — don't summarize, pass complete output
 - **The evaluator criteria file is the contract** — generator and evaluator both read it
 - **Pass planner constraints to evaluator** — prevents false positives on deferred items
-- **Skip evaluator when deterministic tests exist** — if the task is purely code and build+test+lint pass, that's stronger evidence than evaluator opinion
+- **Skip evaluator only for TRIVIAL route when build+test+lint all pass** — convention checks matter for anything beyond a trivial change
 
 
 ## Criteria Lifecycle
