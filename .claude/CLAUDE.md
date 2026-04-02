@@ -16,7 +16,7 @@ plugins/<name>/
 
 **Slash command mapping:** the plugin name and skill directory name form the command.
 
-`plugins/dc/skills/reset/` → `/dc:reset`.
+`plugins/forge/skills/start/` → `/forge:start`.
 
 ## Development Commands
 
@@ -127,7 +127,7 @@ plugins/<plugin-name>/
 
 The **directory name** becomes the slash command suffix.
 
-`/plugin-name:directory-name` -- e.g. `plugins/dc/skills/reset/` becomes `/dc:reset`.
+`/plugin-name:directory-name` -- e.g. `plugins/forge/skills/start/` becomes `/forge:start`.
 
 Choose directory names that are short and memorable.
 

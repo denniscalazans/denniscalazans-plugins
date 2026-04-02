@@ -178,7 +178,7 @@ agent-browser close --all
 ## Integration with Other Skills
 
 - **browser:explore** — uses the same agent-browser session for page inspection, flow generation, and recording
-- **dc:op** — 1Password security patterns (never `op read`, always `op run`)
+- **integrations:op** — 1Password security patterns (never `op read`, always `op run`)
 
 
 ## Common Mistakes
