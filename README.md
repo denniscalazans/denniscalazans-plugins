@@ -19,50 +19,28 @@ Take what's useful, ignore what isn't.
 ```bash
 /plugins marketplace add denniscalazans/denniscalazans-plugins
 /plugins install dc@denniscalazans-plugins
+/plugins install forge@denniscalazans-plugins
+/plugins install integrations@denniscalazans-plugins
 /plugins install code-quality@denniscalazans-plugins
+/plugins install browser@denniscalazans-plugins
 ```
 
 
 ## Plugins
 
-### dc — General Purpose
+### dc — Brain Round Trip
 
-Skills I reach for every day: thinking before coding, cleaning up after merging, turning brain dumps into something actionable.
-
-#### Thinking skills
-
-These work together as a pipeline: **brief** decodes messy input, **investigate** maps the codebase, **grill** stress-tests the plan.
+The bridge between your brain and AI: decode messy input, stress-test ideas, distill insights back.
+These work as a pipeline: **brief** decodes messy input → **grill** stress-tests the plan → **distill** produces clean output.
 
 | Command | What it does |
 |---------|-------------|
 | `/dc:brief` | Turn chaotic input (voice transcription, brain dumps, messy notes) into structured, actionable output |
-| `/dc:investigate` | Explore codebase patterns and constraints before implementing — produces a TODAY IS / EXPECTED IS report, then stops |
 | `/dc:grill` | Stress-test a plan, design, or architecture through relentless prepared questioning |
 | `/dc:distill` | Extract key insights and restructure content for human readers |
-
-#### Workflow skills
-
-| Command | What it does |
-|---------|-------------|
-| `/dc:reset` | Return to main branch with a clean working directory |
-| `/dc:clean-branches` | Delete local branches already integrated into the default branch |
 | `/dc:writing` | Apply one-sentence-per-line markdown convention |
-| `/dc:figma-api` | Interact with the Figma REST API for design data, tokens, and exports |
-| `/dc:op` | Manage 1Password CLI secrets with safe `op run` patterns |
 
-#### Browser skills
-
-These form a pipeline: **browser-login** authenticates, **navigate** generates flows, **record** captures evidence, **playwright-healer** fixes failures.
-
-| Command | What it does |
-|---------|-------------|
-| `/dc:browser-login` | Manage persistent browser sessions with playwright-cli and 1Password for authenticated apps |
-| `/dc:navigate` | Generate disposable Playwright .flow.ts files for exploratory browser testing |
-| `/dc:record` | Record Retina-quality browser screencasts via CDP |
-
-**Agents:**
-- `strategic-thinking-partner` — proactive strategic oversight and assumption challenging
-- `playwright-healer` — debug and fix failing Playwright tests automatically
+**Agent:** `strategic-thinking-partner` — proactive strategic oversight and assumption challenging
 
 
 ### code-quality — SonarQube Integration
@@ -101,6 +79,45 @@ Context-efficient browser automation combining [agent-browser](https://github.co
 **Install:**
 ```bash
 /plugins install browser@denniscalazans-plugins
+```
+
+
+### forge — Codebase Support
+
+Everything code-specific: start a task clean, investigate before implementing, run the adversarial pipeline, finish by cleaning up.
+
+| Command | What it does |
+|---------|-------------|
+| `/forge:start` | Return to main with a clean working directory — begin a new task |
+| `/forge:investigate` | Explore codebase patterns and produce a TODAY IS / EXPECTED IS report |
+| `/forge:implement` | Orchestrate the adversarial pipeline with dynamic routing |
+| `/forge:finish` | Delete local branches already integrated into the default branch |
+
+**Agents:**
+- `forge-investigator` — codebase explorer, auto-generates evaluator criteria
+- `forge-challenger` — adversarial reviewer, finds gaps and edge cases
+- `forge-planner` — designs file-level implementation approach
+- `forge-generator` — writes code following the plan, self-checks against criteria
+- `forge-evaluator` — adversarial code reviewer with tool-awareness
+
+**Install:**
+```bash
+/plugins install forge@denniscalazans-plugins
+```
+
+
+### integrations — External Services
+
+Connectors for external services.
+
+| Command | What it does |
+|---------|-------------|
+| `/integrations:figma-api` | Interact with the Figma REST API for design data, tokens, and exports |
+| `/integrations:op` | Manage 1Password CLI secrets with safe `op run` patterns |
+
+**Install:**
+```bash
+/plugins install integrations@denniscalazans-plugins
 ```
 
 

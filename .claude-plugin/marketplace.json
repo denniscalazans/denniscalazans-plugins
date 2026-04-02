@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "dc",
-      "description": "General-purpose skills for git workflow, knowledge distillation, video recording, markdown writing, and strategic thinking",
+      "description": "Brain round trip toolkit: decode messy input, stress-test plans, distill insights, and write clean markdown",
       "source": "./plugins/dc",
       "category": "productivity"
     },
@@ -23,6 +23,18 @@
       "name": "browser",
       "description": "Unified browser automation: lightweight exploration via agent-browser + Retina recording via Playwright on a shared Chrome session",
       "source": "./plugins/browser",
+      "category": "productivity"
+    },
+    {
+      "name": "forge",
+      "description": "Codebase support toolkit: task lifecycle, codebase investigation, and adversarial implementation pipeline",
+      "source": "./plugins/forge",
+      "category": "productivity"
+    },
+    {
+      "name": "integrations",
+      "description": "External service connectors: Figma REST API and 1Password CLI",
+      "source": "./plugins/integrations",
       "category": "productivity"
     }
   ]

@@ -5,7 +5,10 @@ coverage/
 .dictionary-service/
 .agents.tmp/
 *-workspace/
+**/evals/
 docs/
+.idea/
+.remember/
 
 # Override global gitignore — .claude/CLAUDE.md is the contribution guide
 !.claude/
