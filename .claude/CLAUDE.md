@@ -16,7 +16,7 @@ plugins/<name>/
 
 **Slash command mapping:** the plugin name and skill directory name form the command.
 
-`plugins/dc/skills/reset/` → `/dc:reset`.
+`plugins/forge/skills/start/` → `/forge:start`.
 
 ## Development Commands
 
@@ -42,7 +42,9 @@ npm run test:scripts
 
 | Plugin | Description | Skills | Agents |
 |--------|-------------|--------|--------|
-| `dc` | General-purpose: git workflow, distillation, video recording, markdown writing, design interviews, codebase investigation, browser testing, strategic thinking | `reset`, `clean-branches`, `distill`, `brief`, `writing`, `record`, `figma-api`, `op`, `grill`, `investigate`, `browser-login`, `navigate` | `strategic-thinking-partner`, `playwright-healer` |
+| `dc` | Brain round trip: decode messy input, stress-test plans, distill insights, write clean markdown | `brief`, `grill`, `distill`, `writing` | `strategic-thinking-partner` |
+| `forge` | Codebase support: task lifecycle, investigation, adversarial implementation pipeline | `start`, `investigate`, `implement`, `finish` | `forge-investigator`, `forge-challenger`, `forge-planner`, `forge-generator`, `forge-evaluator` |
+| `integrations` | External service connectors | `figma-api`, `op` | — |
 | `code-quality` | SonarQube-driven code quality workflows via MCP | `sonar-status`, `sonar-issues`, `sonar-fix`, `sonar-verify`, `sonar-triage`, `sonar-rule`, `sonar-setup`, `sonar-env` | `code-quality-agent` |
 | `browser` | Unified browser automation: agent-browser exploration + Playwright recording on shared Chrome | `login`, `explore` | `recorder`, `playwright-healer` |
 
@@ -125,7 +127,7 @@ plugins/<plugin-name>/
 
 The **directory name** becomes the slash command suffix.
 
-`/plugin-name:directory-name` -- e.g. `plugins/dc/skills/reset/` becomes `/dc:reset`.
+`/plugin-name:directory-name` -- e.g. `plugins/forge/skills/start/` becomes `/forge:start`.
 
 Choose directory names that are short and memorable.
 

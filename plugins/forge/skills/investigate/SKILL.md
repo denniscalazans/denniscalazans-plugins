@@ -203,7 +203,7 @@ End the report with:
 ```
 ---
 Investigation complete.
-This report is ready for implementation or for stress-testing with /dc:grill.
+This report is ready for /forge:implement or for stress-testing with /dc:grill.
 ```
 
 If the user says "now implement" or "go ahead", proceed with implementation using the report as context.

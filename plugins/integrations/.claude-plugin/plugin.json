@@ -1,0 +1,15 @@
+{
+  "name": "integrations",
+  "description": "External service connectors — Figma REST API and 1Password CLI",
+  "version": "1.0.0",
+  "author": { "name": "Dennis Calazans" },
+  "keywords": [
+    "figma",
+    "1password",
+    "op",
+    "secrets",
+    "design",
+    "integrations",
+    "api"
+  ]
+}

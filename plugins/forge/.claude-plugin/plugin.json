@@ -1,0 +1,22 @@
+{
+  "name": "forge",
+  "description": "Codebase support toolkit — task lifecycle, codebase investigation, and adversarial implementation pipeline",
+  "version": "1.0.0",
+  "author": { "name": "Dennis Calazans" },
+  "keywords": [
+    "forge",
+    "start",
+    "finish",
+    "investigate",
+    "implement",
+    "adversarial",
+    "pipeline",
+    "planner",
+    "generator",
+    "evaluator",
+    "challenger",
+    "investigator",
+    "task-lifecycle",
+    "codebase"
+  ]
+}
