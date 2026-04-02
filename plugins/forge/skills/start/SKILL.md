@@ -1,8 +1,10 @@
 ---
-name: reset-to-main
+name: start
 description: >
-  Use when finishing a task and wanting to return to main branch with a clean working directory, switching context between tasks, or starting fresh after a PR.
-  Triggers: "reset", "switch to main", "start fresh", "back to main", "done with this task", "clean up workspace", "done with branch", "close this task".
+  Use when starting a new task and wanting a clean working directory on the default branch.
+  Also use when finishing a task, switching context, or returning to main after a PR.
+  Triggers: "start task", "forge start", "reset", "switch to main", "start fresh",
+  "back to main", "done with this task", "clean up workspace", "done with branch".
 ---
 
 # Reset to Main
@@ -163,7 +165,7 @@ The `--prune` flag removes remote-tracking references for branches deleted on th
 
 ### Step 4: Clean up integrated branches
 
-Follow the `/dc:clean-branches` skill process (Steps 2–7).
+Follow the `/forge:finish` skill process (Steps 2–7).
 The `git fetch --prune` in that skill's Step 1 was already done by `git pull --prune` in Step 3 above, so skip it.
 
 ### Step 5: Confirm final state
