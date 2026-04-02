@@ -42,10 +42,11 @@ npm run test:scripts
 
 | Plugin | Description | Skills | Agents |
 |--------|-------------|--------|--------|
-| `dc` | General-purpose: thinking workflows, git workflow, knowledge distillation, markdown writing, strategic thinking | `reset`, `clean-branches`, `distill`, `brief`, `writing`, `figma-api`, `op`, `grill`, `investigate` | `strategic-thinking-partner` |
+| `dc` | Brain round trip: decode messy input, stress-test plans, distill insights, write clean markdown | `brief`, `grill`, `distill`, `writing` | `strategic-thinking-partner` |
+| `forge` | Codebase support: task lifecycle, investigation, adversarial implementation pipeline | `start`, `investigate`, `implement`, `finish` | `forge-investigator`, `forge-challenger`, `forge-planner`, `forge-generator`, `forge-evaluator` |
+| `integrations` | External service connectors | `figma-api`, `op` | — |
 | `code-quality` | SonarQube-driven code quality workflows via MCP | `sonar-status`, `sonar-issues`, `sonar-fix`, `sonar-verify`, `sonar-triage`, `sonar-rule`, `sonar-setup`, `sonar-env` | `code-quality-agent` |
 | `browser` | Unified browser automation: agent-browser exploration + Playwright recording on shared Chrome | `login`, `explore` | `recorder`, `playwright-healer` |
-| `forge` | Adversarial implementation pipeline: investigator, challenger, planner, generator, evaluator agents in a GAN-inspired loop | `implement` | `forge-investigator`, `forge-challenger`, `forge-planner`, `forge-generator`, `forge-evaluator` |
 
 ## Versioning
 

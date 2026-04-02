@@ -19,40 +19,28 @@ Take what's useful, ignore what isn't.
 ```bash
 /plugins marketplace add denniscalazans/denniscalazans-plugins
 /plugins install dc@denniscalazans-plugins
+/plugins install forge@denniscalazans-plugins
+/plugins install integrations@denniscalazans-plugins
 /plugins install code-quality@denniscalazans-plugins
+/plugins install browser@denniscalazans-plugins
 ```
 
 
 ## Plugins
 
-### dc — General Purpose
+### dc — Brain Round Trip
 
-Skills I reach for every day: thinking before coding, cleaning up after merging, turning brain dumps into something actionable.
-
-#### Thinking skills
-
-These work together as a pipeline: **brief** decodes messy input, **investigate** maps the codebase, **grill** stress-tests the plan.
+The bridge between your brain and AI: decode messy input, stress-test ideas, distill insights back.
+These work as a pipeline: **brief** decodes messy input → **grill** stress-tests the plan → **distill** produces clean output.
 
 | Command | What it does |
 |---------|-------------|
 | `/dc:brief` | Turn chaotic input (voice transcription, brain dumps, messy notes) into structured, actionable output |
-| `/dc:investigate` | Explore codebase patterns and constraints before implementing — produces a TODAY IS / EXPECTED IS report, then stops |
 | `/dc:grill` | Stress-test a plan, design, or architecture through relentless prepared questioning |
 | `/dc:distill` | Extract key insights and restructure content for human readers |
-
-#### Workflow skills
-
-| Command | What it does |
-|---------|-------------|
-| `/dc:reset` | Return to main branch with a clean working directory |
-| `/dc:clean-branches` | Delete local branches already integrated into the default branch |
 | `/dc:writing` | Apply one-sentence-per-line markdown convention |
-| `/dc:figma-api` | Interact with the Figma REST API for design data, tokens, and exports |
-| `/dc:op` | Manage 1Password CLI secrets with safe `op run` patterns |
 
 **Agent:** `strategic-thinking-partner` — proactive strategic oversight and assumption challenging
-
-> **Note:** Browser skills (`browser-login`, `navigate`, `record`, `playwright-healer`) moved to the [browser plugin](#browser--unified-browser-automation) as of v2.3.0.
 
 
 ### code-quality — SonarQube Integration
@@ -94,26 +82,42 @@ Context-efficient browser automation combining [agent-browser](https://github.co
 ```
 
 
-### forge — Adversarial Implementation Pipeline
+### forge — Codebase Support
 
-A GAN-inspired implementation pipeline that separates code generation from adversarial evaluation.
-Five agents work in sequence: the investigator maps the codebase, the challenger stress-tests assumptions, the planner designs the approach, the generator writes code, and the evaluator finds real violations.
-The generator ↔ evaluator loop runs up to 3 iterations with stuck detection.
+Everything code-specific: start a task clean, investigate before implementing, run the adversarial pipeline, finish by cleaning up.
 
 | Command | What it does |
 |---------|-------------|
-| `/forge:implement` | Orchestrate the full adversarial pipeline with dynamic routing (trivial tasks skip early agents) |
+| `/forge:start` | Return to main with a clean working directory — begin a new task |
+| `/forge:investigate` | Explore codebase patterns and produce a TODAY IS / EXPECTED IS report |
+| `/forge:implement` | Orchestrate the adversarial pipeline with dynamic routing |
+| `/forge:finish` | Delete local branches already integrated into the default branch |
 
 **Agents:**
-- `forge-investigator` — codebase explorer, produces TODAY IS / EXPECTED IS report, auto-generates evaluator criteria
-- `forge-challenger` — adversarial reviewer, finds gaps and edge cases the investigator missed
-- `forge-planner` — designs file-level implementation approach with references and constraints
+- `forge-investigator` — codebase explorer, auto-generates evaluator criteria
+- `forge-challenger` — adversarial reviewer, finds gaps and edge cases
+- `forge-planner` — designs file-level implementation approach
 - `forge-generator` — writes code following the plan, self-checks against criteria
-- `forge-evaluator` — adversarial code reviewer with tool-awareness and rhetorical feedback
+- `forge-evaluator` — adversarial code reviewer with tool-awareness
 
 **Install:**
 ```bash
 /plugins install forge@denniscalazans-plugins
+```
+
+
+### integrations — External Services
+
+Connectors for external services.
+
+| Command | What it does |
+|---------|-------------|
+| `/integrations:figma-api` | Interact with the Figma REST API for design data, tokens, and exports |
+| `/integrations:op` | Manage 1Password CLI secrets with safe `op run` patterns |
+
+**Install:**
+```bash
+/plugins install integrations@denniscalazans-plugins
 ```
 
 
