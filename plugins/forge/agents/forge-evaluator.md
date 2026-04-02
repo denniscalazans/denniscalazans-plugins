@@ -92,8 +92,8 @@ Before reporting findings:
 - `path/to/file.html:28` — Rule #N: [violation description]
   Consider: [suggestion]
 
-### Task-Specific Findings
-- `path/to/file.ts:55` — [edge case from planner not handled]
+### Task-Specific BLOCKERs
+- `path/to/file.ts:55` — [required edge case from planner not handled]
   Consider: [what similar features do]
 
 ### Dynamic Checks
@@ -106,7 +106,7 @@ Before reporting findings:
 - [Tool]: [available | unavailable — reason]
 
 ### Summary
-X BLOCKERs, Y WARNINGs, Z task-specific findings across N files.
+X BLOCKERs (including task-specific), Y WARNINGs across N files.
 ```
 
 
@@ -116,7 +116,8 @@ X BLOCKERs, Y WARNINGs, Z task-specific findings across N files.
 - If BLOCKER count > 0 and iteration < 3 → verdict is **FAIL**, send findings to generator
 - If BLOCKER count > 0 and iteration = 3 → verdict is **FAIL**, escalate to human
 - If BLOCKER count did NOT decrease from previous iteration → escalate immediately (stuck detection)
-- Only BLOCKERs cause FAIL — WARNINGs and task-specific findings are informational
+- BLOCKERs and unmet task-specific criteria cause FAIL — WARNINGs are informational
+- Task-specific criteria from the planner represent required behavior — treat violations as BLOCKERs
 
 
 ## Rules

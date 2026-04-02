@@ -100,10 +100,18 @@ If the plan is clear, move to Phase 4.
 
 ## Phase 4 — GENERATE (iteration 1)
 
-Spawn the `forge-generator` agent with:
+Spawn the `forge-generator` agent with inputs based on route:
+
+**STANDARD / CLEAR PRD route:**
 - The planner's full output (files to create/modify, references, constraints, task-specific criteria)
 - The evaluator criteria path
 - Instruction: "Read the criteria file first. Self-check before reporting done."
+
+**TRIVIAL route (no planner):**
+- The original task description
+- The evaluator criteria path (if it exists)
+- Instruction: "This is a trivial change. Implement directly, self-check against criteria if available."
+- No planner constraints or task-specific criteria — the task is simple enough not to need them
 
 **Wait for the generator's output.**
 
@@ -112,11 +120,20 @@ Collect the list of files created/modified.
 
 ## Phase 5 — EVALUATE (iteration 1)
 
-Spawn the `forge-evaluator` agent with:
+Spawn the `forge-evaluator` agent with inputs based on route:
+
+**STANDARD / CLEAR PRD route:**
 - The list of files created/modified by the generator
 - The original task description
 - The planner's task-specific criteria
 - The planner's constraints (deferred items)
+- `iteration: 1`
+
+**TRIVIAL route (no planner):**
+- The list of files created/modified by the generator
+- The original task description
+- No task-specific criteria — evaluate against static criteria only
+- No planner constraints — nothing is deferred
 - `iteration: 1`
 
 **Wait for the evaluator's verdict.**
