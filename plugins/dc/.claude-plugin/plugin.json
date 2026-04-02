@@ -1,26 +1,19 @@
 {
   "name": "dc",
-  "description": "General-purpose skills for thinking workflows, git workflow, knowledge distillation, markdown writing, and strategic thinking",
+  "description": "Brain round trip toolkit — decode messy input, stress-test plans, distill insights, and write clean markdown",
   "version": "2.2.4-pr.39",
   "author": {
     "name": "Dennis Calazans"
   },
   "keywords": [
-    "skills",
-    "git",
-    "reset",
-    "clean-branches",
+    "brief",
+    "grill",
     "distill",
     "writing",
     "markdown",
-    "figma",
-    "1password",
-    "op",
-    "grill",
-    "design-interview",
-    "investigate",
-    "codebase-discovery",
-    "brief",
-    "strategic-thinking"
+    "thinking",
+    "strategic-thinking",
+    "brain",
+    "round-trip"
   ]
 }

@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "dc",
-      "description": "General-purpose skills for thinking workflows, git workflow, knowledge distillation, markdown writing, and strategic thinking",
+      "description": "Brain round trip toolkit: decode messy input, stress-test plans, distill insights, and write clean markdown",
       "source": "./plugins/dc",
       "category": "productivity"
     },
@@ -27,8 +27,14 @@
     },
     {
       "name": "forge",
-      "description": "Adversarial implementation pipeline with investigator, challenger, planner, generator, and evaluator agents",
+      "description": "Codebase support toolkit: task lifecycle, codebase investigation, and adversarial implementation pipeline",
       "source": "./plugins/forge",
+      "category": "productivity"
+    },
+    {
+      "name": "integrations",
+      "description": "External service connectors: Figma REST API and 1Password CLI",
+      "source": "./plugins/integrations",
       "category": "productivity"
     }
   ]
