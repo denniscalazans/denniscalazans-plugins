@@ -24,6 +24,12 @@
       "description": "Unified browser automation: lightweight exploration via agent-browser + Retina recording via Playwright on a shared Chrome session",
       "source": "./plugins/browser",
       "category": "productivity"
+    },
+    {
+      "name": "forge",
+      "description": "Adversarial implementation pipeline with investigator, challenger, planner, generator, and evaluator agents",
+      "source": "./plugins/forge",
+      "category": "productivity"
     }
   ]
 }

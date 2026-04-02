@@ -1,0 +1,19 @@
+{
+  "name": "forge",
+  "description": "Adversarial implementation pipeline — investigator, challenger, planner, generator, and evaluator agents orchestrated in a GAN-inspired loop",
+  "version": "1.0.0",
+  "author": { "name": "Dennis Calazans" },
+  "keywords": [
+    "forge",
+    "implement",
+    "adversarial",
+    "pipeline",
+    "planner",
+    "generator",
+    "evaluator",
+    "challenger",
+    "investigator",
+    "GAN",
+    "code-generation"
+  ]
+}
