@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "dc",
-      "description": "General-purpose skills for git workflow, knowledge distillation, video recording, markdown writing, and strategic thinking",
+      "description": "General-purpose skills for thinking workflows, git workflow, knowledge distillation, markdown writing, and strategic thinking",
       "source": "./plugins/dc",
       "category": "productivity"
     },

@@ -1,6 +1,6 @@
 {
   "name": "dc",
-  "description": "General-purpose skills for thinking workflows, browser automation, git workflow, knowledge distillation, markdown writing, and code quality",
+  "description": "General-purpose skills for thinking workflows, git workflow, knowledge distillation, markdown writing, and strategic thinking",
   "version": "2.2.4-pr.39",
   "author": {
     "name": "Dennis Calazans"
@@ -12,8 +12,6 @@
     "clean-branches",
     "distill",
     "writing",
-    "record",
-    "video-recording",
     "markdown",
     "figma",
     "1password",
@@ -22,9 +20,7 @@
     "design-interview",
     "investigate",
     "codebase-discovery",
-    "browser-login",
-    "navigate",
-    "playwright",
-    "playwright-healer"
+    "brief",
+    "strategic-thinking"
   ]
 }
