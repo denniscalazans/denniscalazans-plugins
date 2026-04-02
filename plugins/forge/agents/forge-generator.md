@@ -6,7 +6,6 @@ description: >
   On subsequent iterations, fixes only what the evaluator flagged.
   Triggers: "generate code", "implement the plan", "write the implementation".
 tools: Read, Grep, Glob, Edit, Write, Bash
-model: inherit
 color: green
 ---
 
