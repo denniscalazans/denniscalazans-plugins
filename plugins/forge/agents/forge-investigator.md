@@ -9,7 +9,6 @@ description: >
   Triggers: "investigate codebase", "explore before implementing", "map patterns",
   "generate evaluator criteria".
 tools: Read, Grep, Glob, Bash, Write, WebSearch, WebFetch
-model: sonnet
 color: blue
 ---
 
