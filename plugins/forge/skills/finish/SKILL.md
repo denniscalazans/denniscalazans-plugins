@@ -1,9 +1,10 @@
 ---
-name: clean-branches
+name: finish
 description: >
-  Use when cleaning up local branches whose content is already in the default branch.
+  Use when finishing a task and cleaning up local branches whose content is already in the default branch.
   Also use when the user wants to clean up after merging PRs or remove branches that were squash-merged or rebased.
-  Triggers: "clean up branches", "prune branches", "clean branches", "delete integrated branches", "clean up old branches", "remove merged branches", "delete stale branches".
+  Triggers: "finish task", "forge finish", "clean up branches", "prune branches",
+  "clean branches", "delete integrated branches", "remove merged branches", "done with task".
 ---
 
 # Clean Integrated Branches
