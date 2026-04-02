@@ -94,6 +94,29 @@ Context-efficient browser automation combining [agent-browser](https://github.co
 ```
 
 
+### forge — Adversarial Implementation Pipeline
+
+A GAN-inspired implementation pipeline that separates code generation from adversarial evaluation.
+Five agents work in sequence: the investigator maps the codebase, the challenger stress-tests assumptions, the planner designs the approach, the generator writes code, and the evaluator finds real violations.
+The generator ↔ evaluator loop runs up to 3 iterations with stuck detection.
+
+| Command | What it does |
+|---------|-------------|
+| `/forge:implement` | Orchestrate the full adversarial pipeline with dynamic routing (trivial tasks skip early agents) |
+
+**Agents:**
+- `forge-investigator` — codebase explorer, produces TODAY IS / EXPECTED IS report, auto-generates evaluator criteria
+- `forge-challenger` — adversarial reviewer, finds gaps and edge cases the investigator missed
+- `forge-planner` — designs file-level implementation approach with references and constraints
+- `forge-generator` — writes code following the plan, self-checks against criteria
+- `forge-evaluator` — adversarial code reviewer with tool-awareness and rhetorical feedback
+
+**Install:**
+```bash
+/plugins install forge@denniscalazans-plugins
+```
+
+
 ## Contributing
 
 Contributions are welcome.
