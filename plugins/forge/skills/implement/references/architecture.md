@@ -18,8 +18,9 @@ flowchart TD
 
     subgraph "Phase 1 — Investigate"
         INV[Investigator]
+        INV -->|"scope: PATCH/FEATURE/\nCROSS-CUT/MIGRATION"| INV
         INV -->|"TODAY IS / EXPECTED IS report"| CHALL
-        INV -.->|auto-generates if missing| CRITERIA[(evaluator-criteria.md)]
+        INV -.->|"auto-generates on first run\nif criteria file missing"| CRITERIA[(evaluator-criteria.md)]
     end
 
     subgraph "Phase 2 — Challenge"
@@ -64,17 +65,17 @@ flowchart TD
 ```mermaid
 flowchart LR
     subgraph "Read-only agents"
-        INV2[Investigator\nmodel: sonnet\ncolor: blue]
-        CHALL2[Challenger\nmodel: sonnet\ncolor: purple]
-        PLAN2[Planner\nmodel: sonnet\ncolor: blue]
+        INV2[Investigator\ncolor: blue]
+        CHALL2[Challenger\ncolor: purple]
+        PLAN2[Planner\ncolor: blue]
     end
 
     subgraph "Write agent"
-        GEN2[Generator\nmodel: default\ncolor: green]
+        GEN2[Generator\ncolor: green]
     end
 
     subgraph "Adversarial agent"
-        EVAL2[Evaluator\nmodel: sonnet\ncolor: orange]
+        EVAL2[Evaluator\ncolor: orange]
     end
 
     INV2 -->|"explores codebase,\nproduces grounded report"| CHALL2
@@ -83,6 +84,16 @@ flowchart LR
     GEN2 -->|"writes code,\nself-checks,\ndeclares interpretations"| EVAL2
     EVAL2 -->|"finds violations,\nscores dimensions,\nextracts learnings"| GEN2
 ```
+
+Model assignment happens at dispatch time in the implement skill, not in agent frontmatter:
+
+| Agent | Model | Rationale |
+|-------|-------|-----------|
+| Investigator | sonnet | Fast, good at analysis |
+| Challenger | sonnet | Fast, adversarial review |
+| Planner | sonnet | Analysis, not generation |
+| Generator | default (session model) | Needs full coding capability |
+| Evaluator | sonnet | Fast, adversarial checking |
 
 
 ## Routing
@@ -119,6 +130,33 @@ flowchart TD
 ```
 
 
+## Tool Detection
+
+Agents detect available tools at runtime — nothing is assumed.
+
+| Tool | Detection method | Agents that detect |
+|------|-----------------|-------------------|
+| SonarQube MCP | env `SONARQUBE_URL` | Evaluator, Challenger |
+| Build command | Check for `nx`, `mvn`, `gradle`, `npm` in project | Evaluator |
+| Test runner | Check for test configs (`jest.config`, `pom.xml`, etc.) | Evaluator |
+| Linter | Check for lint configs (`.eslintrc`, `spotless`, etc.) | Evaluator |
+
+If a tool is unavailable, the evaluator reports NOT RUN with the reason.
+The pipeline degrades gracefully — missing tools don't cause failures.
+
+
+## Criteria Lifecycle
+
+The evaluator criteria file at `.claude/forge/evaluator-criteria.md` is a versioned project artifact.
+
+| Event | What happens |
+|-------|-------------|
+| First run, no criteria exists | Investigator auto-generates from CLAUDE.md, rules/, and codebase patterns |
+| Challenger finds missing convention | Suggests addition in challenge report |
+| Tool becomes unavailable | Evaluator notes it, does not fail |
+| User wants to update | Edit the file directly — it's a project artifact |
+
+
 ## Evaluator Output Structure
 
 The evaluator produces these sections in order:
@@ -130,8 +168,8 @@ The evaluator produces these sections in order:
 5. **Task-Specific BLOCKERs** — planner/challenger requirements not met, cause FAIL
 6. **Dynamic Checks** — three-state: PASS / FAIL / NOT RUN (with reason)
 7. **Proactive Findings** — adjacent issues, don't affect verdict
-8. **Quality Dimensions** — four 0-3 scores, don't affect verdict
-9. **Shared Learnings** — patterns for the next iteration
+8. **Shared Learnings** — patterns for the next iteration
+9. **Quality Dimensions** — four 0-3 scores, don't affect verdict
 10. **Tool Availability** — what was detected and used
 11. **Summary** — counts + dimension scores
 
