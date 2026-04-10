@@ -17,6 +17,8 @@
     "refs",
     "connectOverCDP",
     "1password",
-    "op"
+    "op",
+    "run-flows",
+    "cross-batch"
   ]
 }
