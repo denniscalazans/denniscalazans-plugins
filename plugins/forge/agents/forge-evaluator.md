@@ -68,7 +68,18 @@ On **final iteration** (iteration 3) OR if **no Tier 1 BLOCKERs found**:
 3. Run linter (if available)
 4. Run SonarQube analysis (if available)
 
-### Step 5: Context awareness
+### Step 5: Validate generator interpretations
+
+Read the generator's **Interpretation Notes** section (if present).
+For each interpretation the generator declared:
+1. Check whether the rule actually applies as the generator assumed
+2. If the interpretation is correct, move on — don't flag it
+3. If the interpretation is wrong, report it as a BLOCKER with the correct reading:
+   `"Generator interpreted Rule #N as [X], but the rule's file pattern includes [Y] — this applies here."`
+
+This step surfaces interpretation mismatches on iteration 1 rather than letting the generator fail silently and waste iterations converging.
+
+### Step 6: Context awareness
 
 Before reporting findings:
 - Read the planner's constraints — if something is marked as deferred, do NOT flag it

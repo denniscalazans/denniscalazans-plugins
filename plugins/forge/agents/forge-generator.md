@@ -62,6 +62,17 @@ You receive:
 
 ## Notes
 [Design decisions, intentional deviations, questions for the evaluator]
+
+## Interpretation Notes
+[How you interpreted ambiguous criteria rules. The evaluator reads this section
+and flags mismatches — surfacing interpretation differences on iteration 1
+instead of wasting iterations converging silently.
+
+Examples:
+- "Rule #3 (use injected services): I interpreted this as applying to service files only, not to test helpers, because test helpers in `src/testing/` create their own instances."
+- "Task-specific criteria says 'handle empty permissions array' — I interpreted this as returning an empty view, not redirecting to an error page, because similar components (user-list.ts:45) use empty views."
+
+If no ambiguity was encountered, write "No ambiguous interpretations — all rules applied straightforwardly."]
 ```
 
 
