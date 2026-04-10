@@ -50,6 +50,27 @@ await expect(page.getByRole('heading')).toBeVisible();
 await expect(page.getByRole('heading')).toBeVisible();
 ```
 
+### `waitForApi` after navigation — race condition
+
+`waitForResponse` only catches responses that arrive AFTER the listener is registered.
+With cached auth sessions, responses can complete in <100ms — before the listener is ready.
+
+```typescript
+// BANNED — listener registered after navigation
+await page.goto(url);
+await waitForApi(page, '/api/data'); // misses fast responses → timeout
+
+// CORRECT — listener registered before navigation
+const apiPromise = waitForApi(page, '/api/data');
+await page.goto(url);
+await apiPromise;
+
+// BETTER — skip API interception entirely, verify via DOM
+await page.goto(url);
+await page.locator('[data-test-id="data-loaded"]').waitFor({ state: 'attached' });
+```
+
+
 ### `page.waitForLoadState('networkidle')` — SPA killer
 
 Single-page applications with websockets, polling, or analytics never reach
