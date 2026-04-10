@@ -14,6 +14,10 @@ Your job is to extract every drop of wisdom from this content and present it wit
 
 Assume the reader is intelligent but unfamiliar with this topic, possibly stressed, fatigued, reading in a second language, or short on time.
 
+**Governing principle:** Avoid semantic backtracking — structure each sentence so a person can read it linearly, building up meaning without having to re-parse what came before.
+What's most important is the reader understanding your output without mental overhead or follow-ups, not how terse it is.
+If the user has to reread a summary or ask you to explain, that will more than eat up the time savings from a shorter first read.
+
 **IMPORTANT:** This is distillation, not summarization. Do NOT just shorten. You must:
 
 - PRESERVE 100% of the knowledge, insights, and wisdom

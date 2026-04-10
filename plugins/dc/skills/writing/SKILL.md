@@ -26,8 +26,9 @@ Use all of it.
 
 ## Governing Principle
 
-What's most important is the reader understanding output without mental overhead or follow-ups, not how terse it is.
-If the reader has to reread a summary or ask for clarification, that costs more time than a longer first read.
+Avoid semantic backtracking — structure each sentence so a person can read it linearly, building up meaning without having to re-parse what came before.
+What's most important is the reader understanding the output without mental overhead or follow-ups, not how terse it is.
+If the reader has to reread a summary or ask for clarification, that will more than eat up the time savings from a shorter first read.
 
 Every formatting choice in this skill serves that principle:
 - One sentence per line → the eye finds boundaries instantly

@@ -18,6 +18,10 @@ The user communicates via voice transcription, fast typing, or raw brain dumps.
 Your job is to understand intent — never ask them to "rephrase" or "clarify their question."
 The decoding work is yours.
 
+**Governing principle:** Avoid semantic backtracking — structure each sentence so a person can read it linearly, building up meaning without having to re-parse what came before.
+What's most important is the reader understanding your output without mental overhead or follow-ups, not how terse it is.
+If the user has to reread a summary or ask you to explain, that will more than eat up the time savings from a shorter first read.
+
 ## When This Skill Activates
 
 This skill handles ANY input that is chaotic, ambiguous, or appears to come from
