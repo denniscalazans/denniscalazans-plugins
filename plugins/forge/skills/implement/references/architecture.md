@@ -105,26 +105,48 @@ flowchart LR
 
 ## Feedback Mechanisms
 
+### Sprint Contract
+
+The generator declares how it interpreted ambiguous rules.
+The evaluator validates those interpretations and flags mismatches as BLOCKERs.
+This surfaces disagreements on iteration 1 instead of wasting iterations converging silently.
+
 ```mermaid
-flowchart TD
-    subgraph "Sprint Contract"
-        GEN3[Generator] -->|"Interpretation Notes:<br/>how ambiguous rules<br/>were read"| EVAL3[Evaluator]
-        EVAL3 -->|"validates interpretations,<br/>flags mismatches as BLOCKERs"| GEN3
-    end
+flowchart LR
+    GEN3[Generator] -->|"Interpretation Notes:<br/>how ambiguous rules<br/>were read"| EVAL3[Evaluator]
+    EVAL3 -->|"validates interpretations,<br/>flags mismatches as BLOCKERs"| GEN3
+```
 
-    subgraph "Cross-Iteration Learning"
-        EVAL4[Evaluator] -->|"Shared Learnings:<br/>reusable patterns"| ACCUM[Implement skill<br/>accumulates learnings]
-        ACCUM -->|"all prior learnings"| GEN4[Generator<br/>next iteration]
-    end
+### Cross-Iteration Learning
 
-    subgraph "Quality Dimensions"
-        EVAL5[Evaluator] -->|"Convention: 2/3<br/>Tests: 1/3<br/>Patterns: 3/3<br/>Completeness: 2/3"| GEN5[Generator<br/>knows WHERE<br/>to improve]
-    end
+The evaluator extracts reusable patterns from each evaluation.
+The implement skill accumulates learnings across iterations and passes all prior learnings to the generator on the next round.
 
-    subgraph "Reconciliation"
-        GEN6[Generator] -->|"Plan says X,<br/>but codebase has Y.<br/>I followed Y because..."| IMPL[Implement skill<br/>reviews deviation]
-        IMPL -->|significant?| USER2[Ask user]
-    end
+```mermaid
+flowchart LR
+    EVAL4[Evaluator] -->|"Shared Learnings:<br/>reusable patterns"| ACCUM[Implement skill<br/>accumulates learnings]
+    ACCUM -->|"all prior learnings"| GEN4[Generator<br/>next iteration]
+```
+
+### Quality Dimensions
+
+Four scored axes (0-3) that tell the generator WHERE to improve holistically, not just WHAT line to fix.
+Scores don't affect the verdict — only BLOCKERs cause FAIL.
+
+```mermaid
+flowchart LR
+    EVAL5[Evaluator] -->|"Convention: 2/3<br/>Tests: 1/3<br/>Patterns: 3/3<br/>Completeness: 2/3"| GEN5[Generator<br/>knows WHERE<br/>to improve]
+```
+
+### Reconciliation
+
+When the generator's codebase exploration contradicts the plan's assumptions, it documents the conflict and reasoning.
+The implement skill reviews the deviation and escalates significant ones to the user.
+
+```mermaid
+flowchart LR
+    GEN6[Generator] -->|"Plan says X,<br/>but codebase has Y.<br/>I followed Y because..."| IMPL[Implement skill<br/>reviews deviation]
+    IMPL -->|significant?| USER2[Ask user]
 ```
 
 
