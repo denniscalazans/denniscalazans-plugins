@@ -24,6 +24,22 @@ Markdown amplifies that with headings, bold, tables, lists, and code blocks.
 Use all of it.
 
 
+## Governing Principle
+
+What's most important is the reader understanding output without mental overhead or follow-ups, not how terse it is.
+If the reader has to reread a summary or ask for clarification, that costs more time than a longer first read.
+
+Every formatting choice in this skill serves that principle:
+- One sentence per line → the eye finds boundaries instantly
+- Visual structure (tables, lists, bold) → the brain scans rather than parses
+- Double blank lines between paragraphs → breathing room between ideas
+- Inverted pyramid → lead with the action or outcome, then explain
+
+Match format to task.
+A simple answer gets a direct sentence, not headers and numbered sections.
+A complex comparison gets a table, not three paragraphs of back-and-forth prose.
+
+
 ## The Structural Toolkit
 
 Every structural element exists to serve the reader's intake:
@@ -144,6 +160,8 @@ routing where urgent requests skip the queue.
 | Skip trailing two spaces on sentence lines | End each line with `  ` | Without them, rendered markdown joins lines together |
 | Bold entire sentences | Bold only key terms or phrases | Over-bolding defeats the purpose — nothing stands out |
 | Use headings for emphasis | Use headings for navigation | Headings are landmarks, not decoration |
+| Assume the reader has context from the conversation | Write so someone returning cold can understand | PRs, commits, and docs outlive the session that created them |
+| Bury the outcome at the end | Lead with the action or result (inverted pyramid) | The reader decides whether to keep reading based on the first sentence |
 
 
 ---

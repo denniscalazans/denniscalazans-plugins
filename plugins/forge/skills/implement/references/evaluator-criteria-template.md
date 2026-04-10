@@ -61,10 +61,56 @@ Only check what those tools miss.
 | | [quality convention] | [how to check] | [source doc] |
 
 
+## Calibration Examples
+
+These examples show what a BLOCKER, WARNING, and false positive look like.
+Use them to calibrate your judgment — the boundary between categories matters.
+
+### Example: BLOCKER (correct)
+
+```
+- `src/components/user-form.ts:34` — Rule #3: Component creates its own HTTP client instead of using the injected service.
+  Consider: What happens when tests need to mock the HTTP layer? The injected UserService at line 12 already wraps this endpoint.
+```
+
+Why it's a BLOCKER: violates an explicit convention in the criteria (use injected services, don't create ad-hoc clients).
+The evaluator identified the root cause and pointed to the existing solution.
+
+### Example: WARNING (correct)
+
+```
+- `src/components/user-form.ts:67` — Rule #8: Magic number 30 used for pagination limit.
+  Consider: Other components use a shared constant `DEFAULT_PAGE_SIZE` from `src/constants.ts`.
+```
+
+Why it's a WARNING, not a BLOCKER: the code works correctly with the magic number.
+Using the constant is a quality convention, not a correctness requirement.
+
+### Example: False positive (should NOT be reported)
+
+```
+- `src/components/user-form.ts:12` — Rule #1: File does not follow the naming convention `*.component.ts`.
+```
+
+Why it's a false positive: the file IS named `user-form.ts` because it's a utility, not a component.
+The rule applies to Angular components, not to all TypeScript files.
+Read the rule's file pattern before applying it.
+
+### Example: Proactive Finding (correct)
+
+```
+- `src/components/user-list.ts:45` — Adjacent: the existing test `user-list.spec.ts` imports from a path that was renamed in this PR.
+  The test will likely break on the next CI run even though it's outside the task scope.
+```
+
+Why it's a proactive finding, not a BLOCKER: the broken test isn't caused by the generator's code — it's an adjacent issue the evaluator noticed while reading.
+Report it so the user is aware; don't make it block the verdict.
+
+
 ## Evaluation Output Format
 
 The evaluator MUST return findings in the standard forge format:
-Verdict (PASS/FAIL), BLOCKERs, WARNINGs, Dynamic Checks, Tool Availability, Summary.
+Verdict (PASS/FAIL), BLOCKERs, WARNINGs, Dynamic Checks (three-state: PASS/FAIL/NOT RUN), Proactive Findings, Tool Availability, Summary.
 
 
 ## Convergence Rules

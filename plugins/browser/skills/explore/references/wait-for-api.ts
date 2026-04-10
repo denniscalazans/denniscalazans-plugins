@@ -4,6 +4,23 @@
  * Waits for a matching API response and parses the JSON body.
  *
  * Copy into your project's Playwright helpers directory.
+ *
+ * IMPORTANT: Register the listener BEFORE triggering the navigation or action
+ * that causes the API call. If the response completes before the listener is
+ * registered, it will be missed and the call will time out.
+ *
+ * CORRECT:
+ *   const apiPromise = waitForApi(page, '/api/data');
+ *   await page.goto(url);  // triggers the API call
+ *   await apiPromise;       // now safe to await
+ *
+ * WRONG:
+ *   await page.goto(url);  // response may already be done
+ *   await waitForApi(page, '/api/data');  // listener misses it → timeout
+ *
+ * ALTERNATIVE: For verification purposes, prefer DOM markers over API
+ * interception. Checking rendered content is more robust — it proves the
+ * full pipeline works (API → response → rendering), not just the HTTP layer.
  */
 
 import { type Page } from '@playwright/test';

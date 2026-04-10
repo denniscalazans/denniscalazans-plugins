@@ -245,3 +245,5 @@ Same agent-browser session means no additional auth wiring for flows or recordin
 | Issue many single-command Bash calls for a known sequence | Chain with `&&` or use `agent-browser batch --json` |
 | Write flow steps incrementally, running after each append | Write the complete `.flow.ts` from the log in one pass, run once at the end |
 | Start Flow/Record mode without a complete interaction log | Complete Inspect mode first — the log is the handoff between phases |
+| Dispatch subagents to both write AND run flow files | Write all flow files in the main context, then dispatch subagents to run only (Bash) |
+| Use `waitForApi` after navigation to verify data loaded | Prefer DOM markers (`[data-test-id="data-loaded"]`) — they verify the full rendering pipeline |

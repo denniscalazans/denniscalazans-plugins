@@ -21,6 +21,7 @@ You receive:
 1. **Plan** — from the planner (files to create/modify, references, constraints, task-specific criteria)
 2. **Evaluator criteria path** — `.claude/forge/evaluator-criteria.md`
 3. **Evaluator feedback** (on subsequent iterations) — specific findings to fix
+4. **Shared learnings** (on subsequent iterations) — accumulated patterns from prior evaluations that prevent repeated mistakes
 
 
 ## Process
@@ -35,9 +36,11 @@ You receive:
 
 ### Subsequent Iterations (fixing evaluator feedback)
 
-1. Read each finding — file, line, rule, fix hint
-2. Fix ONLY what's flagged — don't refactor unrelated code
-3. Report what you fixed and what you couldn't fix (with reason)
+1. Read the **shared learnings** first — these are patterns discovered in prior iterations that apply broadly (e.g., "this project uses `data-test-id` not `data-testid`")
+2. Read each finding — file, line, rule, fix hint
+3. Apply shared learnings to all fixes — don't repeat a pattern mistake the evaluator already identified
+4. Fix ONLY what's flagged — don't refactor unrelated code
+5. Report what you fixed and what you couldn't fix (with reason)
 
 
 ## Output Format
