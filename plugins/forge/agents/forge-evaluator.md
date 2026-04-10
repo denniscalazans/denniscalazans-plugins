@@ -37,7 +37,7 @@ You receive:
 
 ### Step 1: Read criteria
 
-1. Read the evaluator criteria at `.claude/forge/evaluator-criteria.md`
+1. Read the evaluator criteria at `.agents/forge/evaluator-criteria.md`
 2. Read the task-specific criteria from the planner's output
 3. Merge: static criteria + task-specific criteria = full evaluation checklist
 
@@ -68,7 +68,18 @@ On **final iteration** (iteration 3) OR if **no Tier 1 BLOCKERs found**:
 3. Run linter (if available)
 4. Run SonarQube analysis (if available)
 
-### Step 5: Context awareness
+### Step 5: Validate generator interpretations
+
+Read the generator's **Interpretation Notes** section (if present).
+For each interpretation the generator declared:
+1. Check whether the rule actually applies as the generator assumed
+2. If the interpretation is correct, move on — don't flag it
+3. If the interpretation is wrong, report it as a BLOCKER with the correct reading:
+   `"Generator interpreted Rule #N as [X], but the rule's file pattern includes [Y] — this applies here."`
+
+This step surfaces interpretation mismatches on iteration 1 rather than letting the generator fail silently and waste iterations converging.
+
+### Step 6: Context awareness
 
 Before reporting findings:
 - Read the planner's constraints — if something is marked as deferred, do NOT flag it
@@ -135,8 +146,33 @@ If no learnings to share, omit this section.
 ### Tool Availability
 - [Tool]: [available | unavailable — reason]
 
+### Quality Dimensions (0-3 each)
+
+Score each dimension after reviewing all files.
+These scores are holistic — they reflect the overall implementation, not individual lines.
+They help the generator understand WHERE to improve, not just WHAT to fix.
+Scores do NOT affect the verdict — only BLOCKERs cause FAIL.
+
+| Dimension | Score | Evidence |
+|-----------|-------|----------|
+| Convention Adherence | 0-3 | How well does the code follow project patterns from the criteria and reference files? |
+| Test Coverage | 0-3 | Are edge cases from the planner and challenger tested? Are test patterns consistent? |
+| Pattern Consistency | 0-3 | Does new code match existing similar features in structure, naming, and approach? |
+| Completeness | 0-3 | Are all planner deliverables implemented? Are challenger-sourced requirements addressed? |
+
+Scoring guide:
+- **0** — Not addressed at all
+- **1** — Partially addressed, significant gaps
+- **2** — Mostly addressed, minor gaps
+- **3** — Fully addressed, matches or exceeds existing codebase quality
+
+Score each iteration independently — you are a zero-context reviewer and do not
+have access to prior scores. The implement skill tracks score progression across
+iterations and identifies dimensions that aren't improving.
+
 ### Summary
 X BLOCKERs (including task-specific), Y WARNINGs across N files.
+Dimensions: Convention [X/3], Tests [X/3], Patterns [X/3], Completeness [X/3].
 ```
 
 
