@@ -94,8 +94,14 @@ describe('computeReleaseVersion', () => {
     assert.deepStrictEqual(result, { version: '2.1.2', tag: 'dc-v2.1.2', autoBumped: true });
   });
 
-  it('returns skip when both base and bumped tags exist', () => {
+  it('scans past multiple existing tags to find next available patch', () => {
     const tagExists = (tag: string) => tag === 'dc-v2.1.0' || tag === 'dc-v2.1.1';
+    const result = computeReleaseVersion('dc', '2.1.0', tagExists);
+    assert.deepStrictEqual(result, { version: '2.1.2', tag: 'dc-v2.1.2', autoBumped: true });
+  });
+
+  it('returns skip when all patch slots are taken', () => {
+    const tagExists = (_tag: string) => true;
     const result = computeReleaseVersion('dc', '2.1.0', tagExists);
     assert.strictEqual(result, null);
   });
