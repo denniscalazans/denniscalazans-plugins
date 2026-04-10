@@ -85,9 +85,13 @@ flowchart LR
     EVAL2 -->|"finds violations,<br/>scores dimensions,<br/>extracts learnings"| GEN2
 ```
 
-All agents inherit the session model — no hardcoded overrides.
-The pipeline is as intelligent as the session allows.
-This was changed after observing that sonnet produces noticeably weaker analysis than opus in challenger and evaluator roles.
+| Agent | Model | Rationale |
+|-------|-------|-----------|
+| Investigator | opus | Report quality drives everything downstream |
+| Challenger | opus | Adversarial role — weaker models miss real problems |
+| Planner | opus | Plan quality directly affects generator output |
+| Generator | session model (inherited) | User controls their coding session's capability |
+| Evaluator | opus | Adversarial role — weaker models miss real problems |
 
 
 ## Routing
