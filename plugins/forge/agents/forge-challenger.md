@@ -30,7 +30,7 @@ If you can't find the answer, you flag it as a gap with what you searched and wh
 You receive:
 1. **Investigation report OR user PRD** — from the forge-investigator (TODAY IS / EXPECTED IS format) on the STANDARD route, or the user's PRD directly on the CLEAR PRD route. Both contain the current state and what needs to change — adapt your review to whichever format you receive.
 2. **Original task description** — what the user wants built
-3. **Evaluator criteria path** — `.claude/forge/evaluator-criteria.md`
+3. **Evaluator criteria path** — `.agents/forge/evaluator-criteria.md`
 
 
 ## Process

@@ -37,7 +37,7 @@ You receive:
 
 ### Step 1: Read criteria
 
-1. Read the evaluator criteria at `.claude/forge/evaluator-criteria.md`
+1. Read the evaluator criteria at `.agents/forge/evaluator-criteria.md`
 2. Read the task-specific criteria from the planner's output
 3. Merge: static criteria + task-specific criteria = full evaluation checklist
 

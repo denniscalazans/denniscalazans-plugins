@@ -20,7 +20,7 @@ Your job is to design the implementation approach — NOT to write code.
 You receive:
 1. **Investigation report** — from the investigator (TODAY IS / EXPECTED IS)
 2. **Challenge report** — from the challenger (gaps, edge cases, refined requirements)
-3. **Evaluator criteria path** — `.claude/forge/evaluator-criteria.md`
+3. **Evaluator criteria path** — `.agents/forge/evaluator-criteria.md`
 
 
 ## Process

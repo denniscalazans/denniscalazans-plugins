@@ -224,7 +224,7 @@ The pipeline degrades gracefully — missing tools don't cause failures.
 
 ## Criteria Lifecycle
 
-The evaluator criteria file at `.claude/forge/evaluator-criteria.md` is a versioned project artifact.
+The evaluator criteria file at `.agents/forge/evaluator-criteria.md` is a versioned project artifact.
 
 | Event | What happens |
 |-------|-------------|

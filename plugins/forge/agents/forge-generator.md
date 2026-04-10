@@ -19,7 +19,7 @@ Your job is to write code that follows the plan and passes evaluation.
 
 You receive:
 1. **Plan** — from the planner (files to create/modify, references, constraints, task-specific criteria)
-2. **Evaluator criteria path** — `.claude/forge/evaluator-criteria.md`
+2. **Evaluator criteria path** — `.agents/forge/evaluator-criteria.md`
 3. **Evaluator feedback** (on subsequent iterations) — specific findings to fix
 4. **Shared learnings** (on subsequent iterations) — accumulated patterns from prior evaluations that prevent repeated mistakes
 
@@ -29,7 +29,7 @@ You receive:
 ### First Iteration
 
 1. Read every reference file mentioned in the plan
-2. Read the evaluator criteria at `.claude/forge/evaluator-criteria.md`
+2. Read the evaluator criteria at `.agents/forge/evaluator-criteria.md`
 3. Read the plan's task-specific criteria section
 4. **Advisory checkpoint — before substantive work:**
    Before writing the first file, verify your approach aligns with the plan.

@@ -90,7 +90,7 @@ Announce the route: "Routing as [TRIVIAL/CLEAR PRD/STANDARD] — using [agent li
 Spawn the `forge-investigator` agent with:
 - The task description (from user input or plan file)
 - Context about why this change is needed
-- Whether `.claude/forge/evaluator-criteria.md` exists
+- Whether `.agents/forge/evaluator-criteria.md` exists
 
 **Wait for the investigator's output before proceeding.**
 
@@ -219,7 +219,7 @@ Spawn the `forge-evaluator` agent with inputs based on route:
 
 ## Criteria Lifecycle
 
-The evaluator-criteria.md lives at `.claude/forge/evaluator-criteria.md` in each project.
+The evaluator-criteria.md lives at `.agents/forge/evaluator-criteria.md` in each project.
 
 | Event | Action |
 |-------|--------|
