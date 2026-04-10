@@ -146,8 +146,33 @@ If no learnings to share, omit this section.
 ### Tool Availability
 - [Tool]: [available | unavailable — reason]
 
+### Quality Dimensions (0-3 each)
+
+Score each dimension after reviewing all files.
+These scores are holistic — they reflect the overall implementation, not individual lines.
+They help the generator understand WHERE to improve, not just WHAT to fix.
+Scores do NOT affect the verdict — only BLOCKERs cause FAIL.
+
+| Dimension | Score | Evidence |
+|-----------|-------|----------|
+| Convention Adherence | 0-3 | How well does the code follow project patterns from the criteria and reference files? |
+| Test Coverage | 0-3 | Are edge cases from the planner and challenger tested? Are test patterns consistent? |
+| Pattern Consistency | 0-3 | Does new code match existing similar features in structure, naming, and approach? |
+| Completeness | 0-3 | Are all planner deliverables implemented? Are challenger-sourced requirements addressed? |
+
+Scoring guide:
+- **0** — Not addressed at all
+- **1** — Partially addressed, significant gaps
+- **2** — Mostly addressed, minor gaps
+- **3** — Fully addressed, matches or exceeds existing codebase quality
+
+On subsequent iterations, note which dimensions improved and which didn't.
+A dimension stuck at 1 across iterations signals a systematic misunderstanding,
+not a line-level bug — the shared learnings section should capture why.
+
 ### Summary
 X BLOCKERs (including task-specific), Y WARNINGs across N files.
+Dimensions: Convention [X/3], Tests [X/3], Patterns [X/3], Completeness [X/3].
 ```
 
 

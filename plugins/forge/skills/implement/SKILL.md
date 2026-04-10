@@ -36,6 +36,36 @@ Each invocation writes a feedback file at `.agents.tmp/forge/feedback-YYYYMMDD-{
 This records each agent's output, evaluator findings, iteration count, and tool availability.
 Git-auditable trail of every pipeline run.
 
+### Pipeline Metrics (append to every audit trail)
+
+Track these metrics to measure which agents justify their cost over time:
+
+```markdown
+## Pipeline Metrics
+
+- **Route:** TRIVIAL | CLEAR PRD | STANDARD
+- **Agents used:** [list]
+- **Iterations:** X/3
+- **Final verdict:** PASS | FAIL (escalated)
+- **Quality dimensions (final):** Convention [X/3], Tests [X/3], Patterns [X/3], Completeness [X/3]
+
+### Per-Agent Value
+| Agent | Key contribution | Could skip? |
+|-------|-----------------|-------------|
+| Investigator | [what it found that wasn't obvious] | [yes/no — why] |
+| Challenger | [gaps it caught] | [yes/no — why] |
+| Planner | [design choices it made] | [yes/no — why] |
+| Generator | N/A (always needed) | no |
+| Evaluator | [BLOCKERs caught, iterations needed] | no |
+
+### Reconciliations
+[Any cases where the generator's codebase findings contradicted the plan.
+These indicate the investigator or planner missed something.]
+```
+
+Over time, these metrics show patterns: if the challenger column consistently says "no gaps found," it may not justify its cost for this project's task types.
+Review accumulated metrics periodically to decide if the pipeline routing thresholds need adjustment.
+
 
 ## Phase 0 — ROUTE
 

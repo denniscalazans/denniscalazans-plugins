@@ -110,7 +110,18 @@ Report it so the user is aware; don't make it block the verdict.
 ## Evaluation Output Format
 
 The evaluator MUST return findings in the standard forge format:
-Verdict (PASS/FAIL), BLOCKERs, WARNINGs, Dynamic Checks (three-state: PASS/FAIL/NOT RUN), Proactive Findings, Tool Availability, Summary.
+Verdict (PASS/FAIL), BLOCKERs, WARNINGs, Dynamic Checks (three-state: PASS/FAIL/NOT RUN),
+Proactive Findings, Quality Dimensions (0-3 scores), Shared Learnings, Tool Availability, Summary.
+
+Quality Dimensions are scored holistically across all files:
+- Convention Adherence (0-3)
+- Test Coverage (0-3)
+- Pattern Consistency (0-3)
+- Completeness (0-3)
+
+Scores are additional signal — they do NOT affect the verdict.
+Only BLOCKERs cause FAIL.
+A dimension stuck at 1 across iterations signals a systematic issue the generator needs shared learnings to address.
 
 
 ## Convergence Rules
