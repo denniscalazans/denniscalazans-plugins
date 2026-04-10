@@ -7,6 +7,7 @@ on:
       - 'plugins/**'
       - '.claude-plugin/**'
       - '.claude/CLAUDE.md'
+  workflow_dispatch:
 
 permissions:
   contents: write
