@@ -3,6 +3,26 @@
 When translating agent-browser interactions to Playwright locators, use the most stable selector available.
 
 
+## Verification Strategy — DOM markers > API interception
+
+When verifying that a page loaded data correctly, prefer DOM markers over API response interception.
+
+**DOM markers** verify the full rendering pipeline:
+  API request → response → JSON parsing → store update → template rendering
+
+**API interception** only verifies the HTTP layer:
+  API request → response
+
+Use DOM markers when:
+- A `[data-test-id]` marker exists that only appears after data loads
+- You want to verify the user-visible result, not implementation details
+
+Use API interception only when:
+- You need to assert on the response body content
+- You need to verify specific HTTP headers (e.g., request ID)
+- No DOM marker exists for the loaded state
+
+
 ## Priority Order (Most Stable to Least Stable)
 
 ### 1. data-test-id / data-testid
