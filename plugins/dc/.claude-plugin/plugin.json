@@ -1,7 +1,7 @@
 {
   "name": "dc",
   "description": "Brain round trip toolkit — decode messy input, stress-test plans, distill insights, and write clean markdown",
-  "version": "2.2.417",
+  "version": "2.2.418",
   "author": {
     "name": "Dennis Calazans"
   },
