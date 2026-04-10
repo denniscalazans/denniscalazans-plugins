@@ -18,9 +18,9 @@ flowchart TD
 
     subgraph "Phase 1 — Investigate"
         INV[Investigator]
-        INV -->|"scope: PATCH/FEATURE/\nCROSS-CUT/MIGRATION"| INV
+        INV -->|"scope: PATCH/FEATURE/<br/>CROSS-CUT/MIGRATION"| INV
         INV -->|"TODAY IS / EXPECTED IS report"| CHALL
-        INV -.->|"auto-generates on first run\nif criteria file missing"| CRITERIA[(evaluator-criteria.md)]
+        INV -.->|"auto-generates on first run<br/>if criteria file missing"| CRITERIA[(evaluator-criteria.md)]
     end
 
     subgraph "Phase 2 — Challenge"
@@ -30,29 +30,29 @@ flowchart TD
 
     subgraph "Phase 3 — Plan"
         PLAN[Planner]
-        PLAN -->|"files, references, constraints,\nchallenger-sourced requirements,\ntask-specific criteria"| GEN
+        PLAN -->|"files, references, constraints,<br/>challenger-sourced requirements,<br/>task-specific criteria"| GEN
     end
 
     subgraph "Phase 4 — Generate"
         GEN[Generator]
-        GEN -->|"advisory checkpoint:\nverify approach before writing"| GEN
-        GEN -->|"advisory checkpoint:\nverify intent before reporting done"| GEN
-        GEN -->|"files created/modified\n+ interpretation notes"| EVAL
+        GEN -->|"advisory checkpoint:<br/>verify approach before writing"| GEN
+        GEN -->|"advisory checkpoint:<br/>verify intent before reporting done"| GEN
+        GEN -->|"files created/modified<br/>+ interpretation notes"| EVAL
     end
 
     subgraph "Phase 5 — Evaluate"
         EVAL[Evaluator]
         EVAL -->|reads| CRITERIA
-        EVAL -->|"validates generator\ninterpretation notes"| EVAL
-        EVAL -->|"BLOCKERs, WARNINGs,\nquality dimensions 0-3,\nshared learnings,\nproactive findings"| DECIDE
+        EVAL -->|"validates generator<br/>interpretation notes"| EVAL
+        EVAL -->|"BLOCKERs, WARNINGs,<br/>quality dimensions 0-3,<br/>shared learnings,<br/>proactive findings"| DECIDE
     end
 
     subgraph "Phase 6 — Converge"
         DECIDE{Verdict?}
         DECIDE -->|PASS| DONE[Report success + audit trail]
-        DECIDE -->|"FAIL\niteration < 3"| LOOP
-        DECIDE -->|"FAIL\niteration = 3"| ESCALATE[Escalate to user]
-        DECIDE -->|"BLOCKER count\nnot decreasing"| ESCALATE
+        DECIDE -->|"FAIL<br/>iteration < 3"| LOOP
+        DECIDE -->|"FAIL<br/>iteration = 3"| ESCALATE[Escalate to user]
+        DECIDE -->|"BLOCKER count<br/>not decreasing"| ESCALATE
 
         LOOP[Accumulate shared learnings]
         LOOP -->|"findings + learnings"| GEN
@@ -65,24 +65,24 @@ flowchart TD
 ```mermaid
 flowchart LR
     subgraph "Read-only agents"
-        INV2[Investigator\ncolor: blue]
-        CHALL2[Challenger\ncolor: purple]
-        PLAN2[Planner\ncolor: blue]
+        INV2[Investigator<br/>color: blue]
+        CHALL2[Challenger<br/>color: purple]
+        PLAN2[Planner<br/>color: blue]
     end
 
     subgraph "Write agent"
-        GEN2[Generator\ncolor: green]
+        GEN2[Generator<br/>color: green]
     end
 
     subgraph "Adversarial agent"
-        EVAL2[Evaluator\ncolor: orange]
+        EVAL2[Evaluator<br/>color: orange]
     end
 
-    INV2 -->|"explores codebase,\nproduces grounded report"| CHALL2
-    CHALL2 -->|"finds gaps,\nedge cases,\nmissed patterns"| PLAN2
-    PLAN2 -->|"designs approach,\nlists files + references"| GEN2
-    GEN2 -->|"writes code,\nself-checks,\ndeclares interpretations"| EVAL2
-    EVAL2 -->|"finds violations,\nscores dimensions,\nextracts learnings"| GEN2
+    INV2 -->|"explores codebase,<br/>produces grounded report"| CHALL2
+    CHALL2 -->|"finds gaps,<br/>edge cases,<br/>missed patterns"| PLAN2
+    PLAN2 -->|"designs approach,<br/>lists files + references"| GEN2
+    GEN2 -->|"writes code,<br/>self-checks,<br/>declares interpretations"| EVAL2
+    EVAL2 -->|"finds violations,<br/>scores dimensions,<br/>extracts learnings"| GEN2
 ```
 
 Model assignment happens at dispatch time in the implement skill, not in agent frontmatter:
@@ -110,21 +110,21 @@ Model assignment happens at dispatch time in the implement skill, not in agent f
 ```mermaid
 flowchart TD
     subgraph "Sprint Contract"
-        GEN3[Generator] -->|"Interpretation Notes:\nhow ambiguous rules\nwere read"| EVAL3[Evaluator]
-        EVAL3 -->|"validates interpretations,\nflags mismatches as BLOCKERs"| GEN3
+        GEN3[Generator] -->|"Interpretation Notes:<br/>how ambiguous rules<br/>were read"| EVAL3[Evaluator]
+        EVAL3 -->|"validates interpretations,<br/>flags mismatches as BLOCKERs"| GEN3
     end
 
     subgraph "Cross-Iteration Learning"
-        EVAL4[Evaluator] -->|"Shared Learnings:\nreusable patterns"| ACCUM[Implement skill\naccumulates learnings]
-        ACCUM -->|"all prior learnings"| GEN4[Generator\nnext iteration]
+        EVAL4[Evaluator] -->|"Shared Learnings:<br/>reusable patterns"| ACCUM[Implement skill<br/>accumulates learnings]
+        ACCUM -->|"all prior learnings"| GEN4[Generator<br/>next iteration]
     end
 
     subgraph "Quality Dimensions"
-        EVAL5[Evaluator] -->|"Convention: 2/3\nTests: 1/3\nPatterns: 3/3\nCompleteness: 2/3"| GEN5[Generator\nknows WHERE\nto improve]
+        EVAL5[Evaluator] -->|"Convention: 2/3<br/>Tests: 1/3<br/>Patterns: 3/3<br/>Completeness: 2/3"| GEN5[Generator<br/>knows WHERE<br/>to improve]
     end
 
     subgraph "Reconciliation"
-        GEN6[Generator] -->|"Plan says X,\nbut codebase has Y.\nI followed Y because..."| IMPL[Implement skill\nreviews deviation]
+        GEN6[Generator] -->|"Plan says X,<br/>but codebase has Y.<br/>I followed Y because..."| IMPL[Implement skill<br/>reviews deviation]
         IMPL -->|significant?| USER2[Ask user]
     end
 ```
