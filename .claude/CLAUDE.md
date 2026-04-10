@@ -46,7 +46,7 @@ npm run test:scripts
 | `forge` | Codebase support: task lifecycle, investigation, adversarial implementation pipeline | `start`, `investigate`, `implement`, `finish` | `forge-investigator`, `forge-challenger`, `forge-planner`, `forge-generator`, `forge-evaluator` |
 | `integrations` | External service connectors | `figma-api`, `op` | — |
 | `code-quality` | SonarQube-driven code quality workflows via MCP | `sonar-status`, `sonar-issues`, `sonar-fix`, `sonar-verify`, `sonar-triage`, `sonar-rule`, `sonar-setup`, `sonar-env` | `code-quality-agent` |
-| `browser` | Unified browser automation: agent-browser exploration + Playwright recording on shared Chrome | `login`, `explore` | `recorder`, `playwright-healer` |
+| `browser` | Unified browser automation: agent-browser exploration + Playwright recording on shared Chrome | `login`, `explore`, `run-flows` | `recorder`, `playwright-healer` |
 
 ## Versioning
 
