@@ -132,7 +132,7 @@ for (const { name, path } of changed) {
 if (needsCommit) {
   run('git', ['config', 'user.name', 'github-actions[bot]']);
   run('git', ['config', 'user.email', 'github-actions[bot]@users.noreply.github.com']);
-  run('git', ['commit', '-m', 'chore: release versions']);
+  run('git', ['commit', '-m', 'chore: release versions [skip ci]']);
   run('git', ['push']);
 }
 
