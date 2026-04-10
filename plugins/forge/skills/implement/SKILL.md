@@ -149,9 +149,12 @@ Spawn the `forge-evaluator` agent with inputs based on route:
 
 ### If verdict is FAIL and iteration < 3:
 - Show the evaluator's findings briefly
+- Extract the **Shared Learnings** block from the evaluator's output (if present)
+- Append any new learnings to the accumulated learnings from prior iterations
 - Spawn the `forge-generator` again with:
   - The evaluator's specific findings (file:line, rule, fix hint)
-  - Instruction: "Fix ONLY the flagged issues. Do not change anything else."
+  - The accumulated shared learnings from all prior iterations
+  - Instruction: "Fix ONLY the flagged issues. Do not change anything else. Read the shared learnings — they contain patterns discovered in prior iterations that may prevent repeated mistakes."
 - Then spawn the `forge-evaluator` again with the updated file list and `iteration: N+1`
 
 ### If verdict is FAIL and iteration = 3:

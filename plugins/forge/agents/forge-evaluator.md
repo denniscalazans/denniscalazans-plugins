@@ -115,6 +115,23 @@ Report them so the user is aware; don't expand scope to fix them.
 
 If no proactive findings, omit this section.
 
+### Shared Learnings
+
+Patterns discovered during this evaluation that the generator should know for the next iteration.
+These are not findings — they are reusable knowledge that prevents repeated mistakes.
+
+Include learnings when you notice:
+- A codebase convention the generator missed that applies to multiple files
+- A selector, naming pattern, or API usage the generator got wrong systematically
+- A tool quirk (e.g., "Angular Material renders mat-mdc-row, not mat-row")
+- A dependency or import pattern the generator should follow
+
+Format: one bullet per learning, concrete and actionable.
+
+- [learning, e.g., "This project uses `data-test-id` not `data-testid` — all 4 new test IDs used the wrong attribute name"]
+
+If no learnings to share, omit this section.
+
 ### Tool Availability
 - [Tool]: [available | unavailable — reason]
 
