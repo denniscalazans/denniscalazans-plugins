@@ -85,15 +85,9 @@ flowchart LR
     EVAL2 -->|"finds violations,<br/>scores dimensions,<br/>extracts learnings"| GEN2
 ```
 
-Model assignment happens at dispatch time in the implement skill, not in agent frontmatter:
-
-| Agent | Model | Rationale |
-|-------|-------|-----------|
-| Investigator | sonnet | Fast, good at analysis |
-| Challenger | sonnet | Fast, adversarial review |
-| Planner | sonnet | Analysis, not generation |
-| Generator | default (session model) | Needs full coding capability |
-| Evaluator | sonnet | Fast, adversarial checking |
+All agents inherit the session model — no hardcoded overrides.
+The pipeline is as intelligent as the session allows.
+This was changed after observing that sonnet produces noticeably weaker analysis than opus in challenger and evaluator roles.
 
 
 ## Routing

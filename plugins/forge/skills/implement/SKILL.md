@@ -205,10 +205,7 @@ Spawn the `forge-evaluator` agent with inputs based on route:
 
 ## Agent Dispatch Rules
 
-- **Investigator and Challenger** run as `model: sonnet` (fast, good at analysis)
-- **Planner** runs as `model: sonnet` (analysis, not generation)
-- **Generator** runs as default model (needs full coding capability)
-- **Evaluator** runs as `model: sonnet` (fast, adversarial checking)
+- **All agents inherit the session model** — no hardcoded model overrides. The pipeline is as intelligent as the session allows. This was changed after observing that sonnet produces noticeably weaker analysis than opus in challenger and evaluator roles.
 - **Never run pipeline agents in parallel** — the pipeline is sequential
 - **Each agent gets full context** — don't summarize, pass complete output
 - **Generator has advisory checkpoints** — the generator pauses before substantive work and before declaring done to verify alignment with the plan. If the generator's Notes section reports a reconciliation (codebase contradicts plan), review it before passing to the evaluator — if the deviation is significant, ask the user
