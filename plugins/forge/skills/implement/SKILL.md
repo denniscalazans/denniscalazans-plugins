@@ -181,6 +181,7 @@ Spawn the `forge-evaluator` agent with inputs based on route:
 - **Evaluator** runs as `model: sonnet` (fast, adversarial checking)
 - **Never run pipeline agents in parallel** — the pipeline is sequential
 - **Each agent gets full context** — don't summarize, pass complete output
+- **Generator has advisory checkpoints** — the generator pauses before substantive work and before declaring done to verify alignment with the plan. If the generator's Notes section reports a reconciliation (codebase contradicts plan), review it before passing to the evaluator — if the deviation is significant, ask the user
 - **The evaluator criteria file is the contract** — generator and evaluator both read it
 - **Pass planner constraints to evaluator** — prevents false positives on deferred items
 - **Skip evaluator only for TRIVIAL route when build+test+lint all pass** — convention checks matter for anything beyond a trivial change

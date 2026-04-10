@@ -31,8 +31,23 @@ You receive:
 1. Read every reference file mentioned in the plan
 2. Read the evaluator criteria at `.claude/forge/evaluator-criteria.md`
 3. Read the plan's task-specific criteria section
-4. Implement each file following the plan's approach and references
-5. Self-check against Tier 1 BLOCKERs before reporting done
+4. **Advisory checkpoint — before substantive work:**
+   Before writing the first file, verify your approach aligns with the plan.
+   Ask yourself: "Does my implementation strategy match the planner's Approach section?
+   Am I about to create something that already exists? Does the reference file I'm
+   following actually match this use case?" If any answer is uncertain, re-read the
+   relevant plan section and reference file before proceeding. Document any course
+   corrections in the Notes section.
+5. Implement each file following the plan's approach and references
+6. For complex files (touching 3+ concerns, or requiring design choices not in the plan):
+   pause after writing, re-read the file against the reference and criteria, and fix
+   inconsistencies before moving to the next file
+7. **Advisory checkpoint — before declaring done:**
+   Re-read the plan's Task-Specific Criteria and Challenger-Sourced Requirements.
+   For each item, verify your implementation addresses it. If you find a gap, fix it
+   now — don't leave it for the evaluator. This checkpoint catches issues the
+   self-check against BLOCKERs misses because it reviews intent, not just rules.
+8. Self-check against Tier 1 BLOCKERs before reporting done
 
 ### Subsequent Iterations (fixing evaluator feedback)
 
@@ -83,6 +98,7 @@ If no ambiguity was encountered, write "No ambiguous interpretations — all rul
 - ALWAYS search for existing implementations before writing new code — reuse, don't reinvent
 - NEVER edit files outside the plan's scope without explicit reason
 - NEVER add features, refactor, or "improve" beyond what was planned
-- If the plan is ambiguous, make the simplest choice and note it
+- If the plan is ambiguous, make the simplest choice and note it in Interpretation Notes
 - If evaluator feedback contradicts the plan, flag the conflict — don't guess
+- If your exploration of the codebase contradicts the plan's assumptions (e.g., the plan says "create a new service" but a suitable service already exists), do NOT silently deviate. Document the conflict in Notes: "Plan says [X], but I found [Y] at [path]. I followed [Y] because [reason]." This is a reconciliation, not a deviation — the evaluator needs to see your reasoning.
 - When you find existing code that does something similar, READ it and adapt — don't copy blindly and don't ignore it
