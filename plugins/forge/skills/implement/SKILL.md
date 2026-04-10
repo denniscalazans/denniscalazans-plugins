@@ -36,6 +36,36 @@ Each invocation writes a feedback file at `.agents.tmp/forge/feedback-YYYYMMDD-{
 This records each agent's output, evaluator findings, iteration count, and tool availability.
 Git-auditable trail of every pipeline run.
 
+### Pipeline Metrics (append to every audit trail)
+
+Track these metrics to measure which agents justify their cost over time:
+
+```markdown
+## Pipeline Metrics
+
+- **Route:** TRIVIAL | CLEAR PRD | STANDARD
+- **Agents used:** [list]
+- **Iterations:** X/3
+- **Final verdict:** PASS | FAIL (escalated)
+- **Quality dimensions (final):** Convention [X/3], Tests [X/3], Patterns [X/3], Completeness [X/3]
+
+### Per-Agent Value
+| Agent | Key contribution | Could skip? |
+|-------|-----------------|-------------|
+| Investigator | [what it found that wasn't obvious] | [yes/no — why] |
+| Challenger | [gaps it caught] | [yes/no — why] |
+| Planner | [design choices it made] | [yes/no — why] |
+| Generator | N/A (always needed) | no |
+| Evaluator | [BLOCKERs caught, iterations needed] | no |
+
+### Reconciliations
+[Any cases where the generator's codebase findings contradicted the plan.
+These indicate the investigator or planner missed something.]
+```
+
+Over time, these metrics show patterns: if the challenger column consistently says "no gaps found," it may not justify its cost for this project's task types.
+Review accumulated metrics periodically to decide if the pipeline routing thresholds need adjustment.
+
 
 ## Phase 0 — ROUTE
 
@@ -60,7 +90,7 @@ Announce the route: "Routing as [TRIVIAL/CLEAR PRD/STANDARD] — using [agent li
 Spawn the `forge-investigator` agent with:
 - The task description (from user input or plan file)
 - Context about why this change is needed
-- Whether `.claude/forge/evaluator-criteria.md` exists
+- Whether `.agents/forge/evaluator-criteria.md` exists
 
 **Wait for the investigator's output before proceeding.**
 
@@ -103,9 +133,10 @@ If the plan is clear, move to Phase 4.
 Spawn the `forge-generator` agent with inputs based on route:
 
 **STANDARD / CLEAR PRD route:**
-- The planner's full output (files to create/modify, references, constraints, task-specific criteria)
+- The planner's output, specifically these sections: Task, Approach, Files to Create, Files to Modify, Constraints, Challenger-Sourced Requirements, Dependencies, Task-Specific Criteria
 - The evaluator criteria path
 - Instruction: "Read the criteria file first. Self-check before reporting done."
+- Do NOT pass the planner's reasoning or alternatives — only the actionable plan sections
 
 **TRIVIAL route (no planner):**
 - The original task description
@@ -124,9 +155,11 @@ Spawn the `forge-evaluator` agent with inputs based on route:
 
 **STANDARD / CLEAR PRD route:**
 - The list of files created/modified by the generator
+- The generator's Interpretation Notes section (for sprint contract validation)
 - The original task description
-- The planner's task-specific criteria
-- The planner's constraints (deferred items)
+- The planner's Task-Specific Criteria section (extracted verbatim)
+- The planner's Constraints section (extracted verbatim — deferred items)
+- The planner's Challenger-Sourced Requirements section (extracted verbatim)
 - `iteration: 1`
 
 **TRIVIAL route (no planner):**
@@ -151,6 +184,7 @@ Spawn the `forge-evaluator` agent with inputs based on route:
 - Show the evaluator's findings briefly
 - Extract the **Shared Learnings** block from the evaluator's output (if present)
 - Append any new learnings to the accumulated learnings from prior iterations
+- Track **Quality Dimensions** scores from this iteration — compare with prior scores to identify dimensions that aren't improving (the evaluator scores independently each time; the implement skill owns the comparison)
 - Spawn the `forge-generator` again with:
   - The evaluator's specific findings (file:line, rule, fix hint)
   - The accumulated shared learnings from all prior iterations
@@ -172,12 +206,12 @@ Spawn the `forge-evaluator` agent with inputs based on route:
 
 ## Agent Dispatch Rules
 
-- **Investigator and Challenger** run as `model: sonnet` (fast, good at analysis)
-- **Planner** runs as `model: sonnet` (analysis, not generation)
-- **Generator** runs as default model (needs full coding capability)
-- **Evaluator** runs as `model: sonnet` (fast, adversarial checking)
+- **Challenger and Evaluator** run as `model: opus` — these are adversarial roles where weaker models miss real problems. Non-negotiable.
+- **Investigator and Planner** run as `model: opus` — report and plan quality directly affect downstream agents. Weak investigation leads to weak plans.
+- **Generator** inherits the session model — the user controls their coding session's capability.
 - **Never run pipeline agents in parallel** — the pipeline is sequential
 - **Each agent gets full context** — don't summarize, pass complete output
+- **Generator has advisory checkpoints** — the generator pauses before substantive work and before declaring done to verify alignment with the plan. If the generator's Notes section reports a reconciliation (codebase contradicts plan), review it before passing to the evaluator — if the deviation is significant, ask the user
 - **The evaluator criteria file is the contract** — generator and evaluator both read it
 - **Pass planner constraints to evaluator** — prevents false positives on deferred items
 - **Skip evaluator only for TRIVIAL route when build+test+lint all pass** — convention checks matter for anything beyond a trivial change
@@ -185,7 +219,7 @@ Spawn the `forge-evaluator` agent with inputs based on route:
 
 ## Criteria Lifecycle
 
-The evaluator-criteria.md lives at `.claude/forge/evaluator-criteria.md` in each project.
+The evaluator-criteria.md lives at `.agents/forge/evaluator-criteria.md` in each project.
 
 | Event | Action |
 |-------|--------|
