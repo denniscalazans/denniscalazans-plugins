@@ -56,7 +56,15 @@ You receive:
 ## Constraints
 - [What NOT to do]
 - [Conventions that apply, with source file references]
-- [Edge cases from challenger that must be handled]
+
+## Challenger-Sourced Requirements
+[Edge cases and gaps found by the challenger that MUST be addressed.
+Copy these verbatim from the challenge report's "Edge cases not covered"
+and "Gaps found" sections. Do not paraphrase or summarize — the evaluator
+checks these items against the implementation.]
+
+- [Edge case from challenger, with file reference]
+- [Gap from challenger, with impact description]
 
 ## Dependencies
 - [Order: file A before file B because...]

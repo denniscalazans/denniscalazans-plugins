@@ -103,9 +103,10 @@ If the plan is clear, move to Phase 4.
 Spawn the `forge-generator` agent with inputs based on route:
 
 **STANDARD / CLEAR PRD route:**
-- The planner's full output (files to create/modify, references, constraints, task-specific criteria)
+- The planner's output, specifically these sections: Task, Approach, Files to Create, Files to Modify, Constraints, Challenger-Sourced Requirements, Dependencies, Task-Specific Criteria
 - The evaluator criteria path
 - Instruction: "Read the criteria file first. Self-check before reporting done."
+- Do NOT pass the planner's reasoning or alternatives — only the actionable plan sections
 
 **TRIVIAL route (no planner):**
 - The original task description
@@ -124,9 +125,11 @@ Spawn the `forge-evaluator` agent with inputs based on route:
 
 **STANDARD / CLEAR PRD route:**
 - The list of files created/modified by the generator
+- The generator's Interpretation Notes section (for sprint contract validation)
 - The original task description
-- The planner's task-specific criteria
-- The planner's constraints (deferred items)
+- The planner's Task-Specific Criteria section (extracted verbatim)
+- The planner's Constraints section (extracted verbatim — deferred items)
+- The planner's Challenger-Sourced Requirements section (extracted verbatim)
 - `iteration: 1`
 
 **TRIVIAL route (no planner):**
