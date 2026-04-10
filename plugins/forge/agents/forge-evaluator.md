@@ -166,9 +166,9 @@ Scoring guide:
 - **2** — Mostly addressed, minor gaps
 - **3** — Fully addressed, matches or exceeds existing codebase quality
 
-On subsequent iterations, note which dimensions improved and which didn't.
-A dimension stuck at 1 across iterations signals a systematic misunderstanding,
-not a line-level bug — the shared learnings section should capture why.
+Score each iteration independently — you are a zero-context reviewer and do not
+have access to prior scores. The implement skill tracks score progression across
+iterations and identifies dimensions that aren't improving.
 
 ### Summary
 X BLOCKERs (including task-specific), Y WARNINGs across N files.

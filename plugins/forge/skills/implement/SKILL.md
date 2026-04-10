@@ -184,6 +184,7 @@ Spawn the `forge-evaluator` agent with inputs based on route:
 - Show the evaluator's findings briefly
 - Extract the **Shared Learnings** block from the evaluator's output (if present)
 - Append any new learnings to the accumulated learnings from prior iterations
+- Track **Quality Dimensions** scores from this iteration — compare with prior scores to identify dimensions that aren't improving (the evaluator scores independently each time; the implement skill owns the comparison)
 - Spawn the `forge-generator` again with:
   - The evaluator's specific findings (file:line, rule, fix hint)
   - The accumulated shared learnings from all prior iterations
