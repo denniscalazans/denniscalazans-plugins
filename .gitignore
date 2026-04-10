@@ -9,6 +9,7 @@ coverage/
 docs/
 .idea/
 .remember/
+plugins/dc/skills/clean/
 
 # Override global gitignore — .claude/CLAUDE.md is the contribution guide
 !.claude/
