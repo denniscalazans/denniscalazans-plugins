@@ -3,10 +3,9 @@ name: run-flows
 description: >
   Use when the user wants to run multiple Playwright flow files in parallel, batch-execute test
   suites across subagents, or collect results from many flows into a summary report.  
-  Also use when repeating the same flow across multiple roles or environments, or when
-  cross-batch learning is needed to avoid agents rediscovering the same failures independently.  
+  Also use when cross-batch learning is needed to avoid agents rediscovering the same failures independently.  
   Triggers: "run flows", "parallel flows", "cross-batch",
-  "flow runner", "run the flows", "execute all flows".
+  "run the flows", "execute all flows", "flow results".
 ---
 
 # Run Flows — Parallel Batch Runner with Cross-Batch Learning
@@ -21,6 +20,13 @@ Orchestrate multiple Playwright `.flow.ts` files in parallel via subagents, coll
 /browser:run-flows .agents.tmp/ffa-475/playwright/ --parallelism 4
 /browser:run-flows .agents.tmp/ffa-475/playwright/ --config e2e/playwright.config.ts
 ```
+
+
+## Prerequisites
+
+- Playwright installed in the project (`npx playwright --version` succeeds)
+- `.flow.ts` files already exist on disk — this skill runs flows, it does not generate them (use `browser:explore` to generate)
+- If flows require authentication, run `browser:login` first to establish a session
 
 
 ## Inputs
@@ -46,13 +52,13 @@ If zero files are found, report the error and stop — do not dispatch any subag
 Divide the flow files into batches of size equal to the `parallelism` parameter.  
 For example, 9 flows with parallelism 3 produces 3 batches of 3.
 
-If all flows fit in a single batch (count <= parallelism), skip cross-batch learning — run them all at once.
+If all flows fit in a single batch (count <= parallelism), skip the cross-batch injection step — but still extract findings for the summary report.
 
 ### Step 3: Write all flow files before dispatching
 
 This is critical.  
 All `.flow.ts` files must already exist on disk before any subagent is dispatched.  
-Subagents receive Bash-only tasks — they run flows and fix failing selectors, but never create new files from scratch.
+Subagents can run flows and edit existing files (fix selectors, timing, assertions), but cannot reliably create new files from scratch.
 
 If the user asks to both generate and run flows, generate all files first in the main context, then invoke this skill to run them.
 
@@ -78,7 +84,8 @@ After the final run, report:
 - Any DOM quirks, selector corrections, or timing fixes you discovered
 ```
 
-Each subagent needs the `Bash` tool permission.  
+Always use absolute paths for `<flow-path>` and `<config-path>` — relative paths may resolve incorrectly in subagent contexts.
+
 Dispatch all subagents in the batch simultaneously — do not wait for one to finish before starting the next.
 
 ### Step 5: Collect Batch 1 results
@@ -173,13 +180,11 @@ Vague findings like "selectors may differ" do not help — include the exact sel
 
 Follow the "write locally, run remotely" pattern.
 
-1. **Main context writes** all flow files (you have Write permission)
-2. **Subagents run** flows via Bash (they have Bash permission)
-3. **Subagents can edit** files they are working on (fix selectors, timing, assertions)
-4. **Subagents cannot** reliably create new files from scratch
+1. **Main context creates** all flow files before dispatching (you have Write permission)
+2. **Subagents run** flows and edit existing files (fix selectors, timing, assertions)
+3. **Subagents cannot** reliably create new files from scratch — file creation must happen in the main context
 
-This split avoids permission friction.  
-Subagents dispatched with both Write and Bash tasks burn tokens on permission errors without producing results.
+This split avoids the failure mode where subagents burn tokens trying to create files they don't have permission to write.
 
 ### Retry budget
 
@@ -230,7 +235,7 @@ Each failed flow gets its own subsection with the error, attempt count, and last
 
 | Do NOT | Do instead |
 |--------|-----------|
-| Dispatch subagents to both write AND run flow files | Write all `.flow.ts` files in the main context first, dispatch subagents to run only |
+| Dispatch subagents to create new flow files from scratch | Create all `.flow.ts` files in the main context first, then dispatch subagents to run and edit |
 | Run all flows sequentially in a single subagent | Dispatch one subagent per flow file for true parallelism |
 | Skip shared findings extraction between batches | Always extract and inject findings — this prevents repeated discovery of the same issues |
 | Include vague findings like "selectors may differ" | Include exact selectors, class names, and steps: `mat-mdc-row` not `<mat-row>` |
@@ -238,3 +243,12 @@ Each failed flow gets its own subsection with the error, attempt count, and last
 | Dispatch more subagents than the parallelism limit | Respect the limit — each subagent owns a browser context and too many cause resource contention |
 | Forget to pass the Playwright config path | Always include `--config <path>` in the subagent command so flows use the correct base URL and settings |
 | Wait for one subagent to finish before dispatching the next in a batch | Dispatch all subagents in a batch simultaneously — they run in parallel |
+| Use relative paths in subagent prompts | Always pass absolute paths — relative paths may resolve incorrectly in subagent contexts |
+
+
+## Integration with Other Skills
+
+- **`browser:explore`** generates the `.flow.ts` files this skill runs.  
+  Typical workflow: `explore` in flow mode to generate files, then `run-flows` to execute them in parallel.
+- **`browser:login`** establishes authenticated browser sessions.  
+  Run `login` before `run-flows` if the flows require authentication.
