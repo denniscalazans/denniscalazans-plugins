@@ -3,6 +3,63 @@
 The forge implement skill orchestrates five agents in a sequential pipeline with dynamic routing, advisory checkpoints, and cross-iteration learning.
 
 
+## Design Philosophy
+
+The forge pipeline is built on four principles from agent design research.
+Each principle solves a specific failure mode observed in AI-assisted code generation.
+
+
+### Separate generation from evaluation
+
+When the same agent writes code and judges its quality, it praises its own mediocre output.
+Splitting these roles into a dedicated Generator and a dedicated Evaluator creates adversarial tension — the Generator tries to produce code that passes, the Evaluator tries to find real violations.
+This is the same insight behind Generative Adversarial Networks: the generator improves because the evaluator keeps raising the bar.
+
+*Source: [Anthropic — Harness Design for Long-Running Apps](https://www.anthropic.com/engineering/harness-design-long-running-apps).
+"Separating the agent doing the work from the agent judging it proves to be a strong lever."*
+
+
+### Route complexity to match the task
+
+Not every task needs five agents.
+A typo fix doesn't need adversarial review, and a well-specified feature ticket doesn't need codebase exploration.
+The pipeline classifies tasks into three routes (TRIVIAL, CLEAR PRD, STANDARD) and only activates the agents each route requires.
+This keeps the pipeline as simple as the task demands, not as complex as the architecture allows.
+
+*Source: [Anthropic — Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents).
+"Start with the simplest solution possible, and only add complexity when empirically justified."*
+
+
+### Calibrate evaluation with concrete examples
+
+An evaluator without calibration drifts — it either rubber-stamps everything or invents problems to justify its existence.
+The forge evaluator uses few-shot calibration examples showing exactly what a BLOCKER, WARNING, false positive, and proactive finding look like.
+Scored quality dimensions (Convention Adherence, Test Coverage, Pattern Consistency, Completeness) give the Generator holistic feedback beyond "fix this line."
+
+*Source: [Microsoft — Multi-Model Intelligence in Researcher](https://techcommunity.microsoft.com/blog/microsoft365copilotblog/introducing-multi-model-intelligence-in-researcher/4506011).
+Rubric-based evaluation across explicit dimensions produced +7.0 point improvement with p < 0.0001 statistical significance.*
+
+
+### Consult before committing, not just after failing
+
+The Generator has two advisory checkpoints — before starting substantive work and before declaring done.
+These structured pause-and-verify moments catch approach-level mistakes that line-level self-checks miss.
+When the Generator's codebase exploration contradicts the plan, it documents the conflict rather than silently deviating.
+
+*Source: [Anthropic — Advisor Tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/advisor-tool).
+"Call advisor BEFORE substantive work — before writing, before committing to an interpretation, before building on an assumption."*
+
+
+### Make interpretation explicit, not implicit
+
+The Generator and Evaluator both read the same criteria file, but they may interpret ambiguous rules differently.
+Rather than letting this mismatch surface as repeated failures across iterations, the Generator declares its interpretations upfront and the Evaluator validates them.
+This sprint contract pattern surfaces disagreements on iteration 1 instead of iteration 3.
+
+*Source: [Anthropic — Harness Design for Long-Running Apps](https://www.anthropic.com/engineering/harness-design-long-running-apps).
+Sprint contract pattern — generator and evaluator negotiate written contracts before implementation.*
+
+
 ## Pipeline Overview
 
 ```mermaid
