@@ -621,7 +621,7 @@ Then verify the rest:
 - headlines are lower case and under seven words
 - headlines contain messages, not categories
 - no exclamation marks anywhere
-- no signs: no "&", "%", "/", "+", "!", unnecessary punctuation
+- no signs in prose: no "&", "%", "/", "+", "!" (exception: code, formulas, technical literals)
 - no abbreviations
 - numbers follow convention (words for 1-20, even tens, round hundreds/thousands/millions)
 - no bold in body text, no underline, no UPPERCASE for emphasis
