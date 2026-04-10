@@ -39,6 +39,7 @@ These work as a pipeline: **brief** decodes messy input → **grill** stress-tes
 | `/dc:grill` | Stress-test a plan, design, or architecture through relentless prepared questioning |
 | `/dc:distill` | Extract key insights and restructure content for human readers |
 | `/dc:writing` | Apply one-sentence-per-line markdown convention |
+| `/dc:plain-language` | Apply strict plain-language rules — short sentences, active voice, facts over opinions |
 
 **Agent:** `strategic-thinking-partner` — proactive strategic oversight and assumption challenging
 
