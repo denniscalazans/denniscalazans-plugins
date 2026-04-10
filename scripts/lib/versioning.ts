@@ -44,9 +44,18 @@ export function computeReleaseVersion(
   releaseVersion = `${major}.${minor}.${patch + 1}`;
   tag = `${pluginName}-v${releaseVersion}`;
 
-  if (tagExists(tag)) {
-    return null;
+  if (!tagExists(tag)) {
+    return { version: releaseVersion, tag, autoBumped: true };
   }
 
-  return { version: releaseVersion, tag, autoBumped: true };
+  // Scan further patches (cap at 100 to avoid infinite loops)
+  for (let i = 2; i <= 100; i++) {
+    releaseVersion = `${major}.${minor}.${patch + i}`;
+    tag = `${pluginName}-v${releaseVersion}`;
+    if (!tagExists(tag)) {
+      return { version: releaseVersion, tag, autoBumped: true };
+    }
+  }
+
+  return null;
 }
