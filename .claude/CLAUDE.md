@@ -42,7 +42,7 @@ npm run test:scripts
 
 | Plugin | Description | Skills | Agents |
 |--------|-------------|--------|--------|
-| `dc` | Brain round trip: decode messy input, stress-test plans, distill insights, write clean markdown | `brief`, `grill`, `distill`, `writing` | `strategic-thinking-partner` |
+| `dc` | Brain round trip: decode messy input, stress-test plans, distill insights, write clean markdown | `brief`, `grill`, `distill`, `writing`, `plain-language` | `strategic-thinking-partner` |
 | `forge` | Codebase support: task lifecycle, investigation, adversarial implementation pipeline | `start`, `investigate`, `implement`, `finish` | `forge-investigator`, `forge-challenger`, `forge-planner`, `forge-generator`, `forge-evaluator` |
 | `integrations` | External service connectors | `figma-api`, `op` | — |
 | `code-quality` | SonarQube-driven code quality workflows via MCP | `sonar-status`, `sonar-issues`, `sonar-fix`, `sonar-verify`, `sonar-triage`, `sonar-rule`, `sonar-setup`, `sonar-env` | `code-quality-agent` |
