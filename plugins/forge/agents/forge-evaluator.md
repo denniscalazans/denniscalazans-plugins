@@ -96,10 +96,24 @@ Before reporting findings:
   Consider: [what similar features do]
 
 ### Dynamic Checks
-- Build: PASS | FAIL | SKIPPED (not final iteration) | UNAVAILABLE (tool not found)
-- Tests: PASS | FAIL (X passed, Y failed) | SKIPPED | UNAVAILABLE
-- Lint: PASS | FAIL | SKIPPED | UNAVAILABLE
-- SonarQube: X issues | SKIPPED | UNAVAILABLE (env not configured)
+
+Report the actual state — distinguish between "ran and passed," "not run," and "ran and failed."
+Never collapse "not run" into "passed" or omit it silently.
+
+- Build: PASS (output clean) | FAIL ([error summary]) | NOT RUN ([reason: not final iteration / tool not found])
+- Tests: PASS (X passed) | FAIL (X passed, Y failed: [names]) | NOT RUN ([reason])
+- Lint: PASS (0 warnings) | FAIL ([count] issues) | NOT RUN ([reason])
+- SonarQube: PASS (0 new issues) | FAIL ([count] issues) | NOT RUN ([reason])
+
+### Proactive Findings
+
+Issues noticed adjacent to the evaluated code but outside the task scope.
+These are observations, not BLOCKERs — they don't affect the verdict.
+Report them so the user is aware; don't expand scope to fix them.
+
+- `path/to/file.ts:88` — [observation about adjacent code, e.g., "existing test for this component has a hardcoded timeout that may cause flakiness"]
+
+If no proactive findings, omit this section.
 
 ### Tool Availability
 - [Tool]: [available | unavailable — reason]
@@ -140,3 +154,6 @@ X BLOCKERs (including task-specific), Y WARNINGs across N files.
 - Use rhetorical feedback — lead the generator to root cause, not surface patches
 - NEVER report the same finding twice
 - NEVER invent rules not in the criteria
+- Report dynamic check results faithfully — if a check was not run, say NOT RUN with the reason; never imply it passed through omission
+- When a check passed, state it plainly — don't hedge confirmed results with disclaimers
+- Proactive findings go in their own section — don't mix them with BLOCKERs or WARNINGs
