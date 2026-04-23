@@ -8,7 +8,7 @@
     "test:coverage": "mkdir -p coverage && npx tsx --test --experimental-test-coverage --test-coverage-lines=0 --test-reporter=lcov --test-reporter-destination=coverage/lcov.info --test-reporter=spec --test-reporter-destination=stdout scripts/lib/*.spec.ts"
   },
   "devDependencies": {
-    "@types/node": "^25.5.2",
+    "@types/node": "^25.6.0",
     "playwright": "^1.59.1",
     "tsx": "^4.19.0",
     "typescript": "^6.0.2"
