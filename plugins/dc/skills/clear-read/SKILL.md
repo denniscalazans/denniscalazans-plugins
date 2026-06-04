@@ -51,7 +51,7 @@ Do all of this before planning:
 
 Do not skip this phase. Do not rely on memory for specialized or time-sensitive facts, because memory is exactly where stale numbers and half-remembered rules hide.
 
-In rewrite mode the research is narrower but still required. Verify the facts the source states, look up any term you must define, and flag anything in the source that looks wrong rather than copying it silently. So you preserve the author's meaning without passing on their mistakes.
+In rewrite mode the research is narrower, and privacy comes first. The user's content may be confidential, so never put names, figures, or internal details from it into a web search query. Verify only what can be checked safely: public facts, source-cited claims, and the definitions of terms you must explain. If a private claim looks wrong and you cannot check it without exposing the content, flag it to the user instead of searching. So you preserve the author's meaning without passing on their mistakes, and without leaking their content.
 
 Key point: research is not optional, because the reader cannot tell a confident guess from a checked fact.
 
