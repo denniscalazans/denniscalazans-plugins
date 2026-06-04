@@ -40,6 +40,7 @@ These work as a pipeline: **brief** decodes messy input → **grill** stress-tes
 | `/dc:distill` | Extract key insights and restructure content for human readers |
 | `/dc:writing` | Apply one-sentence-per-line markdown convention |
 | `/dc:plain-language` | Apply strict plain-language rules — short sentences, active voice, facts over opinions |
+| `/dc:clear-read` | Write or rewrite content so a tired, non-native-English reader understands it on the first read |
 
 **Agent:** `strategic-thinking-partner` — proactive strategic oversight and assumption challenging
 
