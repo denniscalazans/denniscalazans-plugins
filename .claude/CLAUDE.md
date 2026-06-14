@@ -47,6 +47,7 @@ npm run test:scripts
 | `integrations` | External service connectors | `figma-api`, `op` | — |
 | `code-quality` | SonarQube-driven code quality workflows via MCP | `sonar-status`, `sonar-issues`, `sonar-fix`, `sonar-verify`, `sonar-triage`, `sonar-rule`, `sonar-setup`, `sonar-env` | `code-quality-agent` |
 | `browser` | Unified browser automation: agent-browser exploration + Playwright recording on shared Chrome | `login`, `explore`, `run-flows` | `recorder`, `playwright-healer` |
+| `cli` | Teach Claude any CLI tool and convert that knowledge into reusable, version-aware skills | `learn-a-cli`, `cli-as-skill` | — |
 
 ## Versioning
 
