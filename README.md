@@ -116,6 +116,7 @@ Connectors for external services.
 | Command | What it does |
 |---------|-------------|
 | `/integrations:figma-api` | Interact with the Figma REST API for design data, tokens, and exports |
+| `/integrations:hermes-tweet` | Operate Hermes Tweet for X/Twitter research, monitoring, and approval-gated actions |
 | `/integrations:op` | Manage 1Password CLI secrets with safe `op run` patterns |
 
 **Install:**

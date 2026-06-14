@@ -33,7 +33,7 @@
     },
     {
       "name": "integrations",
-      "description": "External service connectors: Figma REST API and 1Password CLI",
+      "description": "External service connectors: Figma REST API, Hermes Tweet, and 1Password CLI",
       "source": "./plugins/integrations",
       "category": "productivity"
     }
