@@ -110,7 +110,7 @@ Inject these verbatim, filling the placeholders:
 This skill was researched against **<tool> <version>** on **<date>**.
 
 ## Preflight — ALWAYS run first
-Before any <tool> command, run `bash scripts/preflight.sh` and read the `DRIFT=` verdict (plus the separate `STALE=` flag):
+Before any <tool> command, run `bash "${CLAUDE_SKILL_DIR}/scripts/preflight.sh"` and read the `DRIFT=` verdict (plus the separate `STALE=` flag):
 - **EXACT / PATCH** → proceed normally.
 - **MINOR / DOWNGRADE / UNKNOWN** → surface the ⚠️ banner verbatim, then proceed,
   but verify any flag against `<tool> <cmd> --help` before relying on it.
@@ -145,3 +145,4 @@ do NOT guess an alternative — the skill has likely drifted from the installed 
 | Bury destructive ops among safe ones | Separate read-only / mutating / destructive sections |
 | Omit the dry-run step from mutating recipes | Lead every mutating recipe with its preview |
 | Skip the preflight wiring | Always generate `scripts/preflight.sh` + the Preflight section |
+| Use `bash scripts/preflight.sh` (relative path) in the injected preflight line | Use `bash "${CLAUDE_SKILL_DIR}/scripts/preflight.sh"` — agents run with the user's CWD, not the skill's dir |

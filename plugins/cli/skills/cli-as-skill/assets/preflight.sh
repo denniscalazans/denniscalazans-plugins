@@ -42,10 +42,19 @@ if [ -z "$INSTALLED" ]; then
   emit UNKNOWN "$RAW"; exit 0
 fi
 
-IFS='.' read -r bM bm bp <<<"$BUILT_FOR.0.0";  IFS='.' read -r iM im ip <<<"$INSTALLED.0.0"
-bp=${bp:-0}; ip=${ip:-0}
+# Split on '.' and keep only the first 3 components, defaulting missing pieces to 0.
+# (The previous form appended '.0.0' and read into 3 vars, which left malformed
+# trailing segments like '4.0.0' that broke integer comparisons.)
+parse_version() {
+  local v="$1" parts
+  IFS='.' read -r -a parts <<<"${v}.0.0.0"
+  printf '%s %s %s\n' "${parts[0]:-0}" "${parts[1]:-0}" "${parts[2]:-0}"
+}
+read -r bM bm bp < <(parse_version "$BUILT_FOR")
+read -r iM im ip < <(parse_version "$INSTALLED")
+BUILT_FOR_CANON="$bM.$bm.$bp"
 
-if [ "$INSTALLED" = "$BUILT_FOR" ]; then
+if [ "$INSTALLED" = "$BUILT_FOR" ] || [ "$iM.$im.$ip" = "$BUILT_FOR_CANON" ]; then
   emit EXACT "$INSTALLED"; exit 0
 elif [ "$iM" -ne "$bM" ]; then
   banner "🛑 [$TOOL] MAJOR VERSION DRIFT — skill built for $BUILT_FOR, installed is $INSTALLED.
@@ -54,6 +63,9 @@ elif [ "$iM" -ne "$bM" ]; then
   emit MAJOR "$INSTALLED"; exit 0
 elif [ "$im" -lt "$bm" ] && [ "$iM" -eq "$bM" ]; then
   banner "⚠️  [$TOOL] DOWNGRADE — installed $INSTALLED is older than built-for $BUILT_FOR. Flags this skill relies on may not exist yet; verify against --help before mutating."
+  emit DOWNGRADE "$INSTALLED"; exit 0
+elif [ "$ip" -lt "$bp" ] && [ "$iM" -eq "$bM" ] && [ "$im" -eq "$bm" ]; then
+  banner "⚠️  [$TOOL] DOWNGRADE — installed $INSTALLED is older than built-for $BUILT_FOR (same major.minor, older patch). Flags this skill relies on may not exist yet; verify against --help before mutating."
   emit DOWNGRADE "$INSTALLED"; exit 0
 elif [ "$im" -ne "$bm" ]; then
   banner "⚠️  [$TOOL] MINOR drift — built for $BUILT_FOR, installed $INSTALLED. New flags may exist; old ones usually still work. Re-check --help for any flag that errors."
