@@ -1,6 +1,6 @@
 {
   "name": "integrations",
-  "description": "External service connectors — Figma REST API and 1Password CLI",
+  "description": "External service connectors: Figma REST API, Hermes Tweet, and 1Password CLI",
   "version": "1.0.0",
   "author": { "name": "Dennis Calazans" },
   "keywords": [
@@ -9,7 +9,11 @@
     "op",
     "secrets",
     "design",
+    "hermes",
+    "hermes-tweet",
     "integrations",
-    "api"
+    "api",
+    "x",
+    "twitter"
   ]
 }

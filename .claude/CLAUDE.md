@@ -44,7 +44,7 @@ npm run test:scripts
 |--------|-------------|--------|--------|
 | `dc` | Brain round trip: decode messy input, stress-test plans, distill insights, write clean markdown | `brief`, `grill`, `distill`, `writing`, `plain-language`, `clear-read` | `strategic-thinking-partner` |
 | `forge` | Codebase support: task lifecycle, investigation, adversarial implementation pipeline | `start`, `investigate`, `implement`, `finish` | `forge-investigator`, `forge-challenger`, `forge-planner`, `forge-generator`, `forge-evaluator` |
-| `integrations` | External service connectors | `figma-api`, `op` | — |
+| `integrations` | External service connectors | `figma-api`, `hermes-tweet`, `op` | — |
 | `code-quality` | SonarQube-driven code quality workflows via MCP | `sonar-status`, `sonar-issues`, `sonar-fix`, `sonar-verify`, `sonar-triage`, `sonar-rule`, `sonar-setup`, `sonar-env` | `code-quality-agent` |
 | `browser` | Unified browser automation: agent-browser exploration + Playwright recording on shared Chrome | `login`, `explore`, `run-flows` | `recorder`, `playwright-healer` |
 | `cli` | Teach Claude any CLI tool and convert that knowledge into reusable, version-aware skills | `learn-a-cli`, `cli-as-skill` | — |
