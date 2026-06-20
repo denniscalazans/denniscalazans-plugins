@@ -36,6 +36,12 @@
       "description": "External service connectors: Figma REST API, Hermes Tweet, and 1Password CLI",
       "source": "./plugins/integrations",
       "category": "productivity"
+    },
+    {
+      "name": "cli",
+      "description": "Teach Claude any CLI tool and convert that knowledge into reusable skills: research a tool into a bundle, then package it into a safe, version-aware per-tool skill",
+      "source": "./plugins/cli",
+      "category": "productivity"
     }
   ]
 }
