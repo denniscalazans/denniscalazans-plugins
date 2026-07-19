@@ -33,7 +33,7 @@
     },
     {
       "name": "integrations",
-      "description": "External service connectors: Figma REST API and 1Password CLI",
+      "description": "External service connectors for Figma REST API, 1Password CLI, and Xquik",
       "source": "./plugins/integrations",
       "category": "productivity"
     },
