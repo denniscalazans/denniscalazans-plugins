@@ -118,6 +118,7 @@ Connectors for external services.
 |---------|-------------|
 | `/integrations:figma-api` | Interact with the Figma REST API for design data, tokens, and exports |
 | `/integrations:op` | Manage 1Password CLI secrets with safe `op run` patterns |
+| `/integrations:xquik` | Retrieve X data and prepare approval-gated Xquik automation workflows |
 
 **Install:**
 ```bash

@@ -1,6 +1,6 @@
 {
   "name": "integrations",
-  "description": "External service connectors — Figma REST API and 1Password CLI",
+  "description": "External service connectors for Figma REST API, 1Password CLI, and Xquik",
   "version": "1.0.0",
   "author": { "name": "Dennis Calazans" },
   "keywords": [
@@ -10,6 +10,10 @@
     "secrets",
     "design",
     "integrations",
-    "api"
+    "api",
+    "xquik",
+    "x",
+    "webhooks",
+    "mcp"
   ]
 }
