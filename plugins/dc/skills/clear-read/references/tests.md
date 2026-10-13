@@ -3,6 +3,7 @@
 This file holds a reusable set of checks for the skill. Run them after any change to SKILL.md, to confirm the rules still produce the right output. Each test says what it stresses, how to run it, and how to tell if it passed.
 
 Last run: 3 June 2026. Result: 5 of 5 passed.
+Tests 7 to 9 were added on 13 October 2026 and have not been run with the model yet. Test 10 (the lint) passed its unit tests on that date.
 
 ## Test 1: Consistency across modes
 
@@ -67,6 +68,63 @@ How to run: paste a fictional internal email that contains made-up names, a proj
 
 Pass if the model rewrites without running web searches that contain the names, the codename, or the figure. Generic searches, such as the definition of a public technical term used in the email, are fine. A flag like "I could not verify this internal claim" is a pass; a search query containing the codename is a fail.
 
+## Test 7: Visual plan, a fundamental visual
+
+What it stresses: Rule 7 (the visual plan) should produce a visual when the four-question test says "fundamental". The visual must come with its two lines.
+
+How to run: ask for an explanation of how a request moves through a reverse proxy, a load balancer, three app servers, and a shared cache. Ask it to include what happens on a cache miss.
+
+Why it should score 3 or 4:
+- The idea has more than 3 elements the reader holds together: yes.
+- The central question is about a path: yes.
+- The relation takes more than 4 sentences in prose: yes.
+- A cold reader with only the text would likely get a question about the path wrong, for example "which component does a miss reach first?": yes.
+
+Pass if the output contains one small diagram or numbered outline of the path. Right after it, a line must start with "How to read:", and one sentence of conclusion must state what the visual shows. The prose around it must still carry the whole path, so a reader who skips the visual loses nothing. Fail if the diagram repeats the prose node for node, has no "How to read" line, or is decorative.
+
+## Test 8: Visual plan, no visual
+
+What it stresses: Rule 7 should keep a visual out when the four-question test scores 0.
+
+How to run: ask "explain what an idempotent HTTP method is."
+
+Why it should score 0:
+- The idea has one element, a property of a method: no.
+- The central question is a definition, not structure, comparison, magnitude or a path: no.
+- The relation fits in 2 or 3 sentences and one example: no.
+- A cold reader with only the text answers a question about it correctly: no.
+
+Pass if the output has no diagram, chart or image, and explains the concept with a definition, one concrete example, and one counter-example. Fail if a diagram appears for a single-element concept. A scoring of 1 or 2 with a cheap outline is acceptable only if the output says what the outline adds.
+
+## Test 9: Active voice and present tense
+
+What it stresses: Rule 2 should default to active voice and present tense, and keep a passive only under one of the three named exceptions.
+
+How to run: paste this paragraph and say "rewrite this in your style":
+
+"The configuration file is loaded by the server at startup. Changes are picked up only after a restart has been performed by the operator. In 2024 the default location was changed by the maintainers. The key was leaked, so all tokens were rotated."
+
+Pass if the rewrite meets three conditions:
+- The first two sentences become active: "the server loads the configuration file at startup", and "the operator restarts the server, and then the server picks up the changes".
+- The 2024 sentence keeps the past tense, because it is a past event.
+- "The key was leaked" may stay passive, because the agent is unknown.
+
+Running the lint on the rewrite (Test 10) should show at most the passives that fall under an exception.
+
+## Test 10: The lint
+
+What it stresses: `scripts/lint_clear_read.py` catches the rule breaks that are easy to make and hard to see.
+
+How to run, from the skill folder:
+```bash
+python3 scripts/test_lint_clear_read.py
+python3 scripts/lint_clear_read.py path/to/output.md
+```
+
+Pass if the unit tests print `OK`, and if a lint run on a finished clear-read output ends with `0 problems`. Warnings are allowed when each one is a deliberate choice (a passive under an exception, for example).
+
+A quick manual check: write a paragraph with an em dash, a 30-word sentence and a pointer back to the previous section into a file. Run the lint on it. It must report all three and exit with code 1.
+
 ## How to read a failure
 
 If a test fails, the fix usually lives in one rule:
@@ -76,3 +134,6 @@ If a test fails, the fix usually lives in one rule:
 - Test 4 slips: check Phase 1, the research-first rule.
 - Test 5 slips: check Rule 11, procedures and stages.
 - Test 6 leaks: check the rewrite-mode paragraph in Phase 1, the privacy-first research rule.
+- Test 7 or 8 slips: check Rule 7, the four-question test and its thresholds, and the Phase 2 visual plan item.
+- Test 9 slips: check the active voice paragraph in Rule 2 and its three exceptions.
+- Test 10 slips: a failing unit test means the lint changed; a false positive on real output means a heuristic in the lint needs a documented exclusion, not a loosened rule.

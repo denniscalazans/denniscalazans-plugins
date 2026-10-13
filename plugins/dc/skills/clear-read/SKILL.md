@@ -1,6 +1,6 @@
 ---
 name: clear-read
-description: 'Write explanations, answers, and documents that a busy, tired, non-native-English reader can understand completely on the first read, with no rereading, no backtracking, and no follow-up questions. Applies a fixed method: verify the facts first, then produce a structured, jargon-free, step-by-step write-up with message-style headings, short connected sentences, problem/counter-pattern pairs, and small diagrams. Works in two modes: explaining a topic from scratch, or rewriting content the user already has into this style. Use this skill whenever the user asks Claude to write, explain, OR rewrite anything, such as an explanation, summary, walkthrough, report, email, concept breakdown, "help me understand X", or "clean this up / make this clearer / rewrite this in my style", even when they do not mention style, clarity, or formatting. Default to it for any "explain", "write up", "describe", "document", "summarize", "what is", "rewrite", "clean up", or "make this clearer" request.'
+description: 'Write explanations, answers, and documents that a busy, tired, non-native-English reader can understand completely on the first read, with no rereading, no backtracking, and no follow-up questions. Applies a fixed method: verify the facts first, then produce a structured, jargon-free, step-by-step write-up with message-style headings, short connected sentences, problem/counter-pattern pairs, and a visual plan. Works in two modes: explaining a topic from scratch, or rewriting content the user already has into this style. Use this skill whenever the user asks Claude to write, explain, OR rewrite anything, such as an explanation, summary, walkthrough, report, email, concept breakdown, "help me understand X", or "clean this up / make this clearer / rewrite this in my style", even when they do not mention style, clarity, or formatting. Default to it for any "explain", "write up", "describe", "document", "summarize", "what is", "rewrite", "clean up", "make this clearer", or "lint" request.'
 ---
 
 # Clear-Read
@@ -33,7 +33,7 @@ This skill runs in one of two modes. Decide which one applies before Phase 1, be
 
 **Rewrite/restyle mode** starts from content the user already has, such as a draft, an email, an article, or a section of docs, plus a request like "make this clearer" or "rewrite this in my style". The substance is given, so you do not invent it. Your job is to transform the existing material into this style: re-chunk it, shorten sentences, add headings and Key points, define the jargon, and apply the formatting rules. The source of truth is the provided content, so the guiding constraint is fidelity: keep the meaning, do not drop information, and do not add new claims.
 
-Both modes use the same design phase and the same ten writing rules. Only the source of truth and the main risk differ.
+Both modes use the same design phase and the same eleven writing rules. Only the source of truth and the main risk differ.
 
 ---
 
@@ -68,6 +68,7 @@ Plan the journey before you write a word of it. This planning is for you, so kee
 5. **Message headings.** Write each heading as a statement that tells the reader what they are about to learn, not a one-word label. Weak: "Background". Strong: "Why this problem exists, and why it surprises most people".
 6. **Examples plan.** Mark where a concrete example will help. Prefer examples from IT or everyday life, since those are the reader's home ground.
 7. **Problems and counter-patterns.** For every difficulty you will name, plan the thing that works instead, plus a small example of each.
+8. **Visual plan.** For each main concept, run the four-question test from Rule 7 (the visual plan) and write down the verdict: fundamental, reinforcement, or no visual. Do this before you draw anything, so no picture gets in by habit.
 
 Key point: design the arc first, because a reader can only follow a path that you have already laid out.
 
@@ -96,10 +97,20 @@ The rule is about what the reader sees, not the raw characters, so produce whate
 - **HTML:** end each sentence with `<br>`; wrap each topic block in its own `<p>`.
 - **Word or other documents:** a soft return (Shift+Enter) after each sentence; a full paragraph break only between topics.
 
-### Rule 2: Sentences and connectors
+### Rule 2: Sentences, connectors, and voice
 Aim for about 15 words per sentence. If a sentence carries more than one strong idea, split it in two. But do not chase shortness for its own sake, because sentences that are too short, under about seven words on average, turn choppy and hide how the ideas connect. So keep them short and linked, not clipped. As a ceiling, stay under about 25 words. Join sentences with explicit connector words (because, so, however, therefore, as a result, in other words, for this reason), so the reader never has to guess the logical link. Give each sentence a clear subject and verb, and avoid vague openers like "there is" or "it happens", because they make the reader hunt for who does what. The result should read as one continuous line of thought.
 
 Do not use em dashes to join or interrupt a sentence. The dash makes the reader jump a gap and hold a clause in mind, which is the exact load this skill removes. Instead, split into two sentences, use a connector word or a comma, or put a side note in parentheses.
+
+**Default to active voice and present tense.** Write "the server loads the file at startup", not "the file is loaded by the server at startup". The active form names who does what, so the reader never has to reconstruct the actor. The present tense keeps the reader in one time frame, so they never have to track when things happen.
+
+Three exceptions are fine, and they are the only ones:
+
+- A past event: "the law changed in 2024", "the team migrated the database last year".
+- An agent that is unknown or does not matter: "the key was leaked", "the package is installed in the default folder".
+- A convention of the field: a quoted log line, an error message, or a standard phrase in a legal or scientific text.
+
+The lint (see "Before you deliver") flags each possible passive as a warning. So read the line, and keep the passive only when one of the three exceptions applies.
 
 ### Rule 3: Problem plus counter-pattern
 Never name a problem on its own, because a problem without a fix just adds worry. Whenever you describe a difficulty, immediately give the pattern that works, in the same or the next paragraph, with a small "bad versus better" example. Always pair the problem with what to do instead, using connector words.
@@ -115,8 +126,33 @@ When a new concept appears, explain it in 1–3 simple sentences and give a conc
 
 Assume the reader can hold only a few new things in mind at once, because a tired or distracted reader has very little working memory to spare. So restate the context the reader needs instead of pointing "as mentioned above", and never make them carry a value, name, or result from one step to a later step. When you must refer back, repeat the thing itself, not just a pointer to it.
 
-### Rule 7: Visuals
-When a flow, structure, or relationship is easier to see than to read, use a small, focused Mermaid diagram. Keep it simple. If Mermaid does not fit, use a short numbered or bulleted outline instead.
+### Rule 7: Visual plan
+A visual has one job: to show a relation that prose carries badly. So plan each visual before you draw it, and draw only the ones that earn their place. Building the relation in the reader's head is what helps, so a visual exists to make that building possible, not to decorate the page.
+
+The text still carries every idea on its own. The reason is that some readers cannot see the visual (a screen reader, a cut image on a phone, an audio version). They must lose nothing.
+
+**The four-question test.** For each main concept from Phase 2 (the design phase), answer four questions:
+
+1. Does the idea have 3 or more elements that the reader must hold together at once?
+2. Is the central question about structure, comparison, magnitude, or a path?
+3. Would writing the relation in prose take more than 4 sentences or more than 4 numbers?
+4. Would a cold reader with only the text get a question about the relation wrong?
+
+Count the yes answers, and let the count decide:
+
+- 3 or 4 yes: the visual is **fundamental**. Draw it.
+- 1 or 2 yes: the visual is **reinforcement**. Add it only when it is cheap, such as a short outline or a flowchart with a handful of nodes.
+- 0 yes: **no visual**. The prose already does the job.
+
+**Every visual gets two lines right after it.** First, one line that starts with "How to read:" and says what the boxes, arrows, axes, or colors mean. Second, one sentence of conclusion that states what the visual shows. The reader should never have to work out the point of a picture, because that work is the load the picture was meant to remove.
+
+**Pick the form by the content.** A flow or a branching structure becomes a small Mermaid diagram, or a numbered outline when Mermaid does not fit. Numbers to compare become a simple chart or a table, and dated events become a list with the date first. Keep labels short, so the whole visual stays readable on a phone.
+
+**Three limits.**
+
+- No decorative visuals, because an image that adds no relation adds only load.
+- At most one manipulable interactive (a slider, a toggle, a step-through) per document, because each one costs attention. The text must carry the idea anyway.
+- Every health risk gets an icon array (a grid of 100 small figures, with the affected ones filled in). The array shows natural frequencies, such as "3 in every 100 people", never a relative risk alone.
 
 ### Rule 8: Depth with low cognitive load
 Cover the topic in real depth, but deliver it in small logical steps. Prefer step-by-step explanation and examples over abstract theory. Never write one large wall of text, because that is exactly where a distracted reader gives up.
@@ -140,6 +176,37 @@ Key point: each rule exists to remove one kind of reading effort, so apply them 
 
 ---
 
+## Before you deliver: run the lint
+
+When the output is a file, run the lint from the skill folder before you hand the file over:
+
+```bash
+python3 scripts/lint_clear_read.py path/to/document.md
+```
+
+It reads Markdown or HTML, prints one line per finding, and ends with `N problems`. It needs only Python 3, with no extra packages.
+
+A **problem** is a rule break, so fix every one. The lint reports five kinds:
+
+- A dash used as a joiner (Rule 2).
+- A sentence over 25 words (Rule 2).
+- A block over 4 sentences (Rule 1).
+- A backward reference, which points the reader back to a passage instead of repeating the thing itself (Rule 6).
+- A bare label such as "P1" with nothing that names it (Rule 6).
+
+A **warning** is a prompt to re-read that line, so keep the text only on purpose. The lint reports four kinds:
+
+- A possible passive (Rule 2).
+- A one-word heading (Rule 1).
+- An H2 section with no "Key point:" line (Rule 1).
+- An average sentence length over 17 words (Rule 2).
+
+When the output is a chat reply, apply the same checks by eye, because the list is short enough to hold in mind.
+
+Key point: the lint catches the slips that are easy to make and hard to see, so run it before the reader finds them.
+
+---
+
 ## What "arc" means in practice
 
 The text must have a beginning, a middle, and an arrival. Each section builds on the one before, so the order matters and the piece cannot be read in any order. The reader should feel guided through a journey. The final section should feel like a resolved understanding, where everything clicks into place, not just the last item on a list.
@@ -152,4 +219,4 @@ Key point: when the last line lands, the reader should feel finished, not merely
 
 These rules are not arbitrary. They come from research on attention difficulties, plain-language writing, and second-language reading. When a rule feels excessive, or when someone pushes back on it, read `references/research-basis.md` for the evidence behind it: sentence-length targets, the value of explicit connectors and signposting, and why chunking lowers the reading load. Consult it as needed; it is not required for everyday use.
 
-To check the skill still works after a change, run the checks in `references/tests.md`. They cover mode consistency, the Rule 1 spacing, jargon handling, research compliance, and procedure staging.
+To check the skill still works after a change, run the checks in `references/tests.md`. They cover mode consistency, the Rule 1 spacing, jargon handling, research compliance, procedure staging, rewrite privacy, the visual plan, and active voice. The lint has its own unit tests in `scripts/test_lint_clear_read.py`.
