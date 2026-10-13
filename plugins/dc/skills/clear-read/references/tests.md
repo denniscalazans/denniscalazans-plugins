@@ -188,3 +188,11 @@ If a test fails, the fix usually lives in one rule:
 - Test 9 slips: check the active voice paragraph in Rule 2 and its three exceptions.
 - Test 10 slips: a failing unit test means the lint changed; a false positive on real output means a heuristic in the lint needs a documented exclusion, not a loosened rule.
 - Test 11 or 12 slips: check the `pt` entry of `LANG_PACKS` in the lint (word lists, abbreviations, passive forms), or the language detection when the summary names the wrong language. A new language is one more entry in that dict.
+
+### Test 13: Plain words do not thin the content
+
+Give the skill a dense paragraph with three ideas, two numbers and one precise term (for example "reação idiossincrática" or "capital gains tax"), and ask for a rewrite.
+
+Pass: the rewrite keeps the three ideas, the two numbers and the precise term (explained once). The sentences got shorter; the content did not.
+
+Fail: an idea or a number is gone, or the precise term became a vaguer word ("uma reação rara do corpo" in place of the named term with its explanation).

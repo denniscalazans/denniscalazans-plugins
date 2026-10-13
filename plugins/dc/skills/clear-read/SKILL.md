@@ -167,6 +167,8 @@ Stay calm, precise, and straightforward. The text is for silent reading on a scr
 ### Rule 10: Language
 Write in the reader's language. Use plain words of that language. Avoid idioms and metaphors in any language, because they are extra work for a tired reader and can mislead. When a concept is hard, add a short gloss in parentheses. When you write in the reader's second language, the gloss may be in the native language, since a familiar word can anchor a hard idea faster than any paraphrase.
 
+Plain words are about the form, never about the content. Keep every idea, every number, every caveat and every precise term. Simplify the sentence, not the thought. When the exact term is the right word (a legal, medical or technical term), keep it and explain it once; do not swap it for a vaguer word, because the reader loses precision and gains nothing. A text that got shorter by dropping ideas failed this rule, however easy it reads.
+
 Make numbers and emphasis easy too. Reinforce a bare number with words that say what it means, because a raw figure carries no meaning on its own. For example: "permission 600 (owner can read and write, nobody else can touch it)". Write the month as a word, such as "3 June 2026" or "3 de junho de 2026", so a date is never ambiguous across regions. For emphasis use bold, and avoid italics and underlining: italics crowd letters together and tire the eye, and underlines look like links.
 
 ### Rule 11: Procedures and code
