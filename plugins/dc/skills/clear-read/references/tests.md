@@ -3,7 +3,7 @@
 This file holds a reusable set of checks for the skill. Run them after any change to SKILL.md, to confirm the rules still produce the right output. Each test says what it stresses, how to run it, and how to tell if it passed.
 
 Last run: 3 June 2026. Result: 5 of 5 passed.
-Tests 7 to 9 were added on 13 October 2026 and have not been run with the model yet. Test 10 (the lint) passed its unit tests on that date.
+Tests 7 to 9 were added on 13 October 2026 and have not been run with the model yet. Tests 10 to 12 (the lint, in English and in Portuguese) passed on that date.
 
 ## Test 1: Consistency across modes
 
@@ -40,7 +40,7 @@ What it stresses: define before use, and one word for one meaning.
 
 How to run: ask for a domain the reader would not know, for example "explain how DNS works."
 
-Pass if every acronym is introduced with its plain-English meaning first and the short term second, for example "the system that translates a web address into a number (Domain Name System)". The same term must be reused consistently, not swapped for synonyms.
+Pass if every acronym is introduced with its plain meaning first, in the reader's language, and the short term second. For example "the system that translates a web address into a number (Domain Name System)", or in Portuguese "o sistema que traduz um endereço da web em um número (Domain Name System)". The same term must be reused consistently, not swapped for synonyms.
 
 ## Test 4: Research compliance
 
@@ -125,6 +125,56 @@ Pass if the unit tests print `OK`, and if a lint run on a finished clear-read ou
 
 A quick manual check: write a paragraph with an em dash, a 30-word sentence and a pointer back to the previous section into a file. Run the lint on it. It must report all three and exit with code 1.
 
+## Test 11: Portuguese, dirty sample
+
+What it stresses: the rules and the lint work on Brazilian Portuguese the same way they work on English. The lint must detect the language on its own.
+
+How to run: save this text in a file with no `--lang` flag, and run the lint on it.
+
+```
+## Contexto
+
+Como vimos na seção anterior, o cache fica entre o aplicativo e o banco de dados.
+O Passo 2 resolve o problema da leitura antiga, porque a cópia expira antes de a fonte mudar de novo.
+A chave foi trocada pelo operador ontem à noite, por isso todos os processos recarregaram a configuração de manhã.
+O arquivo de configuração é carregado pelo servidor na inicialização, o que significa que toda mudança no arquivo obriga a reiniciar o serviço inteiro e todos os seus processos, p. ex. os de fila.
+```
+
+Pass if the lint reports, as problems: the backward references ("como vimos", "a seção anterior"), the bare label "Passo 2", and the sentence over 25 words (the one with "p. ex.", which must count as one sentence, not two). As warnings: the two passives ("foi trocada pelo", "é carregado pelo"), the one-word heading "Contexto", and the missing "Ponto-chave:" line. The summary must say the detected language is pt.
+
+The rewrite that passes: "O cache fica entre o aplicativo e o banco de dados. O Passo 2 (cache antes do deploy) resolve a leitura antiga, porque a cópia expira antes de a fonte mudar. O operador trocou a chave ontem à noite. Por isso, todos os processos recarregaram a configuração de manhã. O servidor carrega o arquivo de configuração na inicialização. Então, toda mudança no arquivo obriga a reiniciar o serviço inteiro. Ponto-chave: o servidor só lê a configuração ao iniciar."
+
+## Test 12: Portuguese, clean sample
+
+What it stresses: a clean Portuguese guide passes the lint with 0 problems and 0 warnings, so the language packs do not produce false positives on correct Portuguese.
+
+How to run: save this text in a file and run the lint on it.
+
+```
+# Como um cache de leitura protege o banco de dados
+
+Este guia explica como um cache de leitura funciona e por que ele protege o banco de dados.\
+Ele importa agora porque o novo serviço dobra o volume de leituras.
+
+## O cache responde primeiro, então o banco descansa
+
+Um cache de leitura é um depósito rápido que fica na frente do banco de dados.\
+Quando o aplicativo pede um valor, o cache responde se tiver esse valor.\
+Caso contrário, o cache busca o valor no banco e guarda uma cópia.
+
+Ponto-chave: o cache responde à maioria das leituras, então o banco só vê as faltas.
+
+## A leitura antiga acontece quando a cópia é mais velha que a fonte
+
+A cópia no cache pode ficar atrás do banco de dados.\
+A solução é um prazo de validade para cada cópia (um tempo de vida, ou TTL).\
+O P1 (cache antes do deploy) aquece o cache, então os primeiros usuários não veem leituras lentas.
+
+Ponto-chave: um TTL curto mantém a cópia fresca, e o P1 (cache antes do deploy) esconde o aquecimento.
+```
+
+Pass if the lint ends with `0 problems` and prints no warnings. Note that "é mais velha" and "é um depósito" are not passives (no participle follows), and "P1 (cache antes do deploy)" is a named label.
+
 ## How to read a failure
 
 If a test fails, the fix usually lives in one rule:
@@ -137,3 +187,4 @@ If a test fails, the fix usually lives in one rule:
 - Test 7 or 8 slips: check Rule 7, the four-question test and its thresholds, and the Phase 2 visual plan item.
 - Test 9 slips: check the active voice paragraph in Rule 2 and its three exceptions.
 - Test 10 slips: a failing unit test means the lint changed; a false positive on real output means a heuristic in the lint needs a documented exclusion, not a loosened rule.
+- Test 11 or 12 slips: check the `pt` entry of `LANG_PACKS` in the lint (word lists, abbreviations, passive forms), or the language detection when the summary names the wrong language. A new language is one more entry in that dict.

@@ -85,6 +85,40 @@ A[App] --> B[Cache]
 """
 
 
+# Portuguese fixture: fires every language-dependent rule.
+DIRTY_PT = """\
+## Contexto
+
+Como vimos na seção anterior, o cache fica entre o aplicativo e o banco de dados.
+O Passo 2 resolve o problema da leitura antiga, porque a cópia expira antes de a fonte mudar de novo.
+A chave foi trocada pelo operador ontem à noite, por isso todos os processos recarregaram a configuração de manhã.
+O arquivo de configuração é carregado pelo servidor na inicialização, o que significa que toda mudança no arquivo obriga a reiniciar o serviço inteiro, p. ex. os de fila.
+"""
+
+CLEAN_PT = """\
+# Como um cache de leitura protege o banco de dados
+
+Este guia explica como um cache de leitura funciona e por que ele protege o banco de dados.\\
+Ele importa agora porque o novo serviço dobra o volume de leituras.
+
+## O cache responde primeiro, então o banco descansa
+
+Um cache de leitura é um depósito rápido que fica na frente do banco de dados.\\
+Quando o aplicativo pede um valor, o cache responde se tiver esse valor.\\
+Caso contrário, o cache busca o valor no banco e guarda uma cópia.
+
+Ponto-chave: o cache responde à maioria das leituras, então o banco só vê as faltas.
+
+## A leitura antiga acontece quando a cópia é mais velha que a fonte
+
+A cópia no cache pode ficar atrás do banco de dados.\\
+A solução é um prazo de validade para cada cópia (um tempo de vida, ou TTL).\\
+O P1 (cache antes do deploy) aquece o cache, então os primeiros usuários não veem leituras lentas.
+
+Ponto-chave: um TTL curto mantém a cópia fresca, e o P1 (cache antes do deploy) esconde o aquecimento.
+"""
+
+
 def run_on_text(text, name="sample.md", **kwargs):
     """Lint a string as if it were a file, and return the report."""
     return lint.lint_text(text, name=name, **kwargs)
@@ -159,7 +193,122 @@ class DirtyFixtureFiresEveryRule(unittest.TestCase):
         self.assertEqual(last, f"{self.report.problem_count} problems")
 
 
+class PortugueseDirtyFixtureFiresEveryLanguageRule(unittest.TestCase):
+    def setUp(self):
+        self.report = run_on_text(DIRTY_PT)
+        self.problems = [f for f in self.report.findings if f.level == "problem"]
+        self.warnings = [f for f in self.report.findings if f.level == "warning"]
+
+    def test_language_is_detected_as_pt(self):
+        self.assertEqual(self.report.lang, "pt")
+        self.assertIn("language: pt", self.report.render())
+
+    def test_backward_references_in_portuguese(self):
+        msgs = " | ".join(f.message for f in self.problems if f.rule == "backward-reference")
+        self.assertIn("como vimos", msgs, self.report.render())
+        self.assertIn("a seção anterior", msgs, self.report.render())
+
+    def test_bare_label_passo(self):
+        msgs = [f.message for f in self.problems if f.rule == "bare-label"]
+        self.assertEqual(len(msgs), 1, self.report.render())
+        self.assertIn("Passo 2", msgs[0])
+
+    def test_long_sentence_with_p_ex_is_one_sentence(self):
+        hits = [f for f in self.problems if f.rule == "sentence-length"]
+        self.assertEqual(len(hits), 1, self.report.render())
+        self.assertIn("arquivo de configuração", hits[0].message)
+        block = [b for b in lint.markdown_to_blocks(DIRTY_PT) if "p. ex." in b.text][0]
+        sentences = lint.split_sentences(block.text, lint.LANG_PACKS["pt"])
+        self.assertEqual(len(sentences), 4, sentences)
+        self.assertTrue(sentences[-1].endswith("p. ex. os de fila."), sentences[-1])
+
+    def test_portuguese_passive_is_a_warning(self):
+        msgs = [f.message for f in self.warnings if f.rule == "passive-voice"]
+        self.assertTrue(any("foi trocada" in m for m in msgs), self.report.render())
+        self.assertTrue(any("é carregado" in m for m in msgs), self.report.render())
+
+    def test_missing_ponto_chave_is_a_warning(self):
+        msgs = [f.message for f in self.warnings if f.rule == "missing-key-point"]
+        self.assertEqual(len(msgs), 1, self.report.render())
+        self.assertIn("Contexto", msgs[0])
+        self.assertIn("Ponto-chave", msgs[0])
+
+    def test_single_word_heading_in_portuguese(self):
+        msgs = [f.message for f in self.warnings if f.rule == "single-word-heading"]
+        self.assertTrue(any("Contexto" in m for m in msgs), self.report.render())
+
+    def test_exit_code_is_one(self):
+        self.assertEqual(self.report.exit_code, 1)
+
+
+class LanguageDetection(unittest.TestCase):
+    def test_portuguese_text_detects_pt(self):
+        self.assertEqual(lint.detect_language(CLEAN_PT), "pt")
+
+    def test_english_text_detects_en(self):
+        self.assertEqual(lint.detect_language(CLEAN_MD), "en")
+
+    def test_forced_lang_wins_over_content(self):
+        report = run_on_text(CLEAN_PT, lang="en")
+        self.assertEqual(report.lang, "en")
+        self.assertIn("language: en", report.render())
+        # with the English pack, "Ponto-chave" is not a Key point marker
+        self.assertTrue([f for f in report.findings if f.rule == "missing-key-point"])
+
+    def test_too_few_words_falls_back_to_en_with_a_note(self):
+        report = run_on_text("## Título\n\nOi.\n")
+        self.assertEqual(report.lang, "en")
+        self.assertTrue(any("fallback" in f.message for f in report.findings if f.rule == "language"), report.render())
+        self.assertEqual(report.problem_count, 0)
+
+    def test_portuguese_abbreviations_do_not_split(self):
+        pt = lint.LANG_PACKS["pt"]
+        s = lint.split_sentences("Veja o art. 5, p. ex., e a pág. 12 do Dr. Silva. Depois siga.", pt)
+        self.assertEqual(len(s), 2, s)
+
+    def test_decimal_comma_and_dot_never_split(self):
+        for pack in lint.LANG_PACKS.values():
+            self.assertEqual(len(lint.split_sentences("A taxa foi de 4,6 por cento. Fim.", pack)), 2)
+            self.assertEqual(len(lint.split_sentences("The rate was 4.6 percent. End.", pack)), 2)
+
+    def test_pt_acima_alone_is_a_warning_not_a_problem(self):
+        report = run_on_text("## Uma seção\n\nVeja o diagrama acima.\n\nPonto-chave: ok.\n", lang="pt")
+        hits = [f for f in report.findings if f.rule == "backward-reference"]
+        self.assertEqual(len(hits), 1, report.render())
+        self.assertEqual(hits[0].level, "warning")
+
+    def test_pt_key_point_markers(self):
+        for marker in ("Ponto-chave:", "Em resumo:", "Resumo:", "O que fica:"):
+            report = run_on_text(f"## Uma seção\n\nUma frase.\n\n{marker} o cache responde.\n", lang="pt")
+            self.assertEqual([f for f in report.findings if f.rule == "missing-key-point"], [], marker)
+
+    def test_en_in_short_marker(self):
+        report = run_on_text("## A section\n\nOne sentence.\n\nIn short: the cache answers.\n", lang="en")
+        self.assertEqual([f for f in report.findings if f.rule == "missing-key-point"], [])
+
+    def test_pt_named_labels_pass(self):
+        md = "## Etapas\n\nPasso 1 (aquecer o cache) vem primeiro.\n\nEtapa 2: copiar a chave.\n\nPonto-chave: ok.\n"
+        report = run_on_text(md, lang="pt")
+        self.assertEqual([f.message for f in report.findings if f.rule == "bare-label"], [])
+
+    def test_pt_ser_plus_adjective_is_not_passive(self):
+        md = "## Uma seção\n\nO cache é rápido e a cópia é mais velha que a fonte.\n\nPonto-chave: ok.\n"
+        report = run_on_text(md, lang="pt")
+        self.assertEqual([f.message for f in report.findings if f.rule == "passive-voice"], [])
+
+    def test_unknown_lang_is_rejected(self):
+        with self.assertRaises(SystemExit):
+            lint._parse_args(["x.md", "--lang", "fr"])
+
+
 class CleanSamplesPass(unittest.TestCase):
+    def test_clean_portuguese_has_zero_problems_and_zero_warnings(self):
+        report = run_on_text(CLEAN_PT)
+        self.assertEqual(report.lang, "pt")
+        self.assertEqual(report.problem_count, 0, report.render())
+        self.assertEqual(report.warning_count, 0, report.render())
+        self.assertEqual(report.exit_code, 0)
+
     def test_clean_markdown_has_zero_problems_and_zero_warnings(self):
         report = run_on_text(CLEAN_MD)
         self.assertEqual(report.problem_count, 0, report.render())
@@ -237,7 +386,7 @@ class ParsingDetails(unittest.TestCase):
 
     def test_portuguese_key_point_marker_is_accepted(self):
         md = "## Uma seção\n\nUma frase curta.\n\nPonto-chave: o cache responde primeiro.\n"
-        report = run_on_text(md)
+        report = run_on_text(md, lang="pt")
         self.assertEqual([f for f in report.findings if f.rule == "missing-key-point"], [])
 
     def test_document_without_h2_skips_key_point_check(self):

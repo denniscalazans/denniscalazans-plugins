@@ -2,7 +2,7 @@
 
 This file holds the evidence behind the clear-read method. SKILL.md gives the rules; this file explains why each one exists and where it comes from. Read it when a rule needs justifying, when someone pushes back, or when deciding how to bend a rule in an edge case.
 
-The reader clear-read serves is intelligent and works in IT, but loses focus easily (ADHD tendencies), reads English as a second language, and is often tired or in a noisy place. That profile sits at the meeting point of several research areas. They converge on a consistent set of moves: short connected sentences, one idea per unit, front-loaded structure, defined terms, concrete examples, visual chunking, and reduced memory load.
+The reader clear-read serves is intelligent and works in IT, but loses focus easily (ADHD tendencies), reads at work in a second language (English) and at home in the native one (Brazilian Portuguese), and is often tired or in a noisy place. The skill writes in whichever language the reader asks for, so the evidence below is about reading under load, not about one language. That profile sits at the meeting point of several research areas. They converge on a consistent set of moves: short connected sentences, one idea per unit, front-loaded structure, defined terms, concrete examples, visual chunking, and reduced memory load.
 
 The evidence comes from seven areas, drawn from a literature review across ADHD and reading, dyslexia and cognitive accessibility, plain-language standards, second-language reading, cognitive load theory, readability measurement, and technical writing. Section 8 adds the evidence verified on 13 October 2026, with effect sizes and DOIs.
 
@@ -17,7 +17,7 @@ The evidence comes from seven areas, drawn from a literature review across ADHD 
 - Rule 7 (visual plan): BDA flow charts; Mayer multimedia, but watch the redundancy effect; Schroeder et al. 2018 on constructed concept maps; Garcia-Retamero and Cokely 2017 on visual aids for risk; Berney and Bétrancourt 2016 on animation; Sundararajan and Adesope 2020 on seductive details (section 8.3).
 - Rule 8 (depth in small chunks): Mayer segmenting; cognitive load theory.
 - Rule 9 (calm tone, screen reading): screen-versus-audio reading research.
-- Rule 10 (simple English, numbers as words, dates, bold not italics): ADHD figurative-language difficulty; COGA numbers guidance; BDA emphasis guidance.
+- Rule 10 (plain words in the reader's language, numbers as words, dates, bold not italics): ADHD figurative-language difficulty; COGA numbers guidance; BDA emphasis guidance.
 - Rule 11 (procedures and code): COGA separate-each-instruction; STE one instruction per step; Google goal-before-action; Microsoft step limits.
 
 ## 1. ADHD and reading
@@ -137,7 +137,8 @@ Limits of this group: small samples, university students, English or Hebrew text
 - One sentence per line versus cohesion. Forcing a blank line after every sentence fragments the text into a wall, which is the failure clear-read fixes with tight blocks (Rule 1). Keep sentences on their own line inside small blocks, with blank lines only between topics.
 - Connectors versus one point per sentence. Use connector words between two short sentences to show the logical link, but do not stack clauses inside one sentence.
 - Readability score versus comprehension. Covered above: floor-check only, never a target.
-- Controlled vocabulary versus an intelligent reader. Adopt STE's discipline, not its stilted register, because the reader is an expert, just attention-limited and non-native.
+- Controlled vocabulary versus an intelligent reader. Adopt STE's discipline, not its stilted register, because the reader is an expert, just attention-limited and often reading in a second language.
+- One method, several languages. The structural evidence (chunking, signaling, connectors, retrieval, working-memory limits) is not tied to English, and the Brazilian plain-language law (Lei 15.263 de 2025) asks for the same moves: direct word order, no inserted clauses, verbs instead of nominalizations, the full name before an acronym. The second-language load applies when the reader reads in English; the attention and fatigue load applies in both languages.
 - Diagrams and recaps versus the redundancy effect. They must add structure or compress, not duplicate the prose.
 
 ## Certainty and caveats

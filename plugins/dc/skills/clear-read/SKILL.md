@@ -1,6 +1,6 @@
 ---
 name: clear-read
-description: 'Write explanations, answers, and documents that a busy, tired, non-native-English reader can understand completely on the first read, with no rereading, no backtracking, and no follow-up questions. Applies a fixed method: verify the facts first, then produce a structured, jargon-free, step-by-step write-up with message-style headings, short connected sentences, problem/counter-pattern pairs, and a visual plan. Works in two modes: explaining a topic from scratch, or rewriting content the user already has into this style. Use this skill whenever the user asks Claude to write, explain, OR rewrite anything, such as an explanation, summary, walkthrough, report, email, concept breakdown, "help me understand X", or "clean this up / make this clearer / rewrite this in my style", even when they do not mention style, clarity, or formatting. Default to it for any "explain", "write up", "describe", "document", "summarize", "what is", "rewrite", "clean up", "make this clearer", or "lint" request.'
+description: 'Write explanations, answers, and documents, in any language, that a busy, tired reader, often reading in a second language, can understand completely on the first read, with no rereading, no backtracking, and no follow-up questions. Applies a fixed method: verify the facts first, then produce a structured, jargon-free, step-by-step write-up with message-style headings, short connected sentences, problem/counter-pattern pairs, and a visual plan. Works in two modes: explaining a topic from scratch, or rewriting content the user already has. Use it whenever the user asks Claude to write, explain, OR rewrite anything, such as an explanation, summary, walkthrough, report, email, concept breakdown, "help me understand X", or "clean this up / make this clearer / rewrite this in my style", even when they do not mention style, clarity, or formatting. Default to it for any "explain", "write up", "describe", "document", "summarize", "what is", "rewrite", "clean up", "make this clearer", or "lint" request.'
 ---
 
 # Clear-Read
@@ -12,10 +12,12 @@ This skill exists to serve one reader. Everything below is downstream of that. W
 The reader is an IT professional. So they are smart and can handle real depth. But three things shape how they read:
 
 - They have ADHD tendencies, so attention drifts and a long unbroken block of text loses them.
-- English is not their first language, so idioms, rare words, and tangled sentences cost them effort.
+- They work in English and live in Portuguese, so idioms, rare words, and tangled sentences cost them effort in both languages.
 - They are often tired and in noisy environments, so they have little spare mental energy while reading.
 
 This means the reader is a *smart person with a small attention budget*. Do not write down to them on substance. Do write so that following the thread takes almost no effort.
+
+Write in the language the reader asked for, or the language they wrote in. The method is the same in every language: Brazilian Portuguese, English, or any other. Only the words change.
 
 **The one goal:** the reader understands everything completely on the first read. No rereading, no scrolling back, no follow-up questions, no matter how tired or distracted they are. Every rule in this skill is a tool for that single goal. When a rule and the goal seem to conflict, the goal wins.
 
@@ -44,7 +46,7 @@ The reader trusts that what you tell them is correct, because they will act on i
 Do all of this before planning:
 
 1. Use web_search to find accurate, current information from official or authoritative sources.
-2. Search for the definition of every technical term, acronym, or domain concept you plan to use, so your plain-English explanation is right.
+2. Search for the definition of every technical term, acronym, or domain concept you plan to use, so your plain-language explanation is right.
 3. Search for any number, law, deadline, or regulation you will mention, and confirm it.
 4. For tax, finance, legal, or government topics, go to the official source for the relevant country (the national tax authority, regulator, or government portal) rather than a third-party summary.
 5. Note common misconceptions about the topic, so you can correct them on the way instead of leaving the reader with a quiet mistake.
@@ -62,7 +64,7 @@ Key point: research is not optional, because the reader cannot tell a confident 
 Plan the journey before you write a word of it. This planning is for you, so keep it in your scratchpad, not in the reply. Produce all of the following:
 
 1. **Main concepts.** List the 3–5 core ideas the reader must walk away with. If you cannot name them, you are not ready to write.
-2. **Jargon map.** List every technical term or acronym you will use, and plan the plain-English version of each.
+2. **Jargon map.** List every technical term or acronym you will use, and plan the plain-words version of each, in the reader's language.
 3. **Knowledge gaps.** List what the reader may not know but needs to know, and plan where you will teach it along the way.
 4. **Narrative arc.** Decide what the reader knows at the start and what they understand at the end. The text must move from one to the other. It is a journey, not a flat reference page.
 5. **Message headings.** Write each heading as a statement that tells the reader what they are about to learn, not a one-word label. Weak: "Background". Strong: "Why this problem exists, and why it surprises most people".
@@ -116,10 +118,12 @@ The lint (see "Before you deliver") flags each possible passive as a warning. So
 Never name a problem on its own, because a problem without a fix just adds worry. Whenever you describe a difficulty, immediately give the pattern that works, in the same or the next paragraph, with a small "bad versus better" example. Always pair the problem with what to do instead, using connector words.
 
 ### Rule 4: No assumed domain knowledge
-Treat the reader as a smart beginner in any specialized field. Do not assume knowledge of tax, finance, legal, or domain jargon, even when it looks basic, because "basic" is relative and a non-native reader may know the concept under a different word. Build each concept from the ground up.
+Treat the reader as a smart beginner in any specialized field. Do not assume knowledge of tax, finance, legal, or domain jargon, even when it looks basic, because "basic" is relative and a reader in a second language may know the concept under a different word. Build each concept from the ground up.
 
 ### Rule 5: Concepts, jargon, and acronyms
-Prefer a simpler word when one exists. When a technical term is genuinely needed, write the plain-English meaning first, then put the term in parentheses. For example: "a tax on the profit when you sell something valuable (capital gains tax)". Only use the short term or acronym after you have introduced it this way. Keep one word for one meaning: once you pick a term for a concept, reuse that exact term and do not swap in synonyms, because a non-native reader reads "log in" and "sign in" as two different things and has to stop and check.
+Prefer a simpler word when one exists. When a technical term is genuinely needed, write the plain meaning first, in the reader's language, then put the term in parentheses. For example: "a tax on the profit when you sell something valuable (capital gains tax)", or in Portuguese "um imposto sobre o lucro de uma venda (capital gains tax)". Only use the short term or acronym after you have introduced it this way. Keep one word for one meaning: once you pick a term for a concept, reuse that exact term and do not swap in synonyms, because a reader in a second language reads "log in" and "sign in" as two different things and has to stop and check.
+
+Established technical terms often stay in English even inside Portuguese text (API, deploy, cache, token), because that is how the reader meets them at work. Keep them in English when the reader does, and give the plain meaning in the reader's language the first time.
 
 ### Rule 6: Teach on the way, and do not rely on the reader's memory
 When a new concept appears, explain it in 1–3 simple sentences and give a concrete example. For a topic with many new terms, add a short "Key terms" section near the start. Repeat any crucial definition briefly when it comes up again, so the reader never has to scroll back to remember it.
@@ -161,9 +165,9 @@ Cover the topic in real depth, but deliver it in small logical steps. Prefer ste
 Stay calm, precise, and straightforward. The text is for silent reading on a screen. It is not playful, creative, or performative, because effort spent decoding personality is effort not spent understanding.
 
 ### Rule 10: Language
-Use simple English. Avoid idioms and metaphors, because they are extra work for a non-native reader and can mislead. When a concept is genuinely hard, add a short plain gloss in parentheses. If you know the reader's native language, you may put that gloss in their native language instead, since a familiar word can anchor a hard idea faster than any English paraphrase.
+Write in the reader's language. Use plain words of that language. Avoid idioms and metaphors in any language, because they are extra work for a tired reader and can mislead. When a concept is hard, add a short gloss in parentheses. When you write in the reader's second language, the gloss may be in the native language, since a familiar word can anchor a hard idea faster than any paraphrase.
 
-Make numbers and emphasis easy too. Reinforce a bare number with words that say what it means, because a raw figure carries no meaning on its own. For example: "permission 600 (owner can read and write, nobody else can touch it)". Write the month as a word, such as "3 June 2026", so a date is never ambiguous across regions. For emphasis use bold, and avoid italics and underlining: italics crowd letters together and tire the eye, and underlines look like links.
+Make numbers and emphasis easy too. Reinforce a bare number with words that say what it means, because a raw figure carries no meaning on its own. For example: "permission 600 (owner can read and write, nobody else can touch it)". Write the month as a word, such as "3 June 2026" or "3 de junho de 2026", so a date is never ambiguous across regions. For emphasis use bold, and avoid italics and underlining: italics crowd letters together and tire the eye, and underlines look like links.
 
 ### Rule 11: Procedures and code
 Steps are where a tired reader most often gets lost, so give a procedure its own clear shape. Use a numbered list, with one action per step, and state the goal of the step before the action. For example, write "to give the server your key, run…", not the reverse. Keep a procedure to about seven steps; if it runs longer, split it into stages with their own headings.
@@ -184,7 +188,7 @@ When the output is a file, run the lint from the skill folder before you hand th
 python3 scripts/lint_clear_read.py path/to/document.md
 ```
 
-It reads Markdown or HTML, prints one line per finding, and ends with `N problems`. It needs only Python 3, with no extra packages.
+It reads Markdown or HTML, prints one line per finding, and ends with `N problems`. It needs only Python 3, with no extra packages. It detects the language of the text (Portuguese or English) from common words, or takes `--lang pt` or `--lang en`. Then it applies that language's word lists for backward references, Key point markers, labels, passive voice and abbreviations.
 
 A **problem** is a rule break, so fix every one. The lint reports five kinds:
 
