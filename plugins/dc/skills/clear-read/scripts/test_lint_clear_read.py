@@ -267,6 +267,53 @@ class ParsingDetails(unittest.TestCase):
         self.assertEqual([f for f in report.findings if f.rule == "sentence-length"], [])
 
 
+HTML_FRAGMENT_NO_EXTENSION = """\
+<div class="guide">
+<h2 id="why">Why the cache answers first</h2>
+<p class="lead">Sentence one here. Sentence two here. Sentence three here.</p>
+<p class="body">Sentence four here. Sentence five here. Sentence six here.</p>
+<p class="body">Sentence seven here. Sentence eight here. Sentence nine here.</p>
+<p class="body">Sentence ten here. Sentence eleven here. Sentence twelve here.</p>
+<p class="body">Sentence thirteen. Sentence fourteen. Sentence fifteen. Sentence sixteen. Sentence seventeen.</p>
+<p class="body">Key point: each paragraph is checked on its own.</p>
+</div>
+"""
+
+
+class HtmlSniffing(unittest.TestCase):
+    """An extensionless HTML fragment must go through the HTML parser, so each <p> stays its own block."""
+
+    def test_extensionless_fragment_with_attributed_tags_is_html(self):
+        self.assertTrue(lint.looks_like_html("guide", HTML_FRAGMENT_NO_EXTENSION))
+        report = run_on_text(HTML_FRAGMENT_NO_EXTENSION, name="guide")
+        hits = [f for f in report.findings if f.rule == "paragraph-length"]
+        self.assertEqual(len(hits), 1, report.render())
+        self.assertEqual(hits[0].line, 7)
+        self.assertIn("5 sentences", hits[0].message)
+        self.assertEqual([f for f in report.findings if f.rule == "missing-key-point"], [])
+
+    def test_fragment_starting_with_bare_div_is_html(self):
+        self.assertTrue(lint.looks_like_html("snippet", "<div>\n<p class=\"x\">One. Two.</p>\n</div>\n"))
+
+    def test_fragment_starting_with_doctype_or_comment_is_html(self):
+        self.assertTrue(lint.looks_like_html("page", "<!doctype html>\n<section>\n<p>Hi.</p>\n</section>\n"))
+        self.assertTrue(lint.looks_like_html("page", "<!-- note -->\n<article class=\"a\">\n<p>Hi.</p>\n</article>\n"))
+
+    def test_extensionless_markdown_stays_markdown(self):
+        md = "# A title\n\nOne sentence. Two sentences.\n\n- an item\n- another item\n"
+        self.assertFalse(lint.looks_like_html("notes", md))
+
+    def test_markdown_with_an_inline_tag_mid_line_stays_markdown(self):
+        md = "# Title\n\nUse the <code>npm test</code> command, then <strong>check</strong> the output.\n"
+        self.assertFalse(lint.looks_like_html("notes", md))
+
+    def test_known_extensions_win_over_content(self):
+        self.assertFalse(lint.looks_like_html("page.md", "<div><p>Looks like HTML.</p></div>"))
+        self.assertTrue(lint.looks_like_html("page.html", "# Looks like Markdown"))
+        self.assertTrue(lint.looks_like_html("page.xhtml", "# Looks like Markdown"))
+        self.assertFalse(lint.looks_like_html("page.txt", "<p class=\"x\">Text.</p>"))
+
+
 class CommandLine(unittest.TestCase):
     def _run(self, text, suffix=".md", extra=()):
         with tempfile.NamedTemporaryFile("w", suffix=suffix, delete=False, encoding="utf-8") as fh:

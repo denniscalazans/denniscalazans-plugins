@@ -9,8 +9,11 @@ It prints one line per finding, as "path:line: [problem|warning] rule: message",
 then "N problems" as the last line. The exit code is 1 when N > 0.
 Warnings never change the exit code. They are prompts to re-read a passage.
 
-Standard library only. A file ending in .html or .htm is read as HTML.
-Everything else is read as Markdown. A file with no extension is sniffed.
+Standard library only. A file ending in .html, .htm or .xhtml is read as HTML, and
+one ending in .md, .markdown, .mdx or .txt as Markdown. Any other name is sniffed:
+the file is HTML when a line in its first 2,000 characters starts with a doctype,
+<html>, <body>, or a block-level tag such as <p>, <div> or <h2>, with or without
+attributes.
 
 Problems (they fail the run):
     dash-joiner         an em dash anywhere in prose, or an en dash that is not
@@ -339,14 +342,24 @@ def html_to_blocks(text):
     return [b for b in blocks if b.text]
 
 
+HTML_EXTENSIONS = (".html", ".htm", ".xhtml")
+MARKDOWN_EXTENSIONS = (".md", ".markdown", ".mdx", ".txt")
+HTML_SNIFF = re.compile(
+    r"(?im)^\s*<(?:!doctype\b|html\b|body\b|(?:p|div|section|article|main|header|footer|"
+    r"aside|nav|h[1-6]|ul|ol|li|table|details|summary|figure|blockquote)(?:\s[^>]*)?>)"
+)
+
+
 def looks_like_html(name, text):
+    """Decide by extension first. Without a known extension, sniff the first 2,000 characters:
+    the file is HTML when any line starts with a doctype, <html>, <body>, or a block-level
+    tag such as <p>, <div> or <h2>, with or without attributes."""
     ext = os.path.splitext(name)[1].lower()
-    if ext in (".html", ".htm"):
+    if ext in HTML_EXTENSIONS:
         return True
-    if ext:
+    if ext in MARKDOWN_EXTENSIONS:
         return False
-    head = text[:2000].lower()
-    return "<html" in head or "<body" in head or "<p>" in head
+    return HTML_SNIFF.search(text[:2000]) is not None
 
 
 # ---------------------------------------------------------------- checks
