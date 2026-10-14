@@ -12,7 +12,7 @@ What it stresses: Rules 1, 2, 4, 6, 7.
 
 How to run: `python scripts/lint_audio_script.py script.md`
 
-Pass if it prints 0 problems. It checks sentence length, parentheses, digits and symbols, URLs, backward references, part markers, part length, and a question near the end of each part.
+Pass if it prints 0 problems. It checks sentence length, parentheses, digits and symbols, URLs, backward references, part markers, part length in words (at most 800, which is 5 minutes at 160 words per minute), a question near the end of each part, and the closing recall after `# closing` in a script with two or more parts.
 
 The lint has its own unit tests. After any change to the lint, run `python3 scripts/test_lint_audio_script.py`. Every test must pass.
 

@@ -42,8 +42,8 @@ Sem voltar, qual é a ideia central?
 O cache guarda uma cópia perto de quem pergunta, e por isso é mais rápido.
 """
 
-# A two-part script with a recall question at the end of each part.
-CLEAN_PARTS = """\
+# Two parts, each with its recall question, and the closing recall after "# closing".
+TWO_PARTS = """\
 Parte um de dois.
 Este áudio explica o cache.
 O cache guarda uma cópia da resposta perto de quem pergunta.
@@ -57,6 +57,12 @@ Toda cópia expira depois de um tempo curto.
 Por que a cópia expira?
 Porque a fonte muda, e a cópia precisa acompanhar.
 """
+CLOSING = """\
+# closing
+Sem voltar, quais foram as ideias principais?
+O cache guarda uma cópia perto de quem pergunta, e toda cópia expira.
+"""
+CLEAN_PARTS = TWO_PARTS + CLOSING
 
 
 class CleanScriptsPass(unittest.TestCase):
@@ -65,16 +71,28 @@ class CleanScriptsPass(unittest.TestCase):
         self.assertEqual(code, 0, out)
         self.assertIn("problems: 0", out)
 
-    def test_two_part_script_passes(self):
+    def test_two_part_script_with_closing_recall_passes(self):
         code, out = run_lint(CLEAN_PARTS)
         self.assertEqual(code, 0, out)
         self.assertIn("parts: 2", out)
         self.assertIn("problems: 0", out)
 
-    def test_closing_marker_ends_the_last_part(self):
-        # Lines after "# closing" belong to no part, so they do not break the
-        # "question near the end" check of part two.
-        script = CLEAN_PARTS + "# closing\nRecapitulando, o cache guarda uma cópia e a cópia expira.\n"
+    def test_closing_lines_do_not_count_as_part_two(self):
+        # The closing recall sits after "# closing", so part two still ends on
+        # exactly one question and the closing adds a second one without
+        # tripping the "more than two questions" check.
+        script = TWO_PARTS + CLOSING + "Então, o que fazer com isso?\nRevisar a validade do cache antes do deploy.\n"
+        code, out = run_lint(script)
+        self.assertEqual(code, 0, out)
+
+    def test_single_marked_part_needs_no_closing(self):
+        script = """\
+Parte um de um.
+O cache guarda uma cópia da resposta perto de quem pergunta.
+Por isso, a resposta chega mais rápido.
+Qual é o papel do cache?
+Guardar uma cópia perto de quem pergunta.
+"""
         code, out = run_lint(script)
         self.assertEqual(code, 0, out)
 
@@ -188,12 +206,33 @@ Guardar, ajudar e expirar.
         self.assertEqual(code, 1)
         self.assertIn("more than two questions", out)
 
-    def test_part_over_the_character_limit_fails(self):
+    def test_part_over_the_word_limit_fails(self):
         filler = "O cache guarda uma cópia da resposta perto de quem pergunta.\n" * 10
         script = "Parte um de um.\n" + filler + "Qual é o papel do cache?\nGuardar uma cópia.\n"
-        code, out = run_lint(script, "--part-chars", "300")
+        code, out = run_lint(script, "--part-words", "60")
         self.assertEqual(code, 1)
-        self.assertIn("over 300", out)
+        self.assertIn("over 60 words", out)
+
+    def test_short_words_do_not_hide_a_long_part(self):
+        # 1,200 short words in about 3,500 characters: far over 5 minutes at
+        # 160 words per minute, even though a character count looks small.
+        sentence = "Um dó ré mi fá sol lá si dó ré mi fá sol lá si dó ré mi fá sol.\n"
+        script = "Parte um de um.\n" + sentence * 60 + "Qual é a nota?\nA nota é dó.\n"
+        code, out = run_lint(script)
+        self.assertEqual(code, 1)
+        self.assertIn("over 800 words", out)
+        self.assertIn("min at 160 wpm", out)
+
+    def test_multi_part_script_without_closing_recall_fails(self):
+        code, out = run_lint(TWO_PARTS)
+        self.assertEqual(code, 1)
+        self.assertIn("no closing recall", out)
+
+    def test_closing_without_a_question_fails(self):
+        script = TWO_PARTS + "# closing\nRecapitulando, o cache guarda uma cópia e a cópia expira.\n"
+        code, out = run_lint(script)
+        self.assertEqual(code, 1)
+        self.assertIn("closing has no recall question", out)
 
     def test_filler_line_in_a_dialogue_fails(self):
         script = """\
