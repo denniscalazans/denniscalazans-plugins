@@ -23,6 +23,7 @@ Take what's useful, ignore what isn't.
 /plugins install integrations@denniscalazans-plugins
 /plugins install code-quality@denniscalazans-plugins
 /plugins install browser@denniscalazans-plugins
+/plugins install cli@denniscalazans-plugins
 ```
 
 
@@ -40,6 +41,7 @@ These work as a pipeline: **brief** decodes messy input → **grill** stress-tes
 | `/dc:distill` | Extract key insights and restructure content for human readers |
 | `/dc:writing` | Apply one-sentence-per-line markdown convention |
 | `/dc:plain-language` | Apply strict plain-language rules — short sentences, active voice, facts over opinions |
+| `/dc:clear-read` | Write or rewrite content so a tired, non-native-English reader understands it on the first read |
 
 **Agent:** `strategic-thinking-partner` — proactive strategic oversight and assumption challenging
 
@@ -120,6 +122,23 @@ Connectors for external services.
 **Install:**
 ```bash
 /plugins install integrations@denniscalazans-plugins
+```
+
+
+### cli — Learn Any CLI, Turn It Into a Skill
+
+A two-skill workflow for teaching Claude any command-line tool and converting that knowledge into a reusable, version-aware skill.
+
+| Command | What it does |
+|---------|-------------|
+| `/cli:learn-a-cli` | Research a CLI tool into a structured bundle (read-only): command surface, flags, structured output, exit codes, agent-friendliness scorecard, examples |
+| `/cli:cli-as-skill` | Turn a research bundle into a per-tool skill folder with a version-drift preflight and pre-built references/recipes |
+
+The per-tool skills that `cli-as-skill` generates ship with a `scripts/preflight.sh` that warns loudly when the installed version has drifted from the version the skill was researched against (MAJOR drift blocks mutating commands; STALE research adds a separate warning), so Claude can't quietly improvise around an outdated flag.
+
+**Install:**
+```bash
+/plugins install cli@denniscalazans-plugins
 ```
 
 
