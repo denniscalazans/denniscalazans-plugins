@@ -2,22 +2,23 @@
 
 This file holds the evidence behind the clear-read method. SKILL.md gives the rules; this file explains why each one exists and where it comes from. Read it when a rule needs justifying, when someone pushes back, or when deciding how to bend a rule in an edge case.
 
-The reader clear-read serves is intelligent and works in IT, but loses focus easily (ADHD tendencies), reads English as a second language, and is often tired or in a noisy place. That profile sits at the meeting point of several research areas. They converge on a consistent set of moves: short connected sentences, one idea per unit, front-loaded structure, defined terms, concrete examples, visual chunking, and reduced memory load.
+The reader clear-read serves is intelligent and works in IT, but loses focus easily (ADHD tendencies), reads at work in a second language (English) and at home in the native one (Brazilian Portuguese), and is often tired or in a noisy place. The skill writes in whichever language the reader asks for, so the evidence below is about reading under load, not about one language. That profile sits at the meeting point of several research areas. They converge on a consistent set of moves: short connected sentences, one idea per unit, front-loaded structure, defined terms, concrete examples, visual chunking, and reduced memory load.
 
-The evidence comes from seven areas, drawn from a literature review across ADHD and reading, dyslexia and cognitive accessibility, plain-language standards, second-language reading, cognitive load theory, readability measurement, and technical writing.
+The evidence comes from seven areas, drawn from a literature review across ADHD and reading, dyslexia and cognitive accessibility, plain-language standards, second-language reading, cognitive load theory, readability measurement, and technical writing. Section 8 adds the evidence verified on 13 October 2026, with effect sizes and DOIs.
 
 ## Quick map: which evidence backs which rule
 
-- Rule 1 (structure, lead with the goal, small blocks, one sentence per line): COGA front-loading and chunking; Federal Plain Language headings; Mayer signaling and segmenting; BDA short blocks.
-- Rule 2 (sentence length, connectors, subject-verb, no em dashes): plain-language 15-word target; STE sentence ceilings; COGA no nested clauses; Federal transition words.
+- Rule 1 (structure, lead with the goal, small blocks, one sentence per line): COGA front-loading and chunking; Federal Plain Language headings; Mayer signaling and segmenting; BDA short blocks; Brann and Sidi 2024 on stage-by-stage guidance for adults with ADHD (section 8.5).
+- Rule 2 (sentence length, connectors, subject-verb, no em dashes, active voice and present tense): plain-language 15-word target; STE sentence ceilings; COGA no nested clauses; Federal transition words; COGA 4.4.2, the BDA style guide and ASD-STE100 on active voice and simple tenses; Yeari et al. 2018 on fewer inferred links between ideas in adults with ADHD (section 8.5).
 - Rule 3 (problem plus counter-pattern): instructional-design worked-example practice.
 - Rule 4 (no assumed domain knowledge): COGA clear words; plain-language define-your-terms.
 - Rule 5 (jargon then term; one word, one meaning): COGA acronym-on-first-use; ASD-STE100 one word one meaning; L2 vocabulary-frequency research.
-- Rule 6 (teach on the way; do not rely on memory): COGA Objective 6 (working memory); Federal cross-reference warning.
-- Rule 7 (visuals): BDA flow charts; Mayer multimedia, but watch the redundancy effect.
-- Rule 8 (depth in small chunks): Mayer segmenting; cognitive load theory.
+- Rule 5 (an analogy pays its loan): a practice rule from the project's own cold-reader tests, with no controlled study behind it in this file. The nearest evidence is the seductive-details work in section 8.2, which is about irrelevant additions, not analogies, so treat the rule as reasoned practice.
+- Rule 6 (teach on the way; do not rely on memory; zero backtracking in two tiers): COGA Objective 6 (working memory); Federal cross-reference warning; Knouse et al. 2011 and Minear et al. 2023 on retrieval in adults with ADHD (section 8.5); Monk, Trafton and Boehm-Davis 2008 on resuming after an interruption (section 9.1).
+- Rule 7 (visual plan): BDA flow charts; Mayer multimedia, but watch the redundancy effect; Schroeder et al. 2018 on constructed concept maps; Garcia-Retamero and Cokely 2017 on visual aids for risk; Berney and Bétrancourt 2016 on animation; Sundararajan and Adesope 2020 on seductive details (section 8.3).
+- Rule 8 (depth in small chunks, calibrated to what the reader knows): Mayer segmenting; cognitive load theory; Kalyuga et al. 2003 on expertise reversal (section 9.2).
 - Rule 9 (calm tone, screen reading): screen-versus-audio reading research.
-- Rule 10 (simple English, numbers as words, dates, bold not italics): ADHD figurative-language difficulty; COGA numbers guidance; BDA emphasis guidance.
+- Rule 10 (plain words in the reader's language, numbers as words, dates, bold not italics, language packs): ADHD figurative-language difficulty; COGA numbers guidance; BDA emphasis guidance; Snell 2024 and Parker et al. 2026 on Bionic Reading (section 9.3); Lei 15.263/2025 and the Federal Plain Language Guidelines (section 9.4).
 - Rule 11 (procedures and code): COGA separate-each-instruction; STE one instruction per step; Google goal-before-action; Microsoft step limits.
 
 ## 1. ADHD and reading
@@ -41,7 +42,7 @@ The British Dyslexia Association Dyslexia Style Guide (2023) recommends, for con
 The W3C COGA "Making Content Usable" guidance is the richest directly usable source, because it is written for people who control content and markup. Key patterns the skill adopts:
 
 - 4.4.1 Use clear words: prefer the most common words; remove vague fillers; explain uncommon terms nearby. (Rules 4, 5.)
-- 4.4.2 Simple tense and voice: present tense, active voice, put the aim of the sentence at the start. (Rule 1 lead-with-goal, Rule 2.)
+- 4.4.2 Simple tense and voice: present tense, active voice, put the aim of the sentence at the start. (Rule 1 lead-with-goal, Rule 2 active voice and present tense.)
 - 4.4.3 Avoid nested clauses and double negatives. (Rule 2.)
 - 4.4.5 Keep text succinct: one topic per paragraph, one point per sentence, break a paragraph over about 50 words. (Rule 1 small blocks, Rule 2.)
 - 4.4.9 Separate each instruction, including obvious steps; put conditional steps in an if/then table. (Rule 11.)
@@ -95,18 +96,78 @@ The Google developer documentation style guide and the Microsoft Writing Style G
 - Lead with what matters; front-load the keywords the reader is looking for. (Rule 1.)
 - Accessibility for a global audience: never put an instruction only inside an image; give a text equivalent; use real text, not images of text or code; avoid idioms; write the month in words to avoid date ambiguity. (Rules 10, 11.)
 
+## 8. Evidence added on 13 October 2026
+
+These entries come from a research round of 13 October 2026 that was checked at the source (PubMed, Valency, and each study's own page). Each entry gives the claim, the effect size when the round confirmed it, the source with its DOI, and the limit to keep in mind. Effect sizes are Hedges' g or Cohen's d, so 0.2 is small, 0.5 is medium, and 0.8 is large. Where the round could not confirm a number, the entry says so and the number stays out.
+
+### 8.1 Retrieval, spacing and testing (basis for Key point recaps, prequestions and quizzes)
+
+- **Spaced retrieval beats massed retrieval.** g = 0.74 across 39 effects. An expanding schedule and a uniform schedule do not differ (g = 0.034 across 54 effects). Source: Latimier, Peyre and Ramus 2021, Educational Psychology Review, [doi:10.1007/s10648-020-09572-8](https://doi.org/10.1007/s10648-020-09572-8). Limit: mostly students.
+- **Practice testing beats rereading.** g = 0.51 across 195 comparisons, and g = 0.93 against a filler activity, from 272 effects and 15,427 participants. Source: Adesope, Trevisan and Sundararajan 2017, Review of Educational Research, [doi:10.3102/0034654316689306](https://doi.org/10.3102/0034654316689306). So a recall prompt at the end of a text is worth more than a second summary.
+- **Prequestions and prediction before reading.** The round found no verified meta-analysis on prequestions. The nearest evidence is a theoretical review on predicting before seeing: Brod 2021, Psychonomic Bulletin and Review, [doi:10.3758/s13423-021-01904-1](https://doi.org/10.3758/s13423-021-01904-1). It calls its own evidence early, and the one measured effect it reports (d = 0.56) comes from children aged 6 to 9. So treat prequestions as a reasonable practice with lower certainty, and aim them only at the main concepts.
+
+### 8.2 Pre-training, segmenting and seductive details (basis for Key terms, small blocks and cutting curiosities)
+
+- **Pre-training helps.** Teaching the names and features of the key concepts before the lesson improved learning in 13 of 16 tests, median d = 0.75. **Segmenting helps.** Presenting the material in learner-paced chunks improved learning in 10 of 10 tests, d = 0.79. Source: Mayer and Pilegard 2014, in The Cambridge Handbook of Multimedia Learning, second edition, [chapter page](https://www.cambridge.org/core/books/cambridge-handbook-of-multimedia-learning/principles-for-managing-essential-processing-in-multimedia-learning-segmenting-pretraining-and-modality-principles/DD24C2F48B9B1277CE59F78276110258). Limit: this is the authors' own count of studies, not an independent meta-analysis, and pre-training helps most when the reader knows little about the topic. This is the basis for the "Key terms" section in Rule 6 and for the small blocks in Rules 1 and 8.
+- **Seductive details hurt learning.** Interesting but irrelevant additions lower learning of the main content. Source: Sundararajan and Adesope 2020, Educational Psychology Review, [doi:10.1007/s10648-020-09522-4](https://doi.org/10.1007/s10648-020-09522-4). Limit: the round confirmed the direction in the abstract. The often-quoted size (g = -0.33) could not be read at the source, so do not quote the number. The consequence for the skill: an addition that serves no main concept is cut or moved to an optional depth block.
+
+### 8.3 Visuals (basis for Rule 7, the visual plan)
+
+- **Constructing a concept map beats studying a finished one.** g = 0.72 for constructing against g = 0.43 for studying, from 142 effects and 11,814 participants. Source: Schroeder et al. 2018, Educational Psychology Review, [doi:10.1007/s10648-017-9403-9](https://doi.org/10.1007/s10648-017-9403-9). This is why a visual must let the reader build the relation (the "How to read" line plus a conclusion). A decorative picture gives the reader nothing to build.
+- **Transparent visual aids improve risk understanding**, and most for readers with low numeracy. Source: Garcia-Retamero and Cokely 2017, Human Factors, a review of 36 publications with 27,885 participants, [doi:10.1177/0018720817690634](https://doi.org/10.1177/0018720817690634). This is the basis for the icon array with natural frequencies for every health risk.
+- **Animation beats a static picture only slightly.** g = 0.226 overall. The effect was larger with system pacing (0.309) and with no text alongside (0.883). Source: Berney and Bétrancourt 2016, Computers and Education, [doi:10.1016/j.compedu.2016.06.005](https://doi.org/10.1016/j.compedu.2016.06.005). Limit: a small average effect, so the skill relies on segmenting, not on animation, and caps manipulable interactives at one per document.
+
+### 8.4 Audio (basis for keeping audio a separate, shorter script)
+
+- **Long audio reverses the modality advantage.** With long spoken segments, the usual benefit of narration over on-screen text turns into a cost, and shortening the audio brings the benefit back. Source: Leahy and Sweller 2016, Instructional Science, [doi:10.1007/s11251-015-9362-9](https://doi.org/10.1007/s11251-015-9362-9). Limit: one task type (a contour map). The consequence, carried by the sibling skill clear-listen, is that audio retells the main ideas in short parts and never reads a guide aloud.
+
+### 8.5 Direct evidence on adults with ADHD
+
+Section 1 of this file leaned on one eye-tracking study and on practitioner advice. The 13 October 2026 round found direct studies on reading, screens and retrieval in adults with ADHD. They are small and use university students, but they point the same way.
+
+- **Retrieval practice helps adults with ADHD as much as controls.** 36 students with ADHD and 36 without. Source: Minear et al. 2023, Frontiers in Psychology, [doi:10.3389/fpsyg.2023.1186566](https://doi.org/10.3389/fpsyg.2023.1186566). So recall prompts and quizzes are not wasted on this reader.
+- **Adults with ADHD self-test less, and that gap explains the memory difference.** 34 adults with ADHD and 34 without. Source: Knouse, Anastopoulos and Dunlosky 2011, Journal of Attention Disorders, [doi:10.1177/1087054711417231](https://doi.org/10.1177/1087054711417231). So the text must ask the question itself, because the reader will not remember to self-test.
+- **In a long digital text, guidance at each stage closes the gap.** 210 adults aged 20 to 50, half with ADHD. Without guidance, the ADHD group understood less, and mind-wandering explained the difference. With guidance before, during and after reading, the groups tied. Source: Brann and Sidi 2024, Learning and Instruction, [doi:10.1016/j.learninstruc.2024.102051](https://doi.org/10.1016/j.learninstruc.2024.102051). This is the strongest support for the scaffolds in Rules 1 and 6: lead with the goal, Key point recaps, and a final recall.
+- **On a screen, the ADHD group understood less and over-trusted its own score; on paper, the groups tied.** 45 students with ADHD and 61 without. Source: Ben-Yehudah and Brann 2019, Research in Developmental Disabilities, [doi:10.1016/j.ridd.2019.04.001](https://doi.org/10.1016/j.ridd.2019.04.001). So a felt sense of understanding is not a check, which is why the skill prefers a recall prompt over "does this make sense?".
+- **Adults with ADHD recognize the central ideas but recall less, and their reading suggests fewer links between ideas.** 28 students with ADHD and 27 without. Source: Yeari et al. 2018, Journal of Clinical and Experimental Neuropsychology, [doi:10.1080/13803395.2018.1501000](https://doi.org/10.1080/13803395.2018.1501000). This is the direct basis for explicit connectors (Rule 2) and for restating the link between ideas instead of pointing back (Rule 6).
+
+Limits of this group: small samples, university students, English or Hebrew texts, and none of them tested diagrams or interactives. The visual rules therefore rest on the general multimedia evidence in section 8.3, not on ADHD-specific studies.
+
+## 9. Evidence added on 14 October 2026
+
+### 9.1 Interruption and resumption (basis for the two-tier zero-backtracking rule in Rule 6)
+
+- **Resuming a task after an interruption costs time, and the cost grows with the length and the demand of the interruption.** Resumption lag rose steeply over the first seconds of an interruption and then leveled off, and a demanding interruption (a verbal n-back task) cost more than a blank screen. Three experiments with 12, 11 and 36 participants. Source: Monk, Trafton and Boehm-Davis 2008, Journal of Experimental Psychology: Applied, [doi:10.1037/a0014402](https://doi.org/10.1037/a0014402). Limit: a laboratory task, not reading. The consequence for the skill: the reader reloads context from the last lines on screen, so the first mention in each block carries the full name and its meaning (tier 1), and a bare label or a pointer back gives the reader nothing to reload.
+
+### 9.2 Expertise reversal (basis for the depth calibration paragraph in Rule 8)
+
+- **Instructional support that helps a novice can lose its value, or hurt, for a more experienced learner.** The review calls this the expertise reversal effect: worked examples, integrated explanations and other load-reducing formats interact with the learner's prior knowledge. Source: Kalyuga, Ayres, Chandler and Sweller 2003, Educational Psychologist, 38(1), 23 to 31, [publisher record via the University of Wollongong](https://ro.uow.edu.au/edupapers/136). The DOI could not be confirmed in this round, so cite the journal reference. The consequence for the skill: on a topic inside the reader's own field, keep the basic explanations short or collapsed, because explaining what the reader already knows also costs attention.
+
+### 9.3 Bionic Reading (basis for the "never bold word beginnings" line)
+
+- **Bolding the first half of each word does not speed up reading.** 100 paragraphs, half in the bolded format, with no significant difference in reading time. Source: Snell 2024, Acta Psychologica, 247, 104304, [doi:10.1016/j.actpsy.2024.104304](https://doi.org/10.1016/j.actpsy.2024.104304).
+- **A registered eye-tracking report found the same.** 90 skilled adult readers; start-bolding moved the first fixation closer to the start of long words, but gaze duration, total reading time and comprehension (about 95% correct in every condition) did not change, and 43 of 90 readers rated the unbolded text as most readable. Source: Parker, Lee, Wang and Joseph 2026, Royal Society Open Science, [doi:10.1098/rsos.250177](https://doi.org/10.1098/rsos.250177). Limit: skilled adult readers, so the result says nothing about readers with dyslexia.
+- The consequence for the skill: bold marks the one most important line of a block (the "bold trail"), never the beginnings of words. Note the scope: Snell 2024 measured reading time only; comprehension comes from Parker et al. 2026 alone.
+
+### 9.4 Plain-language standards (basis for the language packs)
+
+- **Brazil.** Lei 15.263, de 14 de novembro de 2025, the Política Nacional de Linguagem Simples. Article 5 lists the techniques: direct order, short sentences, one idea per paragraph, common words, the full name before an acronym, active voice, no inserted clauses, verbs instead of nouns made from verbs, the most important information first, and testing with the audience. Source: [the law at the Senado](https://legis.senado.leg.br/norma/41699861/publicacao/41699940). `references/lang-pt-br.md` maps each item to a rule.
+- **United States.** The Plain Writing Act of 2010 and the Federal Plain Language Guidelines (March 2011), now carried on Digital.gov: active voice, present tense, hidden verbs, "must" for requirements, pronouns, abbreviations (define at first use, about three per document), short sentences, subject-verb-object together, main idea before exceptions, transition words, examples, lists and tables, and minimal cross-references. Sources: [Digital.gov plain language guide](https://digital.gov/guides/plain-language) and the [2011 guidelines (PDF)](https://revenue.ky.gov/DOR%20Training%20Materials/Federal%20Plain%20Language%20Guidelines.pdf), a state agency's copy of the federal PDF, used because plainlanguage.gov now redirects to Digital.gov and the original site is archived in the GSA/plainlanguage.gov repository on GitHub. `references/lang-en.md` maps each heading to a rule.
+
 ## Trade-offs to weigh, not ignore
 
 - One sentence per line versus cohesion. Forcing a blank line after every sentence fragments the text into a wall, which is the failure clear-read fixes with tight blocks (Rule 1). Keep sentences on their own line inside small blocks, with blank lines only between topics.
 - Connectors versus one point per sentence. Use connector words between two short sentences to show the logical link, but do not stack clauses inside one sentence.
 - Readability score versus comprehension. Covered above: floor-check only, never a target.
-- Controlled vocabulary versus an intelligent reader. Adopt STE's discipline, not its stilted register, because the reader is an expert, just attention-limited and non-native.
+- Controlled vocabulary versus an intelligent reader. Adopt STE's discipline, not its stilted register, because the reader is an expert, just attention-limited and often reading in a second language.
+- One method, several languages. The structural evidence (chunking, signaling, connectors, retrieval, working-memory limits) is not tied to English, and the Brazilian plain-language law (Lei 15.263 de 2025) asks for the same moves: direct word order, no inserted clauses, verbs instead of nominalizations, the full name before an acronym. The second-language load applies when the reader reads in English; the attention and fatigue load applies in both languages.
 - Diagrams and recaps versus the redundancy effect. They must add structure or compress, not duplicate the prose.
 
 ## Certainty and caveats
 
-- High certainty: vocabulary frequency drives L2 comprehension; segmenting lowers load; readability formulas do not measure comprehension; working-memory limits in ADHD; the structural rules from BDA, COGA, STE, and plain-language standards.
-- Lower certainty or heuristic: the specific numbers (about 1,500 common words, five choices per screen, 50-word paragraphs, 1 to 4 memory items, 60 to 70 characters per line). These are sensible expert defaults, not hard constants, and should be tuned by testing with the real reader.
+- High certainty: vocabulary frequency drives L2 comprehension; segmenting lowers load; readability formulas do not measure comprehension; working-memory limits in ADHD; the structural rules from BDA, COGA, STE, and plain-language standards; spaced retrieval and practice testing (large meta-analyses, section 8.1).
+- Medium certainty: the direct studies on adults with ADHD (section 8.5), which are small but agree with each other; the visual evidence in section 8.3, which comes from general learners, not from readers with ADHD.
+- Lower certainty or heuristic: the specific numbers (about 1,500 common words, five choices per screen, 50-word paragraphs, 1 to 4 memory items, 60 to 70 characters per line, the four-question thresholds of Rule 7). These are sensible expert defaults, not hard constants, and should be tuned by testing with the real reader. Prequestions and the size of the seductive-details effect also sit here (sections 8.1 and 8.2).
 - The skill controls text and markup, not visual CSS, so typography, color, and font advice is out of scope except where it shows up in markup (bold versus italic, lists, headings, line breaks).
 
 ## Key sources
@@ -121,3 +182,4 @@ The Google developer documentation style guide and the Microsoft Writing Style G
 - Cachola, Khashabi and Dredze (Johns Hopkins), "Evaluating the Evaluators", arXiv:2508.19221, 2025, on the weak correlation between readability formulas and human judgment.
 - Google developer documentation style guide; Microsoft Writing Style Guide.
 - Masrai (2019) and related work on L2 vocabulary frequency and reading comprehension.
+- The sources added on 13 October 2026 (Latimier 2021, Adesope 2017, Brod 2021, Mayer and Pilegard 2014, Sundararajan and Adesope 2020, Schroeder 2018, Garcia-Retamero and Cokely 2017, Berney and Bétrancourt 2016, Leahy and Sweller 2016, Minear 2023, Knouse 2011, Brann and Sidi 2024, Ben-Yehudah and Brann 2019, Yeari 2018) are listed with their DOIs in section 8.
