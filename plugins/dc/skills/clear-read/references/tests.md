@@ -196,3 +196,82 @@ Give the skill a dense paragraph with three ideas, two numbers and one precise t
 Pass: the rewrite keeps the three ideas, the two numbers and the precise term (explained once). The sentences got shorter; the content did not.
 
 Fail: an idea or a number is gone, or the precise term became a vaguer word ("uma reação rara do corpo" in place of the named term with its explanation).
+
+## Test 14: The channel test (a cold reader with one channel)
+
+This is how to find an idea that lives in only one place.
+It is the test behind Rule 7's line "the text still carries every idea on its own".
+
+How to run:
+
+1. Split the document into channels: one file with only the prose (no figures, no tables, no diagrams), and one file with only the visuals (each figure with its "How to read" line and its conclusion, nothing else).
+2. Write 8 to 20 questions that cover every main concept, with a model answer for each. Write them from the design notes, not from the finished text.
+3. Give each channel to a fresh reader who has not seen the document (a subagent with an empty context, or a person). Each reader answers every question from that channel alone.
+4. Score each answer against the model answer: right, partly right, or wrong.
+
+Pass: the text channel answers every question right. The visual channel may miss questions, because visuals reinforce.
+
+Fail: a question that the text channel gets wrong or partly right. The idea it tests lives only in a table or a figure, so add one prose sentence that carries it.
+
+What this test found in its first run: a document with three causes of liver injury listed only in a table. The text reader named one cause. One sentence in the prose fixed it.
+
+## Test 15: Zero backtracking in two tiers
+
+Give the skill a topic with three named parts and ask for an explanation of about 600 words with three sections.
+
+Pass: in each block, the first mention of every named part carries its meaning in the same sentence ("P1 (cache before deploy)", "the warm-up, the first minute after deploy"). Later mentions in the same block may be short. No sentence says "as mentioned above", "the former", "the second idea" or points back in any other way. Each section's first line says what it builds on.
+
+Fail: a section opens with a bare name ("P1 solves this") or with a pointer ("as we saw"), or two sections use different names for the same thing.
+
+How to check fast: `python3 scripts/lint_clear_read.py` reports `backward-reference` and `bare-label`. The same-words rule and the "known before new" rule need a human read.
+
+## Test 16: An analogy pays its loan
+
+Give the skill an abstract concept (a Merkle tree, an interest-rate swap) and ask for an explanation. The output will almost always use an analogy.
+
+Pass: every analogy is followed, before the next heading, by a line that starts with "Where the analogy fails:" (pt: "Onde a analogia falha:") and names a real difference.
+
+Fail: an analogy with no limit line, or a limit line that says nothing ("but it is not exactly the same").
+
+How to check fast: the lint reports `analogy-without-limit`.
+
+## Test 17: The language packs
+
+Run the lint on these two samples. Each one breaks three rules that only the language pack can see.
+
+English (`--lang en`):
+
+```
+## The server restarts at night
+
+The CDN serves the file from the nearest city.
+The server, which the infrastructure team installed last week in the new building, restarts every night.
+The team will perform an analysis of the logs before the release.
+
+Key point: the server restarts at night.
+```
+
+Portuguese (`--lang pt`):
+
+```
+## O servidor reinicia à noite
+
+Adultos com TDAH leem bem na tela quando o texto guia a atenção.
+O servidor, que a equipe de infraestrutura instalou na semana passada no prédio novo, reinicia toda noite.
+A equipe vai realizar a verificação dos registros antes da entrega.
+
+Ponto-chave: o servidor reinicia à noite.
+```
+
+Pass: each run prints one `acronym-without-full-name` (CDN, TDAH), one `inserted-clause` and one `hidden-verb` warning, and `0 problems`.
+
+Fail: a warning is missing (the pack lost a word list), or a clean sample from Test 12 now warns (the pack is too broad).
+
+Then the reading check: ask the skill for a short report in each language. Pass if the Portuguese text uses "você", dates with the month in words and the decimal comma, and keeps API, deploy and cache in English. Pass if the English text uses "must" only for requirements, "you" for the reader, and the decimal point.
+
+## How to read a failure, continued
+
+- Test 14 gaps: the idea lives only in a visual or a table. Add one prose sentence; do not remove the visual.
+- Test 15 slips: check the two-tier rule in Rule 6, and the lint's `backward-reference` and `bare-label` word lists in `LANG_PACKS`.
+- Test 16 slips: check the analogy paragraph in Rule 5, and the `analogy` and `analogy_limit` lists in `LANG_PACKS`.
+- Test 17 slips: check the language pack doc in `references/` and its mirror in `LANG_PACKS` (`known_acronyms`, `hidden_verb`, `intro_words`, `clause_openers`).

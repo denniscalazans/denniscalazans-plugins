@@ -13,11 +13,12 @@ The evidence comes from seven areas, drawn from a literature review across ADHD 
 - Rule 3 (problem plus counter-pattern): instructional-design worked-example practice.
 - Rule 4 (no assumed domain knowledge): COGA clear words; plain-language define-your-terms.
 - Rule 5 (jargon then term; one word, one meaning): COGA acronym-on-first-use; ASD-STE100 one word one meaning; L2 vocabulary-frequency research.
-- Rule 6 (teach on the way; do not rely on memory): COGA Objective 6 (working memory); Federal cross-reference warning; Knouse et al. 2011 and Minear et al. 2023 on retrieval in adults with ADHD (section 8.5).
+- Rule 5 (an analogy pays its loan): a practice rule from the project's own cold-reader tests, with no controlled study behind it in this file. The nearest evidence is the seductive-details work in section 8.2, which is about irrelevant additions, not analogies, so treat the rule as reasoned practice.
+- Rule 6 (teach on the way; do not rely on memory; zero backtracking in two tiers): COGA Objective 6 (working memory); Federal cross-reference warning; Knouse et al. 2011 and Minear et al. 2023 on retrieval in adults with ADHD (section 8.5); Monk, Trafton and Boehm-Davis 2008 on resuming after an interruption (section 9.1).
 - Rule 7 (visual plan): BDA flow charts; Mayer multimedia, but watch the redundancy effect; Schroeder et al. 2018 on constructed concept maps; Garcia-Retamero and Cokely 2017 on visual aids for risk; Berney and Bétrancourt 2016 on animation; Sundararajan and Adesope 2020 on seductive details (section 8.3).
-- Rule 8 (depth in small chunks): Mayer segmenting; cognitive load theory.
+- Rule 8 (depth in small chunks, calibrated to what the reader knows): Mayer segmenting; cognitive load theory; Kalyuga et al. 2003 on expertise reversal (section 9.2).
 - Rule 9 (calm tone, screen reading): screen-versus-audio reading research.
-- Rule 10 (plain words in the reader's language, numbers as words, dates, bold not italics): ADHD figurative-language difficulty; COGA numbers guidance; BDA emphasis guidance.
+- Rule 10 (plain words in the reader's language, numbers as words, dates, bold not italics, language packs): ADHD figurative-language difficulty; COGA numbers guidance; BDA emphasis guidance; Snell 2024 and Parker et al. 2026 on Bionic Reading (section 9.3); Lei 15.263/2025 and the Federal Plain Language Guidelines (section 9.4).
 - Rule 11 (procedures and code): COGA separate-each-instruction; STE one instruction per step; Google goal-before-action; Microsoft step limits.
 
 ## 1. ADHD and reading
@@ -131,6 +132,27 @@ Section 1 of this file leaned on one eye-tracking study and on practitioner advi
 - **Adults with ADHD recognize the central ideas but recall less, and their reading suggests fewer links between ideas.** 28 students with ADHD and 27 without. Source: Yeari et al. 2018, Journal of Clinical and Experimental Neuropsychology, [doi:10.1080/13803395.2018.1501000](https://doi.org/10.1080/13803395.2018.1501000). This is the direct basis for explicit connectors (Rule 2) and for restating the link between ideas instead of pointing back (Rule 6).
 
 Limits of this group: small samples, university students, English or Hebrew texts, and none of them tested diagrams or interactives. The visual rules therefore rest on the general multimedia evidence in section 8.3, not on ADHD-specific studies.
+
+## 9. Evidence added on 14 October 2026
+
+### 9.1 Interruption and resumption (basis for the two-tier zero-backtracking rule in Rule 6)
+
+- **Resuming a task after an interruption costs time, and the cost grows with the length and the demand of the interruption.** Resumption lag rose steeply over the first seconds of an interruption and then leveled off, and a demanding interruption (a verbal n-back task) cost more than a blank screen. Three experiments with 12, 11 and 36 participants. Source: Monk, Trafton and Boehm-Davis 2008, Journal of Experimental Psychology: Applied, [doi:10.1037/a0014402](https://doi.org/10.1037/a0014402). Limit: a laboratory task, not reading. The consequence for the skill: the reader reloads context from the last lines on screen, so the first mention in each block carries the full name and its meaning (tier 1), and a bare label or a pointer back gives the reader nothing to reload.
+
+### 9.2 Expertise reversal (basis for the depth calibration paragraph in Rule 8)
+
+- **Instructional support that helps a novice can lose its value, or hurt, for a more experienced learner.** The review calls this the expertise reversal effect: worked examples, integrated explanations and other load-reducing formats interact with the learner's prior knowledge. Source: Kalyuga, Ayres, Chandler and Sweller 2003, Educational Psychologist, 38(1), 23 to 31, [publisher record via the University of Wollongong](https://ro.uow.edu.au/edupapers/136). The DOI could not be confirmed in this round, so cite the journal reference. The consequence for the skill: on a topic inside the reader's own field, keep the basic explanations short or collapsed, because explaining what the reader already knows also costs attention.
+
+### 9.3 Bionic Reading (basis for the "never bold word beginnings" line)
+
+- **Bolding the first half of each word does not speed up reading.** 100 paragraphs, half in the bolded format, with no significant difference in reading time. Source: Snell 2024, Acta Psychologica, 247, 104304, [doi:10.1016/j.actpsy.2024.104304](https://doi.org/10.1016/j.actpsy.2024.104304).
+- **A registered eye-tracking report found the same.** 90 skilled adult readers; start-bolding moved the first fixation closer to the start of long words, but gaze duration, total reading time and comprehension (about 95% correct in every condition) did not change, and 43 of 90 readers rated the unbolded text as most readable. Source: Parker, Lee, Wang and Joseph 2026, Royal Society Open Science, [doi:10.1098/rsos.250177](https://doi.org/10.1098/rsos.250177). Limit: skilled adult readers, so the result says nothing about readers with dyslexia.
+- The consequence for the skill: bold marks the one most important line of a block (the "bold trail"), never the beginnings of words. Note the scope: Snell 2024 measured reading time only; comprehension comes from Parker et al. 2026 alone.
+
+### 9.4 Plain-language standards (basis for the language packs)
+
+- **Brazil.** Lei 15.263, de 14 de novembro de 2025, the Política Nacional de Linguagem Simples. Article 5 lists the techniques: direct order, short sentences, one idea per paragraph, common words, the full name before an acronym, active voice, no inserted clauses, verbs instead of nouns made from verbs, the most important information first, and testing with the audience. Source: [the law at the Senado](https://legis.senado.leg.br/norma/41699861/publicacao/41699940). `references/lang-pt-br.md` maps each item to a rule.
+- **United States.** The Plain Writing Act of 2010 and the Federal Plain Language Guidelines (March 2011), now carried on Digital.gov: active voice, present tense, hidden verbs, "must" for requirements, pronouns, abbreviations (define at first use, about three per document), short sentences, subject-verb-object together, main idea before exceptions, transition words, examples, lists and tables, and minimal cross-references. Sources: [Digital.gov plain language guide](https://digital.gov/guides/plain-language) and the [2011 guidelines (PDF)](https://revenue.ky.gov/DOR%20Training%20Materials/Federal%20Plain%20Language%20Guidelines.pdf), a state agency's copy of the federal PDF, used because plainlanguage.gov now redirects to Digital.gov and the original site is archived in the GSA/plainlanguage.gov repository on GitHub. `references/lang-en.md` maps each heading to a rule.
 
 ## Trade-offs to weigh, not ignore
 

@@ -71,6 +71,13 @@ Plan the journey before you write a word of it. This planning is for you, so kee
 6. **Examples plan.** Mark where a concrete example will help. Prefer examples from IT or everyday life, since those are the reader's home ground.
 7. **Problems and counter-patterns.** For every difficulty you will name, plan the thing that works instead, plus a small example of each.
 8. **Visual plan.** For each main concept, run the four-question test from Rule 7 (the visual plan) and write down the verdict: fundamental, reinforcement, or no visual. Do this before you draw anything, so no picture gets in by habit.
+9. **Block types.** Tag each block as a concept, a process, a procedure, a principle or a fact, because the type decides its form:
+   - a concept: a definition plus an example;
+   - a process: a flow (a small diagram, or a numbered outline);
+   - a procedure: numbered steps (Rule 11);
+   - a principle: the rule plus the case where it does not hold;
+   - a fact: the number with its word anchor and its source.
+10. **Language pack.** Read the pack for the reader's language, `references/lang-pt-br.md` or `references/lang-en.md` (Rule 10 says what it holds).
 
 Key point: design the arc first, because a reader can only follow a path that you have already laid out.
 
@@ -114,6 +121,10 @@ Three exceptions are fine, and they are the only ones:
 
 The lint (see "Before you deliver") flags each possible passive as a warning. So read the line, and keep the passive only when one of the three exceptions applies.
 
+**Keep subject, verb and object together.** A clause between commas in the middle of a sentence ("The server, which the team installed last week, restarts every night") pushes the subject away from its verb, so the reader holds the subject in mind while reading the aside. Move the aside to its own sentence: "The team installed the server last week. It restarts every night."
+
+**Use the verb, not a noun made from it.** "Analyze", not "perform an analysis"; "decide", not "make a decision"; in Portuguese "verificar", not "realizar a verificação". The noun form adds a light verb and a word, and hides who does what. The lint flags both patterns as warnings.
+
 ### Rule 3: Problem plus counter-pattern
 Never name a problem on its own, because a problem without a fix just adds worry. Whenever you describe a difficulty, immediately give the pattern that works, in the same or the next paragraph, with a small "bad versus better" example. Always pair the problem with what to do instead, using connector words.
 
@@ -125,10 +136,22 @@ Prefer a simpler word when one exists. When a technical term is genuinely needed
 
 Established technical terms often stay in English even inside Portuguese text (API, deploy, cache, token), because that is how the reader meets them at work. Keep them in English when the reader does, and give the plain meaning in the reader's language the first time.
 
+**An analogy is a loan, so pay it back.** An analogy ("think of the cache as a notebook on your desk") helps a reader build a new idea on a familiar one, so use one when the idea is abstract. Right after it, before the next heading, add one line that starts with "Where the analogy fails:" and says where the comparison stops holding. The reason is that a reader who keeps the analogy past its limit learns something false, and never finds out.
+
 ### Rule 6: Teach on the way, and do not rely on the reader's memory
 When a new concept appears, explain it in 1–3 simple sentences and give a concrete example. For a topic with many new terms, add a short "Key terms" section near the start. Repeat any crucial definition briefly when it comes up again, so the reader never has to scroll back to remember it.
 
 Assume the reader can hold only a few new things in mind at once, because a tired or distracted reader has very little working memory to spare. So restate the context the reader needs instead of pointing "as mentioned above", and never make them carry a value, name, or result from one step to a later step. When you must refer back, repeat the thing itself, not just a pointer to it.
+
+**Zero backtracking, in two tiers.** The reader will be interrupted, by the world or by their own attention. After an interruption they reload context from the last few lines on screen. A bare label gives them nothing to reload, and a full name repeated inside one continuous passage costs a little. So the rule has two tiers, and it wins over brevity every time.
+
+- Tier 1, the first mention in each block: the full name plus its meaning, in the same sentence. The first block of a section covers the section. Weak: "P1 solves this." Strong: "P1 (cache before deploy) solves this."
+- Tier 2, later mentions inside the same block: the short form or a pronoun is fine, because the meaning is still on screen.
+- Same words every time. Reuse the exact name and the same short meaning, never a synonym, because a new word reads as a new thing.
+- No backward references. Never "as mentioned above", "the former", "the second idea" on their own. Name the thing and say what it is.
+- Known before new. Start each sentence with what the reader already holds, and end it with the new information. Weak: "This avoids errors in production." Strong: "The cache before deploy avoids errors in production."
+- Each section stands alone. When a section depends on another, its first line says in one clause what it builds on: "You already know that memory fades without review. Now, what to do about it."
+- Blocks end on a complete thought, so every stopping point is a safe place to be interrupted.
 
 ### Rule 7: Visual plan
 A visual has one job: to show a relation that prose carries badly. So plan each visual before you draw it, and draw only the ones that earn their place. Building the relation in the reader's head is what helps, so a visual exists to make that building possible, not to decorate the page.
@@ -150,7 +173,9 @@ Count the yes answers, and let the count decide:
 
 **Every visual gets two lines right after it.** First, one line that starts with "How to read:" and says what the boxes, arrows, axes, or colors mean. Second, one sentence of conclusion that states what the visual shows. The reader should never have to work out the point of a picture, because that work is the load the picture was meant to remove.
 
-**Pick the form by the content.** A flow or a branching structure becomes a small Mermaid diagram, or a numbered outline when Mermaid does not fit. Numbers to compare become a simple chart or a table, and dated events become a list with the date first. Keep labels short, so the whole visual stays readable on a phone.
+**Pick the form by the content.** A flow or a branching structure becomes a small Mermaid diagram, or a numbered outline when Mermaid does not fit. Numbers to compare become a simple chart or a table. Dated events become a list with the date first, never a diagram, because a list wraps on a phone and a diagram cuts the text.
+
+**Build it for a phone.** Keep every diagram label at 25 characters or fewer, with no line break inside it and at most 2 nodes side by side, so the whole visual stays readable on a small screen. For an HTML page, `references/html-patterns.md` has the snippets: the figure with its "How to read" line, the icon array, the timeline and the theme tokens.
 
 **Three limits.**
 
@@ -161,6 +186,8 @@ Count the yes answers, and let the count decide:
 ### Rule 8: Depth with low cognitive load
 Cover the topic in real depth, but deliver it in small logical steps. Prefer step-by-step explanation and examples over abstract theory. Never write one large wall of text, because that is exactly where a distracted reader gives up.
 
+Calibrate the depth to what the reader already knows. On a topic inside the reader's own field, keep the basic explanations short, or put them in a collapsed block, because explaining what the reader already knows also costs attention (the expertise reversal effect). Outside their field, give the full scaffolding: key terms, background, and an example before each abstract rule.
+
 ### Rule 9: Tone
 Stay calm, precise, and straightforward. The text is for silent reading on a screen. It is not playful, creative, or performative, because effort spent decoding personality is effort not spent understanding.
 
@@ -169,7 +196,11 @@ Write in the reader's language. Use plain words of that language. Avoid idioms a
 
 Plain words are about the form, never about the content. Keep every idea, every number, every caveat and every precise term. Simplify the sentence, not the thought. When the exact term is the right word (a legal, medical or technical term), keep it and explain it once; do not swap it for a vaguer word, because the reader loses precision and gains nothing. A text that got shorter by dropping ideas failed this rule, however easy it reads.
 
-Make numbers and emphasis easy too. Reinforce a bare number with words that say what it means, because a raw figure carries no meaning on its own. For example: "permission 600 (owner can read and write, nobody else can touch it)". Write the month as a word, such as "3 June 2026" or "3 de junho de 2026", so a date is never ambiguous across regions. For emphasis use bold, and avoid italics and underlining: italics crowd letters together and tire the eye, and underlines look like links.
+Each language has its own pack in `references/`: `lang-pt-br.md` for Brazilian Portuguese and `lang-en.md` for English. Read the pack for the reader's language before you write, because it carries what the eleven rules cannot say for every language at once: the plain-language standard behind the rules (Lei 15.263 in Brazil, the Federal Plain Language Guidelines in the United States), the acronyms that need no expansion, the number and date forms, and the English terms that stay in English. For another language, write by the eleven rules and say which parts of the pack you could not apply.
+
+Make numbers easy too. Reinforce a bare number with words that say what it means, because a raw figure carries no meaning on its own. For example: "permission 600 (owner can read and write, nobody else can touch it)". Write the month as a word, such as "3 June 2026" or "3 de junho de 2026", so a date is never ambiguous across regions.
+
+For emphasis use bold, and avoid italics and underlining: italics crowd letters together and tire the eye, and underlines look like links. Bold at most one line per block, the one that carries the point, so that reading only the bold lines tells the whole story. Never bold the beginnings of words (the "Bionic Reading" format): two studies found no gain in reading speed, and the one that measured comprehension found no gain there either.
 
 ### Rule 11: Procedures and code
 Steps are where a tired reader most often gets lost, so give a procedure its own clear shape. Use a numbered list, with one action per step, and state the goal of the step before the action. For example, write "to give the server your key, run…", not the reverse. Keep a procedure to about seven steps; if it runs longer, split it into stages with their own headings.
@@ -190,22 +221,39 @@ When the output is a file, run the lint from the skill folder before you hand th
 python3 scripts/lint_clear_read.py path/to/document.md
 ```
 
-It reads Markdown or HTML, prints one line per finding, and ends with `N problems`. It needs only Python 3, with no extra packages. It detects the language of the text (Portuguese or English) from common words, or takes `--lang pt` or `--lang en`. Then it applies that language's word lists for backward references, Key point markers, labels, passive voice and abbreviations.
+It reads Markdown or HTML, prints one line per finding, and ends with `N problems`. It needs only Python 3, with no extra packages. It detects the language of the text (Portuguese or English) from common words, or takes `--lang pt` or `--lang en`. Then it applies that language's word lists, which mirror the language packs in `references/`.
 
-A **problem** is a rule break, so fix every one. The lint reports five kinds:
+A **problem** is a rule break, so fix every one. The lint reports seven kinds:
 
 - A dash used as a joiner (Rule 2).
 - A sentence over 25 words (Rule 2).
 - A block over 4 sentences (Rule 1).
 - A backward reference, which points the reader back to a passage instead of repeating the thing itself (Rule 6).
 - A bare label such as "P1" with nothing that names it (Rule 6).
+- A visual (a Mermaid block, a figure, an image, or an SVG that is not an icon) with no "How to read:" line right after it (Rule 7).
+- An analogy with no "Where the analogy fails:" line before the next heading (Rule 5).
 
-A **warning** is a prompt to re-read that line, so keep the text only on purpose. The lint reports four kinds:
+A **warning** is a prompt to re-read that line, so keep the text only on purpose. The lint reports nine kinds:
 
 - A possible passive (Rule 2).
+- A hidden verb, such as "perform an analysis" or "realizar a verificação" (Rule 2).
+- A clause of 5 or more words between commas, between the subject and its verb (Rule 2).
+- An acronym whose first mention has no full name next to it (Rule 5).
 - A one-word heading (Rule 1).
 - An H2 section with no "Key point:" line (Rule 1).
+- A "How to read:" line with no conclusion after it (Rule 7).
+- A bare "acima" in Portuguese, which can be spatial or a pointer back (Rule 6).
 - An average sentence length over 17 words (Rule 2).
+
+**When the document has Mermaid diagrams**, also run the phone check, because a label that fits a desktop can be cut on a phone and the lint cannot see that:
+
+```bash
+npm install --no-save mermaid@11 playwright@1   # once per working directory
+npx playwright install chromium                 # once per machine, or set CHROMIUM_PATH
+node scripts/check_mermaid.cjs path/to/document.html
+```
+
+It renders every diagram the way a published page does, at 390px, and fails on a cut label, a `<br/>` inside a label, a label over 25 characters, text under 12px, or sideways scroll. It reads `.md` files too (the ```mermaid fences), and `--self-test` checks the checker itself.
 
 When the output is a chat reply, apply the same checks by eye, because the list is short enough to hold in mind.
 
@@ -225,4 +273,16 @@ Key point: when the last line lands, the reader should feel finished, not merely
 
 These rules are not arbitrary. They come from research on attention difficulties, plain-language writing, and second-language reading. When a rule feels excessive, or when someone pushes back on it, read `references/research-basis.md` for the evidence behind it: sentence-length targets, the value of explicit connectors and signposting, and why chunking lowers the reading load. Consult it as needed; it is not required for everyday use.
 
-To check the skill still works after a change, run the checks in `references/tests.md`. They cover mode consistency, the Rule 1 spacing, jargon handling, research compliance, procedure staging, rewrite privacy, the visual plan, and active voice. The lint has its own unit tests in `scripts/test_lint_clear_read.py`.
+To check the skill still works after a change, run the checks in `references/tests.md`. They cover mode consistency, the Rule 1 spacing, jargon handling, research compliance, procedure staging, rewrite privacy, the visual plan, active voice, the language packs, zero backtracking, and the channel test (a cold reader with only the text, or only the visuals). The lint has its own unit tests in `scripts/test_lint_clear_read.py`, and the Mermaid check has `--self-test`.
+
+The files in `references/` and `scripts/`, and when to read each one:
+
+| File | Read it when |
+|---|---|
+| `references/lang-pt-br.md` | The reader's language is Portuguese |
+| `references/lang-en.md` | The reader's language is English |
+| `references/html-patterns.md` | The output is an HTML page |
+| `references/research-basis.md` | A rule needs its evidence, or someone pushes back on it |
+| `references/tests.md` | You changed the skill, or you want to test a document with a cold reader |
+| `scripts/lint_clear_read.py` | Before you deliver any file |
+| `scripts/check_mermaid.cjs` | Before you deliver a file with Mermaid diagrams |

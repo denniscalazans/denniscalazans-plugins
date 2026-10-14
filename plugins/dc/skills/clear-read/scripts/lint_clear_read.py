@@ -45,31 +45,44 @@ Problems (they fail the run):
                         quote or " - ". Later mentions in the same block are fine.
                         Common technical tokens (H1 to H6, S3, M1, A4, F1 to F12)
                         are not labels.
+    visual-without-how-to-read  a visual (a ```mermaid fence, a Markdown image on
+                        its own line, a <figure>, an <img>, a <pre class="mermaid">
+                        or an SVG that is not a small icon) whose next block does not
+                        start with the "How to read" marker. en: "How to read:".
+                        pt: "Como ler:". Tables are not visuals for this rule.
+    analogy-without-limit  an analogy in one of its structural forms ("think of it as",
+                        "it's like a", "works like a", "the analogy is"; pt: "pense nisso
+                        como um", "é como um", "funciona como um", "parecido com um", "a
+                        analogia é") with no line, before the next heading, that says where
+                        it fails. en: "Where the analogy fails:", "unlike a". pt: "Onde a
+                        analogia falha:", "diferente de um", "ao contrário de um". The bare
+                        word "analogy" and "imagine a user who..." are not analogies.
 
 Warnings (reported, never fatal):
-    average-sentence-length  the average over the whole document is above
-                        --avg-words (default 17). The target is about 15.
-    passive-voice       a heuristic, so read the line before changing it.
-                        en: a form of "to be", an optional adverb, then a past
-                        participle (a word ending in "ed" or an irregular form),
-                        minus adjectives such as "tired" or "interested".
-                        pt: a form of "ser" or "estar" (é, são, foi, foram, era,
-                        eram, será, serão, está, estão, esteve, ...), then within
-                        two words a participle ending in ado, ada, ados, adas,
-                        ido, ida, idos or idas. A determiner in the gap ("é um
-                        dado") or an accent before the ending ("rápido") means
-                        it is not a participle. Nouns that end the same way
-                        ("estado", "resultado", "sentido") are excluded by list.
-                        In both languages, an agent marker after the participle
-                        ("by", "por", "pelo") raises the confidence, and the
-                        message says so.
-    single-word-heading a heading that is one word. Headings should say what the
-                        reader will learn.
-    missing-key-point   an H2 section with no sentence that starts with a Key point
-                        marker. en: "Key point", "Key takeaway", "Takeaway", "In
-                        short". pt: "Ponto-chave", "Em resumo", "Resumo:", "O que
-                        fica". Text before the first H2 is exempt. A document with
-                        no H2 skips this check.
+    visual-without-conclusion  the "How to read" block has one sentence and nothing
+                        follows it before the next heading. The reader gets the
+                        legend but not the point.
+    acronym-without-full-name  a word of 2 to 6 capital letters (a plural "CDNs" counts as
+                        "CDN") whose first mention in the body is not next to its full name:
+                        inside parentheses, followed by one, or followed by a colon as in a
+                        Key terms list. Acronyms every reader knows (API, HTML, PDF, USA,
+                        EU, country and state codes, currencies, and each language's own
+                        list), Roman numerals, labels and emphasis words (NEVER, TODO) are
+                        free. Later mentions are free. Any parentheses count as a
+                        definition, so "(see the CDN docs)" passes.
+    hidden-verb         a light verb (make, perform, conduct, do, give, take, reach, come
+                        to; pt: fazer, realizar, efetuar, dar, tomar, chegar), an optional
+                        determiner and adjective, then a noun from a closed list of nouns
+                        made from verbs (analysis, decision, review, conclusion, validation;
+                        pt: análise, decisão, revisão, conclusão, verificação). The list is
+                        closed on purpose, so "take the medication" and "reach the
+                        destination" pass. pt also flags "a realização da análise".
+    inserted-clause     a clause of 5 or more words between commas, right after a short
+                        subject (up to 5 words), when the clause opens with a relative
+                        pronoun (which, who, whose, where; pt: que, quem, cujo, onde), a
+                        participle or a gerund. A list ("A, B and C"), an opening phrase
+                        ("However, ...", "No entanto, ...") and a clause that opens with a
+                        conjunction or a preposition ("after a week of tests") do not count.
 
 What the lint ignores: YAML front matter, HTML comments, fenced code blocks,
 inline code (replaced by the word "code"), <script>, <style>, <pre>, <svg>,
@@ -135,6 +148,64 @@ LANG_PACKS = {
         "key_points": ("key point", "key takeaway", "takeaway", "in short"),
         "key_point_hint": "Key point:",
         "label_words": ("Step", "Phase", "Part", "Stage", "Point", "Option"),
+        "how_to_read": ("how to read",),
+        "how_to_read_hint": "How to read:",
+        "analogy": [
+            r"\bthink of (?:it|this|that|the \w+(?: \w+)?) as\b",
+            r"\b(?:it|this|that|which)(?:'s| is) like an?\b",
+            r"\b(?:is|are|works?|behaves?|acts?) (?:a bit |a lot |much |rather )?like an?\b",
+            r"\bthe analogy (?:is|here is|would be)\b",
+        ],
+        "analogy_limit": [
+            r"\bwhere the analogy (?:fails|breaks|ends|stops)",
+            r"\bthe analogy (?:fails|breaks|ends|stops)",
+            r"\bunlike an?\b",
+        ],
+        "analogy_limit_hint": "Where the analogy fails:",
+        "hidden_verb": {
+            "light_verbs": r"(?:make|makes|made|making|perform|performs|performed|performing|conduct|conducts|"
+                           r"conducted|conducting|carry out|carries out|carried out|carrying out|do|does|did|"
+                           r"give|gives|gave|take|takes|took|taken|provide|provides|provided|reach|reaches|"
+                           r"reached|achieve|achieves|achieved|undertake|undertakes|undertook|come to|comes to|came to)",
+            "determiners": r"(?:a|an|the|its|their|your|our|his|her|my|some|this|that|another|each|every|no)",
+            "nouns": {
+                "analysis", "decision", "review", "assessment", "evaluation", "investigation", "examination",
+                "inspection", "verification", "validation", "implementation", "installation", "configuration",
+                "consideration", "recommendation", "determination", "calculation", "estimation", "estimate",
+                "measurement", "adjustment", "improvement", "assumption", "conclusion", "discussion",
+                "comparison", "description", "explanation", "notification", "authorization", "approval",
+                "payment", "selection", "submission", "modification", "correction", "resolution", "allocation",
+                "reduction", "protection", "preparation", "collection", "suggestion", "confirmation",
+                "cancellation", "deletion", "creation", "registration", "migration", "deployment",
+                "definition", "assistance", "investment", "agreement", "announcement", "arrangement",
+                "commitment", "contribution", "inquiry", "introduction", "observation", "prediction",
+                "proposal", "purchase", "request", "choice", "attempt", "distinction", "judgment", "mention",
+                "reference", "statement", "summary", "demonstration", "translation", "connection",
+                "objection", "complaint", "revision", "replacement", "repair", "search", "test", "backup",
+            },
+            "noun_first": None,
+        },
+        "hidden_verb_hint": "\"analyze\" instead of \"perform an analysis\"",
+        "known_acronyms": {
+            "WHO", "FBI", "CIA", "NHS", "IRS", "GDP", "GDPR", "NYT", "MIT", "IBM", "AWS", "GCP",
+        },
+        "emphasis_words": {
+            "NOT", "NEVER", "ALWAYS", "ONLY", "MUST", "DO", "DONT", "NO", "YES", "TODO", "NOTE", "FAIL",
+            "PASS", "TBD", "TLDR", "AND", "OR", "THE", "ALL", "NEW", "OLD", "OFF", "ON", "WARNING", "ERROR",
+            "STOP", "END", "START", "DONE", "FIXME", "OK",
+        },
+        "intro_words": {
+            "however", "in", "on", "at", "for", "by", "with", "without", "after", "before", "when", "if",
+            "because", "as", "since", "while", "although", "though", "unless", "until", "once", "so", "then",
+            "first", "second", "third", "next", "finally", "also", "instead", "otherwise", "today",
+            "yesterday", "tomorrow", "here", "there", "now", "later", "meanwhile", "overall", "still", "yet",
+            "and", "but", "or", "to", "from", "during", "under", "over", "through", "across", "despite",
+            "like", "unlike", "according", "besides", "moreover", "therefore", "thus", "hence", "again",
+            "above", "below", "inside", "outside", "beyond", "of", "sadly", "luckily", "ideally", "usually",
+            "often", "sometimes", "yes", "no", "e.g", "i.e",
+        },
+        "clause_openers": {"which", "who", "whom", "whose", "where"},
+        "clause_opener_endings": r"(?:ing|ed)$",
         "passive": {
             "aux": r"(?:am|is|are|was|were|be|been|being)",
             "gap_words": 1,
@@ -188,6 +259,65 @@ LANG_PACKS = {
         "key_points": ("ponto-chave", "ponto chave", "em resumo", "resumo:", "o que fica"),
         "key_point_hint": "Ponto-chave:",
         "label_words": ("Passo", "Etapa", "Fase", "Parte", "Ponto", "Opção", "Conceito"),
+        "how_to_read": ("como ler",),
+        "how_to_read_hint": "Como ler:",
+        "analogy": [
+            r"\bpense (?:n[oa]s? \w+(?: \w+)? |nisso |nisto |nele |nela )?como (?:um|uma|se)\b",
+            r"\b(?:é|são|funciona|funcionam|age|agem|parece|parecem) (?:um pouco |muito |mais ou menos )?como (?:um|uma|se)\b",
+            r"\bparecid[oa]s? com (?:um|uma)\b",
+            r"\ba analogia (?:é|aqui é|seria)\b",
+        ],
+        "analogy_limit": [
+            r"\bonde a analogia (?:falha|para|termina|quebra)",
+            r"\ba analogia (?:falha|para|termina|quebra)",
+            r"\bdiferente de (?:um|uma)\b",
+            r"\bao contrário de (?:um|uma)\b",
+        ],
+        "analogy_limit_hint": "Onde a analogia falha:",
+        "hidden_verb": {
+            "light_verbs": r"(?:fazer|faz|fazem|fez|fizeram|faça|façam|fazendo|realizar|realiza|realizam|realizou|"
+                           r"realizaram|realize|realizando|efetuar|efetua|efetuam|efetuou|efetuaram|efetue|proceder|"
+                           r"procede|procedem|procedeu|executar|executa|executam|executou|promover|promove|promovem|"
+                           r"promoveu|dar|dá|dão|deu|deram|dê|tomar|toma|tomam|tomou|tomaram|tome|chegar|chega|"
+                           r"chegam|chegou|chegaram|levar|leva|levam|levou)",
+            "determiners": r"(?:a|o|à|ao|uma|um|as|os|às|aos|sua|seu|suas|seus|nossa|nosso|esta|este|essa|esse|"
+                           r"outra|outro|cada|nenhuma|nenhum|alguma|algum)",
+            "nouns": {
+                "análise", "decisão", "revisão", "avaliação", "verificação", "validação", "investigação",
+                "exame", "inspeção", "implementação", "implantação", "instalação", "configuração",
+                "consideração", "recomendação", "determinação", "cálculo", "estimativa", "medição", "ajuste",
+                "melhoria", "suposição", "conclusão", "discussão", "comparação", "descrição", "explicação",
+                "notificação", "autorização", "aprovação", "pagamento", "seleção", "submissão", "envio",
+                "modificação", "correção", "resolução", "alocação", "redução", "proteção", "preparação",
+                "coleta", "sugestão", "confirmação", "cancelamento", "exclusão", "criação", "cadastro",
+                "migração", "definição", "entrega", "leitura", "contagem", "limpeza", "tradução",
+                "atualização", "execução", "cobrança", "apresentação", "teste", "pergunta", "pedido",
+                "reclamação", "escolha", "tentativa", "compra", "investimento", "acordo", "anúncio",
+                "contribuição", "consulta", "observação", "previsão", "proposta", "referência", "menção",
+                "distinção", "afirmação", "resumo", "demonstração", "conexão", "objeção", "providência",
+                "providências", "votação", "substituição", "reparo", "busca", "backup", "conferência",
+            },
+            "noun_first": r"\b(?:a|à)\s+(?:realização|execução|efetivação|efetuação)\s+d[aeo]s?\b",
+        },
+        "hidden_verb_hint": "\"verificar\" em vez de \"realizar a verificação\"",
+        "known_acronyms": {
+            "EUA", "ONU", "OMS", "UE", "CPF", "CNPJ", "RG", "CEP", "SUS", "STF", "STJ", "TSE", "TST", "IBGE",
+            "PIB", "IPCA", "CLT", "INSS", "FGTS", "USP", "UFRJ", "LGPD", "PL", "MP",
+        },
+        "emphasis_words": {
+            "NUNCA", "SEMPRE", "SIM", "NOTA", "ERRO", "FALHA", "NOVO", "TUDO", "FIM", "OK", "PARE", "ALERTA",
+        },
+        "intro_words": {
+            "no", "na", "nos", "nas", "em", "para", "por", "com", "sem", "depois", "antes", "quando", "se",
+            "porque", "como", "desde", "enquanto", "embora", "mesmo", "até", "então", "assim", "primeiro",
+            "segundo", "terceiro", "também", "hoje", "ontem", "amanhã", "aqui", "ali", "agora", "mais",
+            "ainda", "e", "mas", "ou", "a", "à", "ao", "de", "do", "da", "dos", "das", "durante", "sob",
+            "sobre", "apesar", "além", "portanto", "logo", "ou seja", "isto", "aliás", "enfim", "afinal",
+            "sim", "não", "pelo", "pela", "num", "numa", "entre", "contra", "conforme", "segundo",
+            "felizmente", "infelizmente", "geralmente", "normalmente", "às", "aos", "ex", "p",
+        },
+        "clause_openers": {"que", "quem", "cujo", "cuja", "cujos", "cujas", "onde"},
+        "clause_opener_endings": r"(?:ndo|ad[oa]s?|id[oa]s?)$",
         "passive": {
             "aux": r"(?:é|são|foi|foram|era|eram|será|serão|seria|seriam|sendo|sido|ser|"
                    r"está|estão|esteve|estiveram|estava|estavam|estará|estarão|estar|estando)",
@@ -226,7 +356,7 @@ LANG_CHOICES = ("auto",) + tuple(LANG_PACKS)
 
 # ---------------------------------------------------------------- language-agnostic data
 
-WORD = re.compile(r"[A-Za-z0-9À-ɏ][\w'’À-ɏ-]*")
+WORD = re.compile(r"[A-Za-z0-9À-ɏ][\w'’À-ɏ-]*(?:[.,]\d+)*")
 ACCENTED = re.compile(r"[À-ÿ]")
 
 LABEL_ALLOWLIST = (
@@ -239,6 +369,78 @@ LABEL = re.compile(
     r"\b(?:(?P<code>[A-Z]\d{1,2})|(?P<word>" + "|".join(_ALL_LABEL_WORDS) + r")\s+(?P<n>\d{1,2}))\b"
 )
 LABEL_NAMED_AFTER = re.compile(r"^\**\s*(?:\(|" + MIDDLE_DOT + r"|:|=|\"|“|\s-\s)")
+
+# Acronyms every reader of a technical text already knows. Each language pack adds its own.
+GLOBAL_ACRONYMS = {
+    "API", "URL", "URI", "HTML", "CSS", "JS", "TS", "JSON", "XML", "YAML", "CSV", "SQL", "HTTP", "HTTPS",
+    "FTP", "SSH", "TLS", "SSL", "DNS", "IP", "TCP", "UDP", "CPU", "GPU", "RAM", "SSD", "HDD", "USB",
+    "PDF", "PNG", "JPG", "JPEG", "GIF", "SVG", "MP3", "MP4", "ID", "AI", "ML", "UI", "UX", "CLI", "GUI",
+    "IDE", "SDK", "CI", "CD", "PR", "QA", "OS", "IT", "DB", "CRUD", "REST", "CEO", "CTO", "CFO", "FAQ",
+    "TV", "GPS", "DOI", "ISBN", "ISO", "IEEE", "W3C", "LLM", "GPT", "NLP", "OCR", "TTS", "PC", "VPN",
+    "LAN", "WAN", "ERP", "CRM", "SEO", "KPI", "ROI", "OKR", "MVP", "SLA",
+    "USA", "US", "UK", "EU", "UN", "NASA", "BBC", "CNN", "COVID", "UTC", "GMT", "AM", "PM",
+    "USD", "EUR", "BRL", "GBP", "PT", "BR", "EN", "DE", "ES", "FR", "IT", "JP", "CN",
+    "SP", "RJ", "MG", "RS", "DF", "SC", "PR", "BA", "PE", "CE", "GO", "PA", "AM", "ID",
+}
+ACRONYM = re.compile(r"\b([A-Z]{2,6})s?\b")
+ROMAN_NUMERAL = re.compile(r"^[IVXLCDM]+$")
+
+# A visual is a diagram, a chart or a picture: a Mermaid block, a figure, an image, or an SVG
+# that is not a small inline icon. Tables are not visuals for the "How to read" rule.
+MERMAID_PRE = re.compile(r"<pre\b[^>]*\bclass=\"[^\"]*\bmermaid\b[^\"]*\"[^>]*>.*?</pre\s*>", re.S | re.I)
+MERMAID_DIV = re.compile(r"<div\b[^>]*\bclass=\"[^\"]*\bmermaid\b[^\"]*\"[^>]*>.*?</div\s*>", re.S | re.I)
+SVG_ELEMENT = re.compile(r"<svg\b.*?</svg\s*>", re.S | re.I)
+IMG_TAG = re.compile(r"<img\b[^>]*>", re.I)
+FIGURE_ELEMENT = re.compile(r"<figure\b[^>]*>.*?</figure\s*>", re.S | re.I)
+MARKDOWN_IMAGE_LINE = re.compile(r"^\s*!\[[^\]]*\]\([^)]*\)\s*$")
+SMALL_ICON_SIDE = 48
+VISUAL_MARK = "<x-visual></x-visual>"
+
+
+def _is_decorative(head):
+    """aria-hidden, role=presentation, or a declared side of 48px or less: an icon or a logo."""
+    if re.search(r"\baria-hidden=\"true\"|\brole=\"(?:presentation|none)\"", head, re.I):
+        return True
+    side = re.search(r"\b(?:width|height)=\"(\d+)", head)
+    return bool(side and int(side.group(1)) <= SMALL_ICON_SIDE)
+
+
+def svg_is_visual(src):
+    """An SVG counts as a visual unless it is a small inline icon or a decorative drawing."""
+    head = src[: src.find(">") + 1]
+    if _is_decorative(head):
+        return False
+    if re.search(r"\brole=\"img\"|\baria-label(?:ledby)?=", head, re.I):
+        return True
+    return len(src) > 400 or "<title" in src.lower()
+
+
+def img_is_visual(tag):
+    return not _is_decorative(tag)
+
+
+def _mark_visuals(text, markdown=False):
+    """Replace every visual with a marker that keeps the line count, before the text is blanked.
+
+    A <figure> is one visual, whatever it holds, so its inner images and diagrams are dropped
+    and its caption stays as the text that follows the visual."""
+    def keep_lines(m, mark):
+        return mark + "\n" * m.group(0).count("\n")
+
+    def strip_inner(src):
+        src = MERMAID_PRE.sub(lambda m: keep_lines(m, ""), src)
+        src = MERMAID_DIV.sub(lambda m: keep_lines(m, ""), src)
+        src = SVG_ELEMENT.sub(lambda m: keep_lines(m, ""), src)
+        return IMG_TAG.sub(lambda m: keep_lines(m, ""), src)
+
+    mark = "![visual](#)" if markdown else VISUAL_MARK
+    if not markdown:
+        text = FIGURE_ELEMENT.sub(lambda m: mark + strip_inner(m.group(0)), text)
+    text = MERMAID_PRE.sub(lambda m: keep_lines(m, mark), text)
+    text = MERMAID_DIV.sub(lambda m: keep_lines(m, mark), text)
+    text = SVG_ELEMENT.sub(lambda m: keep_lines(m, mark if svg_is_visual(m.group(0)) else ""), text)
+    text = IMG_TAG.sub(lambda m: keep_lines(m, mark if img_is_visual(m.group(0)) else ""), text)
+    return text
 
 HTML_BLOCK_TAGS = {
     "p", "div", "section", "article", "header", "footer", "main", "aside", "nav",
@@ -382,9 +584,17 @@ def detect_language(text_or_blocks):
 
 # ---------------------------------------------------------------- parsers
 
+def _add_visual(blocks, line):
+    """Append a visual block, unless the last block is already one (a figure holding an SVG)."""
+    if blocks and blocks[-1].kind == "visual":
+        return
+    blocks.append(Block(line, "", "visual"))
+
+
 def markdown_to_blocks(text):
     text = _strip_front_matter(text)
     text = _blank_out(text, r"<!--.*?-->", re.S)
+    text = _mark_visuals(text, markdown=True)
     text = _blank_out(text, r"<(script|style|pre|svg|table)\b.*?</\1\s*>", re.S | re.I)
     blocks = []
     fence = None
@@ -397,11 +607,13 @@ def markdown_to_blocks(text):
         cur = None
 
     for n, raw in enumerate(text.split("\n"), 1):
-        f = re.match(r"^\s*(`{3,}|~{3,})", raw)
+        f = re.match(r"^\s*(`{3,}|~{3,})\s*(\w*)", raw)
         if f:
             if fence is None:
                 fence = f.group(1)[0]
                 flush()
+                if f.group(2).lower() == "mermaid":
+                    _add_visual(blocks, n)
                 continue
             if raw.strip().startswith(fence * 3):
                 fence = None
@@ -413,6 +625,10 @@ def markdown_to_blocks(text):
             line = line[:-1]
         if not line.strip():
             flush()
+            continue
+        if MARKDOWN_IMAGE_LINE.match(line):
+            flush()
+            _add_visual(blocks, n)
             continue
         if re.match(r"^\s*\|", line) or re.match(r"^\s*([-*_]\s*){3,}$", line):
             flush()
@@ -432,12 +648,13 @@ def markdown_to_blocks(text):
             cur = {"line": n, "parts": [], "kind": "para"}
         cur["parts"].append(line.strip())
     flush()
-    return [b for b in blocks if b.text]
+    return [b for b in blocks if b.text or b.kind == "visual"]
 
 
 def html_to_blocks(text):
     text = _blank_out(text, r"<!--.*?-->", re.S)
     text = _blank_out(text, r"<head\b.*?</head\s*>", re.S | re.I)
+    text = _mark_visuals(text)
     text = _blank_out(text, r"<(script|style|pre|svg|table|textarea|title)\b.*?</\1\s*>", re.S | re.I)
     text = re.sub(r"<code\b[^>]*>.*?</code\s*>", lambda m: " code " + "\n" * m.group(0).count("\n"), text, flags=re.S | re.I)
     blocks = []
@@ -462,11 +679,15 @@ def html_to_blocks(text):
         add_text(seg)
         state["line"] += seg.count("\n")
         tag = m.group(0)
-        name_m = re.match(r"</?\s*([a-zA-Z][a-zA-Z0-9]*)", tag)
+        name_m = re.match(r"</?\s*([a-zA-Z][a-zA-Z0-9-]*)", tag)
         name = name_m.group(1).lower() if name_m else ""
         closing = tag.startswith("</")
         if name == "br":
             buf.append("\n")
+        elif name == "x-visual":
+            if not closing:
+                flush()
+                _add_visual(blocks, state["line"])
         elif name in HEADING_TAGS:
             flush()
             if not closing:
@@ -481,7 +702,7 @@ def html_to_blocks(text):
         pos = m.end()
     add_text(text[pos:])
     flush()
-    return [b for b in blocks if b.text]
+    return [b for b in blocks if b.text or b.kind == "visual"]
 
 
 def looks_like_html(name, text):
@@ -628,6 +849,156 @@ def check_key_points(blocks, sentences_by_block, pack, findings):
                                     f"H2 section \"{sec['title']}\" has no \"{pack['key_point_hint']}\" line. End it with one short sentence the reader can land on."))
 
 
+def _starts_with_marker(sentence, markers):
+    s = sentence.lower().lstrip("*\"“'(")
+    return s.startswith(markers)
+
+
+def check_visuals(blocks, sentences_by_block, pack, findings):
+    """Rule 7: right after every visual comes a "How to read:" line, then one sentence of conclusion."""
+    hint = pack["how_to_read_hint"]
+    for i, b in enumerate(blocks):
+        if b.kind != "visual":
+            continue
+        j = i + 1
+        while j < len(blocks) and blocks[j].kind == "visual":
+            j += 1
+        nxt = blocks[j] if j < len(blocks) else None
+        first = sentences_by_block[j][0] if nxt and sentences_by_block[j] else ""
+        if nxt is None or nxt.kind == "heading" or not _starts_with_marker(first, pack["how_to_read"]):
+            findings.append(Finding(b.line, "problem", "visual-without-how-to-read",
+                                    f"the visual has no \"{hint}\" line right after it. Add one line that says what the "
+                                    f"boxes, arrows, axes or colors mean, then one sentence of conclusion."))
+            continue
+        after = blocks[j + 1] if j + 1 < len(blocks) else None
+        has_conclusion = len(sentences_by_block[j]) >= 2 or (after is not None and after.kind not in ("heading", "visual"))
+        if not has_conclusion:
+            findings.append(Finding(nxt.line, "warning", "visual-without-conclusion",
+                                    f"the \"{hint}\" line has no conclusion after it. Add one sentence that says what "
+                                    f"the reader should take from the visual."))
+
+
+def _inside_parentheses(sentence, start, end):
+    before, after = sentence[:start], sentence[end:]
+    return before.count("(") > before.count(")") and ")" in after
+
+
+def check_acronyms(blocks, sentences_by_block, pack, findings):
+    """Full name before the acronym at its first use. Only the first mention in the body counts."""
+    seen = set()
+    free = GLOBAL_ACRONYMS | pack["known_acronyms"] | pack["emphasis_words"] | LABEL_ALLOWLIST
+    example = "\"content delivery network (CDN)\"" if pack is LANG_PACKS["en"] else "\"nome completo (SIGLA)\""
+    for b, sentences in zip(blocks, sentences_by_block):
+        if b.kind in ("heading", "visual"):
+            continue
+        for s in sentences:
+            for m in ACRONYM.finditer(s):
+                a = m.group(1)
+                if a in seen or a in free or ROMAN_NUMERAL.match(a):
+                    continue
+                seen.add(a)
+                named = _inside_parentheses(s, m.start(), m.end()) or re.match(r"\s*(?:\(|:)", s[m.end():])
+                if named:
+                    continue
+                findings.append(Finding(b.line, "warning", "acronym-without-full-name",
+                                        f"acronym \"{a}\" appears before its full name in \"{snippet(s)}\". Write the "
+                                        f"full name first, then the acronym in parentheses, for example {example}."))
+
+
+def check_analogies(blocks, pack, findings):
+    """Every analogy gets, before the next heading, one line that says where it fails."""
+    analogy = [re.compile(p, re.I) for p in pack["analogy"]]
+    limit = [re.compile(p, re.I) for p in pack["analogy_limit"]]
+    hint = pack["analogy_limit_hint"]
+    pending = []
+
+    def close_section():
+        for line, phrase in pending:
+            findings.append(Finding(line, "problem", "analogy-without-limit",
+                                    f"the analogy \"{phrase}\" has no line that says where it fails. Add one line "
+                                    f"before the next heading: \"{hint} ...\"."))
+        pending.clear()
+
+    for b in blocks:
+        if b.kind == "heading":
+            close_section()
+            continue
+        if b.kind == "visual":
+            continue
+        if any(p.search(b.text) for p in limit):
+            pending.clear()
+            continue
+        for p in analogy:
+            m = p.search(b.text)
+            if m:
+                pending.append((b.line, snippet(b.text[m.start(): m.start() + 60], 40)))
+                break
+    close_section()
+
+
+_HIDDEN_VERB_CACHE = {}
+
+
+def _hidden_verb_pattern(pack):
+    """A light verb, an optional determiner, an optional adjective, then a noun from the closed list.
+    The list is closed on purpose: a suffix rule flags "take the medication" and "reach the destination"."""
+    key = id(pack)
+    if key not in _HIDDEN_VERB_CACHE:
+        hv = pack["hidden_verb"]
+        nouns = "|".join(sorted(map(re.escape, hv["nouns"]), key=len, reverse=True))
+        light = (r"\b" + hv["light_verbs"] + r"(?:\s+" + hv["determiners"] + r")?(?:\s+[\wÀ-ɏ-]+)?\s+(?:" + nouns + r")\b")
+        parts = [light] + ([hv["noun_first"]] if hv.get("noun_first") else [])
+        _HIDDEN_VERB_CACHE[key] = re.compile("|".join(parts), re.I)
+    return _HIDDEN_VERB_CACHE[key]
+
+
+def check_hidden_verbs(block, sentences, pack, findings):
+    pat = _hidden_verb_pattern(pack)
+    nouns = pack["hidden_verb"]["nouns"]
+    for s in sentences:
+        for m in pat.finditer(s):
+            words = m.group(0).split()
+            # With an optional adjective in the pattern, make sure the match ends on a listed noun and
+            # that the optional word is not itself a verb object ("made the application crash").
+            if words[-1].lower().strip(".,") not in nouns:
+                continue
+            findings.append(Finding(block.line, "warning", "hidden-verb",
+                                    f"hidden verb \"{m.group(0)}\" in \"{snippet(s)}\". Use the verb itself, "
+                                    f"for example {pack['hidden_verb_hint']}."))
+
+
+INSERTED_CLAUSE = re.compile(r"^(?P<head>[^,;:]{1,60}?),\s+(?P<ins>[^,;:()]{15,}?),\s+(?P<tail>\S.*)$")
+
+
+def _is_clause(words, pack):
+    """The inserted part is a clause when it opens with a relative or adverbial marker,
+    or with a participle or gerund. A list item ("os pós e os géis") opens with none of these."""
+    first = words[0].lower()
+    if first in pack["clause_openers"]:
+        return True
+    return bool(re.search(pack["clause_opener_endings"], first))
+
+
+def check_inserted_clauses(block, sentences, pack, findings):
+    """A long clause between commas, between the subject and its verb, pushes them apart."""
+    for s in sentences:
+        m = INSERTED_CLAUSE.match(s)
+        if not m:
+            continue
+        head_words = WORD.findall(m.group("head"))
+        if not head_words or len(head_words) > 5 or head_words[0][0].isdigit():
+            continue
+        if head_words[0].lower() in pack["intro_words"]:
+            continue
+        ins_words = WORD.findall(m.group("ins"))
+        n = len(ins_words)
+        if n < 5 or not _is_clause(ins_words, pack):
+            continue
+        findings.append(Finding(block.line, "warning", "inserted-clause",
+                                f"a clause of {n} words sits between commas, between the subject and its verb, in "
+                                f"\"{snippet(s)}\". Move it to its own sentence, so the subject and its verb stay together."))
+
+
 def lint_text(text, name="document.md", kind=None, lang="auto", max_words=DEFAULT_MAX_WORDS,
               avg_words=DEFAULT_AVG_WORDS, max_sentences=DEFAULT_MAX_SENTENCES,
               show_warnings=True):
@@ -659,10 +1030,15 @@ def lint_text(text, name="document.md", kind=None, lang="auto", max_words=DEFAUL
         check_bare_labels(b, pack, findings)
         check_passive(b, sentences, pack, findings)
         check_headings(b, findings)
+        check_hidden_verbs(b, sentences, pack, findings)
+        check_inserted_clauses(b, sentences, pack, findings)
         if b.kind != "heading":
             total_words += sum(count_words(s) for s in sentences)
             total_sentences += len(sentences)
     check_key_points(blocks, sentences_by_block, pack, findings)
+    check_visuals(blocks, sentences_by_block, pack, findings)
+    check_acronyms(blocks, sentences_by_block, pack, findings)
+    check_analogies(blocks, pack, findings)
     if total_sentences:
         avg = total_words / total_sentences
         if avg > avg_words:

@@ -80,6 +80,8 @@ When the app asks for a value, the cache answers if it holds that value.</p>
 <pre class="mermaid">flowchart TD
 A[App] --> B[Cache]
 </pre>
+<p>How to read: the arrow is one request, from the app to the cache that answers it.<br>
+So the cache sees every read before the database does.</p>
 <p><strong>Key point:</strong> the cache answers most reads, so the database sees only the misses.</p>
 </body></html>
 """
@@ -461,6 +463,335 @@ class HtmlSniffing(unittest.TestCase):
         self.assertTrue(lint.looks_like_html("page.html", "# Looks like Markdown"))
         self.assertTrue(lint.looks_like_html("page.xhtml", "# Looks like Markdown"))
         self.assertFalse(lint.looks_like_html("page.txt", "<p class=\"x\">Text.</p>"))
+
+
+class VisualNeedsHowToReadAndConclusion(unittest.TestCase):
+    """Rule 7: every visual is followed by a "How to read:" line and one sentence of conclusion."""
+
+    def test_md_mermaid_without_how_to_read_is_a_problem(self):
+        text = ("## The cache answers first\n\n```mermaid\nflowchart TD\nA[App] --> B[Cache]\n```\n\n"
+                "The app asks the cache before the database, so most reads never reach the disk.\n\n"
+                "Key point: the cache answers first.\n")
+        report = run_on_text(text, lang="en")
+        hits = [f for f in report.findings if f.rule == "visual-without-how-to-read"]
+        self.assertEqual(len(hits), 1, report.render())
+        self.assertEqual(hits[0].level, "problem")
+        self.assertEqual(hits[0].line, 3)
+
+    def test_md_mermaid_with_how_to_read_and_conclusion_passes(self):
+        text = ("## The cache answers first\n\n```mermaid\nflowchart TD\nA[App] --> B[Cache]\n```\n\n"
+                "How to read: each arrow is one request, from the app to the store that answers it.\\\n"
+                "So the cache takes every read before the database sees it.\n\n"
+                "Key point: the cache answers first.\n")
+        report = run_on_text(text, lang="en")
+        self.assertNotIn("visual-without-how-to-read", ids(report.findings), report.render())
+        self.assertNotIn("visual-without-conclusion", ids(report.findings), report.render())
+
+    def test_md_how_to_read_alone_warns_about_the_conclusion(self):
+        text = ("## The cache answers first\n\n```mermaid\nflowchart TD\nA[App] --> B[Cache]\n```\n\n"
+                "How to read: each arrow is one request.\n\n"
+                "## Next section\n\nText.\n\nKey point: done.\n")
+        report = run_on_text(text, lang="en")
+        hits = [f for f in report.findings if f.rule == "visual-without-conclusion"]
+        self.assertEqual(len(hits), 1, report.render())
+        self.assertEqual(hits[0].level, "warning")
+
+    def test_md_image_counts_as_a_visual(self):
+        text = "## A chart\n\n![Reads per second](chart.svg)\n\nThe chart compares two days.\n\nKey point: fine.\n"
+        report = run_on_text(text, lang="en")
+        self.assertIn("visual-without-how-to-read", ids(report.findings), report.render())
+
+    def test_html_figure_without_como_ler_is_a_problem(self):
+        text = ("<h2>O cache responde primeiro, então o banco descansa</h2>\n"
+                "<figure class=\"vis\"><svg role=\"img\" viewBox=\"0 0 300 120\"><rect width=\"300\" height=\"120\"/></svg>\n"
+                "<figcaption>Leituras por segundo em dois dias.</figcaption></figure>\n"
+                "<p>O aplicativo pergunta ao cache antes do banco, então a maioria das leituras nunca chega ao disco.</p>\n"
+                "<p>Ponto-chave: o cache responde primeiro.</p>\n")
+        report = run_on_text(text, name="guia.html", lang="pt")
+        hits = [f for f in report.findings if f.rule == "visual-without-how-to-read"]
+        self.assertEqual(len(hits), 1, report.render())
+        self.assertIn("Como ler:", hits[0].message)
+
+    def test_html_figcaption_with_como_ler_and_conclusion_passes(self):
+        text = ("<h2>O cache responde primeiro, então o banco descansa</h2>\n"
+                "<figure class=\"vis\"><pre class=\"mermaid\">flowchart TD\nA[App] --> B[Cache]</pre>\n"
+                "<figcaption>Como ler: cada seta é um pedido, do aplicativo para quem responde.<br>\n"
+                "Então o cache recebe toda leitura antes de o banco ver qualquer uma.</figcaption></figure>\n"
+                "<p>Ponto-chave: o cache responde primeiro.</p>\n")
+        report = run_on_text(text, name="guia.html", lang="pt")
+        self.assertNotIn("visual-without-how-to-read", ids(report.findings), report.render())
+        self.assertNotIn("visual-without-conclusion", ids(report.findings), report.render())
+
+    def test_small_inline_svg_icon_is_not_a_visual(self):
+        text = ("<h2>Section heading that says what you learn</h2>\n"
+                "<p><svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\"><path d=\"M0 0h16v16H0z\"/></svg> "
+                "A warning sign sits before this sentence, and the sentence is ordinary prose.</p>\n"
+                "<p>Key point: icons are not visuals.</p>\n")
+        report = run_on_text(text, name="page.html", lang="en")
+        self.assertNotIn("visual-without-how-to-read", ids(report.findings), report.render())
+
+
+class AcronymNeedsFullNameFirst(unittest.TestCase):
+    """Full name before the acronym at its first use. Known tech and country acronyms are free."""
+
+    def test_en_first_acronym_without_full_name_warns(self):
+        text = "The CDN serves the file from the nearest city, so the first byte arrives fast."
+        report = run_on_text(text, lang="en")
+        hits = [f for f in report.findings if f.rule == "acronym-without-full-name"]
+        self.assertEqual(len(hits), 1, report.render())
+        self.assertEqual(hits[0].level, "warning")
+        self.assertIn("CDN", hits[0].message)
+
+    def test_en_full_name_then_acronym_in_parentheses_passes(self):
+        text = ("A content delivery network (CDN) serves the file from the nearest city. "
+                "The CDN also caches the file for a day.")
+        report = run_on_text(text, lang="en")
+        self.assertNotIn("acronym-without-full-name", ids(report.findings), report.render())
+
+    def test_en_acronym_then_full_name_in_parentheses_passes(self):
+        text = "The CDN (content delivery network) serves the file from the nearest city."
+        report = run_on_text(text, lang="en")
+        self.assertNotIn("acronym-without-full-name", ids(report.findings), report.render())
+
+    def test_known_acronyms_are_free(self):
+        text = "The API returns JSON over HTTPS, and the HTML page shows it with CSS."
+        report = run_on_text(text, lang="en")
+        self.assertNotIn("acronym-without-full-name", ids(report.findings), report.render())
+
+    def test_pt_sigla_sem_nome_warns_once(self):
+        text = ("Adultos com TDAH leem bem na tela quando o texto guia a atenção. "
+                "O TDAH não muda a compreensão quando há guia.")
+        report = run_on_text(text, lang="pt")
+        hits = [f for f in report.findings if f.rule == "acronym-without-full-name"]
+        self.assertEqual(len(hits), 1, report.render())
+        self.assertIn("TDAH", hits[0].message)
+
+    def test_pt_nome_completo_antes_da_sigla_passes(self):
+        text = ("Adultos com transtorno do déficit de atenção com hiperatividade (TDAH) leem bem na tela. "
+                "O TDAH não muda a compreensão quando há guia.")
+        report = run_on_text(text, lang="pt")
+        self.assertNotIn("acronym-without-full-name", ids(report.findings), report.render())
+
+    def test_roman_numerals_labels_and_emphasis_words_are_not_acronyms(self):
+        text = "Chapter IV covers H2 headings, and you must NEVER skip the TODO list on S3."
+        report = run_on_text(text, lang="en")
+        self.assertNotIn("acronym-without-full-name", ids(report.findings), report.render())
+
+
+class AnalogyNeedsItsLimit(unittest.TestCase):
+    """Every analogy is followed, before the next heading, by the line where it fails."""
+
+    def test_en_analogy_without_limit_is_a_problem(self):
+        text = ("## The cache is a notebook\n\n"
+                "Think of the cache as a notebook on your desk. "
+                "You copy the answers you look up often, so you stop walking to the archive.\n\n"
+                "Key point: the notebook saves the walk.\n")
+        report = run_on_text(text, lang="en")
+        hits = [f for f in report.findings if f.rule == "analogy-without-limit"]
+        self.assertEqual(len(hits), 1, report.render())
+        self.assertEqual(hits[0].level, "problem")
+        self.assertIn("Where the analogy fails", hits[0].message)
+
+    def test_en_analogy_with_its_limit_passes(self):
+        text = ("## The cache is a notebook\n\n"
+                "Think of the cache as a notebook on your desk. "
+                "You copy the answers you look up often, so you stop walking to the archive.\n\n"
+                "Where the analogy fails: a notebook never forgets, but a cache drops old entries on its own.\n\n"
+                "Key point: the notebook saves the walk.\n")
+        report = run_on_text(text, lang="en")
+        self.assertNotIn("analogy-without-limit", ids(report.findings), report.render())
+
+    def test_pt_analogia_sem_falha_is_a_problem(self):
+        text = ("## O cache é um caderno\n\n"
+                "Pense no cache como um caderno na sua mesa. "
+                "Você copia as respostas que procura sempre, então para de andar até o arquivo.\n\n"
+                "Ponto-chave: o caderno poupa a caminhada.\n")
+        report = run_on_text(text, lang="pt")
+        hits = [f for f in report.findings if f.rule == "analogy-without-limit"]
+        self.assertEqual(len(hits), 1, report.render())
+        self.assertIn("Onde a analogia falha", hits[0].message)
+
+    def test_pt_analogia_com_onde_falha_passes(self):
+        text = ("## O cache é um caderno\n\n"
+                "O cache funciona como um caderno na sua mesa. "
+                "Você copia as respostas que procura sempre, então para de andar até o arquivo.\n\n"
+                "Onde a analogia falha: um caderno nunca esquece, mas um cache apaga entradas velhas sozinho.\n\n"
+                "Ponto-chave: o caderno poupa a caminhada.\n")
+        report = run_on_text(text, lang="pt")
+        self.assertNotIn("analogy-without-limit", ids(report.findings), report.render())
+
+    def test_limit_after_the_next_heading_does_not_count(self):
+        text = ("## The cache is a notebook\n\n"
+                "Think of the cache as a notebook on your desk.\n\n"
+                "Key point: the notebook saves the walk.\n\n"
+                "## Limits\n\n"
+                "Where the analogy fails: a notebook never forgets.\n\nKey point: fine.\n")
+        report = run_on_text(text, lang="en")
+        self.assertIn("analogy-without-limit", ids(report.findings), report.render())
+
+    def test_plain_comparison_is_not_an_analogy(self):
+        text = "This release is faster than the last one, and it is like the old one in every other way, so nothing else changes."
+        report = run_on_text(text, lang="en")
+        self.assertNotIn("analogy-without-limit", ids(report.findings), report.render())
+
+    def test_hypothetical_scenarios_and_the_bare_word_are_not_analogies(self):
+        for text, lang in (
+            ("Imagine a user who clicks the button twice in one second, so two requests reach the server.", "en"),
+            ("This section uses no analogy, because the idea is concrete enough on its own.", "en"),
+            ("Imagine que o usuário clica no botão duas vezes em um segundo, então dois pedidos chegam ao servidor.", "pt"),
+            ("Esta seção não usa analogia, porque a ideia é concreta o bastante.", "pt"),
+        ):
+            report = run_on_text(text, lang=lang)
+            self.assertNotIn("analogy-without-limit", ids(report.findings), report.render())
+
+    def test_pt_e_um_pouco_como_uma_is_an_analogy(self):
+        text = "## A árvore\n\nO índice é um pouco como uma árvore de decisão.\n\nPonto-chave: fim.\n"
+        report = run_on_text(text, lang="pt")
+        self.assertIn("analogy-without-limit", ids(report.findings), report.render())
+
+
+class HiddenVerbsWarn(unittest.TestCase):
+    """A verb beats a noun made from a verb ("perform an analysis", "realizar a verificação")."""
+
+    def test_en_light_verb_plus_nominalization_warns(self):
+        text = "The team will perform an analysis of the logs before the release."
+        report = run_on_text(text, lang="en")
+        hits = [f for f in report.findings if f.rule == "hidden-verb"]
+        self.assertEqual(len(hits), 1, report.render())
+        self.assertEqual(hits[0].level, "warning")
+        self.assertIn("perform an analysis", hits[0].message)
+
+    def test_pt_verbo_leve_mais_nominalizacao_warns(self):
+        text = "A equipe vai realizar a verificação dos registros antes da entrega."
+        report = run_on_text(text, lang="pt")
+        hits = [f for f in report.findings if f.rule == "hidden-verb"]
+        self.assertEqual(len(hits), 1, report.render())
+        self.assertIn("realizar a verificação", hits[0].message)
+
+    def test_plain_verbs_pass(self):
+        report = run_on_text("The team analyzes the logs before the release.", lang="en")
+        self.assertNotIn("hidden-verb", ids(report.findings), report.render())
+        report = run_on_text("A equipe verifica os registros antes da entrega.", lang="pt")
+        self.assertNotIn("hidden-verb", ids(report.findings), report.render())
+
+    def test_ordinary_nouns_after_a_light_verb_are_not_hidden_verbs(self):
+        for text, lang in (
+            ("The packet reaches the destination after three hops, so the delay is small.", "en"),
+            ("Take the medication twice a day, with food, for ten days.", "en"),
+            ("This change made a big difference to the load time.", "en"),
+            ("Does the government tax this income in the same year?", "en"),
+            ("Take a moment to read the error message before you retry.", "en"),
+            ("Given the situation, the team shipped the fix on Monday.", "en"),
+            ("The bug makes the application crash on the second click.", "en"),
+            ("Faça a imagem do container antes do deploy, porque o build demora.", "pt"),
+            ("A equipe fez o experimento duas vezes para confirmar o número.", "pt"),
+        ):
+            report = run_on_text(text, lang=lang)
+            self.assertNotIn("hidden-verb", ids(report.findings), text + "\n" + report.render())
+
+    def test_classic_hidden_verbs_are_caught(self):
+        for text, lang, phrase in (
+            ("The auditor conducted a review of the logs last week.", "en", "conducted a review"),
+            ("We need to make a final decision on the vendor this week.", "en", "make a final decision"),
+            ("The team reached the conclusion that the cache was wrong.", "en", "reached the conclusion"),
+            ("The service performs validation of every request.", "en", "performs validation"),
+            ("O time vai tomar uma decisão sobre o fornecedor nesta semana.", "pt", "tomar uma decisão"),
+            ("A equipe fez a revisão do código antes da entrega.", "pt", "fez a revisão"),
+            ("O time chegou à conclusão de que o cache estava errado.", "pt", "chegou à conclusão"),
+            ("Fazer a discussão do plano leva uma hora.", "pt", "Fazer a discussão"),
+        ):
+            report = run_on_text(text, lang=lang)
+            hits = [f for f in report.findings if f.rule == "hidden-verb"]
+            self.assertTrue(hits, text + "\n" + report.render())
+            self.assertIn(phrase, hits[0].message, hits[0].message)
+
+
+class InsertedClausesWarn(unittest.TestCase):
+    """Subject, verb and object stay close: no long clause between commas in the middle of a sentence."""
+
+    def test_pt_frase_intercalada_warns(self):
+        text = "O servidor, que foi instalado na semana passada pela equipe de infraestrutura, reinicia toda noite."
+        report = run_on_text(text, lang="pt")
+        hits = [f for f in report.findings if f.rule == "inserted-clause"]
+        self.assertEqual(len(hits), 1, report.render())
+        self.assertEqual(hits[0].level, "warning")
+
+    def test_en_inserted_clause_warns(self):
+        text = "The server, which the infrastructure team installed last week in the new building, restarts every night."
+        report = run_on_text(text, lang="en")
+        self.assertIn("inserted-clause", ids(report.findings), report.render())
+
+    def test_intro_phrase_then_sentence_does_not_warn(self):
+        report = run_on_text("No entanto, o cache responde em poucos milissegundos, então o banco descansa.", lang="pt")
+        self.assertNotIn("inserted-clause", ids(report.findings), report.render())
+        report = run_on_text("However, the cache answers in a few milliseconds, so the database rests.", lang="en")
+        self.assertNotIn("inserted-clause", ids(report.findings), report.render())
+
+    def test_short_list_does_not_warn(self):
+        report = run_on_text("Use the cache, the queue, the index and the log in that order.", lang="en")
+        self.assertNotIn("inserted-clause", ids(report.findings), report.render())
+
+    def test_list_as_subject_does_not_warn(self):
+        report = run_on_text("Vírus, álcool e gordura no fígado ficam fora, e por isso o diagnóstico demora.", lang="pt")
+        self.assertNotIn("inserted-clause", ids(report.findings), report.render())
+        report = run_on_text("Viruses, alcohol and fat in the liver stay out of it, and so the diagnosis takes longer.", lang="en")
+        self.assertNotIn("inserted-clause", ids(report.findings), report.render())
+
+    def test_gerund_clause_in_the_middle_warns(self):
+        report = run_on_text("Muita gente acha que, seguindo a dose do rótulo, o fígado está protegido.", lang="pt")
+        self.assertIn("inserted-clause", ids(report.findings), report.render())
+
+    def test_compound_sentence_with_a_complete_first_clause_does_not_warn(self):
+        for text, lang in (
+            ("The team shipped it, after a week of testing on staging, and the users noticed nothing.", "en"),
+            ("Markets moved little, because the hold was widely expected by traders, and the rate stayed.", "en"),
+            ("A pause, in the bank's own words, means it has stopped raising the rate.", "en"),
+            ("O time entregou a correção, depois de uma semana de testes no ambiente de homologação, e ninguém percebeu.", "pt"),
+            ("O cache responde primeiro, porque a cópia já está na memória do servidor, então o banco descansa.", "pt"),
+        ):
+            report = run_on_text(text, lang=lang)
+            self.assertNotIn("inserted-clause", ids(report.findings), text + "\n" + report.render())
+
+
+class AcronymEdgeCases(unittest.TestCase):
+    def test_plural_definition_covers_the_singular(self):
+        text = "Content delivery networks (CDNs) serve the file from the nearest city, and a CDN also caches it."
+        report = run_on_text(text, lang="en")
+        self.assertNotIn("acronym-without-full-name", ids(report.findings), report.render())
+
+    def test_key_terms_colon_form_counts_as_named(self):
+        text = "## Key terms\n\n- **CDN**: content delivery network, a set of servers near the reader.\n\nKey point: terms first.\n"
+        report = run_on_text(text, lang="en")
+        self.assertNotIn("acronym-without-full-name", ids(report.findings), report.render())
+
+    def test_common_codes_are_free(self):
+        text = "The guide is written in PT-BR and the audio in EN, costs 5 USD, ships at 10 AM in the US, and covers COVID data for SP and RJ."
+        report = run_on_text(text, lang="en")
+        self.assertNotIn("acronym-without-full-name", ids(report.findings), report.render())
+
+
+class VisualEdgeCases(unittest.TestCase):
+    def test_small_img_icon_and_hidden_svg_are_not_visuals(self):
+        text = ("<h2>Section heading that says what you learn</h2>\n"
+                "<p><img src=\"data:image/png;base64,AAAA\" width=\"16\" height=\"16\" alt=\"\"> A warning sign sits before this sentence.</p>\n"
+                "<header><svg aria-hidden=\"true\" viewBox=\"0 0 400 80\"><path d=\"" + "M0 0h400v80H0z" * 40 + "\"/></svg></header>\n"
+                "<p>Key point: icons and logos are not visuals.</p>\n")
+        report = run_on_text(text, name="page.html", lang="en")
+        self.assertNotIn("visual-without-how-to-read", ids(report.findings), report.render())
+
+    def test_figcaption_before_the_svg_is_one_visual(self):
+        text = ("<h2>Reads per second fell by two thirds</h2>\n"
+                "<figure class=\"vis\"><figcaption>How to read: each bar is one day.<br>So the cache took two thirds of the reads.</figcaption>\n"
+                "<svg role=\"img\" viewBox=\"0 0 300 120\"><rect width=\"300\" height=\"120\"/></svg></figure>\n"
+                "<p>Key point: the cache answers first.</p>\n")
+        report = run_on_text(text, name="page.html", lang="en")
+        self.assertNotIn("visual-without-how-to-read", ids(report.findings), report.render())
+        self.assertNotIn("visual-without-conclusion", ids(report.findings), report.render())
+
+
+class WordCounting(unittest.TestCase):
+    def test_decimal_numbers_count_as_one_word(self):
+        self.assertEqual(lint.count_words("a taxa de 10,5% e 4.25%"), 6)
 
 
 class CommandLine(unittest.TestCase):
