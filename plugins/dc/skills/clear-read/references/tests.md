@@ -3,6 +3,7 @@
 This file holds a reusable set of checks for the skill. Run them after any change to SKILL.md, to confirm the rules still produce the right output. Each test says what it stresses, how to run it, and how to tell if it passed.
 
 Last run: 3 June 2026. Result: 5 of 5 passed.
+Tests 7 to 9 were added on 13 October 2026 and have not been run with the model yet. Tests 10 to 12 (the lint, in English and in Portuguese) passed on that date.
 
 ## Test 1: Consistency across modes
 
@@ -39,7 +40,7 @@ What it stresses: define before use, and one word for one meaning.
 
 How to run: ask for a domain the reader would not know, for example "explain how DNS works."
 
-Pass if every acronym is introduced with its plain-English meaning first and the short term second, for example "the system that translates a web address into a number (Domain Name System)". The same term must be reused consistently, not swapped for synonyms.
+Pass if every acronym is introduced with its plain meaning first, in the reader's language, and the short term second. For example "the system that translates a web address into a number (Domain Name System)", or in Portuguese "o sistema que traduz um endereço da web em um número (Domain Name System)". The same term must be reused consistently, not swapped for synonyms.
 
 ## Test 4: Research compliance
 
@@ -67,6 +68,113 @@ How to run: paste a fictional internal email that contains made-up names, a proj
 
 Pass if the model rewrites without running web searches that contain the names, the codename, or the figure. Generic searches, such as the definition of a public technical term used in the email, are fine. A flag like "I could not verify this internal claim" is a pass; a search query containing the codename is a fail.
 
+## Test 7: Visual plan, a fundamental visual
+
+What it stresses: Rule 7 (the visual plan) should produce a visual when the four-question test says "fundamental". The visual must come with its two lines.
+
+How to run: ask for an explanation of how a request moves through a reverse proxy, a load balancer, three app servers, and a shared cache. Ask it to include what happens on a cache miss.
+
+Why it should score 3 or 4:
+- The idea has more than 3 elements the reader holds together: yes.
+- The central question is about a path: yes.
+- The relation takes more than 4 sentences in prose: yes.
+- A cold reader with only the text would likely get a question about the path wrong, for example "which component does a miss reach first?": yes.
+
+Pass if the output contains one small diagram or numbered outline of the path. Right after it, a line must start with "How to read:", and one sentence of conclusion must state what the visual shows. The prose around it must still carry the whole path, so a reader who skips the visual loses nothing. Fail if the diagram repeats the prose node for node, has no "How to read" line, or is decorative.
+
+## Test 8: Visual plan, no visual
+
+What it stresses: Rule 7 should keep a visual out when the four-question test scores 0.
+
+How to run: ask "explain what an idempotent HTTP method is."
+
+Why it should score 0:
+- The idea has one element, a property of a method: no.
+- The central question is a definition, not structure, comparison, magnitude or a path: no.
+- The relation fits in 2 or 3 sentences and one example: no.
+- A cold reader with only the text answers a question about it correctly: no.
+
+Pass if the output has no diagram, chart or image, and explains the concept with a definition, one concrete example, and one counter-example. Fail if a diagram appears for a single-element concept. A scoring of 1 or 2 with a cheap outline is acceptable only if the output says what the outline adds.
+
+## Test 9: Active voice and present tense
+
+What it stresses: Rule 2 should default to active voice and present tense, and keep a passive only under one of the three named exceptions.
+
+How to run: paste this paragraph and say "rewrite this in your style":
+
+"The configuration file is loaded by the server at startup. Changes are picked up only after a restart has been performed by the operator. In 2024 the default location was changed by the maintainers. The key was leaked, so all tokens were rotated."
+
+Pass if the rewrite meets three conditions:
+- The first two sentences become active: "the server loads the configuration file at startup", and "the operator restarts the server, and then the server picks up the changes".
+- The 2024 sentence keeps the past tense, because it is a past event.
+- "The key was leaked" may stay passive, because the agent is unknown.
+
+Running the lint on the rewrite (Test 10) should show at most the passives that fall under an exception.
+
+## Test 10: The lint
+
+What it stresses: `scripts/lint_clear_read.py` catches the rule breaks that are easy to make and hard to see.
+
+How to run, from the skill folder:
+```bash
+python3 scripts/test_lint_clear_read.py
+python3 scripts/lint_clear_read.py path/to/output.md
+```
+
+Pass if the unit tests print `OK`, and if a lint run on a finished clear-read output ends with `0 problems`. Warnings are allowed when each one is a deliberate choice (a passive under an exception, for example).
+
+A quick manual check: write a paragraph with an em dash, a 30-word sentence and a pointer back to the previous section into a file. Run the lint on it. It must report all three and exit with code 1.
+
+## Test 11: Portuguese, dirty sample
+
+What it stresses: the rules and the lint work on Brazilian Portuguese the same way they work on English. The lint must detect the language on its own.
+
+How to run: save this text in a file with no `--lang` flag, and run the lint on it.
+
+```
+## Contexto
+
+Como vimos na seção anterior, o cache fica entre o aplicativo e o banco de dados.
+O Passo 2 resolve o problema da leitura antiga, porque a cópia expira antes de a fonte mudar de novo.
+A chave foi trocada pelo operador ontem à noite, por isso todos os processos recarregaram a configuração de manhã.
+O arquivo de configuração é carregado pelo servidor na inicialização, o que significa que toda mudança no arquivo obriga a reiniciar o serviço inteiro e todos os seus processos, p. ex. os de fila.
+```
+
+Pass if the lint reports, as problems: the backward references ("como vimos", "a seção anterior"), the bare label "Passo 2", and the sentence over 25 words (the one with "p. ex.", which must count as one sentence, not two). As warnings: the two passives ("foi trocada pelo", "é carregado pelo"), the one-word heading "Contexto", and the missing "Ponto-chave:" line. The summary must say the detected language is pt.
+
+The rewrite that passes: "O cache fica entre o aplicativo e o banco de dados. O Passo 2 (cache antes do deploy) resolve a leitura antiga, porque a cópia expira antes de a fonte mudar. O operador trocou a chave ontem à noite. Por isso, todos os processos recarregaram a configuração de manhã. O servidor carrega o arquivo de configuração na inicialização. Então, toda mudança no arquivo obriga a reiniciar o serviço inteiro. Ponto-chave: o servidor só lê a configuração ao iniciar."
+
+## Test 12: Portuguese, clean sample
+
+What it stresses: a clean Portuguese guide passes the lint with 0 problems and 0 warnings, so the language packs do not produce false positives on correct Portuguese.
+
+How to run: save this text in a file and run the lint on it.
+
+```
+# Como um cache de leitura protege o banco de dados
+
+Este guia explica como um cache de leitura funciona e por que ele protege o banco de dados.\
+Ele importa agora porque o novo serviço dobra o volume de leituras.
+
+## O cache responde primeiro, então o banco descansa
+
+Um cache de leitura é um depósito rápido que fica na frente do banco de dados.\
+Quando o aplicativo pede um valor, o cache responde se tiver esse valor.\
+Caso contrário, o cache busca o valor no banco e guarda uma cópia.
+
+Ponto-chave: o cache responde à maioria das leituras, então o banco só vê as faltas.
+
+## A leitura antiga acontece quando a cópia é mais velha que a fonte
+
+A cópia no cache pode ficar atrás do banco de dados.\
+A solução é um prazo de validade para cada cópia (um tempo de vida, ou TTL).\
+O P1 (cache antes do deploy) aquece o cache, então os primeiros usuários não veem leituras lentas.
+
+Ponto-chave: um TTL curto mantém a cópia fresca, e o P1 (cache antes do deploy) esconde o aquecimento.
+```
+
+Pass if the lint ends with `0 problems` and prints no warnings. Note that "é mais velha" and "é um depósito" are not passives (no participle follows), and "P1 (cache antes do deploy)" is a named label.
+
 ## How to read a failure
 
 If a test fails, the fix usually lives in one rule:
@@ -76,3 +184,94 @@ If a test fails, the fix usually lives in one rule:
 - Test 4 slips: check Phase 1, the research-first rule.
 - Test 5 slips: check Rule 11, procedures and stages.
 - Test 6 leaks: check the rewrite-mode paragraph in Phase 1, the privacy-first research rule.
+- Test 7 or 8 slips: check Rule 7, the four-question test and its thresholds, and the Phase 2 visual plan item.
+- Test 9 slips: check the active voice paragraph in Rule 2 and its three exceptions.
+- Test 10 slips: a failing unit test means the lint changed; a false positive on real output means a heuristic in the lint needs a documented exclusion, not a loosened rule.
+- Test 11 or 12 slips: check the `pt` entry of `LANG_PACKS` in the lint (word lists, abbreviations, passive forms), or the language detection when the summary names the wrong language. A new language is one more entry in that dict.
+
+### Test 13: Plain words do not thin the content
+
+Give the skill a dense paragraph with three ideas, two numbers and one precise term (for example "reação idiossincrática" or "capital gains tax"), and ask for a rewrite.
+
+Pass: the rewrite keeps the three ideas, the two numbers and the precise term (explained once). The sentences got shorter; the content did not.
+
+Fail: an idea or a number is gone, or the precise term became a vaguer word ("uma reação rara do corpo" in place of the named term with its explanation).
+
+## Test 14: The channel test (a cold reader with one channel)
+
+This is how to find an idea that lives in only one place.
+It is the test behind Rule 7's line "the text still carries every idea on its own".
+
+How to run:
+
+1. Split the document into channels: one file with only the prose (no figures, no tables, no diagrams), and one file with only the visuals (each figure with its "How to read" line and its conclusion, nothing else).
+2. Write 8 to 20 questions that cover every main concept, with a model answer for each. Write them from the design notes, not from the finished text.
+3. Give each channel to a fresh reader who has not seen the document (a subagent with an empty context, or a person). Each reader answers every question from that channel alone.
+4. Score each answer against the model answer: right, partly right, or wrong.
+
+Pass: the text channel answers every question right. The visual channel may miss questions, because visuals reinforce.
+
+Fail: a question that the text channel gets wrong or partly right. The idea it tests lives only in a table or a figure, so add one prose sentence that carries it.
+
+What this test found in its first run: a document with three causes of liver injury listed only in a table. The text reader named one cause. One sentence in the prose fixed it.
+
+## Test 15: Zero backtracking in two tiers
+
+Give the skill a topic with three named parts and ask for an explanation of about 600 words with three sections.
+
+Pass: in each block, the first mention of every named part carries its meaning in the same sentence ("P1 (cache before deploy)", "the warm-up, the first minute after deploy"). Later mentions in the same block may be short. No sentence says "as mentioned above", "the former", "the second idea" or points back in any other way. Each section's first line says what it builds on.
+
+Fail: a section opens with a bare name ("P1 solves this") or with a pointer ("as we saw"), or two sections use different names for the same thing.
+
+How to check fast: `python3 scripts/lint_clear_read.py` reports `backward-reference` and `bare-label`. The same-words rule and the "known before new" rule need a human read.
+
+## Test 16: An analogy pays its loan
+
+Give the skill an abstract concept (a Merkle tree, an interest-rate swap) and ask for an explanation. The output will almost always use an analogy.
+
+Pass: every analogy is followed, before the next heading, by a line that starts with "Where the analogy fails:" (pt: "Onde a analogia falha:") and names a real difference.
+
+Fail: an analogy with no limit line, or a limit line that says nothing ("but it is not exactly the same").
+
+How to check fast: the lint reports `analogy-without-limit`.
+
+## Test 17: The language packs
+
+Run the lint on these two samples. Each one breaks three rules that only the language pack can see.
+
+English (`--lang en`):
+
+```
+## The server restarts at night
+
+The CDN serves the file from the nearest city.
+The server, which the infrastructure team installed last week in the new building, restarts every night.
+The team will perform an analysis of the logs before the release.
+
+Key point: the server restarts at night.
+```
+
+Portuguese (`--lang pt`):
+
+```
+## O servidor reinicia à noite
+
+Adultos com TDAH leem bem na tela quando o texto guia a atenção.
+O servidor, que a equipe de infraestrutura instalou na semana passada no prédio novo, reinicia toda noite.
+A equipe vai realizar a verificação dos registros antes da entrega.
+
+Ponto-chave: o servidor reinicia à noite.
+```
+
+Pass: each run prints one `acronym-without-full-name` (CDN, TDAH), one `inserted-clause` and one `hidden-verb` warning, and `0 problems`.
+
+Fail: a warning is missing (the pack lost a word list), or a clean sample from Test 12 now warns (the pack is too broad).
+
+Then the reading check: ask the skill for a short report in each language. Pass if the Portuguese text uses "você", dates with the month in words and the decimal comma, and keeps API, deploy and cache in English. Pass if the English text uses "must" only for requirements, "you" for the reader, and the decimal point.
+
+## How to read a failure, continued
+
+- Test 14 gaps: the idea lives only in a visual or a table. Add one prose sentence; do not remove the visual.
+- Test 15 slips: check the two-tier rule in Rule 6, and the lint's `backward-reference` and `bare-label` word lists in `LANG_PACKS`.
+- Test 16 slips: check the analogy paragraph in Rule 5, and the `analogy` and `analogy_limit` lists in `LANG_PACKS`.
+- Test 17 slips: check the language pack doc in `references/` and its mirror in `LANG_PACKS` (`known_acronyms`, `hidden_verb`, `intro_words`, `clause_openers`).
