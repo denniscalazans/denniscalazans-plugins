@@ -1,0 +1,19 @@
+{
+  "name": "cli",
+  "description": "Teach Claude any CLI tool and convert that knowledge into reusable skills — research a tool's full surface into a bundle, then package it into a safe, version-aware per-tool skill",
+  "version": "1.0.0",
+  "author": {
+    "name": "Dennis Calazans"
+  },
+  "keywords": [
+    "learn-a-cli",
+    "cli-as-skill",
+    "cli",
+    "command-line",
+    "research",
+    "agent-native",
+    "skill-generation",
+    "version-drift",
+    "tooling"
+  ]
+}
