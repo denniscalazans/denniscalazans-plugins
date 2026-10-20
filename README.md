@@ -42,6 +42,7 @@ These work as a pipeline: **brief** decodes messy input → **grill** stress-tes
 | `/dc:writing` | Apply one-sentence-per-line markdown convention |
 | `/dc:plain-language` | Apply strict plain-language rules — short sentences, active voice, facts over opinions |
 | `/dc:clear-read` | Write or rewrite content so a tired, non-native-English reader understands it on the first read |
+| `/dc:clear-listen` | Write audio scripts (narration, two-host podcast, short recap) that a tired listener follows on the first listen, with no rewinding |
 
 **Agent:** `strategic-thinking-partner` — proactive strategic oversight and assumption challenging
 
