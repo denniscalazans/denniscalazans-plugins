@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "dc",
-      "description": "Brain round trip toolkit: decode messy input, stress-test plans, distill insights, and write clean markdown",
+      "description": "Brain round trip toolkit: decode messy input, stress-test plans, distill insights, write clean markdown, and write audio scripts for the ear",
       "source": "./plugins/dc",
       "category": "productivity"
     },
