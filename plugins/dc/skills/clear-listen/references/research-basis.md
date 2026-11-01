@@ -12,6 +12,16 @@ Version 2, 8 October 2026. Version 1 came from about 20 searches and abstracts o
 - **Analogy**: another population, task or medium.
 - **Practice**: expert guidance with no controlled trial.
 
+## Five facts about listening that drive the rules
+
+These five facts lived in `SKILL.md` until 1 November 2026. They moved here to keep the skill body short; the sections below hold the evidence for each.
+
+1. **Speech disappears.** A reader can look back. A listener holds everything in working memory, so long or dense speech overloads it.
+2. **The pace is not the listener's.** A reader slows down on a hard sentence. A listener cannot. On average, listening and reading give the same comprehension. However, reading wins when the reader sets the pace, when the text explains something, and when the question needs inference. Explanatory audio is all three.
+3. **The mind wanders more while listening** than while reading. In adults with ADHD, mind wandering is the path to poorer comprehension, and structure given step by step closes the gap. Wandering near the start does the most damage.
+4. **Visual structure is gone.** Structure must be said out loud, or it does not exist.
+5. **The voice carries meaning.** Pace, pauses and pitch change what is noticed and what is remembered.
+
 ## Quick map: which evidence backs which rule
 
 - Role of audio (gist and review, not reasoning): reading versus listening meta-analysis; transient information effect.
@@ -221,3 +231,4 @@ Sentences that left a rule stay here, with the date and the reason. Nothing is d
 
 - Retired on 2026-11-01: "A change of voice pulls attention back, and memory is better for what comes right after it. So place the important sentence right after a voice change, choose two voices with clearly different pitch, and bring the second voice in early." (SKILL.md, Rule 13.) Reason: contradicted by Potter 2000. The abstract reports a momentary cognitive overload after the voice change, with recognition worse right after it and worse with more changes; readers of the full text place the loss in the first 3 seconds. The pitch and timing sentences were kept, now with their real source (Potter and others 2019) and limited to attention. Rule 13 now says the opposite about placement: a transition sentence first, then the key point. See the proposta of 2026-11, change 7, and pesquisa-conferida.md, sections 2.4 and 9.
 - Retired on 2026-11-01: "For later review, a separate summary of 2 to 4 minutes, heard close to when the knowledge is needed, works better than a second full listen at high speed." (SKILL.md, Rule 15.) Reason: the source, Murphy, Hoover, Agadzhanyan, Kuehn and Castel 2022, never tested a summary. The condition that won was a second full viewing at 2 times speed right before the test (d = 0.54), so the study says the opposite about the one format it tested. Rule 15 now says: reviewing close to the moment of use helps, and nobody has tested the format of the review (short summary or re-listen). See the proposta of 2026-11, change 8, and pesquisa-conferida.md, sections 2.5 and 3.
+- Retired on 2026-11-01: "The markup of a voice engine (its tags, its pause syntax, its pronunciation format) is not part of this skill. It lives in the engine profile that the environment supplies, one profile per engine and model." (SKILL.md, "Why these rules work"). Reason: change 6b, the body shrinks; the sentence repeats the section "Two layers" and `references/rendering.md`.

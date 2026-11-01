@@ -330,13 +330,15 @@ class SkillBodySize(unittest.TestCase):
     (proposta of 2026-11, change 6: Phase 4 moved to references/rendering.md)."""
 
     # The proposta asks for fewer than 3,600 words (about 5,000 tokens, the part of a skill
-    # that survives a compaction). Moving Phase 4 out took the body from 5,972 words to
-    # 4,617. Change 5 (conversation by voice) took it to 5,121 and change 4 (without
-    # reasoning and without tools) to 5,371, and change 13 (the narrator paragraph, about
-    # 120 words) to about 5,490. So the ceiling is 5,500 for now. Getting under 3,600 needs
-    # a decision about what else leaves the body (candidates: Rules 16 to 21, the two
-    # Phase 3 examples).
-    MAX_WORDS = 5500
+    # that survives a compaction). Change 6 moved Phase 4 to references/rendering.md (5,972
+    # to 4,617 words); changes 4, 5 and 13 then added about 870 words. Change 6b moved the
+    # two worked examples (references/examples.md), Rules 16 to 21 (references/
+    # visuals-for-the-ear.md) and the five listening facts (research-basis.md) out, and
+    # the body landed at about 4,720 words. The ceiling is 4,800. Getting under 3,600 still
+    # needs a decision by Dennis about what else leaves the body: candidates are the six
+    # "Rules for intents" (about 230 words), the Script format list (about 180) and a
+    # shorter Conversation by voice section (about 490 today).
+    MAX_WORDS = 4800
     RENDERING_MD = os.path.join(HERE, "..", "references", "rendering.md")
 
     @staticmethod

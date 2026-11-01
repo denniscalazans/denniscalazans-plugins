@@ -45,13 +45,7 @@ Before the turn is spoken, run `python3 scripts/lint_audio_script.py <turn.txt> 
 
 ## Why the ear needs its own rules
 
-Five facts about listening drive every rule below. `references/research-basis.md` has the evidence.
-
-1. **Speech disappears.** A reader can look back. A listener holds everything in working memory, so long or dense speech overloads it.
-2. **The pace is not the listener's.** A reader slows down on a hard sentence. A listener cannot. On average, listening and reading give the same comprehension. However, reading wins when the reader sets the pace, when the text explains something, and when the question needs inference. Explanatory audio is all three.
-3. **The mind wanders more while listening** than while reading. In adults with ADHD, mind wandering is the path to poorer comprehension, and structure given step by step closes the gap. Wandering near the start does the most damage.
-4. **Visual structure is gone.** Structure must be said out loud, or it does not exist.
-5. **The voice carries meaning.** Pace, pauses and pitch change what is noticed and what is remembered.
+Speech disappears, the pace is not the listener's, the mind wanders more while listening, visual structure is gone, and the voice carries meaning. These five facts drive every rule below; `references/research-basis.md` opens with them and holds the evidence.
 
 ## What the audio is for
 
@@ -64,7 +58,7 @@ So decide, for each piece of content:
 
 What fits whole in the audio: the main idea of each section, a structure of up to 3 or 4 items, a comparison of 2 options, up to 1 number per sentence, and a risk said as a natural frequency.
 
-What does not fit: a table bigger than 3 by 3, code, a procedure with more than 5 steps, and a network with more than 6 nodes. For these, the audio says the conclusion, the main pattern, and where the rest is (Rules 16 to 21).
+What does not fit: a table bigger than 3 by 3, code, a procedure with more than 5 steps, and a network with more than 6 nodes. For these, the audio says the conclusion, the main pattern, and where the rest is (Rules 16 to 21, in `references/visuals-for-the-ear.md`).
 
 ## Two layers: what the voice does, and how the medium does it
 
@@ -109,7 +103,7 @@ The script adds no new fact. Its source is a verified text: a clear-read guide, 
 2. **Parts.** Each part is 3 to 4 minutes (range 2 to 5). Plan: re-entry line, goal sentence, content, recall question, key point.
    - **Core idea.** Write the single core idea of the whole audio in one sentence. It goes into the first 30 seconds, and it returns at the start of each later part.
 3. **Spoken names.** For each term, decide the one name you will say every time, and one short meaning to repeat with it. Also decide how each technical term, acronym or code-like name sounds aloud, and write it that way (a header such as `Cache-Control` becomes "a instrução cache control"). Syntax is never read: say what the thing does.
-4. **Cuts and coverage.** List what stays in the written text only, with the fit list in "What the audio is for". Then check the other direction: every main idea of the source has a sentence in the script. A main idea that lives only in a table or a chart of the source still gets its spoken sentence (Rule 16).
+4. **Cuts and coverage.** List what stays in the written text only, with the fit list in "What the audio is for". Then check the other direction: every main idea of the source has a sentence in the script. A main idea that lives only in a table or a chart of the source still gets its spoken sentence (Rule 16, in `references/visuals-for-the-ear.md`).
 5. **Questions.** One prequestion per main concept for the opening. One recall question per part. One closing question about the whole audio, after the last part.
 6. **Delivery.** One tone intent per part, from the vocabulary in "Delivery intents" (for example warm, curious, serious), so the voice changes between parts. Also plan the stressed term of each part, and every hard name that needs a pronunciation. Change the *kind* of novelty from part to part (a question, an example, a contrast, a voice change), because the same device repeated stops working.
 7. **Medium.** Name the medium this audio will be produced with: which voice engine and model, or a human reader. Ask the environment, not your memory (Phase 4; `references/rendering.md`, step 1). The medium does not change the writing. It only decides the rendering, and the measured rate you plan with.
@@ -183,23 +177,8 @@ Novelty keeps this listener engaged, but an interesting side fact hurts learning
 #### Rule 15: Land the ending, and offer a short review
 The last part connects the main concepts in a few sentences and gives one thing to remember. The listener should feel finished, not cut off. For later review, reviewing close to the moment of use helps: in a memory study by Murphy and colleagues (2022; 231 students, recorded lectures of 13 to 15 minutes), a second full viewing at 2 times speed right before the test gave the best recall. Nobody has tested the format of the review, a short summary or a re-listen. So offer the review and name the moment ("ouça de novo antes da reunião"), and leave the format to the listener.
 
-#### Rule 16: Main ideas are always carried by the audio
-Every main idea of the source gets its own spoken sentence, even when the source carries it in a table, a chart or a diagram. Details may point to the written guide; a main idea never may. The test: a listener who never opens the guide still leaves with every main idea. A cold-reader check of the script (someone who answers the main questions from the script alone) is the proof.
-
-#### Rule 17: Say structures, not pixels
-A diagram becomes a spoken shape of at most 3 or 4 items: "Imagine três caixas, da esquerda para a direita. A primeira é...". Say what connects to what and in which direction. Never describe colors, positions or sizes for their own sake. A structure with more than 4 items is cut to its spine, and the rest goes to the guide (Rule 21).
-
-#### Rule 18: A table becomes a comparison in three moves
-First say what is compared and on which criteria. Then say the winner per criterion, one criterion per sentence. Then point to the guide for the full table. A table of up to 3 by 3 can be said in full this way; a bigger one is never read cell by cell.
-
-#### Rule 19: A chart becomes four sentences
-What the chart shows. The scale in one phrase ("de zero a cem por cento", "ao longo de oito anos"). The single pattern that matters ("a fatia quase triplicou"). The takeaway. Never read the data points one by one.
-
-#### Rule 20: Risk in natural frequencies, with the denominator
-Say a risk as "treze em cada cem", never as a relative risk alone ("o dobro", "quarenta por cento maior") and never as a bare percentage without its base. When the source gives a relative risk, convert it to the two absolute frequencies, or say that the base is unknown.
-
-#### Rule 21: Honest limits, said out loud
-For code, a procedure with more than 5 steps, a table bigger than 3 by 3, or a network with more than 6 nodes, the audio says three things: the conclusion, the main pattern, and what the listener is not getting here and where to find it ("o passo a passo completo está no guia escrito, na seção tal"). Never pretend the audio covered it.
+#### Rules 16 to 21: what the eye had in a table, a chart, a diagram or code
+Every main idea of the source gets its own spoken sentence, even when the source carries it in a table, a chart or a diagram (Rule 16). Details may point to the written guide; a main idea never may. When the source has a table, a chart, a diagram, code, or a procedure with more than five steps, read `references/visuals-for-the-ear.md` before writing that part: it has the six rules, with the spoken shape for each form, the risk as a natural frequency with its denominator (Rule 20), and the honest limit said out loud (Rule 21).
 
 Key point: each rule replaces something the eye had for free, so apply them together.
 
@@ -246,48 +225,11 @@ Rules for intents:
 
 ## Phase 4: Render for the medium
 
-Rendering turns the neutral script into what one medium needs. It changes marks, never words. How one medium does each intent lives in an **engine profile**: a short document that the environment keeps, one per engine and model, as a project doc such as an audio playbook, a section of the project instructions, or a file next to the scripts. The whole method is in `references/rendering.md`: the four steps, what a profile must answer, the degradation ladder, the render rules, and one passage rendered for three media. Read `references/rendering.md` before generating audio. Never render from memory of how an engine used to work, because engines change between models and between months.
+Rendering turns the neutral script into what one medium needs. It changes marks, never words. How one medium does each intent lives in an **engine profile** that the environment supplies, one per engine and model. Read `references/rendering.md` before generating audio: it has the four steps, what a profile must answer, the degradation ladder, the render rules, and one passage rendered for three media.
 
-## Example: the same content for the eye and for the ear
+## Examples
 
-**For the eye (a clear-read guide):**
-
-> `no-cache` significa "guarde, mas confira a etiqueta (ETag) antes de cada uso". Quem proíbe guardar é `no-store`.
-
-**For the ear (clear-listen, the neutral script):**
-
-```
-[serious] Aqui existe um engano comum.
-Muita gente acha que no-cache significa não guardar.
-Isso não confere.
-[stress: guardar]
-No-cache significa guardar, mas conferir a etiqueta de versão antes de cada uso.
-Quem proíbe guardar é outra instrução, chamada no-store.
-[pause short]
-[curious] O que a instrução no-cache manda o navegador fazer?
-[pause recall]
-[key] Ela manda guardar a cópia e conferir a etiqueta antes de usar.
-```
-
-What changed, and why: the parenthesis became its own sentence, because the ear cannot hear brackets. The code formatting became spoken names. The wrong belief is said out loud before the correction. The name "no-cache" is repeated where a reader would accept "ela". A question makes the listener retrieve the point. The intents say what the voice should do, and no line says how an engine does it.
-
-## Example: a table and a chart, for the ear
-
-**In the guide:** a table with four substances, a verdict per substance and a note from the sources; and a bar chart where the share of liver injuries caused by supplements goes from seven percent to about twenty percent in eight years.
-
-**In the script (Rules 18 and 19):**
-
-```
-[serious] O guia compara quatro substâncias pelo risco de lesão no fígado.
-Três delas têm risco documentado: a vitamina A em dose alta, o extrato de chá verde e a ashwagandha.
-A quarta, a glutamina, fica fora dessa lista, porque as fontes a classificam como causa improvável.
-A tabela completa, com as fontes, está no guia escrito.
-[pause short]
-O gráfico mostra a fatia das lesões no fígado que vem de suplementos.
-Ele cobre cerca de oito anos.
-[key] Nesse tempo, a fatia quase triplicou.
-Ou seja, o problema cresce, e não é raro.
-```
+Two worked examples live in `references/examples.md`: the same passage written for the eye and for the ear, and a table and a chart said aloud (Rules 18 and 19 in `references/visuals-for-the-ear.md`). Read them the first time you write a script.
 
 ## Check before generating
 
@@ -299,4 +241,4 @@ Then check the rendering, as `references/rendering.md` says: every intent is map
 
 ## Why these rules work
 
-Read `references/research-basis.md` for the evidence, the trade-offs, and what is still unknown. Run the checks in `references/tests.md` after any change to this skill. The markup of a voice engine (its tags, its pause syntax, its pronunciation format) is not part of this skill. It lives in the engine profile that the environment supplies, one profile per engine and model.
+Read `references/research-basis.md` for the evidence, the trade-offs, and what is still unknown. Run the checks in `references/tests.md` after any change to this skill.
