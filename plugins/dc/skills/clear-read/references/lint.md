@@ -25,7 +25,7 @@ A **problem** is a rule break. The lint reports eight kinds:
 
 ## Warnings: keep the text only on purpose
 
-A **warning** is a prompt to re-read that line. The lint reports eleven kinds:
+A **warning** is a prompt to re-read that line. The lint reports twelve kinds:
 
 - A possible passive (Rule 2).
 - A hidden verb, such as "perform an analysis" or "realizar a verificação" (Rule 2).
@@ -38,6 +38,7 @@ A **warning** is a prompt to re-read that line. The lint reports eleven kinds:
 - A "How to read:" line with no conclusion after it (Rule 7).
 - A bare "acima" in Portuguese, which can be spatial or a pointer back (Rule 6).
 - An average sentence length over 17 words (Rule 2).
+- A Mermaid flowchart whose nodes form one chain with no branch (Rule 7): a sequence is a list, never a diagram.
 
 ## The phone check for Mermaid diagrams
 
@@ -53,4 +54,4 @@ It renders every diagram the way a published page does, at 390px. It fails on a 
 
 ## The kind names, as the lint prints them
 
-Each finding line carries its kind in brackets, so a search for the kind finds every case. The kinds are: `dash-joiner`, `sentence-length`, `paragraph-length`, `backward-reference`, `bare-label`, `visual-without-how-to-read`, `analogy-without-limit`, `label-in-wrong-language`, `passive-voice`, `hidden-verb`, `inserted-clause`, `acronym-without-full-name`, `name-before-role`, `authority-without-name`, `single-word-heading`, `missing-key-point`, `visual-without-conclusion`, `average-sentence-length`. The Portuguese "acima" warning is reported as `backward-reference` at warning level, and `language` is the note that names the detected language.
+Each finding line carries its kind in brackets, so a search for the kind finds every case. The kinds are: `dash-joiner`, `sentence-length`, `paragraph-length`, `backward-reference`, `bare-label`, `visual-without-how-to-read`, `analogy-without-limit`, `label-in-wrong-language`, `passive-voice`, `hidden-verb`, `inserted-clause`, `acronym-without-full-name`, `name-before-role`, `authority-without-name`, `single-word-heading`, `missing-key-point`, `visual-without-conclusion`, `average-sentence-length`, `sequence-as-diagram`. The Portuguese "acima" warning is reported as `backward-reference` at warning level, and `language` is the note that names the detected language.

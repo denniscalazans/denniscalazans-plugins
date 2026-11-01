@@ -98,7 +98,7 @@ Plan the journey before you write a word of it, in your scratchpad, not in the r
 8. **Visual plan.** For each main concept, run the four-question test from Rule 7 (the visual plan) and write down the verdict: fundamental, reinforcement, or no visual. Do this before you draw anything, so no picture gets in by habit.
 9. **Block types.** Tag each block as a concept, a process, a procedure, a principle or a fact, because the type decides its form:
    - a concept: a definition plus an example;
-   - a process: a flow (a small diagram, or a numbered outline);
+   - a process: a numbered outline, or a small diagram only when the flow branches;
    - a procedure: numbered steps (Rule 11);
    - a principle: the rule plus the case where it does not hold;
    - a fact: the number with its word anchor and its source.
@@ -193,7 +193,13 @@ Count the yes answers, and let the count decide:
 
 **Every visual gets two lines right after it.** First, one line that starts with "How to read:" and says what the boxes, arrows, axes, or colors mean. Second, one sentence of conclusion that states what the visual shows. The reader should never have to work out the point of a picture, because that work is the load the picture was meant to remove.
 
-**Pick the form by the content.** A flow or a branching structure becomes a small Mermaid diagram, or a numbered outline when Mermaid does not fit. Numbers to compare become a simple chart or a table. Dated events become a list with the date first, never a diagram, because a list wraps on a phone and a diagram cuts the text.
+**Pick the form by the content, and never draw a sequence.** A sequence of steps with no branch is a numbered list or an HTML stepper, never a diagram. Boxes in a row repeat the prose and show no relation.
+
+A real graph (branches, merges, a concept map) becomes inline SVG with the page's theme tokens. Mermaid is only for a simple linear flow that must stay in Markdown, with the phone rules below. Up to about 8 actors and their links become an inline SVG map, with the relation written on the arrow.
+
+Numbers to compare become an inline SVG chart (load the `dataviz` skill first) or a table. Many actors with several attributes each become a table. A big group with dozens of members shows only the members the text names, at most 8, plus one node "and N others". Dated events become an HTML timeline, never a diagram, because the text must wrap on a phone.
+
+Every diagram must add a relation that the prose carries badly. A diagram that only repeats the prose is cut. The lint warns on a Mermaid flowchart whose nodes form one chain (`sequence-as-diagram`).
 
 **Build it for a phone.** Keep every diagram label at 25 characters or fewer, with no line break inside it and at most 2 nodes side by side. For an HTML page, `references/html-patterns.md` has the snippets.
 
@@ -263,7 +269,7 @@ When the output is a file, run the lint from the skill folder before you hand th
 python3 scripts/lint_clear_read.py path/to/document.md
 ```
 
-It prints one line per finding and ends with `N problems`. A **problem** is a rule break, so fix every one: a dash as a joiner, a sentence over 25 words, a block over 4 sentences, a backward reference, a bare label, a visual with no "How to read" line, an analogy with no limit line, and a fixed label in the wrong language. A **warning** asks you to re-read the line and keep it only on purpose: passives, hidden verbs, inserted clauses, acronyms and names without their role, one-word headings, sections without a Key point. `references/lint.md` lists all nineteen findings with the rule behind each one, and the phone check for Mermaid diagrams (`scripts/check_mermaid.cjs`), which you run whenever the document has a diagram.
+It prints one line per finding and ends with `N problems`. A **problem** is a rule break, so fix every one: a dash as a joiner, a sentence over 25 words, a block over 4 sentences, a backward reference, a bare label, a visual with no "How to read" line, an analogy with no limit line, and a fixed label in the wrong language. A **warning** asks you to re-read the line and keep it only on purpose: passives, hidden verbs, inserted clauses, acronyms and names without their role, one-word headings, sections without a Key point. `references/lint.md` lists all twenty findings with the rule behind each one, and the phone check for Mermaid diagrams (`scripts/check_mermaid.cjs`), which you run whenever the document has a diagram.
 
 When the output is a chat reply, apply the same checks by eye, because the list is short enough to hold in mind.
 

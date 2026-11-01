@@ -1066,12 +1066,14 @@ class SkillBodySize(unittest.TestCase):
     5,129 words before the Phase E changes and 6,509 after them. Change 18b moved the lint
     lists to references/lint.md and shortened the closing section, to about 6,090 words;
     changes 17 and 18 (attribution examples, the sixth label, coherence fixes) brought it
-    to about 6,250. The ceiling is 6,300. Getting near 3,600 needs a decision by Dennis about what else
+    to about 6,250, and changes 20 and 21 (Dennis's addendum 2: visuals and the Project's
+    rules that are method, approved on 2 November 2026) add about 600 more. The ceiling is
+    6,900. Getting near 3,600 needs a decision by Dennis about what else
     leaves the body: candidates are the per-medium spacing list in Rule 1 (about 150
     words), the phone and HTML details of Rule 7 (about 120), and the pack paragraph of
     Rule 10 (about 110)."""
 
-    MAX_WORDS = 6300
+    MAX_WORDS = 6900
 
     def test_skill_md_word_count_is_under_the_ceiling(self):
         path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "SKILL.md")
@@ -1084,8 +1086,12 @@ class SkillBodySize(unittest.TestCase):
         path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "references", "lint.md")
         with open(path, encoding="utf-8") as f:
             text = f.read()
-        for needle in ("label-in-wrong-language", "Rule 10", "check_mermaid", "eight kinds", "eleven kinds"):
+        for needle in ("label-in-wrong-language", "Rule 10", "check_mermaid", "eight kinds"):
             self.assertIn(needle, text, f"references/lint.md should mention {needle!r}")
+        import re as _re
+        kinds = set(_re.findall(r"^\s{4}([a-z][a-z-]+)\s{2,}", lint.__doc__, flags=_re.M)) - {"language"}
+        for kind in kinds:
+            self.assertIn(f"`{kind}`", text, f"references/lint.md should list the kind {kind}")
 
 
 class SixthLabelBeforeReading(unittest.TestCase):
@@ -1134,6 +1140,36 @@ class EvidenceMapIsComplete(unittest.TestCase):
                              capture_output=True, text=True)
         self.assertEqual(run.returncode, 0, run.stdout + run.stderr)
 
+
+class SequenceAsDiagram(unittest.TestCase):
+    """Change 20: a Mermaid flowchart that is one chain of boxes warns (Rule 7)."""
+
+    def chain(self, body):
+        return CLEAN_PT.replace("Ponto-chave: o cache responde à maioria das leituras, então o banco só vê as faltas.",
+                                "```mermaid\n" + body + "\n```\n\nComo ler: cada caixa é um passo.\nO fluxo vai do pedido à resposta.\n\nPonto-chave: o cache responde à maioria das leituras, então o banco só vê as faltas.")
+
+    def test_four_nodes_in_a_row_warn(self):
+        report = run_on_text(self.chain("flowchart TD\n  A[Pedido] --> B[Cache]\n  B --> C[Banco]\n  C --> D[Resposta]"), lang="pt")
+        self.assertIn("sequence-as-diagram", ids(report.findings), report.render())
+        self.assertEqual([f.level for f in report.findings if f.rule == "sequence-as-diagram"], ["warning"])
+
+    def test_graph_lr_chain_with_labels_warns(self):
+        report = run_on_text(self.chain("graph LR\n  A(Pedido) -->|vai| B(Cache) --> C(Banco)"), lang="pt")
+        self.assertIn("sequence-as-diagram", ids(report.findings), report.render())
+
+    def test_a_branch_does_not_warn(self):
+        report = run_on_text(self.chain("flowchart TD\n  A[Pedido] --> B{Tem no cache?}\n  B --> C[Responde]\n  B --> D[Busca no banco]"), lang="pt")
+        self.assertNotIn("sequence-as-diagram", ids(report.findings), report.render())
+
+    def test_two_nodes_do_not_warn(self):
+        report = run_on_text(self.chain("flowchart LR\n  A[Pedido] --> B[Resposta]"), lang="pt")
+        self.assertNotIn("sequence-as-diagram", ids(report.findings), report.render())
+
+    def test_html_pre_mermaid_chain_warns(self):
+        html_doc = ("<h1>Cache</h1><p>Um cache guarda uma cópia.</p><pre class=\"mermaid\">flowchart TD\n A --> B\n B --> C\n C --> D</pre>"
+                    "<p>Como ler: cada caixa é um passo.<br>O fluxo vai do pedido à resposta.</p><p>Ponto-chave: o cache responde primeiro.</p>")
+        report = run_on_text(html_doc, name="sample.html", lang="pt")
+        self.assertIn("sequence-as-diagram", ids(report.findings), report.render())
 
 
 if __name__ == "__main__":

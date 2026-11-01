@@ -98,6 +98,9 @@ Warnings (reported, never fatal):
                         before knowing what it is. Common sentence starters (This, Tests,
                         Isso, Testes), acronyms and labels are not names, and the present
                         tense of tools ("O Git mostra", "GitHub shows") is not evidence.
+    sequence-as-diagram  a Mermaid flowchart (```mermaid fence or <pre class="mermaid">)
+                        whose nodes form one chain with no branch (A --> B --> C). A
+                        sequence is a numbered list, never a diagram (Rule 7). Warning.
     authority-without-name  a role noun with an evidence or claim verb ("um pesquisador
                         mostrou", "estudos mostram", "the law requires"), or a vague source
                         ("segundo a pesquisa", "according to research"), with no capitalized
@@ -110,6 +113,7 @@ inline code (replaced by the word "code"), <script>, <style>, <pre>, <svg>,
 Decimal numbers with a comma (4,6) or a dot (4.6) never split a sentence, and
 neither do the abbreviations listed per language (e.g., i.e., p. ex., art., pág.).
 """
+import html
 import html as html_lib
 import os
 import re
@@ -1218,6 +1222,43 @@ def _names_a_source(sentence, block, pack):
     return block.has_link or "URL" in tokens
 
 
+MERMAID_FENCE = re.compile(r"^[ \t]*(?:`{3,}|~{3,})[ \t]*mermaid[^\n]*\n(.*?)^[ \t]*(?:`{3,}|~{3,})", re.S | re.M | re.I)
+MERMAID_ARROW = re.compile(r"\s*-{1,3}(?:[^-<>|\n]*?)-?>\s*(?:\|[^|\n]*\|\s*)?")
+MERMAID_NODE = re.compile(r"^\s*([A-Za-z_]\w*)")
+
+
+def _mermaid_is_chain(code):
+    """True when the diagram is a flowchart whose edges form one path of 3 or more nodes."""
+    lines = [ln.strip() for ln in code.splitlines() if ln.strip() and not ln.strip().startswith("%%")]
+    if not lines or not re.match(r"(flowchart|graph)\b", lines[0], re.I):
+        return False
+    out, inn, nodes = {}, {}, set()
+    for ln in lines[1:]:
+        if re.match(r"(subgraph|end|classDef|class|style|linkStyle|click)\b", ln, re.I):
+            continue
+        parts = MERMAID_ARROW.split(ln)
+        ids = [m.group(1) for m in (MERMAID_NODE.match(p) for p in parts) if m]
+        if len(ids) < 2 or len(ids) != len(parts):
+            continue
+        for a, b in zip(ids, ids[1:]):
+            nodes.update((a, b)); out[a] = out.get(a, 0) + 1; inn[b] = inn.get(b, 0) + 1
+    if len(nodes) < 3:
+        return False
+    return all(out.get(n, 0) <= 1 and inn.get(n, 0) <= 1 for n in nodes)
+
+
+def check_sequence_diagrams(text, findings):
+    """Rule 7: a sequence of steps is a list, never a diagram."""
+    sources = [(m.start(), m.group(1)) for m in MERMAID_FENCE.finditer(text)]
+    sources += [(m.start(), re.sub(r"<[^>]+>", "", m.group(0))) for m in MERMAID_PRE.finditer(text)]
+    for pos, code in sources:
+        if _mermaid_is_chain(html.unescape(code)):
+            line = text.count("\n", 0, pos) + 1
+            findings.append(Finding(line, "warning", "sequence-as-diagram",
+                                    "this Mermaid flowchart is one chain of boxes with no branch, so it repeats the prose. "
+                                    "Write the sequence as a numbered list or a stepper, and keep diagrams for relations."))
+
+
 def check_sources(blocks, sentences_by_block, pack, findings):
     """Rule 5: the role comes before the name, and the name comes right after the role.
 
@@ -1309,6 +1350,7 @@ def lint_text(text, name="document.md", kind=None, lang="auto", max_words=DEFAUL
     check_acronyms(blocks, sentences_by_block, pack, findings)
     check_analogies(blocks, pack, findings)
     check_sources(blocks, sentences_by_block, pack, findings)
+    check_sequence_diagrams(text, findings)
     if lang_is_certain:
         check_label_language(blocks, sentences_by_block, pack, findings)
     if total_sentences:
