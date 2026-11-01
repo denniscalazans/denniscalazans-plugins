@@ -313,3 +313,17 @@ Added on 1 November 2026, by change 14 of the investigation (`proposta.md`, sect
 - Test 16 slips: check the analogy paragraph in Rule 5, and the `analogy` and `analogy_limit` lists in `LANG_PACKS`.
 - Test 17 slips: check the language pack doc in `references/` and its mirror in `LANG_PACKS` (`known_acronyms`, `hidden_verb`, `intro_words`, `clause_openers`). If the standard check slips, the pack lost its opening section on ISO 24495-1.
 - Test 19 slips: check the three cases in Rule 8 (inside the field, outside it, no reader context) and the two rules of Rule 9. If the section name differs between runs, the skill lost the fixed label "O que saber antes de ler" in Rule 8.
+
+## Test 20: The position marker in a long text
+
+What it stresses: Rule 1, the "Conceito N de M" marker that opens each concept section when the text has 4 or more main concepts.
+
+How to run: ask for an explanation with five named concepts in Portuguese, for example "explique os cinco pilares do HTTP: método, cabeçalho, corpo, status e cache".
+
+Pass: each concept section opens with "Conceito N de 5" on its first line, the numbers are consistent, and a text with 3 concepts or fewer has no marker.
+
+Fail: no marker; a marker in a short text; a marker used as a promise ("nos próximos conceitos veremos").
+
+How to check fast: `grep -c "Conceito [0-9] de 5"` prints 5.
+
+Added on 2 November 2026, by change 21 of the investigation (item a).
