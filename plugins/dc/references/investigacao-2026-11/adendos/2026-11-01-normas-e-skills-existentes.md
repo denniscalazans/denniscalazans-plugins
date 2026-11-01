@@ -21,6 +21,7 @@ Em 1 de novembro de 2026, uma busca achou skills prontas sobre a norma em catál
 Nenhuma foi lida.
 A tarefa para a Fase C é a mesma da seção 7.4 do guia sobre a ElevenLabs.
 Ler, comparar com o que a clear-read já tem, e decidir o que reaproveitar.
+
 A pergunta que importa: alguma delas traz o dicionário da norma em forma que um lint consiga usar?
 Hoje o lint da clear-read não confere vocabulário, só forma.
 
@@ -33,6 +34,7 @@ Nenhum dos dois cita a norma internacional, ISO 24495-1:2023.
 Essa norma é o guarda-chuva das duas.
 Ela é neutra em relação à língua, e tem quatro princípios: o leitor recebe o que precisa, encontra, entende e consegue usar.
 O artigo 4º da lei brasileira ("encontrar, entender e usar") segue esses princípios.
+
 A norma alemã DIN 8581-1, de maio de 2024, é a aplicação da ISO ao alemão.
 Ela é o modelo do que uma norma ABNT faria para o português.
 
