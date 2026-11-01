@@ -320,8 +320,8 @@ Duas coisas são produto, não método, e ficam para o Dennis aplicar no Projeto
 **Os nomes das seções.** "O chão: o que precisa estar firme antes da leitura" vira "O que saber antes de ler: os conceitos que o artigo não explica".
 "Para este guia ficar" vira "Exercícios de fixação: as perguntas deste guia voltam em dias".
 
-As instruções do Projeto usam os nomes antigos em 11 linhas, e o modelo de guia (`dev/guide-template/`) na Biblioteca também.
-Eu escrevo as 11 linhas novas em `projeto/`, e o Dennis cola no Projeto.
+As instruções do Projeto usam os nomes antigos em 9 linhas, e o modelo de guia (`dev/guide-template/`) na Biblioteca também.
+As 9 linhas novas já estão em `projeto/2026-11-01-nomes-novos-das-secoes.md`, e o Dennis cola no Projeto.
 
 **O Projeto roda o lint.** A seção 6 do guia dizia que não, e a pesquisa diz que sim.
 As instruções do Projeto não mudam; o guia ganha uma errata na seção 6.

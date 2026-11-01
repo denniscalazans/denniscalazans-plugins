@@ -68,14 +68,30 @@ A página guarda as respostas com a data.
 
 Terceiro, a recordação em 24 horas vira um lembrete dentro da página, e não uma sessão marcada.
 
-Duas restrições técnicas precisam de teste antes de construir.
+Duas restrições técnicas precisavam de teste antes de construir, e o teste rodou em 1 de novembro.
 Uma página que guarda respostas precisa da capacidade de banco de dados do artefato.
 A nota do Projeto de 13 de outubro diz que uma página com banco não tinha link público.
 
-Se isso ainda vale, a página pública coleta as respostas de outro jeito, e a skill `artifact-capabilities` diz qual.
-O agente lê as respostas pela ferramenta de dados do artefato e escreve a análise.
+O que a skill `artifact-capabilities` diz, lida na fonte: o banco devolve nulo para quem não está logado no Claude.
+Então um visitante sem conta nunca grava no banco, mesmo que a página abra.
+A página pode abrir para ele, e ela precisa dizer o que fazer nesse caso.
 
-Ponto-chave: a Fase D vira um artefato que coleta, e o agente analisa quando as respostas chegarem.
+O teste publicado: https://claude.ai/artifact/4DHcwb2iqK7dkdVr1zgmRH, uma página com banco que mostra o estado do banco a quem a abre.
+O que falta é um passo que só o Dennis faz, em um minuto.
+Abrir o menu Compartilhar dessa página e ver se existe a opção de link para qualquer pessoa.
+Se existir, abrir o link numa janela anônima e ler o que o cartão "Estado do banco" diz.
+
+O desenho que fica, com qualquer resultado desse teste:
+
+- Quem tem conta no Claude (o Dennis e convidados) responde na página, e a resposta vai para o banco.
+- Quem não tem conta responde na mesma página, e no fim ela mostra um bloco de texto com as respostas, com botão de copiar.
+- A pessoa manda esse texto ao Dennis (WhatsApp ou e-mail), e o Dennis cola na página, logado, ou cola aqui no Claude Code.
+- O agente lê o banco pela ferramenta de dados do artefato e escreve a análise.
+
+Se o menu Compartilhar não oferecer link público, a página pública é uma cópia sem banco, só com o bloco de copiar.
+O download de arquivo não serve: a página não pode iniciar downloads para quem a vê.
+
+Ponto-chave: a Fase D vira um artefato que coleta pelo banco para quem tem conta e por texto copiado para quem não tem.
 
 ## 4. A pergunta sobre a web, explicada
 

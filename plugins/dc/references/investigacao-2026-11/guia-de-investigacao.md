@@ -363,6 +363,7 @@ O que se faz é reduzir, e os passos estão abaixo.
 - **Mínimo**: modelo sem raciocínio, sem ferramentas, sem contexto. Só o SKILL.md carregado. É o pior caso, e é o caso de um sistema próprio do Dennis no futuro.
 - **Chat simples**: raciocínio, sem ferramentas, sem contexto do projeto. É um chat solto no app.
 - **Projeto**: raciocínio, ferramentas de pesquisa, contexto do projeto. É o Clear Read the Web hoje.
+  Errata de 1 de novembro: o Projeto também roda Python e, quase com certeza, ffmpeg (`decisoes-do-dennis.md`, seção 2). Então o lint da clear-read roda nele, e a medição de taxa da clear-listen também.
 - **Agêntico**: raciocínio, ferramentas, contexto, subagentes e lints rodando. É o Claude Code.
 
 **Passo 2: para cada perfil, marcar as regras que não rodam.**
