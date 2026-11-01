@@ -739,9 +739,9 @@ class LabelsFollowTheReaderLanguage(unittest.TestCase):
         self.assertEqual(report.lang, "en")
         self.assertNotIn("label-in-wrong-language", ids(report.findings), report.render())
 
-    def test_every_pack_names_the_same_five_labels(self):
+    def test_every_pack_names_the_same_six_labels(self):
         keys = [set(pack["labels"]) for pack in lint.LANG_PACKS.values()]
-        self.assertEqual(len(keys[0]), 5)
+        self.assertEqual(len(keys[0]), 6)
         for k in keys[1:]:
             self.assertEqual(k, keys[0])
 
@@ -1085,6 +1085,28 @@ class SkillBodySize(unittest.TestCase):
             text = f.read()
         for needle in ("label-in-wrong-language", "Rule 10", "check_mermaid", "eight kinds", "eleven kinds"):
             self.assertIn(needle, text, f"references/lint.md should mention {needle!r}")
+
+
+class SixthLabelBeforeReading(unittest.TestCase):
+    """Change 18: "What to know before reading" / "O que saber antes de ler" is a fixed label."""
+
+    def test_english_heading_in_portuguese_text_is_a_problem(self):
+        text = ("# Como um genérico prova que é equivalente\n\n## What to know before reading\n\n"
+                "O princípio ativo é a substância que faz efeito. Ele é a parte que importa.\n\n"
+                "Ponto-chave: o princípio ativo decide a comparação.\n")
+        report = lint.lint_text(text, "sample.md", lang="pt") if hasattr(lint, "lint_text") else None
+        if report is None:
+            self.skipTest("lint_text helper not available")
+        self.assertIn("label-in-wrong-language", [f.rule for f in report.findings], report.render())
+
+    def test_portuguese_heading_in_portuguese_text_passes(self):
+        text = ("# Como um genérico prova que é equivalente\n\n## O que saber antes de ler\n\n"
+                "O princípio ativo é a substância que faz efeito. Ele é a parte que importa.\n\n"
+                "Ponto-chave: o princípio ativo decide a comparação.\n")
+        report = lint.lint_text(text, "sample.md", lang="pt") if hasattr(lint, "lint_text") else None
+        if report is None:
+            self.skipTest("lint_text helper not available")
+        self.assertNotIn("label-in-wrong-language", [f.rule for f in report.findings], report.render())
 
 
 

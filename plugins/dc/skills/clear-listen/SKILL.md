@@ -18,13 +18,13 @@ The listener is the clear-read reader, now with headphones.
 - They are often tired, in a noisy place, or doing something else at the same time (walking, commuting, housework).
 - They listen in their native language, so the second-language load of clear-read is gone. The attention load is larger.
 
-**Who is speaking:** someone telling a good story to a friend. They deliver the whole thing, pull the listener forward with what comes next, and repeat the essential as friends remembering together ("lembra que o navegador guarda uma cópia?"). They never show the skeleton: no "são cinco pontos", no "primeiro, segundo". A teacher with slides does the opposite. Rule 1's spoken map and Rule 3's item marks are the exceptions: each replaces a heading the ear cannot see. One limit: a meta-analysis of 2021, by Mar and colleagues, with 78 samples and 33,078 people, found that narrative helps memory more than it helps understanding. So a mechanism still gets its step by step, in the order it happens.
+**Who is speaking:** someone telling a good story to a friend. They deliver the whole thing, pull the listener forward with what comes next, and repeat the essential as friends remembering together ("lembra que o navegador guarda uma cópia?"). They never show the skeleton: no "são cinco pontos", no "primeiro, segundo". A teacher with slides does the opposite. Rule 1's spoken map and Rule 3's item marks are the exceptions: each replaces a heading the ear cannot see. One limit comes from a 2021 meta-analysis of 78 samples and 33,078 people, by Mar, Li, Nguyen and Ta. Narrative helps memory more than it helps understanding. So a mechanism still gets its step by step, in the order it happens.
 
 **The one goal:** the listener gets every main idea on the first listen, with no rewinding. When the mind drifts and comes back, the listener knows within a few seconds where they are and what the current part is about. When a rule and this goal seem to conflict, the goal wins.
 
 ## Conversation by voice
 
-This section is for one turn of a live voice conversation: the person speaks, you answer in about 30 seconds, and a voice engine reads the answer exactly as written. Text chat stays in clear-read. The four phases below are for a recorded audio, not for a turn: no script file, no producer note, no engine profile, no rendering. Every character you write is heard. The other rules of this skill hold, with these limits.
+This section is for one turn of a live voice conversation: the person speaks, you answer in about 30 seconds, and a voice engine reads the answer exactly as written. Text chat stays in clear-read. The four phases of a recorded audio do not apply to a turn: no producer note, no engine profile, no rendering. The turn is plain text that the engine speaks as written, so every character you write is heard. The other rules of this skill hold, with these limits.
 
 1. **Answer first, in up to 3 sentences, before any structure.** Six sentences is the ceiling. Offer the rest instead of squeezing it in.
 2. **Keep each sentence at 8 to 15 words.** The ceiling of 20 holds.
@@ -38,8 +38,8 @@ This section is for one turn of a live voice conversation: the person speaks, yo
 10. **Announce structure only through content.** "Agora, o que fazer com isso." Never "São três pontos" or "Parte um de dois": a count is a promise the ear must hold.
 11. **Never number. One step per turn, the next when the person asks.** No "primeiro, segundo", no "1.": the engine reads the digit or drops it. Goal, then action, like a navigation app. "Agora, abra o terminal. Me avisa quando estiver aberto."
 12. **Say the skeleton in one sentence, in place of the visual.** "Imagine três caixas: o navegador, o cache e o servidor." Then offer the drawing in writing.
-13. **Name the problem, and the way out in the next sentence.**
-14. **Punctuation is the only sound control.** No square brackets, no delivery intents, no bold, no markdown. A period is the pause, a short sentence is the stress. The engine reads the mark or drops it, and both cost the listener.
+13. **Name the problem, and the way out in the next sentence.** "O cache pode servir uma cópia velha. A saída é a etiqueta de versão, que o servidor confere antes de usar." A problem alone adds worry; the way out, right after, closes it.
+14. **Punctuation is the only sound control.** No square brackets, no delivery intents, no bold, no italics, no backticks, no markdown. A period is the pause, a short sentence is the stress. The engine reads the mark or drops it, and both cost the listener.
 
 Before the turn is spoken, run `python3 scripts/lint_audio_script.py <turn.txt> --conversa`. It fails on any square bracket, part marker, bare ordinal, list line or heading, on more than 6 sentences, and on more than 3 sentences without a closing question.
 
@@ -74,8 +74,8 @@ So the neutral script is the source of truth, and it never contains the syntax o
 With only this file, no search, no engine profile, no lint: three substitutes.
 
 1. **Only facts from the user's source**, and "a fonte não diz" for the rest. Open the producer note with "facts not verified in this session". No source text: ask for one, never write from memory.
-2. **Render plain when there is no engine profile** (`references/rendering.md`). Never fill the profile from memory: hand it to the user blank and render plain until it returns.
-3. **The twelve checks by hand**, in one producer note, which says the lint and cold reader did not run.
+2. **Render plain when there is no engine profile** (`references/rendering.md`). Never fill the profile from memory as fact: hand it to the user blank, or mark every line as a guess to test, as `references/rendering.md` says, and render plain until it returns.
+3. **The lint's checks by hand**, in one producer note, which says the lint and cold reader did not run.
    - Read each part aloud; a stumble is the listener's.
    - Over 20 words: split.
    - A parenthesis: its own sentence.
@@ -88,6 +88,11 @@ With only this file, no search, no engine profile, no lint: three substitutes.
    - Over two closing questions: one recall plus "Sem voltar".
    - A part over 800 words: split.
    - Each main idea has its sentence.
+   - A relative risk ("o dobro") without its base ("em cada cem"): add the base.
+   - A `[key]` on the first line after a voice change: a transition line first.
+   - A tag outside the intents table: cut it, or fix the sentence.
+   - A part that opens slow (`[key]` or `[pause long]` first): move it.
+   - No closing question about the whole audio: add "Sem voltar...".
 
 ## Four phases
 
@@ -174,7 +179,7 @@ Guia: [key] Quem proíbe guardar é no-store, e no-cache só manda conferir.
 #### Rule 14: Stimulation from form, not from extra content
 Novelty keeps this listener engaged, but an interesting side fact hurts learning. So get novelty from the voice change, a question, a speaker change, a contrast, or a concrete example. Never from a detail that serves no main concept. Rotate the devices, because an identical device repeated many times stops catching attention.
 
-#### Rule 15: Land the ending, and offer a short review
+#### Rule 15: Land the ending, and name the moment to review
 The last part connects the main concepts in a few sentences and gives one thing to remember. The listener should feel finished, not cut off. For later review, reviewing close to the moment of use helps: in a memory study by Murphy and colleagues (2022; 231 students, recorded lectures of 13 to 15 minutes), a second full viewing at 2 times speed right before the test gave the best recall. Nobody has tested the format of the review, a short summary or a re-listen. So offer the review and name the moment ("ouça de novo antes da reunião"), and leave the format to the listener.
 
 #### Rules 16 to 21: what the eye had in a table, a chart, a diagram or code
@@ -214,14 +219,7 @@ Write intents in English, in square brackets. A tone intent and `[key]` sit at t
 | Recall pause | `[pause recall]` | 4 to 6 seconds of silence after a recall question, so the listener can answer in the head |
 | Pronunciation | `[say: termo = respelling]` | How a hard name in the next sentence sounds, written as a respelling in the listener's language. Add the phonetic alphabet form after a second `=` when you know it: `[say: cache = quéche = /kæʃ/]` |
 
-Rules for intents:
-
-1. **Intents never carry content.** If an intent is dropped by a medium that cannot do it, the listener must lose nothing but polish. So the words still say that a question is a question and that a key point is the key point.
-2. **Do not invent intents.** If the script needs something outside the table, the need is usually a writing problem. Fix the sentence.
-3. **Never open a part with a slow direction**, and never mark a whole part as slow. A slow uniform pace is the main risk for this listener. Slowness belongs to `[key]` only.
-4. **Speaker roles are not intents.** A role is the label at the start of the line (`Guia:`). The medium maps each role to a voice.
-5. **Performance is outside the method.** Whispering, shouting, singing, accents and sound effects are not part of an explanation. Use them only when the user explicitly asks to demonstrate what a voice engine can do. Then write them as `[perform: whispering]`, so the rendering step can find every one of them, and say in the producer note that the audio is a demonstration.
-6. Older scripts use `[short pause]` and `[long pause]`. Read them as `[pause short]` and `[pause long]`.
+Six rules for intents live in `references/intents.md`. The short form: intents never carry content, so a dropped intent costs polish and never meaning; never invent an intent, fix the sentence instead; never open a part with a slow direction, slowness belongs to `[key]` only; speaker roles are not intents; performance (`[perform: whispering]`) only when the user asks for a demonstration; and older `[short pause]` and `[long pause]` read as `[pause short]` and `[pause long]`.
 
 ## Phase 4: Render for the medium
 

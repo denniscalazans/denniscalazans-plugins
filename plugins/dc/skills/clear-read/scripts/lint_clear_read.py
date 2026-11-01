@@ -196,6 +196,7 @@ LANG_PACKS = {
             "what_works": ("What works:", r"what works\s*:"),
             "how_to_read": ("How to read:", r"how to read\s*:"),
             "already_know": ("You already know that... Now...", r"you already know\b"),
+            "before_reading": ("What to know before reading", r"what to know before reading\b"),
         },
         "hidden_verb": {
             "light_verbs": r"(?:make|makes|made|making|perform|performs|performed|performing|conduct|conducts|"
@@ -346,6 +347,7 @@ LANG_PACKS = {
             "what_works": ("O que funciona:", r"o que funciona\s*:"),
             "how_to_read": ("Como ler:", r"como ler\s*:"),
             "already_know": ("Você já sabe que... Agora...", r"você já sabe\b"),
+            "before_reading": ("O que saber antes de ler", r"o que saber antes de ler\b"),
         },
         "hidden_verb": {
             "light_verbs": r"(?:fazer|faz|fazem|fez|fizeram|faça|façam|fazendo|realizar|realiza|realizam|realizou|"
@@ -1072,7 +1074,7 @@ def _label_patterns(pack):
 
 
 def check_label_language(blocks, sentences_by_block, pack, findings):
-    """The five fixed labels are written in the reader's language (Rule 10).
+    """The six fixed labels are written in the reader's language (Rule 10).
 
     A label in another language is a foreign word in the reader's text, so a sentence
     that opens with another pack's form of a label is a problem. The message names

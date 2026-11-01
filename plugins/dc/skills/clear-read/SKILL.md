@@ -17,9 +17,9 @@ The reader is an IT professional. So they are smart and can handle real depth. B
 
 This means the reader is a *smart person with a small attention budget*. Do not write down to them on substance. Do write so that following the thread takes almost no effort.
 
-**Who writes.** You write as someone telling a good story to a friend. That narrator delivers each idea complete before moving to the next one. They pull the reader forward with the next concrete thing, not with a promise about the text: "O servidor guardou uma cópia. Agora, como ele sabe que a cópia ainda vale." They repeat the essential as someone recalling together ("the copy the server kept"), never as someone pointing back ("as mentioned above"). And a good narrator never shows the skeleton: no "there are five points", no "first, second, third", no "in this section we will see". The structure holds the text up from inside, and the reader feels it without being told.
+**Who writes.** You write as someone telling a good story to a friend, and the friend is a colleague: the work-email register of Rule 9 is the same voice. The narrator delivers each idea complete before moving to the next one. They pull the reader forward with the next concrete thing, not with a promise about the text. For example: "O servidor guardou uma cópia. Agora, como ele sabe que a cópia ainda vale." They repeat the essential as someone recalling together ("the copy the server kept"), never as someone pointing back ("as mentioned above"). And a good narrator never shows the skeleton: no "there are five points", no "first, second, third", no "in this section we will see". Two things are not skeleton: the opening line of Rule 1, which says what the text is about, and the numbered steps of Rule 11, which a procedure needs. The structure holds the text up from inside, and the reader feels it without being told.
 
-**Where the story stops helping.** Narrative helps memory more than understanding. Mar, Li, Nguyen and Ta (2021), in a meta-analysis of 78 samples and about 33,000 readers, found a larger gain for memory than for comprehension. The meta-analysis is in Psychonomic Bulletin and Review. So a mechanism still needs the step by step: each step named, in order, one per sentence. How a cache decides that a copy is still valid is one such mechanism. The story carries the reader to the mechanism; it does not replace it.
+**Where the story stops helping.** Narrative helps memory more than understanding. A meta-analysis of 78 samples and about 33,000 readers, by Mar, Li, Nguyen and Ta (2021, Psychonomic Bulletin and Review), found a larger gain for memory than for comprehension. So a mechanism still needs the step by step: each step named, in order, one per sentence. How a cache decides that a copy is still valid is one such mechanism. The story carries the reader to the mechanism; it does not replace it.
 
 Write in the language the reader asked for, or the language they wrote in. The method is the same in every language: Brazilian Portuguese, English, or any other. Only the words change.
 
@@ -48,15 +48,16 @@ Both modes use the same design phase and the same eleven writing rules. Only the
 When a search tool, a scratchpad, the lint or a language pack is missing, use its substitute.
 
 1. **No search.** Write from memory. Mark every number, date, law or version you could not check with "(not verified)", in the reader's language: "(não verificado)". End with one line naming the official source to check.
-2. **No scratchpad.** Open the reply with a 5-line block headed "Plan" ("Plano"): main concepts, terms to define, section headings, visual verdicts, arc. The reader may skip it.
-3. **No lint.** Reread each block as the reader and fix seven slips:
+2. **No reasoning step and no scratchpad.** Open the reply with a 5-line block headed "Plan" ("Plano"): main concepts, terms to define, section headings, visual verdicts, arc. The reader may skip it.
+3. **No lint.** Reread each block as the reader and fix eight slips:
    - a dash joining two ideas;
    - a sentence over 25 words;
    - a block over 4 sentences, counting the bold opening;
    - a pointer back ("as mentioned above");
    - a bare label ("P1");
    - a visual with no how-to-read line;
-   - an analogy with no analogy-limit line.
+   - an analogy with no analogy-limit line;
+   - a fixed label in the wrong language ("Key point:" in a Portuguese text).
 4. **No language pack.** Write every fixed label in the reader's language ("Ponto-chave:", never "Key point:"). Expand every acronym on first use, except the daily ones (API, URL, PDF).
 
 Key point: a missing tool changes the method, not the goal.
@@ -124,12 +125,7 @@ So two kinds of spacing do two different jobs:
 - A **tight line break** separates sentences that belong together. The eye catches one thought at a time, yet the block still reads as one connected group.
 - A **blank line** separates topics. It tells the reader that a new point starts here.
 
-The rule is about what the reader sees, not the raw characters, so produce whatever the medium needs and then check the rendered result:
-
-- **Plain text:** a line break after each sentence; a blank line only between topics.
-- **Markdown:** a single newline usually collapses into a space, so force a tight break after each sentence with two trailing spaces or a backslash; use a blank line only between topics. Confirm the sentences stack tightly, not spaced apart.
-- **HTML:** end each sentence with `<br>`; wrap each topic block in its own `<p>`.
-- **Word or other documents:** a soft return (Shift+Enter) after each sentence; a full paragraph break only between topics.
+The rule is about what the reader sees, not the raw characters, so produce whatever the medium needs and then check the rendered result. In plain text, a line break after each sentence and a blank line only between topics. In Markdown, a single newline collapses into a space, so force the tight break with two trailing spaces or a backslash, and confirm the sentences stack tightly. In HTML, end each sentence with `<br>` and wrap each topic block in its own `<p>`. In Word or other documents, a soft return (Shift+Enter) after each sentence and a full paragraph break only between topics.
 
 ### Rule 2: Sentences, connectors, and voice
 Aim for about 15 words per sentence. If a sentence carries more than one strong idea, split it in two. But do not chase shortness for its own sake, because sentences that are too short, under about seven words on average, turn choppy and hide how the ideas connect. So keep them short and linked, not clipped. As a ceiling, stay under about 25 words. Join sentences with explicit connector words (because, so, however, therefore, as a result, in other words, for this reason), so the reader never has to guess the logical link. Give each sentence a clear subject and verb, and avoid vague openers like "there is" or "it happens", because they make the reader hunt for who does what. The result should read as one continuous line of thought.
@@ -151,7 +147,7 @@ The lint (see "Before you deliver") flags each possible passive as a warning. So
 **Use the verb, not a noun made from it.** "Analyze", not "perform an analysis"; "decide", not "make a decision"; in Portuguese "verificar", not "realizar a verificação". The noun form adds a light verb and a word, and hides who does what. The lint flags both patterns as warnings.
 
 ### Rule 3: Problem plus counter-pattern
-Never name a problem on its own, because a problem without a fix just adds worry. Whenever you describe a difficulty, immediately give the pattern that works, in the same or the next paragraph, with a small "bad versus better" example. Always pair the problem with what to do instead, using connector words.
+Never name a problem on its own, because a problem without a fix just adds worry. Whenever you describe a difficulty, immediately give the pattern that works, in the same or the next paragraph, with a small "bad versus better" example. When the fix gets its own line, open it with "What works:" ("O que funciona:"), one of the fixed labels of Rule 10. Always pair the problem with what to do instead, using connector words.
 
 ### Rule 4: No assumed domain knowledge
 Treat the reader as a smart beginner in any specialized field. Do not assume knowledge of tax, finance, legal, or domain jargon, even when it looks basic, because "basic" is relative and a reader in a second language may know the concept under a different word. Build each concept from the ground up.
@@ -177,7 +173,7 @@ Assume the reader can hold only a few new things in mind at once, because a tire
 - Same words every time. Reuse the exact name and the same short meaning, never a synonym, because a new word reads as a new thing.
 - No backward references. Never "as mentioned above", "the former", "the second idea" on their own. Name the thing and say what it is.
 - Known before new. Start each sentence with what the reader already holds, and end it with the new information. Weak: "This avoids errors in production." Strong: "The cache before deploy avoids errors in production."
-- Each section stands alone. When a section depends on another, its first line says in one clause what it builds on, and then names what comes next. Use this template and fill both slots: "You already know that X. Now Y." In Portuguese: "Você já sabe que X. Agora Y." X is the one thing from the earlier section that this section uses, with its meaning. Y is what this section adds. Two complete examples. English: "You already know that memory fades without review. Now, what to do about it." Portuguese: "Você já sabe que estresse crônico é a exigência que não para. Agora, o que ele faz com o tempo."
+- Each section stands alone. When a section depends on another, its first line says in one clause what it builds on, and then names what comes next. Use this template and fill both slots: "You already know that X. Now Y." In Portuguese: "Você já sabe que X. Agora Y." X is the one thing from the earlier section that this section uses, with its meaning. Y is what this section adds. In English: "You already know that memory fades without review. Now, what to do about it." In Portuguese: "Você já sabe que estresse crônico é a exigência que não para. Agora, o que ele faz com o tempo."
 - Blocks end on a complete thought, so every stopping point is a safe place to be interrupted.
 
 ### Rule 7: Visual plan
@@ -213,36 +209,39 @@ Count the yes answers, and let the count decide:
 ### Rule 8: Depth with low cognitive load
 Cover the topic in real depth, but deliver it in small logical steps. Prefer step-by-step explanation and examples over abstract theory. Never write one large wall of text, because that is exactly where a distracted reader gives up.
 
-Calibrate the depth to what the reader already knows. The reader's field is the one in "Who you are writing for", IT, unless the user names another. Three cases decide how much scaffold the text gets.
+Calibrate the depth to what the reader already knows. The reader's field is the one in "Who you are writing for", IT, unless the user names another. The scaffold depends on where the topic sits for the reader.
 
-1. **Inside the reader's field.** On a topic inside the reader's own field, keep the basic explanations short, or put them in a collapsed block, because explaining what the reader already knows also costs attention (the expertise reversal effect, from a review by Kalyuga, Ayres, Chandler and Sweller, 2003, in `references/research-basis.md`, section 9.2). Short means one sentence, or one collapsed block the reader can skip. Example: "Um cache HTTP guarda uma cópia da resposta para não voltar ao servidor." One sentence, and the text moves on to how the cache decides that the copy is still valid.
-2. **Outside the reader's field.** Outside their field, give the full scaffolding: key terms, background, and an example before each abstract rule. The key terms and the background open the text in a section "What to know before reading" ("O que saber antes de ler"), so the reader meets them before the first rule. When the topic is outside the field, this section is where the "Key terms" of Rule 6 live. Example: the same reader asks how a generic medicine proves that it is equivalent to the brand. The text opens with "O que saber antes de ler": what the active ingredient is (princípio ativo), what "equivalent" means for a medicine (bioequivalência), and one example of a test, before the first rule on how the proof works.
+1. **Inside the reader's field.** On a topic inside the reader's own field, keep the basic explanations short, or put them in a collapsed block. Explaining what the reader already knows also costs attention: the expertise reversal effect, described in a 2003 review by Kalyuga, Ayres, Chandler and Sweller (`references/research-basis.md`, section 9.2). Short means one sentence, or one collapsed block the reader can skip. Example: "Um cache HTTP guarda uma cópia da resposta para não voltar ao servidor." One sentence, and the text moves on to how the cache decides that the copy is still valid.
+2. **Outside the reader's field.** Outside their field, give the full scaffolding: key terms, background, and an example before each abstract rule. The key terms and the background open the text in a section "What to know before reading" ("O que saber antes de ler"). So the reader meets them before the first rule. When the topic is outside the field, this section is where the "Key terms" of Rule 6 live. Example: the same reader asks how a generic medicine proves that it is equivalent to the brand. The text opens with "O que saber antes de ler". It explains what the active ingredient is (princípio ativo) and what "equivalent" means for a medicine (bioequivalência), and gives one example of a test. Only then comes the first rule on how the proof works.
 3. **No reader context.** Give the full scaffolding, as in case 2. A reader you cannot see counts as a reader outside the field.
 
 The two examples answer the same request shape, "explain how X proves that Y". The IT topic gets one sentence of basics and no opening section; the health topic gets the section. Test 19 in `references/tests.md` checks this pair.
 
 ### Rule 9: Tone
-Stay calm, precise, and straightforward. Two rules follow, and each has its own evidence.
+Stay calm, precise, and straightforward. Each of the two rules below has its own evidence.
 
-1. **No ornament that does not serve a concept.** A joke, a flourish, or a curiosity that teaches nothing about a main idea is cut, or moved to an optional depth block. Interesting but irrelevant additions lower learning of the main content: that is the seductive-details effect, from a meta-analysis by Sundararajan and Adesope (2020), in `references/research-basis.md`, section 8.2. Cut: "Curiosidade: a palavra cache vem do francês." Keep: "O cache guarda uma cópia, e o banco descansa."
-2. **Write as in a work email to a colleague.** Address the reader directly as "you" ("você"), say who claims what, and use the words you would use at work. Speaking to the reader is not ornament. A meta-analysis of conversational style, by Ginns, Martin and Marsh (2013), found better retention and transfer in short lessons when the text speaks to the reader; it is in `references/research-basis.md`, section 10.1. Weak: "The user must ensure that the token is renewed before expiry." Strong: "You renew the token before it expires."
+1. **No ornament that does not serve a concept.** A joke, a flourish, or a curiosity that teaches nothing about a main idea is cut, or moved to an optional depth block. Interesting but irrelevant additions lower learning of the main content. That is the seductive-details effect, from a 2020 meta-analysis by Sundararajan and Adesope (`references/research-basis.md`, section 8.2). Cut: "Curiosidade: a palavra cache vem do francês." Keep: "O cache guarda uma cópia, e o banco descansa."
+2. **Write as in a work email to a colleague.** Address the reader directly as "you" ("você"), say who claims what, and use the words you would use at work. Speaking to the reader is not ornament. A 2013 meta-analysis of conversational style, by Ginns, Martin and Marsh, found better retention and transfer in short lessons when the text speaks to the reader. It is in `references/research-basis.md`, section 10.1. Weak: "The user must ensure that the token is renewed before expiry." Strong: "You renew the token before it expires."
 
 ### Rule 10: Language
 Write in the reader's language. Use plain words of that language. Avoid idioms and metaphors in any language, because they are extra work for a tired reader and can mislead. When a concept is hard, add a short gloss in parentheses. When you write in the reader's second language, the gloss may be in the native language, since a familiar word can anchor a hard idea faster than any paraphrase.
 
 Plain words are about the form, never about the content. Keep every idea, every number, every caveat and every precise term. Simplify the sentence, not the thought. When the exact term is the right word (a legal, medical or technical term), keep it and explain it once; do not swap it for a vaguer word, because the reader loses precision and gains nothing. A text that got shorter by dropping ideas failed this rule, however easy it reads.
 
-**The five fixed labels follow the reader's language.** The method uses five fixed labels, and each one has one form per language. The rules in this file quote the English form, so when you write in Portuguese, write the Portuguese form, every time:
+**The six fixed labels follow the reader's language.** The method uses six fixed labels, and each one has one form per language. The rules in this file quote the English form, so when you write in Portuguese, write the Portuguese form, every time:
 
 - "Key point" and "Ponto-chave"
 - "Where the analogy fails" and "Onde a analogia falha"
 - "What works" and "O que funciona"
 - "How to read" and "Como ler"
 - "You already know... Now..." and "Você já sabe que... Agora..."
+- "What to know before reading" and "O que saber antes de ler" (the opening section of Rule 8)
 
-A label in the wrong language is a foreign word in the reader's text. The reader stops at it, so the label costs the attention it was meant to save. Weak, in a Portuguese text: "Key point: o cache responde primeiro." Strong: "Ponto-chave: o cache responde primeiro." The lint flags the wrong form as a problem.
+A label in the wrong language is a foreign word in the reader's text. The reader stops at it, so the label costs the attention it was meant to save.
 
-Each language has its own pack in `references/`: `lang-pt-br.md` for Brazilian Portuguese and `lang-en.md` for English. Read the pack for the reader's language before you write, because it carries what the eleven rules cannot say for every language at once: the plain-language standard behind the rules (ISO 24495-1:2023, the international standard, and how each country applies it: ABNT NBR ISO 24495-1:2024 and Lei 15.263 in Brazil, the Federal Plain Language Guidelines in the United States), the acronyms that need no expansion, the number and date forms, and the English terms that stay in English. For another language, write by the eleven rules and say which parts of the pack you could not apply.
+Weak, in a Portuguese text: "Key point: o cache responde primeiro." Strong: "Ponto-chave: o cache responde primeiro." The lint flags the wrong form as a problem.
+
+Each language has its own pack in `references/`: `lang-pt-br.md` for Brazilian Portuguese and `lang-en.md` for English. Read the pack for the reader's language before you write. It carries what the eleven rules cannot say for every language at once: the plain-language standard behind the rules, the acronyms that need no expansion, the number and date forms, and the English terms that stay in English. The standard is ISO 24495-1:2023, the international one, and each country applies it in its own way: ABNT NBR ISO 24495-1:2024 and Lei 15.263 in Brazil, the Federal Plain Language Guidelines in the United States. For another language, write by the eleven rules and say which parts of the pack you could not apply.
 
 Make numbers easy too. Reinforce a bare number with words that say what it means, because a raw figure carries no meaning on its own. For example: "permission 600 (owner can read and write, nobody else can touch it)". Write the month as a word, such as "3 June 2026" or "3 de junho de 2026", so a date is never ambiguous across regions.
 

@@ -116,8 +116,8 @@ Give the plain meaning first, then the English term in parentheses, the first ti
 
 ## Markers the lint looks for, in Portuguese
 
-The first five rows are the fixed labels of the method (Rule 10), and each has one form per language.
-A label in another language is a foreign word in the reader's text, so the lint flags "Key point:" in a Portuguese text as the problem `label-in-wrong-language`.
+The first six rows are the fixed labels of the method (Rule 10), and each has one form per language.
+A label in another language is a foreign word in the reader's text. So the lint flags "Key point:" in a Portuguese text as the problem `label-in-wrong-language`.
 
 | Marker | Portuguese form |
 |---|---|
@@ -126,6 +126,7 @@ A label in another language is a foreign word in the reader's text, so the lint 
 | The line that limits an analogy | "Onde a analogia falha:" |
 | The line that opens the counter-pattern after a problem | "O que funciona:" |
 | The first line of a section that builds on another | "Você já sabe que... Agora..." |
+| The opening section of a text outside the reader's field (Rule 8) | "O que saber antes de ler" |
 | A label with a number | "Passo 3", "Etapa 2", "Conceito 1" (each one followed by its name) |
 
 ## Common slips in Portuguese, and the fix

@@ -378,7 +378,7 @@ class WithoutToolsSection(unittest.TestCase):
     do not exist. Its texts come from the fallbacks of lacos.md, table 2.3."""
 
     HEADING = "## Without reasoning and without tools"
-    MAX_SECTION_WORDS = 200
+    MAX_SECTION_WORDS = 300
 
     @classmethod
     def setUpClass(cls):
@@ -403,13 +403,13 @@ class WithoutToolsSection(unittest.TestCase):
         # 2. Render plain when there is no engine profile, never from memory.
         self.assertIn("render plain", section.lower())
         self.assertIn("references/rendering.md", section)
-        # 3. The twelve checks by hand instead of the lint, and say that it did not run.
+        # 3. The lint's checks by hand instead of the lint, and say that it did not run.
         self.assertIn("did not run", section)
 
-    def test_20c_twelve_checks_one_line_each_under_200_words(self):
+    def test_20c_seventeen_checks_one_line_each_under_the_ceiling(self):
         section = self.section()
         checks = [line for line in section.splitlines() if re.match(r"^\s+- ", line)]
-        self.assertEqual(len(checks), 12, f"expected twelve check lines, found {len(checks)}")
+        self.assertEqual(len(checks), 17, f"expected seventeen check lines (12 original plus the 5 added in Phase E), found {len(checks)}")
         words = len(section.split())
         self.assertLess(words, self.MAX_SECTION_WORDS,
                         f"the section has {words} words (ceiling {self.MAX_SECTION_WORDS})")
@@ -443,6 +443,9 @@ class ConversationMode(unittest.TestCase):
             problems = only(self.conversa(mark + "\n"), "square bracket")
             self.assertEqual(len(problems), 1, mark)
             self.assertTrue(problems[0].startswith("line 1:"), problems[0])
+        # Italics and backticks are markdown too (rule 14 of the section).
+        for mark in ("Guarda, mas _confere_ a etiqueta.", "Guarda, mas confere a `etiqueta`."):
+            self.assertEqual(len(only(self.conversa(mark + "\n"), "markdown mark")), 1, mark)
         # The intent-table check does not fire on top of it: one problem per bracket line.
         self.assertEqual(only(self.conversa("[pause short] Guarda.\n"), "Delivery intents table"), [])
 
@@ -558,7 +561,7 @@ class NarratorParagraph(unittest.TestCase):
         section = skill.split("## Who you are writing for", 1)[1].split("\n## ", 1)[0]
         self.assertIn(self.PHRASE, section, "the narrator paragraph is missing")
         self.assertIn("skeleton", section, "the paragraph must say the narrator never shows the skeleton")
-        self.assertIn("Mar and colleagues", section, "the limit must name the study, not say 'a meta-analysis'")
+        self.assertIn("Mar, Li, Nguyen and Ta", section, "the limit must name the study, not say 'a meta-analysis'")
         self.assertIn("memory more than", section, "the limit: narrative helps memory more than understanding")
         self.assertIn("step by step", section, "so a mechanism still needs its step by step")
 

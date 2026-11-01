@@ -122,6 +122,8 @@ def analyze_turn(text, max_words=MAX_WORDS):
             problems.append(f"line {n}: square bracket in a voice turn. The engine reads the mark or drops it; punctuation is the only sound control.")
         if PART.search(line):
             problems.append(f'line {n}: part marker in a voice turn. A turn has no parts; announce structure only through content.')
+        if "`" in line or re.search(r"(^|\s)_\w[^_]*\w_(\s|[.,;!?]|$)", line) or re.search(r"\*\w", line):
+            problems.append(f"line {n}: markdown mark in a voice turn (italics, bold or backticks). The engine reads the mark or drops it; punctuation is the only sound control.")
         # The marks are already reported; look at the words the engine would say around them.
         spoken = LIST_LINE.sub("", re.sub(r"[\[\]]", " ", TAG.sub(" ", line))).strip()
         for sent in SENTENCE_END.split(spoken):
