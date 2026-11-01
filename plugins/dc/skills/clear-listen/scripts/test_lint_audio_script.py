@@ -368,6 +368,106 @@ class SkillBodySize(unittest.TestCase):
             self.assertIn(kept, rendering, f"{kept!r} did not arrive in references/rendering.md")
 
 
+class ConversationMode(unittest.TestCase):
+    """--conversa: one turn of a live voice conversation, added on 2026-11-01
+    (proposta, change 5, the section "Conversation by voice" of SKILL.md)."""
+
+    # A 30-second turn that follows the fourteen rules: four sentences, no mark, a question at the end.
+    TURN = ("Você perguntou se o cache guarda a página. Guarda, mas confere a etiqueta de versão antes de usar.\n"
+            "Por isso, o navegador mostra a cópia quando a etiqueta bate, e baixa de novo quando não bate.\n"
+            "Quer que eu explique como o servidor manda essa etiqueta?\n")
+
+    def conversa(self, text):
+        return lint.lint(text, conversa=True)
+
+    def test_20_clean_turn_passes(self):
+        self.assertEqual(self.conversa(self.TURN), [])
+        # A turn of up to three sentences needs no closing question.
+        short = "Guarda, mas confere a etiqueta de versão antes de usar.\nPor isso, a cópia só aparece quando a etiqueta bate.\n"
+        self.assertEqual(self.conversa(short), [])
+        # The recorded-audio checks that make no sense for a turn do not run here.
+        self.assertEqual(only(self.conversa(short), "single-part"), [])
+        self.assertEqual(only(self.conversa(short), "no part markers"), [])
+
+    def test_21_any_square_bracket_fails(self):
+        # Even a neutral intent: there is no rendering step between the model and the voice.
+        for mark in ("[pause short] Guarda, mas confere a etiqueta.", "[warm] Guarda, mas confere a etiqueta.",
+                     "Guarda [a cópia], mas confere a etiqueta.", "[1] Guarda, mas confere a etiqueta."):
+            problems = only(self.conversa(mark + "\n"), "square bracket")
+            self.assertEqual(len(problems), 1, mark)
+            self.assertTrue(problems[0].startswith("line 1:"), problems[0])
+        # The intent-table check does not fire on top of it: one problem per bracket line.
+        self.assertEqual(only(self.conversa("[pause short] Guarda.\n"), "Delivery intents table"), [])
+
+    def test_22_part_marker_fails(self):
+        for marker in ("Parte um de três.", "Parte 1 de 3.", "Part one of two."):
+            text = marker + "\n" + self.TURN
+            problems = only(self.conversa(text), "part marker")
+            self.assertEqual(len(problems), 1, marker)
+            self.assertTrue(problems[0].startswith("line 1:"), problems[0])
+
+    def test_23_bare_ordinal_fails(self):
+        for ordinal in ("Primeiro, o navegador guarda a página.", "Segundo, ele confere a etiqueta.",
+                        "Em primeiro lugar, o navegador guarda a página.", "O primeiro. O navegador guarda a página.",
+                        "First, the browser stores the page.", "Second, it checks the tag.", "Third: it shows the copy."):
+            problems = only(self.conversa(ordinal + "\n"), "bare ordinal")
+            self.assertEqual(len(problems), 1, ordinal)
+            self.assertTrue(problems[0].startswith("line 1:"), problems[0])
+        # An ordinal inside a sentence, or carrying a noun, is content, not a list marker.
+        for fine in ("O primeiro passo é abrir o terminal.", "Guarda a página, e a primeira cópia vale até a etiqueta mudar.",
+                     "The first request goes to the server."):
+            self.assertEqual(only(self.conversa(fine + "\n"), "bare ordinal"), [], fine)
+        # A bare ordinal in the middle of a line is still sentence-initial.
+        self.assertEqual(len(only(self.conversa("Guarda a página. Segundo, confere a etiqueta.\n"), "bare ordinal")), 1)
+
+    def test_24_numbered_or_bulleted_line_fails(self):
+        for line in ("1. Abra o terminal.", "2) Digite o comando.", "- Abra o terminal.", "* Abra o terminal.", "• Abra o terminal."):
+            problems = only(self.conversa(line + "\n"), "list line")
+            self.assertEqual(len(problems), 1, line)
+            self.assertTrue(problems[0].startswith("line 1:"), problems[0])
+        # A heading is structure the engine reads aloud or drops; a turn has no producer note either.
+        problems = only(self.conversa("# O que fazer\nAbra o terminal.\n"), "heading")
+        self.assertEqual(len(problems), 1)
+        self.assertTrue(problems[0].startswith("line 1:"), problems[0])
+
+    def test_25_turn_length_and_closing_question(self):
+        # Four sentences without a question at the end: the turn does not give the turn back.
+        text = swap(self.TURN, "Quer que eu explique como o servidor manda essa etiqueta?", "O servidor manda essa etiqueta junto com a página.")
+        problems = only(self.conversa(text), "give the turn back")
+        self.assertEqual(len(problems), 1)
+        self.assertIn("4 sentences", problems[0])
+        # Seven sentences is over the ceiling of six, even with the question.
+        text = "Guarda a página.\n" * 6 + "Quer saber mais?\n"
+        problems = only(self.conversa(text), "sentences (max 6)")
+        self.assertEqual(len(problems), 1)
+        self.assertIn("7 sentences", problems[0])
+        # Several sentences on one line count one by one.
+        self.assertEqual(only(self.conversa("Guarda. Confere. Mostra. Baixa. Guarda. Confere. Quer mais?\n"), "sentences (max 6)")[0][:4], "turn")
+
+    def test_26_sentence_checks_still_run_in_a_turn(self):
+        # The sentence-level checks of the recorded audio hold in a turn too.
+        text = swap(self.TURN, "Por isso, o navegador mostra a cópia quando a etiqueta bate, e baixa de novo quando não bate.",
+                    "Como eu disse, o navegador mostra a cópia em 9 de cada 10 casos (quase sempre).")
+        problems = self.conversa(text)
+        for needle in ("backward reference", "digit found", "parentheses"):
+            self.assertEqual(len(only(problems, needle)), 1, needle)
+        long = "Isso não confere, " + "e a prova disso aparece em cada pedido que o navegador faz " * 2 + "ao servidor."
+        self.assertEqual(len(only(self.conversa(long + "\nQuer mais?\n"), "words (max 20)")), 1)
+
+    def test_27_skill_md_has_the_conversation_section_with_fourteen_rules(self):
+        with open(SKILL_MD, encoding="utf-8") as f:
+            skill = f.read()
+        self.assertIn("\n## Conversation by voice\n", skill)
+        # Right after "Who you are writing for", before the five facts about the ear.
+        self.assertLess(skill.index("## Who you are writing for"), skill.index("## Conversation by voice"))
+        self.assertLess(skill.index("## Conversation by voice"), skill.index("## Why the ear needs its own rules"))
+        section = skill.split("## Conversation by voice", 1)[1].split("\n## ", 1)[0]
+        numbered = re.findall(r"^\d+\. \*\*", section, re.M)
+        self.assertEqual(len(numbered), 14, "the section lists fourteen rules")
+        for phrase in ("clear-read", "--conversa", "Never number", "question", "Punctuation"):
+            self.assertIn(phrase, section)
+
+
 class Cli(unittest.TestCase):
     def run_cli(self, text, *extra):
         with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False, encoding="utf-8") as f:
@@ -394,6 +494,18 @@ class Cli(unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertIn("over 200", out)
         self.assertIn("(max 5)", out)
+
+    def test_cli_conversa_flag(self):
+        code, out = self.run_cli(ConversationMode.TURN, "--conversa")
+        self.assertEqual(code, 0)
+        self.assertRegex(out.splitlines()[0], r"^words: \d+, sentences: 4, about \d+ seconds at 160 wpm, problems: 0$")
+        code, out = self.run_cli("Parte um de dois.\n[warm] Primeiro, guarda.\n1. Confere.\n", "--conversa")
+        self.assertEqual(code, 1)
+        # One problem per mark: the list marker is reported once, not again as a digit.
+        self.assertIn("problems: 4", out.splitlines()[0])
+        for needle in ("part marker", "square bracket", "bare ordinal", "list line"):
+            self.assertIn(needle, out, needle)
+        self.assertNotIn("digit found", out)
 
     def test_cli_without_arguments_prints_usage(self):
         with self.assertRaises(SystemExit) as ctx:

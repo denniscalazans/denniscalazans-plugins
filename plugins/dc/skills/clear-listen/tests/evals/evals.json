@@ -12,5 +12,21 @@
       "Repeats the tone at the start of each generation call, and never retries a charged call by calling it again."
     ],
     "failure_with_current_skill": "Before change 6 the method was inline in SKILL.md, so the model rendered from the body. The risk after the move is a model that skips references/rendering.md and renders from memory of the engine: neutral intents left in the text, no render report, no second file."
+  },
+  {
+    "id": "clear-listen-conversation-turns-no-skeleton",
+    "skill": "clear-listen",
+    "prompt": "Estamos numa conversa por voz: você fala, um motor de voz lê sua resposta como está, e eu ouço andando. Responda cada pergunta como um turno de uns trinta segundos, uma de cada vez. Sobre o guia de cache HTTP: (1) O no-cache manda não guardar? (2) Então quem proíbe guardar? (3) O que é a etiqueta de versão? (4) Como eu vejo se o meu site manda essa etiqueta? (5) Qual é o risco de deixar o cache muito longo?",
+    "expected_behavior": [
+      "Each of the five answers is a short prose turn: no part marker such as \"Parte um de cinco\" or \"Part 1 of 5\".",
+      "No square brackets anywhere in the five answers: no [pause short], no [warm], no [key], no [1].",
+      "No bare ordinal: no sentence starts with \"Primeiro,\", \"Segundo,\", \"Em primeiro lugar,\", \"First,\" or \"Second,\".",
+      "No numbered or bulleted list line, no heading, no bold: the procedure of question 4 is given one step per turn, with the offer of the next step.",
+      "Each turn has at most 6 sentences, and the first sentence is the answer itself.",
+      "A turn of more than 3 sentences ends with a short question that gives the turn back, and no pause mark follows it.",
+      "Each turn starts from the words of the question (\"Você perguntou se o no-cache manda não guardar. Não manda.\"), and any study or author is named by role and then by name, never as a bare \"um pesquisador\".",
+      "Every answer passes python3 scripts/lint_audio_script.py <turn.txt> --conversa."
+    ],
+    "failure_with_current_skill": "Before change 5 the skill had no section for a live turn, so the model applied the recorded-audio rules to the conversation: answers opened with \"Parte um de cinco\", carried delivery intents in square brackets ([warm], [pause recall]) that the engine read aloud or dropped, announced \"São três motivos\" and marked items with \"Primeiro,\", \"Segundo,\", and gave the procedure of question 4 as a numbered list. Several turns ran past six sentences and ended on a recall pause that sounded like the end of the turn."
   }
 ]

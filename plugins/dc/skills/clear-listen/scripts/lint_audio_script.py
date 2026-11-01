@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """lint_audio_script.py: check an audio script against the clear-listen rules.
 
-Usage: python lint_audio_script.py script.md [--max-words 20] [--part-chars 4800]
+Usage: python lint_audio_script.py script.md [--max-words 20] [--part-chars 4800] [--conversa]
 Exit code 1 when any problem is found.
 
 Script format it expects: plain text, one sentence per line. Each part starts with a
@@ -14,7 +14,14 @@ ignored. A short script (up to 700 words) may be a single part with no marker. I
 dialogue, each line starts with the role and a colon (Guia:); the check
 key-after-voice-change reads those labels.
 
-As a module: lint(text, max_words=20, part_chars=4800) returns the list of problems.
+--conversa lints one turn of a live voice conversation instead of a script (SKILL.md,
+"Conversation by voice"). A turn is read by the engine as it is, so the mode fails on any
+square bracket, any part marker, any bare ordinal ("Primeiro,", "Second,"), any numbered or
+bulleted line, and any heading. It also fails a turn of more than 6 sentences, and a turn of
+more than 3 sentences that does not end with a question. The sentence checks (length,
+parentheses, digits, symbols, dashes, backward references, relative risk) run in both modes.
+
+As a module: lint(text, max_words=20, part_chars=4800, conversa=False) returns the list of problems.
 Tests: test_lint_audio_script.py in this directory.
 """
 import re, sys
@@ -42,6 +49,16 @@ RELATIVE_RISK = re.compile(
     r"|twice as|\w+ times (as|more|higher|lower)|percent (higher|lower|more|less))\b", re.I)
 RISK_BASE = re.compile(r"\b(em cada|de cada|in every|out of)\b", re.I)
 
+# Conversation by voice: a turn has no structure the ear cannot hear.
+TURN_MAX_SENTENCES = 6      # rule 1 of the section
+TURN_FREE_SENTENCES = 3     # up to this many, no closing question is needed (rule 8)
+SENTENCE_END = re.compile(r"(?<=[.!?…])\s+")
+BARE_ORDINAL = re.compile(
+    r"^(?:(?:o|a|em)\s+)?(?:primeir[oa]|segund[oa]|terceir[oa]|quart[oa]|quint[oa]"
+    r"|first|second|third|fourth|fifth)(?:\s+lugar)?\s*[,.:]", re.I)
+LIST_LINE = re.compile(r"^\s*(\d+[.)]|[-*•])\s+")
+HEADING_LINE = re.compile(r"^\s*#")
+
 
 def intent_name(tag):
     """Normalize the inside of a bracket tag: '[Pause Long ]' -> 'pause long'."""
@@ -63,8 +80,71 @@ def words_of(text):
     return re.findall(r"[\wÀ-ÿ'-]+", text)
 
 
-def analyze(text, max_words=MAX_WORDS, part_chars=PART_CHARS):
-    """Lint a neutral script. Returns {"problems": [...], "words": int, "parts": int}."""
+def sentence_checks(n, spoken, max_words, problems):
+    """The checks on one spoken line that hold for a script and for a conversation turn alike."""
+    for sent in SENTENCE_END.split(spoken):
+        words = words_of(sent)
+        if len(words) > max_words:
+            problems.append(f"line {n}: sentence has {len(words)} words (max {max_words}): {sent[:60]}...")
+        if RELATIVE_RISK.search(sent) and not RISK_BASE.search(sent):
+            problems.append(f"line {n}: relative risk without its base. Say it as \"treze em cada cem\": {sent[:60]}...")
+    if re.search(r"[()]", spoken):
+        problems.append(f"line {n}: parentheses cannot be heard. Make the aside its own sentence.")
+    if re.search(r"\d", spoken):
+        problems.append(f"line {n}: digit found. Write numbers as words.")
+    if re.search(r"[%&@#€$=+*/<>|]|https?:|www\.", spoken):
+        problems.append(f"line {n}: symbol or URL found. Say it in words, or cut it.")
+    if re.search("[—–]", spoken):
+        problems.append(f"line {n}: dash found. Use a period or an ellipsis.")
+    if re.search(BACK, spoken, re.I):
+        problems.append(f"line {n}: backward reference. Say the thing again by name.")
+
+
+def analyze_turn(text, max_words=MAX_WORDS):
+    """Lint one turn of a voice conversation (SKILL.md, "Conversation by voice").
+
+    Nothing is dropped before the checks: the engine reads every character of the turn,
+    so a note, a tag or a list marker is a problem, not a format. Returns the same shape
+    as analyze(), plus "sentences".
+    """
+    problems = []
+    sentences = []
+    lines = [l.rstrip() for l in text.splitlines()]
+    for n, line in enumerate(lines, 1):
+        if not line.strip():
+            continue
+        if HEADING_LINE.match(line):
+            problems.append(f"line {n}: heading or note line in a voice turn. Nothing here is unspoken; say the turn in prose.")
+            continue
+        if LIST_LINE.match(line):
+            problems.append(f"line {n}: list line. Never number in a conversation; one step per turn, the next when the person asks.")
+        if "[" in line or "]" in line:
+            problems.append(f"line {n}: square bracket in a voice turn. The engine reads the mark or drops it; punctuation is the only sound control.")
+        if PART.search(line):
+            problems.append(f'line {n}: part marker in a voice turn. A turn has no parts; announce structure only through content.')
+        # The marks are already reported; look at the words the engine would say around them.
+        spoken = LIST_LINE.sub("", re.sub(r"[\[\]]", " ", TAG.sub(" ", line))).strip()
+        for sent in SENTENCE_END.split(spoken):
+            if not words_of(sent):
+                continue
+            sentences.append(sent.strip())
+            if BARE_ORDINAL.match(sent.strip()):
+                problems.append(f"line {n}: bare ordinal. Never number in a conversation: {sent.strip()[:60]}")
+        sentence_checks(n, spoken, max_words, problems)
+    count = len(sentences)
+    if count > TURN_MAX_SENTENCES:
+        problems.append(f"turn has {count} sentences (max {TURN_MAX_SENTENCES}). Answer in three, six at most, and offer the rest.")
+    if count > TURN_FREE_SENTENCES and not sentences[-1].endswith("?"):
+        problems.append(f"turn has {count} sentences and does not end with a question. Past three sentences, give the turn back with a short question.")
+    words = len(words_of(" ".join(sentences)))
+    return {"problems": problems, "words": words, "parts": 0, "sentences": count}
+
+
+def analyze(text, max_words=MAX_WORDS, part_chars=PART_CHARS, conversa=False):
+    """Lint a neutral script. Returns {"problems": [...], "words": int, "parts": int}.
+    With conversa=True, lint one conversation turn instead (analyze_turn)."""
+    if conversa:
+        return analyze_turn(text, max_words)
     lines = [CLOSING if re.match(r"#\s*closing\b", l.strip(), re.I) else l.strip() for l in text.splitlines()]
     lines = [l for l in lines if l and (l == CLOSING or not l.startswith("#"))]
     problems = []
@@ -105,22 +185,7 @@ def analyze(text, max_words=MAX_WORDS, part_chars=PART_CHARS):
             closing_lines.append(spoken)
         if CLOSING_RECALL.search(spoken) and "?" in spoken:
             closing_recall = True
-        for sent in re.split(r"(?<=[.!?…])\s+", spoken):
-            words = words_of(sent)
-            if len(words) > max_words:
-                problems.append(f"line {n}: sentence has {len(words)} words (max {max_words}): {sent[:60]}...")
-            if RELATIVE_RISK.search(sent) and not RISK_BASE.search(sent):
-                problems.append(f"line {n}: relative risk without its base. Say it as \"treze em cada cem\": {sent[:60]}...")
-        if re.search(r"[()]", spoken):
-            problems.append(f"line {n}: parentheses cannot be heard. Make the aside its own sentence.")
-        if re.search(r"\d", spoken):
-            problems.append(f"line {n}: digit found. Write numbers as words.")
-        if re.search(r"[%&@#€$=+*/<>|]|https?:|www\.", spoken):
-            problems.append(f"line {n}: symbol or URL found. Say it in words, or cut it.")
-        if re.search("[—–]", spoken):
-            problems.append(f"line {n}: dash found. Use a period or an ellipsis.")
-        if re.search(BACK, spoken, re.I):
-            problems.append(f"line {n}: backward reference. Say the thing again by name.")
+        sentence_checks(n, spoken, max_words, problems)
 
     lines = [l for l in lines if l != CLOSING]
     total_words = len(words_of(TAG.sub(" ", " ".join(lines))))
@@ -163,9 +228,9 @@ def analyze(text, max_words=MAX_WORDS, part_chars=PART_CHARS):
     return {"problems": problems, "words": total_words, "parts": len(parts)}
 
 
-def lint(text, max_words=MAX_WORDS, part_chars=PART_CHARS):
+def lint(text, max_words=MAX_WORDS, part_chars=PART_CHARS, conversa=False):
     """Return the list of problems in a neutral script. Empty list means it passes."""
-    return analyze(text, max_words, part_chars)["problems"]
+    return analyze(text, max_words, part_chars, conversa)["problems"]
 
 
 def main(argv):
@@ -176,11 +241,15 @@ def main(argv):
         return int(args[args.index(name) + 1]) if name in args else default
     max_words = opt("--max-words", MAX_WORDS)
     part_chars = opt("--part-chars", PART_CHARS)
+    conversa = "--conversa" in args
     with open(args[0], encoding="utf-8") as f:
         raw = f.read()
-    result = analyze(raw, max_words, part_chars)
+    result = analyze(raw, max_words, part_chars, conversa)
     words, problems = result["words"], result["problems"]
-    print(f"words: {words}, about {words/160:.1f} min at 160 wpm, parts: {result['parts']}, problems: {len(problems)}")
+    if conversa:
+        print(f"words: {words}, sentences: {result['sentences']}, about {round(words / 160 * 60)} seconds at 160 wpm, problems: {len(problems)}")
+    else:
+        print(f"words: {words}, about {words/160:.1f} min at 160 wpm, parts: {result['parts']}, problems: {len(problems)}")
     for p in problems:
         print("  FAIL " + p)
     return 1 if problems else 0

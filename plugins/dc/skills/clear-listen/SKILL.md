@@ -1,6 +1,6 @@
 ---
 name: "clear-listen"
-description: "Use when the output will be heard: a narration, the audio version of a guide, a podcast or two-host dialogue, an audio summary, a voice-over, or any text-to-speech script. Triggers: \"quero ouvir\", \"versão em áudio\", \"narra isso\", \"faz um podcast disso\", \"resumo em áudio\", \"read this to me\". Not for screen-only text (use clear-read) or for transcribing audio."
+description: "Use when the output will be heard: a narration, the audio version of a guide, a podcast or two-host dialogue, an audio summary, a voice-over, any text-to-speech script, or one turn of a live voice conversation that an engine will speak. Triggers: \"quero ouvir\", \"versão em áudio\", \"narra isso\", \"faz um podcast disso\", \"resumo em áudio\", \"read this to me\". Not for screen-only text (use clear-read) or for transcribing audio."
 ---
 
 # Clear-Listen
@@ -19,6 +19,27 @@ The listener is the clear-read reader, now with headphones.
 - They listen in their native language, so the second-language load of clear-read is gone. The attention load is larger.
 
 **The one goal:** the listener gets every main idea on the first listen, with no rewinding. When the mind drifts and comes back, the listener knows within a few seconds where they are and what the current part is about. When a rule and this goal seem to conflict, the goal wins.
+
+## Conversation by voice
+
+This section is for one turn of a live voice conversation: the person speaks, you answer in about 30 seconds, and a voice engine reads the answer exactly as written. Text chat stays in clear-read. The four phases below are for a recorded audio, not for a turn: no script file, no producer note, no engine profile, no rendering. Every character you write is heard. The other rules of this skill hold, with these limits.
+
+1. **Answer first, in up to 3 sentences, before any structure.** Six sentences is the ceiling. Offer the rest instead of squeezing it in.
+2. **Keep each sentence at 8 to 15 words.** The ceiling of 20 holds.
+3. **Put a connector at every link.** "Por isso", "mas", "ou seja". Two facts side by side are two facts.
+4. **Start from what the person just said**, in their words. "Você perguntou se o cache guarda a página. Guarda, mas confere antes de usar."
+5. **Say the role before the name, and the name right after.** "Um estudo de dois mil e vinte e três, de Stern e Halamish, mostrou que..." A bare "um pesquisador mostrou" makes a smart listener ask which one. When you lack the name, say so.
+6. **Never point backward.** Say the thing again, with the person's own words.
+7. **Make every sentence a safe stopping point.** The person may interrupt after any sentence and still hold a whole idea.
+8. **Past 3 sentences, end with a short question that gives the turn back.** No pause mark: a 4 to 6 second silence sounds like the end of the turn, and the person talks over it. "Quer que eu explique como o servidor manda essa etiqueta?"
+9. **Redefine a term when it returns after 3 exchanges**, in the same words as the first time.
+10. **Announce structure only through content.** "Agora, o que fazer com isso." Never "São três pontos" or "Parte um de dois": a count is a promise the ear must hold.
+11. **Never number. One step per turn, the next when the person asks.** No "primeiro, segundo", no "1.": the engine reads the digit or drops it. Goal, then action, like a navigation app. "Agora, abra o terminal. Me avisa quando estiver aberto."
+12. **Say the skeleton in one sentence, in place of the visual.** "Imagine três caixas: o navegador, o cache e o servidor." Then offer the drawing in writing.
+13. **Name the problem, and the way out in the next sentence.**
+14. **Punctuation is the only sound control.** No square brackets, no delivery intents, no bold, no markdown. A period is the pause, a short sentence is the stress. The engine reads the mark or drops it, and both cost the listener.
+
+Before the turn is spoken, run `python3 scripts/lint_audio_script.py <turn.txt> --conversa`. It fails on any square bracket, part marker, bare ordinal, list line or heading, on more than 6 sentences, and on more than 3 sentences without a closing question.
 
 ## Why the ear needs its own rules
 
