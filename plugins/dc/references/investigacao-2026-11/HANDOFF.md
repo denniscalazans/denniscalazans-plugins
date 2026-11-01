@@ -59,7 +59,9 @@ Trabalhe neste mesmo branch, investigacao-2026-11. Um commit por entrega de fase
 ## 3.1 Estado em 1 de novembro de 2026, fim do dia: Fase A entregue
 
 A Fase A está em `inventario-das-regras.md`, nesta pasta.
-Ela tem o estado de partida dos testes, o veredito por regra das duas skills (75 linhas), os dez vereditos do guia conferidos, onze achados, o golden set (5 trechos) e as 7 perguntas de revisão do guia de burnout.
+Ela tem o estado de partida dos testes e o veredito por regra das duas skills, em 75 linhas.
+Ela confere os dez vereditos do guia, lista onze achados, e traz o golden set com 5 trechos.
+Ela fecha com as 7 perguntas de revisão do guia de burnout.
 O script `scripts/check_review_questions.py` confere as perguntas, e o `tests.md` da clear-read ganhou o Teste 18, que aponta para o golden set.
 
 Os seis conectores de pesquisa (Valency, PubMed, Consensus, Exa, Tavily, Parallel Search) estão ligados no Claude Code.
