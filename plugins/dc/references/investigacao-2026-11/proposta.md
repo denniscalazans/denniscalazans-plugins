@@ -21,7 +21,7 @@ Os testes antigos passam antes e depois de cada commit.
 São 98 testes do lint da clear-read, o self-test do Mermaid, e os 5 trechos do golden set.
 Nenhuma regra se apaga; o que cai vira `retired` com nota.
 
-Ponto-chave: 16 mudanças, em três prioridades, cada uma com um teste que falha hoje.
+Ponto-chave: 17 mudanças, em três prioridades, cada uma com um teste que falha hoje.
 
 ## 1. As prioridades
 
@@ -49,6 +49,7 @@ As prioridades são três, e cada uma diz quando a mudança entra.
 | 14 | Regra 9 (tom) e Regra 8b (calibrar) com exemplo | clear-read | P2 |
 | 15 | Evals em `tests/evals/`, com e sem a skill | clear-read e clear-listen | P2 |
 | 16 | Regra 3 da clear-listen: a prévia que nomeia o tópico | clear-listen | P3, depois da Fase D |
+| 17 | Atribuição no fio, como a BBC: papel, nome e instituição na frase, nunca em nota solta | clear-read e clear-listen | P1 |
 
 Fora das skills, mas na proposta: os nomes das seções do Projeto (seção 3) e a correção das instruções sobre o Projeto rodar o lint.
 
@@ -321,6 +322,27 @@ O exemplo "São três motivos." vira `retired` com nota.
 
 **Evidência.** Fase B, seção 5.4: a contagem vazia segue o exemplo da skill. Fase C, seções 4.1 e 9: as prévias que funcionaram nomeavam o tópico; nenhum estudo testou a contagem nua.
 
+### 17. Atribuição no fio, como a BBC (P1: antes do experimento)
+
+**O que muda.** O Dennis pediu em 1 de novembro, depois de aprovar o plano, que a atribuição entre no fio do texto.
+Vale para tudo que tem nome: pessoa, instituição, lugar, empresa, estudo, lei.
+
+O modelo é o BBC Lê: "Uma pesquisa da Universidade de Oxford, no Reino Unido, feita pelo psicólogo Fulano, encontrou que...".
+Nunca uma nota solta depois da frase ("o pesquisador é Fulano"), e nunca vaga ("um pesquisador", "segundo a pesquisa").
+
+Na clear-listen, a atribuição vem antes da afirmação, porque o ouvinte não julga o que ouve até saber quem fala.
+Na clear-read, a afirmação pode vir primeiro, mas a atribuição completa vem na mesma frase ou na seguinte.
+A Regra 5 da clear-read troca o exemplo forte da mudança 2 por um exemplo no fio.
+A Regra 13 da clear-listen ganha a frase "diga quem antes do quê".
+
+**O teste que falha hoje.** O lint `authority-without-name` da mudança 2 cobre a parte vaga.
+A parte fluida é um eval com juiz: o mesmo pedido, com e sem a frase nova.
+O juiz conta atribuições em nota solta ("O estudo é de", "O pesquisador é") e atribuições vagas.
+
+Teste determinístico: um grep de "say who before" no arquivo da clear-listen e de "in the same sentence" na Regra 5 da clear-read.
+
+**Evidência.** Fase C, seção 5.5: o guia de estilo da BBC News de 2003, seção "Attribution first". As Diretrizes Editoriais da BBC de 2025, itens 3.4.4 e 3.4.6. A decisão do Dennis em `decisoes-do-dennis.md`.
+
 Ponto-chave: toda mudança tem um teste que falha hoje, e a única sem teste pronto é a 16, que espera o experimento.
 
 ## 3. Fora das skills: o Projeto
@@ -341,7 +363,7 @@ Ponto-chave: dois nomes novos e uma errata, nada disso mexe nas skills.
 ## 4. A ordem de execução no branch filho
 
 1. Mudanças 10 e 1: os testes primeiro, porque os outros commits precisam deles para provar que falham antes.
-2. Mudanças 2, 3, 4, 7: as regras P1 (antes do experimento) das duas skills.
+2. Mudanças 2, 3, 4, 7 e 17: as regras P1 (antes do experimento) das duas skills. A 17 roda depois da 2 e da 5, porque mexe nos mesmos trechos.
 3. Mudanças 6 e 5: a renderização sai e a conversa entra, nessa ordem, porque a segunda só cabe depois da primeira.
 4. Mudanças 8, 9, 11, 12, 13, 14: as correções de evidência e de redação.
 5. Mudança 15: os evals, por último, porque medem o resultado de tudo.

@@ -16,3 +16,6 @@ plugins/dc/skills/clean/
 # Override global gitignore — .claude/CLAUDE.md is the contribution guide
 !.claude/
 !.claude/CLAUDE.md
+
+# Temporary worktrees created by Claude Code workflows
+.claude/worktrees/
