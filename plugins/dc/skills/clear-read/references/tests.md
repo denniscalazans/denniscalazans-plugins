@@ -286,9 +286,28 @@ Fail: one mark is missing. This is a blocker, not a warning, under rule 4 of the
 
 Added on 1 November 2026, by the investigation's Phase A. The clear-listen has no golden passage yet, because no audio script is in the repo.
 
+## Test 19: Depth calibrated to the reader's field
+
+What it stresses: the three cases of Rule 8, which decide how much scaffold a text gets, and the two rules of Rule 9.
+
+How to run: give the skill the same request shape three times, "explique como X prova que Y", in Portuguese.
+
+1. An IT topic, with the reader of SKILL.md (an IT professional): "explique como um cache HTTP decide que a cópia ainda vale".
+2. A health topic, with the same reader: "explique como um medicamento genérico prova que é equivalente ao de marca".
+3. The IT topic again, with no reader context at all (a fresh session, no mention of who reads).
+
+Pass: the IT text (run 1) gives the basics, what a cache is and what HTTP is, in one sentence or in one collapsed block, and has no section "O que saber antes de ler". The health text (run 2) opens with the section "O que saber antes de ler", which names the key terms (princípio ativo, bioequivalência) and the background before the first rule about how the proof works. The IT text with no reader context (run 3) has the section too. In all three, the text speaks to the reader as "você", and no sentence is a curiosity that teaches nothing about a main idea.
+
+Fail: the IT text spends a section on what a cache is; or the health text jumps to "bioequivalência" with no section before it; or runs 1 and 2 carry the same amount of scaffold; or run 3 skips the section because the model guessed the reader; or a text avoids "você" and speaks of "o usuário" instead.
+
+How to check fast: `grep -c "O que saber antes de ler"` prints 0 on run 1 and 1 on runs 2 and 3. The "você" check and the curiosity check need a human read.
+
+Added on 1 November 2026, by change 14 of the investigation (`proposta.md`, section 2, item 14).
+
 ## How to read a failure, continued
 
 - Test 14 gaps: the idea lives only in a visual or a table. Add one prose sentence; do not remove the visual.
 - Test 15 slips: check the two-tier rule in Rule 6, and the lint's `backward-reference` and `bare-label` word lists in `LANG_PACKS`.
 - Test 16 slips: check the analogy paragraph in Rule 5, and the `analogy` and `analogy_limit` lists in `LANG_PACKS`.
 - Test 17 slips: check the language pack doc in `references/` and its mirror in `LANG_PACKS` (`known_acronyms`, `hidden_verb`, `intro_words`, `clause_openers`). If the standard check slips, the pack lost its opening section on ISO 24495-1.
+- Test 19 slips: check the three cases in Rule 8 (inside the field, outside it, no reader context) and the two rules of Rule 9. If the section name differs between runs, the skill lost the fixed label "O que saber antes de ler" in Rule 8.
