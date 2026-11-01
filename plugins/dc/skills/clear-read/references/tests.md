@@ -341,3 +341,17 @@ Fail: no closing line; the answers visible before the reader tries; a quiz after
 How to check fast: `grep -c "Sem voltar"` prints 1.
 
 Added on 2 November 2026, by change 21 of the investigation (item e).
+
+## Test 22: The general rule before the exceptions, and branches as a table
+
+What it stresses: Rule 1 (the general rule first) and Rule 11 (three or more "if X, then Y" branches become a table in any text).
+
+How to run: ask in Portuguese how the HTTP cache decides what to do when the copy is fresh, when it is stale with an ETag, when it is stale without one, and when the server says no-store.
+
+Pass: the text states the general rule first (the cache serves a fresh copy), then the exceptions; the four branches appear as a two-column table "Se ... então ..." and not as four buried clauses.
+
+Fail: the exceptions come first; the branches are prose sentences with "se" in the middle; the table has one row per word instead of one per branch.
+
+How to check fast: `grep -c "^| Se "` prints 4 (or 3 or more).
+
+Added on 2 November 2026, by change 21 of the investigation (item h).
