@@ -957,10 +957,10 @@ Divagação e escuta:
 
 Sinalização na fala:
 
-- Lorch, Chen e Lemarié 2012, Journal of Experimental Psychology: Applied, prévia em texto e áudio (conferir): https://doi.org/10.1037/a0029342
+- Lorch, Chen e Lemarié 2012, Journal of Experimental Psychology: Applied 18(3), prévia em texto e áudio (DOI corrigido na Fase C): https://doi.org/10.1037/a0029547
 - Chen e Lorch 2018, Journal of Experimental Psychology: Applied, título dito com prosódia: https://doi.org/10.1037/xap0000143
 - Flowerdew e Tauroza 1995, Studies in Second Language Acquisition, marcadores retirados de uma aula: https://doi.org/10.1017/S0272263100014406
-- Cevasco 2009, Memory and Cognition, conectivos na fala espontânea: https://pubmed.ncbi.nlm.nih.gov/19476219/
+- Cevasco 2009, The Spanish Journal of Psychology 12(1), conectivos na fala espontânea (o periódico foi corrigido na Fase C): https://pubmed.ncbi.nlm.nih.gov/19476219/
 
 Narrativa:
 
@@ -981,8 +981,8 @@ Diálogo:
 
 Velocidade, prosódia e voz sintética:
 
-- Murphy e colegas 2022, Applied Cognitive Psychology, 231 adultos, 1x a 2,5x (conferir): https://doi.org/10.1002/acp.3899
-- Rabelo e Schochat 2007, Clinics, português brasileiro, inteligibilidade: https://doi.org/10.1590/S1807-59322007000300002
+- Murphy e colegas 2022, Applied Cognitive Psychology, 231 adultos, 1x a 2,5x (conferido na Fase C): https://doi.org/10.1002/acp.3899
+- Rabelo e Schochat 2007, Clinics, português brasileiro, inteligibilidade (DOI corrigido na Fase C): https://doi.org/10.1590/S1807-59322007000300010
 - Paris e colegas 2000, Human Factors, prosódia errada carrega a memória: https://doi.org/10.1518/001872000779698132
 - Dinçer 2022, Journal of Pedagogical Research, voz sintética moderna sem diferença: https://doaj.org/article/a14435a205f54240bdd0b0db2fa06f91
 - Bione e Cardoso 2020, Language Learning and Technology, 29 brasileiros: https://www.lltjournal.org/item-detail/944/
@@ -992,13 +992,13 @@ Navegação falada:
 
 - Dalton e colegas, cerca de 2013, Accident Analysis and Prevention, instrução composta e perigos não vistos: https://pure.royalholloway.ac.uk/files/12497853/Dalton_et_al._AA_P_accepted.pdf
 - Burnett 1998, tese de Loughborough, guia por marco contra por distância: https://repository.lboro.ac.uk/articles/_Turn_right_at_the_King_s_Head_drivers_requirements_for_route_guidance_information/9355379
-- Antrobus, Large, Burnett e Hare 2019, Journal of Navigation, 61 motoristas (conferir): https://doi.org/10.1017/S0373463318000875
+- Antrobus, Large, Burnett e Hare 2019, Journal of Navigation 72(3), 61 motoristas (conferido na Fase C; o DOI antigo apontava para outro artigo): https://doi.org/10.1017/S037346331800108X
 
 Adultos com TDAH e audição:
 
 - [TDAH] Dige, Maahr e Backenroth-Ohsako 2009, Journal of Attention Disorders, 69 contra 66: https://doi.org/10.1177/1087054709347245
 - [TDAH] Blomberg e colegas 2021, Frontiers in Human Neuroscience, 17 contra 17: https://doi.org/10.3389/fnhum.2021.771711
-- [TDAH] Alderson e colegas 2013, Journal of Abnormal Psychology, meta-análise de memória de trabalho: https://doi.org/10.1037/a0031742
+- [TDAH] Alderson e colegas 2013, Neuropsychology, meta-análise de memória de trabalho em 38 estudos (DOI corrigido na Fase C): https://doi.org/10.1037/a0032371
 - [TDAH] Stern e Halamish 2023, Frontiers in Psychology, 36 contra 36, recordação do texto inteiro: https://doi.org/10.3389/fpsyg.2023.1301726
 
 Assistentes de voz e TDAH:

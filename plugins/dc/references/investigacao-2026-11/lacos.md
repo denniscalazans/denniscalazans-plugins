@@ -45,6 +45,14 @@ As instruções do Projeto dizem o contrário em dois lugares: a seção 6.4 man
 Isso é uma divergência entre o guia e o produto, e a matriz segue o guia.
 Fica registrada como pergunta para o Dennis na seção 8, porque a Fase D precisa saber em qual Projeto roda.
 
+**Errata de 1 de novembro, noite.** O Dennis pediu pesquisa, e ela está em `decisoes-do-dennis.md`, seção 2.
+O contêiner das skills no app roda Python, e com alta probabilidade roda ffmpeg.
+Então o perfil Projeto ganha o lint, e três linhas das tabelas da seção 2 mudam.
+
+A fase de escrever e rodar o lint, da clear-read, passa a "roda" no Projeto.
+A R12 (voz por papel, medir a taxa) e a checagem final da clear-listen passam a "degrada só na escuta".
+As tabelas abaixo ficam como a análise as produziu, e esta nota vale sobre elas.
+
 **Decisão 2: um quarto status, "vago".**
 Três regras são adjetivos sem exemplo: clear-read R9 (tom), clear-read R8b (calibrar ao leitor) e clear-listen R10 (expressão moderada).
 Um analista as marcou "roda" num perfil e outro "degrada" em outro, e nenhum tinha razão, porque vagueza não é falta de capacidade do ambiente.
