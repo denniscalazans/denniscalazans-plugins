@@ -196,6 +196,16 @@ Write in the reader's language. Use plain words of that language. Avoid idioms a
 
 Plain words are about the form, never about the content. Keep every idea, every number, every caveat and every precise term. Simplify the sentence, not the thought. When the exact term is the right word (a legal, medical or technical term), keep it and explain it once; do not swap it for a vaguer word, because the reader loses precision and gains nothing. A text that got shorter by dropping ideas failed this rule, however easy it reads.
 
+**The five fixed labels follow the reader's language.** The method uses five fixed labels, and each one has one form per language. The rules in this file quote the English form, so when you write in Portuguese, write the Portuguese form, every time:
+
+- "Key point" and "Ponto-chave"
+- "Where the analogy fails" and "Onde a analogia falha"
+- "What works" and "O que funciona"
+- "How to read" and "Como ler"
+- "You already know... Now..." and "Você já sabe que... Agora..."
+
+A label in the wrong language is a foreign word in the reader's text. The reader stops at it, so the label costs the attention it was meant to save. Weak, in a Portuguese text: "Key point: o cache responde primeiro." Strong: "Ponto-chave: o cache responde primeiro." The lint flags the wrong form as a problem.
+
 Each language has its own pack in `references/`: `lang-pt-br.md` for Brazilian Portuguese and `lang-en.md` for English. Read the pack for the reader's language before you write, because it carries what the eleven rules cannot say for every language at once: the plain-language standard behind the rules (Lei 15.263 in Brazil, the Federal Plain Language Guidelines in the United States), the acronyms that need no expansion, the number and date forms, and the English terms that stay in English. For another language, write by the eleven rules and say which parts of the pack you could not apply.
 
 Make numbers easy too. Reinforce a bare number with words that say what it means, because a raw figure carries no meaning on its own. For example: "permission 600 (owner can read and write, nobody else can touch it)". Write the month as a word, such as "3 June 2026" or "3 de junho de 2026", so a date is never ambiguous across regions.
@@ -223,7 +233,7 @@ python3 scripts/lint_clear_read.py path/to/document.md
 
 It reads Markdown or HTML, prints one line per finding, and ends with `N problems`. It needs only Python 3, with no extra packages. It detects the language of the text (Portuguese or English) from common words, or takes `--lang pt` or `--lang en`. Then it applies that language's word lists, which mirror the language packs in `references/`.
 
-A **problem** is a rule break, so fix every one. The lint reports seven kinds:
+A **problem** is a rule break, so fix every one. The lint reports eight kinds:
 
 - A dash used as a joiner (Rule 2).
 - A sentence over 25 words (Rule 2).
@@ -232,6 +242,7 @@ A **problem** is a rule break, so fix every one. The lint reports seven kinds:
 - A bare label such as "P1" with nothing that names it (Rule 6).
 - A visual (a Mermaid block, a figure, an image, or an SVG that is not an icon) with no "How to read:" line right after it (Rule 7).
 - An analogy with no "Where the analogy fails:" line before the next heading (Rule 5).
+- A fixed label in the wrong language, such as "Key point:" in a Portuguese text (Rule 10).
 
 A **warning** is a prompt to re-read that line, so keep the text only on purpose. The lint reports nine kinds:
 

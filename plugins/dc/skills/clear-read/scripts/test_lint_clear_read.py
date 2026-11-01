@@ -650,6 +650,102 @@ class AnalogyNeedsItsLimit(unittest.TestCase):
         self.assertIn("analogy-without-limit", ids(report.findings), report.render())
 
 
+    def test_pt_e_como_plus_verb_is_an_analogy(self):
+        text = ("## Mostrar o trabalho\n\n"
+                "Fazer deploy é como mostrar o trabalho para a turma inteira, então todo erro aparece de uma vez.\n\n"
+                "Ponto-chave: fim.\n")
+        report = run_on_text(text, lang="pt")
+        hits = [f for f in report.findings if f.rule == "analogy-without-limit"]
+        self.assertEqual(len(hits), 1, report.render())
+        self.assertIn("Onde a analogia falha", hits[0].message)
+
+    def test_pt_e_como_plus_verb_with_its_limit_passes(self):
+        text = ("## Mostrar o trabalho\n\n"
+                "Fazer deploy é como mostrar o trabalho para a turma inteira.\n\n"
+                "Onde a analogia falha: a turma esquece, mas o log do deploy fica.\n\n"
+                "Ponto-chave: fim.\n")
+        report = run_on_text(text, lang="pt")
+        self.assertNotIn("analogy-without-limit", ids(report.findings), report.render())
+
+    def test_pt_e_como_qualquer_is_a_comparison_not_an_analogy(self):
+        text = "## Um servidor\n\nEste servidor é como qualquer outro da fila, então nada muda.\n\nPonto-chave: fim.\n"
+        report = run_on_text(text, lang="pt")
+        self.assertNotIn("analogy-without-limit", ids(report.findings), report.render())
+
+
+class LabelsFollowTheReaderLanguage(unittest.TestCase):
+    """The five fixed labels are written in the reader's language (Rule 10).
+
+    A label in another language is a foreign word in the reader's text."""
+
+    PT_WITH_ENGLISH_LABEL = (
+        "## O cache responde primeiro, então o banco descansa\n\n"
+        "Um cache de leitura é um depósito rápido que fica na frente do banco de dados. "
+        "Quando o aplicativo pede um valor, o cache responde se tiver esse valor.\n\n"
+        "Key point: o cache responde à maioria das leituras, então o banco só vê as faltas.\n"
+    )
+
+    def test_pt_text_with_key_point_in_english_is_a_problem(self):
+        report = run_on_text(self.PT_WITH_ENGLISH_LABEL)
+        self.assertEqual(report.lang, "pt", report.render())
+        hits = [f for f in report.findings if f.rule == "label-in-wrong-language"]
+        self.assertEqual(len(hits), 1, report.render())
+        self.assertEqual(hits[0].level, "problem")
+        self.assertIn("Key point:", hits[0].message)
+        self.assertIn("Ponto-chave:", hits[0].message)
+        self.assertEqual(report.exit_code, 1)
+
+    def test_en_text_with_portuguese_label_is_a_problem(self):
+        text = ("## The cache answers first\n\n"
+                "```mermaid\nflowchart LR\nA[App] --> B[Cache]\n```\n\n"
+                "Como ler: each arrow is one request, from the app to whoever answers it.\n\n"
+                "So the cache sees every read before the database sees any.\n\n"
+                "Key point: the cache answers first.\n")
+        report = run_on_text(text, lang="en")
+        hits = [f for f in report.findings if f.rule == "label-in-wrong-language"]
+        self.assertEqual(len(hits), 1, report.render())
+        self.assertIn("How to read:", hits[0].message)
+
+    def test_every_fixed_label_is_caught_in_pt_text(self):
+        for label in ("Key point:", "Where the analogy fails:", "What works:", "How to read:",
+                      "You already know that"):
+            text = (self.PT_WITH_ENGLISH_LABEL.replace("Key point:", "Ponto-chave:")
+                    + f"\n{label} o cache guarda uma cópia. Agora, o prazo de validade.\n")
+            report = run_on_text(text, lang="pt")
+            self.assertIn("label-in-wrong-language", ids(report.findings), (label, report.render()))
+
+    def test_bold_label_is_still_caught(self):
+        text = self.PT_WITH_ENGLISH_LABEL.replace("Key point:", "**Key point:**")
+        report = run_on_text(text, lang="pt")
+        self.assertIn("label-in-wrong-language", ids(report.findings), report.render())
+
+    def test_quoted_mention_of_a_label_is_not_a_use(self):
+        text = ("## Os rótulos têm uma forma por língua\n\n"
+                "Os cinco rótulos fixos têm uma forma em cada língua, então o leitor nunca encontra uma palavra estrangeira.\n\n"
+                "- \"Key point\" e \"Ponto-chave\"\n"
+                "- \"How to read\" e \"Como ler\"\n\n"
+                "A skill escreve o rótulo \"Key point:\" em inglês, e a lint avisa quando ele aparece em português.\n\n"
+                "Ponto-chave: um rótulo na língua errada é uma palavra estrangeira no texto do leitor.\n")
+        report = run_on_text(text, lang="pt")
+        self.assertNotIn("label-in-wrong-language", ids(report.findings), report.render())
+
+    def test_labels_in_the_reader_language_pass(self):
+        for text, lang in ((CLEAN_PT, "pt"), (CLEAN_MD, "en")):
+            report = run_on_text(text, lang=lang)
+            self.assertNotIn("label-in-wrong-language", ids(report.findings), report.render())
+
+    def test_fallback_language_skips_the_check(self):
+        report = run_on_text("## Título\n\nPonto-chave: ok.\n")
+        self.assertEqual(report.lang, "en")
+        self.assertNotIn("label-in-wrong-language", ids(report.findings), report.render())
+
+    def test_every_pack_names_the_same_five_labels(self):
+        keys = [set(pack["labels"]) for pack in lint.LANG_PACKS.values()]
+        self.assertEqual(len(keys[0]), 5)
+        for k in keys[1:]:
+            self.assertEqual(k, keys[0])
+
+
 class HiddenVerbsWarn(unittest.TestCase):
     """A verb beats a noun made from a verb ("perform an analysis", "realizar a verificação")."""
 

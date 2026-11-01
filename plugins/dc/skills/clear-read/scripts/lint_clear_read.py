@@ -53,10 +53,18 @@ Problems (they fail the run):
     analogy-without-limit  an analogy in one of its structural forms ("think of it as",
                         "it's like a", "works like a", "the analogy is"; pt: "pense nisso
                         como um", "é como um", "funciona como um", "parecido com um", "a
-                        analogia é") with no line, before the next heading, that says where
-                        it fails. en: "Where the analogy fails:", "unlike a". pt: "Onde a
-                        analogia falha:", "diferente de um", "ao contrário de um". The bare
-                        word "analogy" and "imagine a user who..." are not analogies.
+                        analogia é", and "é como" plus a verb, as in "é como mostrar") with
+                        no line, before the next heading, that says where it fails. en:
+                        "Where the analogy fails:", "unlike a". pt: "Onde a analogia
+                        falha:", "diferente de um", "ao contrário de um". The bare word
+                        "analogy" and "imagine a user who..." are not analogies.
+    label-in-wrong-language  one of the five fixed labels (Key point, Where the analogy
+                        fails, What works, How to read, You already know... Now...) at
+                        the start of a sentence in another language's form, such as
+                        "Key point:" in a Portuguese text. A label in another language is
+                        a foreign word in the reader's text. A quoted mention ("Key point"
+                        inside a sentence) is not a use. Skipped when the language was a
+                        fallback guess, since the lint cannot tell which form is wrong.
 
 Warnings (reported, never fatal):
     visual-without-conclusion  the "How to read" block has one sentence and nothing
@@ -117,6 +125,10 @@ MIDDLE_DOT = "·"
 #   key_points     lowercase starts of a sentence that count as a Key point line
 #   key_point_hint the marker the message suggests
 #   label_words    words that make a label with a number ("Step 3", "Passo 3")
+#   labels         the five fixed labels of the method in this language, keyed by the
+#                  same ids in every pack: (the form to write, the regex that finds it
+#                  at the start of a sentence). check_label_language flags a label
+#                  written in another pack's form.
 #   passive        the data of the passive heuristic (see check_passive)
 
 _PT_DET = r"(?:[nd]?[oa]|pel[oa])"   # o, a, no, na, do, da, pelo, pela
@@ -162,6 +174,13 @@ LANG_PACKS = {
             r"\bunlike an?\b",
         ],
         "analogy_limit_hint": "Where the analogy fails:",
+        "labels": {
+            "key_point": ("Key point:", r"key point\s*:"),
+            "analogy_limit": ("Where the analogy fails:", r"where the analogy fails\s*:"),
+            "what_works": ("What works:", r"what works\s*:"),
+            "how_to_read": ("How to read:", r"how to read\s*:"),
+            "already_know": ("You already know that... Now...", r"you already know\b"),
+        },
         "hidden_verb": {
             "light_verbs": r"(?:make|makes|made|making|perform|performs|performed|performing|conduct|conducts|"
                            r"conducted|conducting|carry out|carries out|carried out|carrying out|do|does|did|"
@@ -264,6 +283,9 @@ LANG_PACKS = {
         "analogy": [
             r"\bpense (?:n[oa]s? \w+(?: \w+)? |nisso |nisto |nele |nela )?como (?:um|uma|se)\b",
             r"\b(?:é|são|funciona|funcionam|age|agem|parece|parecem) (?:um pouco |muito |mais ou menos )?como (?:um|uma|se)\b",
+            # "é como" plus a verb in the infinitive: "é como mostrar o trabalho". The
+            # lookahead keeps out the common non-verbs that end in -ar, -er or -ir.
+            r"\b(?:é|são|seria|seriam) como (?!(?:qualquer|lugar|mulher|prazer|caráter|poder|dever|lazer|par|mar|lar|azar|pilar|altar|exemplar)\b)\w+(?:ar|er|ir)\b",
             r"\bparecid[oa]s? com (?:um|uma)\b",
             r"\ba analogia (?:é|aqui é|seria)\b",
         ],
@@ -274,6 +296,13 @@ LANG_PACKS = {
             r"\bao contrário de (?:um|uma)\b",
         ],
         "analogy_limit_hint": "Onde a analogia falha:",
+        "labels": {
+            "key_point": ("Ponto-chave:", r"ponto[- ]chave\s*:"),
+            "analogy_limit": ("Onde a analogia falha:", r"onde a analogia falha\s*:"),
+            "what_works": ("O que funciona:", r"o que funciona\s*:"),
+            "how_to_read": ("Como ler:", r"como ler\s*:"),
+            "already_know": ("Você já sabe que... Agora...", r"você já sabe\b"),
+        },
         "hidden_verb": {
             "light_verbs": r"(?:fazer|faz|fazem|fez|fizeram|faça|façam|fazendo|realizar|realiza|realizam|realizou|"
                            r"realizaram|realize|realizando|efetuar|efetua|efetuam|efetuou|efetuaram|efetue|proceder|"
@@ -936,6 +965,41 @@ def check_analogies(blocks, pack, findings):
     close_section()
 
 
+_LABEL_CACHE = {}
+
+
+def _label_patterns(pack):
+    """(label id, form to write, compiled regex) for each fixed label of a pack."""
+    key = id(pack)
+    if key not in _LABEL_CACHE:
+        _LABEL_CACHE[key] = [(k, shown, re.compile(r"\s*(?:" + regex + ")", re.I))
+                             for k, (shown, regex) in pack["labels"].items()]
+    return _LABEL_CACHE[key]
+
+
+def check_label_language(blocks, sentences_by_block, pack, findings):
+    """The five fixed labels are written in the reader's language (Rule 10).
+
+    A label in another language is a foreign word in the reader's text, so a sentence
+    that opens with another pack's form of a label is a problem. The message names
+    the same label in the reader's language."""
+    others = [p for p in LANG_PACKS.values() if p is not pack]
+    for b, sentences in zip(blocks, sentences_by_block):
+        if b.kind == "visual":
+            continue
+        for s in sentences:
+            for other in others:
+                hit = next(((k, shown) for k, shown, rx in _label_patterns(other) if rx.match(s)), None)
+                if hit:
+                    k, shown = hit
+                    own = pack["labels"][k][0]
+                    findings.append(Finding(b.line, "problem", "label-in-wrong-language",
+                                            f"the label \"{shown}\" is {other['name']}, but the text is in {pack['name']}. "
+                                            f"A label in another language is a foreign word in the reader's text, "
+                                            f"so write \"{own}\"."))
+                    break
+
+
 _HIDDEN_VERB_CACHE = {}
 
 
@@ -1008,6 +1072,7 @@ def lint_text(text, name="document.md", kind=None, lang="auto", max_words=DEFAUL
     blocks = html_to_blocks(text) if kind == "html" else markdown_to_blocks(text)
     findings = []
 
+    lang_is_certain = True
     if lang == "auto":
         detected = detect_language(blocks)
         if detected:
@@ -1016,6 +1081,7 @@ def lint_text(text, name="document.md", kind=None, lang="auto", max_words=DEFAUL
             total = sum(count_words(b.text) for b in blocks)
             code = FALLBACK_LANG
             how = f"fallback: too few words to detect the language ({total} words). Pass --lang pt or --lang en to be sure"
+            lang_is_certain = False
     else:
         code, how = lang, "set with --lang"
     pack = LANG_PACKS[code]
@@ -1039,6 +1105,8 @@ def lint_text(text, name="document.md", kind=None, lang="auto", max_words=DEFAUL
     check_visuals(blocks, sentences_by_block, pack, findings)
     check_acronyms(blocks, sentences_by_block, pack, findings)
     check_analogies(blocks, pack, findings)
+    if lang_is_certain:
+        check_label_language(blocks, sentences_by_block, pack, findings)
     if total_sentences:
         avg = total_words / total_sentences
         if avg > avg_words:

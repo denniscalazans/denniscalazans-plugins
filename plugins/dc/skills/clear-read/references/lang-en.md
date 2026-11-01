@@ -87,11 +87,16 @@ Decimal point, as the reader expects: "4.6", not "4,6".
 
 ## Markers the lint looks for, in English
 
+The first five rows are the fixed labels of the method (Rule 10), and each has one form per language.
+A label in another language is a foreign word in the reader's text, so the lint flags "Ponto-chave:" in an English text as the problem `label-in-wrong-language`.
+
 | Marker | English form |
 |---|---|
 | The key-point line that closes a section | "Key point:" |
 | The legend line under a visual | "How to read:" |
 | The line that limits an analogy | "Where the analogy fails:" |
+| The line that opens the counter-pattern after a problem | "What works:" |
+| The first line of a section that builds on another | "You already know that... Now..." |
 | A label with a number | "Step 3", "Phase 2", "Part 1" (each one followed by its name) |
 
 ## Common slips in English, and the fix
