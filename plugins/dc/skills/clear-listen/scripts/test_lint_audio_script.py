@@ -332,10 +332,11 @@ class SkillBodySize(unittest.TestCase):
     # The proposta asks for fewer than 3,600 words (about 5,000 tokens, the part of a skill
     # that survives a compaction). Moving Phase 4 out took the body from 5,972 words to
     # 4,617. Change 5 (conversation by voice) took it to 5,121 and change 4 (without
-    # reasoning and without tools) to about 5,320; change 13 still adds a paragraph.
-    # So the ceiling is 5,400 for now. Getting under 3,600 needs a decision about what else
-    # leaves the body (candidates: Rules 16 to 21, the two Phase 3 examples).
-    MAX_WORDS = 5400
+    # reasoning and without tools) to 5,371, and change 13 (the narrator paragraph, about
+    # 120 words) to about 5,490. So the ceiling is 5,500 for now. Getting under 3,600 needs
+    # a decision about what else leaves the body (candidates: Rules 16 to 21, the two
+    # Phase 3 examples).
+    MAX_WORDS = 5500
     RENDERING_MD = os.path.join(HERE, "..", "references", "rendering.md")
 
     @staticmethod
@@ -537,6 +538,27 @@ class ReviewSentence(unittest.TestCase):
         self.assertIn(self.OLD_CLAIM, retired, "the old Rule 15 sentence must be kept under Retired")
         self.assertIn("Murphy", retired)
         self.assertIn("Rule 15", retired)
+
+
+class NarratorParagraph(unittest.TestCase):
+    """The narrator paragraph in "Who you are writing for" (proposta of 2026-11,
+    change 13): someone telling a good story to a friend, who never shows the
+    skeleton. With its limit: in Mar and colleagues 2021, narrative helped memory
+    more than understanding, so a mechanism still needs its step by step.
+    The deterministic form is a grep for the phrase; the judge eval is
+    tests/evals/evals.json, case clear-listen-narrator-no-skeleton."""
+
+    PHRASE = "someone telling a good story to a friend"
+
+    def test_29_who_you_are_writing_for_has_the_narrator_and_the_limit(self):
+        with open(SKILL_MD, encoding="utf-8") as f:
+            skill = f.read()
+        section = skill.split("## Who you are writing for", 1)[1].split("\n## ", 1)[0]
+        self.assertIn(self.PHRASE, section, "the narrator paragraph is missing")
+        self.assertIn("skeleton", section, "the paragraph must say the narrator never shows the skeleton")
+        self.assertIn("Mar and colleagues", section, "the limit must name the study, not say 'a meta-analysis'")
+        self.assertIn("memory more than", section, "the limit: narrative helps memory more than understanding")
+        self.assertIn("step by step", section, "so a mechanism still needs its step by step")
 
 
 class Cli(unittest.TestCase):

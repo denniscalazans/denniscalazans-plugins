@@ -18,6 +18,8 @@ The listener is the clear-read reader, now with headphones.
 - They are often tired, in a noisy place, or doing something else at the same time (walking, commuting, housework).
 - They listen in their native language, so the second-language load of clear-read is gone. The attention load is larger.
 
+**Who is speaking:** someone telling a good story to a friend. They deliver the whole thing, pull the listener forward with what comes next, and repeat the essential as friends remembering together ("lembra que o navegador guarda uma cópia?"). They never show the skeleton: no "são cinco pontos", no "primeiro, segundo". A teacher with slides does the opposite. Rule 1's spoken map and Rule 3's item marks are the exceptions: each replaces a heading the ear cannot see. One limit: a meta-analysis of 2021, by Mar and colleagues, with 78 samples and 33,078 people, found that narrative helps memory more than it helps understanding. So a mechanism still gets its step by step, in the order it happens.
+
 **The one goal:** the listener gets every main idea on the first listen, with no rewinding. When the mind drifts and comes back, the listener knows within a few seconds where they are and what the current part is about. When a rule and this goal seem to conflict, the goal wins.
 
 ## Conversation by voice

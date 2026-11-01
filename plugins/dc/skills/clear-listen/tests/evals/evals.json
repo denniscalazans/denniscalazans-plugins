@@ -42,5 +42,20 @@
       "The neutral script itself still follows the Phase 3 rules: 'Parte um de duas', one recall question per part, the closing 'Sem voltar' question."
     ],
     "failure_with_current_skill": "Before change 4-listen the skill said 'If no verified source exists, run clear-read Phase 1 first' and nothing about what to do when no search exists. The model either skipped the research in silence and filled the default cache time from memory, or stopped and said it could not proceed. Without an engine profile it rendered from memory of one engine, and it reported the script as linted when no lint had run."
+  },
+  {
+    "id": "clear-listen-narrator-no-skeleton",
+    "skill": "clear-listen",
+    "prompt": "Faz um áudio de um minuto, uma parte só, para eu ouvir no caminho do trabalho. O assunto: por que o meu site às vezes mostra a versão velha da página, e o que o navegador faz antes de usar a cópia guardada. Fonte: 'O navegador guarda uma cópia de cada página que baixa. Antes de usar a cópia, ele manda ao servidor a etiqueta de versão que recebeu com ela. Se o servidor responde que a versão não mudou, o navegador usa a cópia. Se mudou, o servidor manda a página nova. Quando o servidor não manda etiqueta, o navegador usa a cópia até o prazo de validade vencer, sem perguntar. Um prazo de validade longo é o motivo mais comum de o visitante ver a versão velha.'",
+    "expected_behavior": [
+      "Judge count: the script has zero announcements of structure. No 'são dois motivos', no 'são três passos', no 'vou falar de duas coisas', no 'primeiro,' / 'segundo,' / 'em primeiro lugar'. The turns arrive through content ('Agora, o que o navegador faz antes de usar a cópia.').",
+      "Delivers the whole thing: every fact of the six source sentences is in the script, and nothing is held back with 'depois eu explico' or 'isso fica para outro áudio'.",
+      "Pulls the listener forward with what comes next: at least one sentence opens the next part of the story as a hook or a question ('E se o servidor nunca mandou etiqueta?').",
+      "Repeats the essential as two people remembering together ('lembra que o navegador guarda uma cópia?'), never with a backward pointer ('como eu disse', 'o que falei antes').",
+      "The limit of the narrator holds: the mechanism (what the browser does before using the copy) is given step by step, in the order it happens, one step per sentence, each link said with 'por isso' or 'porque'. It is not compressed into an image or an anecdote alone.",
+      "One part only, so no 'Parte um de um' line (Rule 1); the script still opens with the core idea and closes with the takeaway.",
+      "The script passes python3 scripts/lint_audio_script.py <script.md>."
+    ],
+    "failure_with_current_skill": "Without the narrator paragraph the model applies Rule 3 as a reflex: 'São dois motivos. O primeiro...', 'Agora, o segundo', and opens with 'Neste áudio, duas coisas', so the listener holds an announced skeleton for a one-minute recap. Or, told to narrate, it tells the story of the stale page in one image and drops the step by step of the version check, so the listener remembers the anecdote and cannot say what the browser does before using the copy."
   }
 ]
