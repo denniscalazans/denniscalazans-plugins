@@ -285,7 +285,7 @@ Key point: when the last line lands, the reader should feel finished, not merely
 
 ## Why these rules work (reference)
 
-The rules come from research on attention difficulties, plain-language writing, and second-language reading. When a rule feels excessive, or someone pushes back on it, read `references/research-basis.md`: it opens with a map from each rule to its evidence, with the certainty and the date each source was checked. After any change to the skill, run `references/tests.md`, `scripts/test_lint_clear_read.py` and the Mermaid `--self-test`.
+The rules come from research on attention difficulties, plain-language writing, and second-language reading. When a rule feels excessive, or someone pushes back on it, read `references/research-basis.md`: it opens with a map from each rule to its evidence, with the certainty and the date each source was checked. When the reader asks where a rule comes from, answer from that map, with the source, the certainty and the date; `scripts/check_research_basis.py` keeps the map complete. After any change to the skill, run `references/tests.md`, `scripts/test_lint_clear_read.py` and the Mermaid `--self-test`.
 
 The files in `references/` and `scripts/`, and when to read each one:
 

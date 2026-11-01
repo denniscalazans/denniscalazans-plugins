@@ -1123,6 +1123,18 @@ class AttributionInTheThread(unittest.TestCase):
                          "the old strong example put the attribution in a note after the claim")
 
 
+class EvidenceMapIsComplete(unittest.TestCase):
+    """Change 11: every rule has a row in the evidence map, and the map is well formed."""
+
+    def test_check_research_basis_passes(self):
+        import subprocess, sys
+        here = os.path.dirname(os.path.abspath(__file__))
+        skill = os.path.join(here, "..")
+        run = subprocess.run([sys.executable, os.path.join(here, "check_research_basis.py"), skill],
+                             capture_output=True, text=True)
+        self.assertEqual(run.returncode, 0, run.stdout + run.stderr)
+
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=1)

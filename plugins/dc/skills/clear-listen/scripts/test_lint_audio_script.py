@@ -664,6 +664,18 @@ class AttributionFirst(unittest.TestCase):
         self.assertIn("Say who before what", conversation)
 
 
+class EvidenceMapIsComplete(unittest.TestCase):
+    """Change 11: every rule has a row in the evidence map, and the map is well formed.
+    The checker is shared with clear-read, in that skill's scripts folder of the same plugin."""
+
+    def test_31_check_research_basis_passes(self):
+        import subprocess, sys
+        skill = os.path.join(HERE, "..")
+        checker = os.path.join(HERE, "..", "..", "clear-read", "scripts", "check_research_basis.py")
+        run = subprocess.run([sys.executable, checker, skill], capture_output=True, text=True)
+        self.assertEqual(run.returncode, 0, run.stdout + run.stderr)
+
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=1)

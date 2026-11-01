@@ -22,6 +22,58 @@ These five facts lived in `SKILL.md` until 1 November 2026. They moved here to k
 4. **Visual structure is gone.** Structure must be said out loud, or it does not exist.
 5. **The voice carries meaning.** Pace, pauses and pitch change what is noticed and what is remembered.
 
+## Evidence map, checked at the source
+
+This table is the answer to "where does this rule come from?". One row per claim. Verdict: **holds** (the source says it), **holds with a limit** (the source says it, with a narrower scope than the rule), **contradicted** (the source says the opposite; the old sentence is under Retired), **practice** (expert guidance or the project's own tests, no controlled study), **untested** (no study found). Checked: the date someone read the source for this map, or "carried" for a source carried over from an earlier version and not re-read. Access: what was read, the full text, the abstract, or a summary page. The checking history is in the plugin's `references/investigacao-2026-11/pesquisa-conferida.md`.
+
+| Rule | Claim, as the skill makes it | Verdict | Source | Certainty | Checked | Access |
+|---|---|---|---|---|---|---|
+| Role of audio | Reading and listening give the same comprehension on average; reading wins at own pace and on inference | holds | Clinton-Lisell 2022, Review of Educational Research 92(4), doi:10.3102/00346543211060871; 46 studies, N = 4,687, g = 0.07; own pace g = 0.13 (marginal); inference g = 0.36 | high | 2026-11-01 | abstract |
+| Rule 1 | Segmenting gives small to medium gains | holds with a limit | Rey and others 2019, doi:10.1007/s10648-018-9456-4; only 4 of 88 comparisons in pure audio; segmenting costs time (d = -0.92) | high | 2026-11-01 | full text |
+| Rule 1 | Listening gives the most mind wandering and the worst memory | holds | Varao Sousa, Carriere and Smilek 2013, Frontiers in Psychology 4:892, doi:10.3389/fpsyg.2013.00892; 211 students, immediate memory, no ADHD | high | 2026-11-01 | full text |
+| Rule 1 | In ADHD, mind wandering falls with working-memory load, not with sustained attention alone | holds with a limit | Bozhilova and others 2020, Journal of Attention Disorders 25(14), doi:10.1177/1087054720956714; visual lab tasks | medium | 2026-11-01 | abstract |
+| Rule 1 | Mind wandering in ADHD is spontaneous, not deliberate | holds with a limit | Seli and others 2015, Psychonomic Bulletin and Review 22(3), doi:10.3758/s13423-014-0793-0; trait self-report | medium | 2026-11-01 | abstract |
+| Rule 2 | Speech is transient, so a long or nested sentence overloads working memory | holds (analogy) | The transient information effect: Leahy and Sweller 2011 and 2016; Singh, Marcus and Ayres 2012; Alderson and others 2013, doi:10.1037/a0032371, on working memory in adults with ADHD | medium | carried | abstract |
+| Rule 3 | A preview sentence that names the topic improves the structure the listener builds | holds with a limit | Lorch, Chen and Lemarié 2012, JEP: Applied 18(3), doi:10.1037/a0029547; measured outline quality, not comprehension | medium | 2026-11-01 | abstract |
+| Rule 3 | A spoken heading works with pause and intonation | holds with a limit | Chen and Lorch 2018, JEP: Applied 24(2), doi:10.1037/xap0000143; the title read by a voice already helped | medium | 2026-11-01 | abstract |
+| Rule 3 | Announcing the count before a list helps | untested | No study tested a bare count; Phase D of the investigation tests it against a preview that names the topic | low | 2026-11-01 | abstract |
+| Rule 4 | Repetition replaces looking back | practice | W3C COGA, do not rely on memory; the transient information effect (Leahy and Sweller 2011, 2016) | medium | carried | abstract |
+| Rule 5 | Spoken connectives help causal understanding | holds with a limit | Cevasco 2009, PMID 19476219, one connective, a speed gain; Flowerdew and Tauroza 1995, doi:10.1017/S0272263100014406, markers in a second language | medium | 2026-11-01 | abstract |
+| Rule 6 | A test every few minutes cuts mind wandering and raises the score | holds with a limit | Szpunar, Khan and Schacter 2013, PNAS 110(16), doi:10.1073/pnas.1221764110; 80 students, written test, slides | high | 2026-11-01 | abstract |
+| Rule 6 | Recalling the whole text once at the end beats section-by-section recall, in students with and without ADHD | holds | Stern and Halamish 2023, Frontiers in Psychology 14:1301726, doi:10.3389/fpsyg.2023.1301726; 36 with ADHD, 36 without; whole text 0.45 against 0.37; the per-part question is the losing condition | high | 2026-11-01 | full text |
+| Rule 7 | At most one number per sentence, in words | practice | Working-memory load; broadcast writing practice (NPR, CDC audio guides) | medium | carried | summary page |
+| Rule 8 | Speaking to one person improves retention and transfer in short lessons | holds with a limit | Ginns, Martin and Marsh 2013, doi:10.1007/s10648-013-9228-0; d = 0.30 and 0.54; fades past 35 minutes | high | 2026-11-01 | abstract |
+| Rule 8 | Say who before what | practice (standard) | BBC News Styleguide, John Allen 2003, "Attribution first", page 22; BBC Editorial Guidelines 2025, items 3.4.4 and 3.4.6 | high | 2026-11-01 | full text |
+| Rule 9 | Up to 1.5 times speed costs little; 2.5 times costs | holds | Murphy and others 2022, Applied Cognitive Psychology 36(1), doi:10.1002/acp.3899; 231 students, lectures of 13 to 15 minutes | high | 2026-11-01 | abstract |
+| Rule 9 | Recognition is best between 170 and 190 words per minute | holds with a limit | Rodero 2016, Media Psychology 19(2), doi:10.1080/15213269.2014.1002942; Spanish radio, recognition not attention | medium | 2026-11-01 | abstract |
+| Rule 9 | A words-per-minute figure for Brazilian Portuguese | untested | Rabelo and Schochat 2007, Clinics 62(3), doi:10.1590/S1807-59322007000300010, gives no rate; the 160 target is a planning default to measure | low | 2026-11-01 | abstract |
+| Rule 9 | Pauses between ideas help recall | holds with a limit | Fraundorf and Watson 2011, Journal of Memory and Language 65(2), doi:10.1016/j.jml.2011.03.004; filled pauses ("uh"), a global effect, not silent pauses in synthetic speech | low | 2026-11-01 | abstract |
+| Rule 10 | Moderate intonation gives the best credibility | holds with a limit | Rodero, Larrea, Rodríguez-de-Dios and Lucas 2022, Journal of Language and Social Psychology 41(5), doi:10.1177/0261927X221078317; credibility, not attention; 24-second video | medium | 2026-11-01 | abstract |
+| Rule 11 | Noise under the signal raises mind wandering and lowers comprehension | holds with a limit | Steindorf, Pink, Rummel and Smallwood 2023, Cognitive Research 8, doi:10.1186/s41235-023-00483-0; noise on the signal itself, not music; no ADHD | high | 2026-11-01 | full text |
+| Rule 11 | Adults with ADHD have less auditory memory and more distraction by sound | holds with a limit | Dige, Maahr and Backenroth-Ohsako 2010, Journal of Attention Disorders 13(6), doi:10.1177/1087054709347245; Blomberg and others 2021, Frontiers in Human Neuroscience 15:771711, doi:10.3389/fnhum.2021.771711 (a tone distractor, not speech in noise) | medium | 2026-11-01 | abstract |
+| Rule 12 | A modern synthetic voice teaches as well as a human one | holds with a limit | Dinçer 2022, Journal of Pedagogical Research 6(3), doi:10.33902/JPR.202214591 (51 men, no significant difference); Bione and Cardoso 2020, Language Learning and Technology 24(1) (29 Brazilians, English); Paris and others 2000, Human Factors 42(3), doi:10.1518/001872000779698132 (synthesizers of 2000) | medium | 2026-11-01 | abstract |
+| Rule 13 | Deep questions ("why", "how") in a tutoring dialogue help; shallow ones do not | holds with a limit | Craig, Gholson, Ventura and Graesser 2000; Driscoll and others 2003, Journal of Educational Computing Research 29(4); deep d = 0.71 and 0.64; agents on screen | medium | 2026-11-01 | full text |
+| Rule 13 | Giving voice to the wrong belief and refuting it teaches | holds | Muller and Sharma 2007; over 1,000 students; a single narrator refuting worked as well as a dialogue | high | 2026-11-01 | full text |
+| Rule 13 | A voice change orients the listener, and memory is better right after | contradicted | Potter 2000, Media Psychology 2(2), doi:10.1207/S1532785XMEP0202_3; 62 listeners; orienting is robust, but recognition right after the change drops, more with more changes. Retired on 2026-11-01; Rule 13 now says the listener loses the first 3 seconds | high | 2026-11-01 | full text |
+| Rule 13 | Structural audio features orient the listener as a category | holds | Potter, Lang and Bolls 2008, Journal of Media Psychology 20(4), doi:10.1027/1864-1105.20.4.168; eight of nine features | medium | 2026-11-01 | abstract |
+| Rule 13 | A clearly different pitch and an early change orient better | holds with a limit (attention, not memory) | Potter and others 2019, Communication Research (DOI under Key sources); 41 participants | medium | 2026-11-01 | abstract |
+| Rule 14 | Jingles and effects habituate after the third repetition; a voice change does not | holds | Potter, Lynch and Kraus 2015, Communication Monographs 82(3), doi:10.1080/03637751.2015.1019529; 40 minutes of radio, 57 and 72 students | medium | 2026-11-01 | abstract |
+| Rule 15 | A 2 to 4 minute summary beats a second fast listen | contradicted | Murphy and others 2022, doi:10.1002/acp.3899, never tested a summary; a second full listen at 2x right before the test won (d = 0.54). Retired on 2026-11-01 | high | 2026-11-01 | abstract |
+| Rule 15 | Reviewing close to the moment of use helps | holds with a limit | Murphy and others 2022, the same study; the format of the review is untested | medium | 2026-11-01 | abstract |
+| Rules 16 to 21 | Risk as a natural frequency with its denominator | holds | Garcia-Retamero and Cokely 2017 (clear-read research-basis, section 8.3) | high | carried | abstract |
+| Rules 16 to 21 | Tables, charts and diagrams become spoken shapes of 3 or 4 items | practice | Working-memory limits; the project's own scripts | medium | carried | summary page |
+| Conversation by voice | One step per spoken instruction; a compound instruction raises missed hazards | holds with a limit | Dalton and others 2013, Accident Analysis and Prevention 50, 298 to 303; 1.5 percent without instruction, 3.2 simple, 5.5 compound (p = 0.055); 25 students | medium | 2026-11-01 | full text |
+| Conversation by voice | Landmark guidance needs fewer glances than distance guidance | holds | Burnett 1998, Loughborough thesis; 1.6 against 5.0 glances on a real road | medium | 2026-11-01 | full text |
+| Conversation by voice | Short turns suit young people with ADHD | holds with a limit | Bryant and others 2026, JMIR Formative Research, doi:10.2196/85013; 9 young people, 6 tested the prototype | low | 2026-11-01 | abstract |
+| Conversation by voice | Say who before what | practice (standard) | BBC News Styleguide 2003, "Attribution first" | high | 2026-11-01 | full text |
+| Who is speaking | Narrative helps memory more than understanding | holds with a limit | Mar, Li, Nguyen and Ta 2021, doi:10.3758/s13423-020-01853-1; 78 samples, 33,078 participants; compares whole genres | high | 2026-11-01 | abstract |
+| Who is speaking | Expository text integrates better with prior knowledge | holds with a limit | Wolfe and Woodwyk 2010, doi:10.1348/000709910X485700; "narrative helps less with mechanisms" is not its finding | medium | 2026-11-01 | abstract |
+| Framing | Adults with ADHD have a smaller working memory | holds | Alderson and others 2013, Neuropsychology 27(3), doi:10.1037/a0032371; meta-analysis of 38 studies | high | 2026-11-01 | abstract |
+| Framing | Step-by-step guidance closes the gap for adults with ADHD | holds with a limit (analogy) | Brann and Sidi 2025, doi:10.1016/j.learninstruc.2024.102051; the scaffold was self-regulation prompts | medium | 2026-11-01 | abstract |
+| Without reasoning and without tools | A skill must say what to do when a tool is missing | practice | Phase B of the investigation (lacos.md); the Anthropic skill documentation | medium | 2026-11-01 | full text |
+
+When the reader asks where a rule comes from, answer from this table: the source, the certainty and the date it was checked. The quick map below is the older summary and stays for context.
+
 ## Quick map: which evidence backs which rule
 
 - Role of audio (gist and review, not reasoning): reading versus listening meta-analysis; transient information effect.
@@ -183,7 +235,7 @@ Reading, load, segmenting:
 - Rey, Beege, Nebel, Wirzberger, Schmitt and Schneider (2019), segmenting meta-analysis, Educational Psychology Review 31. DOI 10.1007/s10648-018-9456-4. F
 - Noetel and others (2022), multimedia design overview of reviews, Review of Educational Research. DOI 10.3102/00346543211052329. A
 - Leahy and Sweller (2011, 2016); Singh, Marcus and Ayres (2012); Wong and others (2012). C
-- Ginns, Martin and Marsh (2013), conversational style meta-analysis. C, citation still unconfirmed
+- Ginns, Martin and Marsh (2013), conversational style meta-analysis, Educational Psychology Review 25(4). DOI 10.1007/s10648-013-9228-0. S (confirmed on 1 November 2026: d = 0.30 retention, 0.54 transfer)
 
 Mind wandering and retrieval:
 - Varao Sousa, Carriere and Smilek (2013). DOI 10.3389/fpsyg.2013.00892. A
@@ -216,7 +268,7 @@ Pace and language:
 Voice and dialogue:
 - Rodero, Larrea, Rodríguez-de-Dios and Lucas (2022), the expressive balance effect. DOI 10.1177/0261927X221078317. A
 - Rodero, Potter and Prieto (2017). DOI 10.1111/hcre.12109. C
-- Potter (2000). DOI 10.1207/S1532785XMEP0202_3; Potter, Lang and Bolls (2008). DOI 10.1027/1864-1105.20.4.168; Potter, Lynch and Krause (2015). DOI 10.1080/03637751.2015.1019529; Potter and others (2019). DOI 10.1177/0093650215623835. A
+- Potter (2000). DOI 10.1207/S1532785XMEP0202_3; Potter, Lang and Bolls (2008). DOI 10.1027/1864-1105.20.4.168; Potter, Lynch and Kraus (2015). DOI 10.1080/03637751.2015.1019529; Potter and others (2019). DOI 10.1177/0093650215623835. A
 - Craig and Schroeder (2017), Computers and Education 114. DOI 10.1016/j.compedu.2017.07.003; Craig and Schroeder (2019). A
 - Chi and others (2008, 2017); Muldner and others (2014); Craig and others (2006); Muller and others (2008); Fox Tree and Mayer (2008). C
 - Moreno and Mayer (2000). C

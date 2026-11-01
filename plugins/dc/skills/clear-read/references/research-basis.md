@@ -6,6 +6,44 @@ The reader clear-read serves is intelligent and works in IT, but loses focus eas
 
 The evidence comes from seven areas, drawn from a literature review across ADHD and reading, dyslexia and cognitive accessibility, plain-language standards, second-language reading, cognitive load theory, readability measurement, and technical writing. Section 8 adds the evidence verified on 13 October 2026, with effect sizes and DOIs.
 
+## Evidence map, checked at the source
+
+This table is the answer to "where does this rule come from?". One row per claim. Verdict: **holds** (the source says it), **holds with a limit** (the source says it, with a narrower scope than the rule), **contradicted** (the source says the opposite; the old sentence is under Retired), **practice** (expert guidance or the project's own tests, no controlled study), **untested** (no study found). Checked: the date someone read the source for this map, or "carried" for a source carried over from an earlier version and not re-read. Access: what was read, the full text, the abstract, or a summary page. The checking history is in the plugin's `references/investigacao-2026-11/pesquisa-conferida.md`.
+
+| Rule | Claim, as the skill makes it | Verdict | Source | Certainty | Checked | Access |
+|---|---|---|---|---|---|---|
+| Rule 1 | Small blocks and segmenting lower the load | holds with a limit | Rey and others 2019, Educational Psychology Review 31(2), doi:10.1007/s10648-018-9456-4; retention d = 0.32, transfer d = 0.36; only 4 of 88 comparisons in pure audio | high | 2026-11-01 | full text |
+| Rule 1 | Guidance before each stage helps adults with and without ADHD | holds with a limit (analogy) | Brann and Sidi 2025, Learning and Instruction 95:102051, doi:10.1016/j.learninstruc.2024.102051; 210 adults, the scaffold was self-regulation prompts | medium | 2026-11-01 | abstract |
+| Rule 1 | Lead with the goal, message headings, front-loading | practice | W3C COGA, Making Content Usable; Federal Plain Language Guidelines | medium | carried | summary page |
+| Rule 2 | Explicit connectors speed up causal understanding | holds with a limit | Cevasco 2009, The Spanish Journal of Psychology 12(1), PMID 19476219; one connective ("but"), 36 students, a speed gain, not accuracy | medium | 2026-11-01 | abstract |
+| Rule 2 | Removing discourse markers from a lecture lowers comprehension | holds with a limit | Flowerdew and Tauroza 1995, Studies in Second Language Acquisition 17(4), doi:10.1017/S0272263100014406; 63 second-language listeners; organization markers, not causal connectives | medium | 2026-11-01 | abstract |
+| Rule 2 | 15-word target, 25-word ceiling, active voice | practice (standards) | ISO 24495-1:2023; ASD-STE100 Issue 9; Federal Plain Language Guidelines | medium | carried | summary page |
+| Rule 3 | A problem is paired with the pattern that works | practice | Instructional-design worked-example practice; the project's cold-reader tests | low | carried | summary page |
+| Rule 4 | Assume no domain knowledge | practice | W3C COGA clear words; plain-language define-your-terms | medium | carried | summary page |
+| Rule 5 | Unknown names hurt second-language listening | holds with a limit | Kobeleva 2012 (details in pesquisa-conferida.md, section 4.2); listening, not reading | medium | 2026-11-01 | abstract |
+| Rule 5 | A label whose referent comes later costs about 80 ms per attempt (cataphora) | holds with a limit | Reading-time studies summarized in pesquisa-conferida.md, section 4.2 | medium | 2026-11-01 | abstract |
+| Rule 5 | Say who before what; a named source beats a vague one | practice (standard) | BBC News Styleguide, John Allen 2003, section "Attribution first", page 22; BBC Editorial Guidelines 2025, section 3, items 3.4.4 and 3.4.6 | high | 2026-11-01 | full text |
+| Rule 5 | An analogy needs its limit line | practice | The project's own cold-reader tests; nearest study is seductive details (Rule 9) | low | carried | summary page |
+| Rule 6 | Resuming after an interruption costs time, more with longer interruptions | holds with a limit | Monk, Trafton and Boehm-Davis 2008, JEP: Applied 14(4), doi:10.1037/a0014402; 599 ms in experiment 1; a manual lab task, not reading | medium | 2026-11-01 | abstract |
+| Rule 6 | A given part with no antecedent costs 65 to 181 ms | holds with a limit | Haviland and Clark 1974, Journal of Verbal Learning and Verbal Behavior 13(5), 512 to 521; 53 students, isolated sentence pairs; measures a missing antecedent, not given-new order | medium | 2026-11-01 | full text |
+| Rule 6 | Given before new helps, depending on the construction | holds with a limit | Clifton and Frazier 2004, Memory and Cognition 32(6), doi:10.3758/BF03196867; double-object construction only | medium | 2026-11-01 | abstract |
+| Rule 6 | Retrieval and repetition help adults with ADHD remember | holds | Knouse and others 2016; Minear and others 2023 (section 8.5) | medium | carried | abstract |
+| Rule 6 | The literal re-entry template is what the model copies | holds | Min and others 2022 on in-context examples; the Anthropic skill documentation ("literal text to emit"); Phase B of the investigation, section 5.2 | medium | 2026-11-01 | full text |
+| Rule 7 | Visuals help when the reader builds the relation; two lines under each visual | holds with a limit | Schroeder and others 2018; Garcia-Retamero and Cokely 2017; Berney and Bétrancourt 2016 (section 8.3) | medium | carried | abstract |
+| Rule 8 | Support that helps a novice hurts an expert (expertise reversal) | holds | Kalyuga, Ayres, Chandler and Sweller 2003, Educational Psychologist 38(1), doi:10.1207/S15326985EP3801_4; narrative review with students | medium | 2026-11-01 | abstract |
+| Rule 9 | Interesting but irrelevant details lower learning | holds | Sundararajan and Adesope 2020, meta-analysis (section 8.2) | high | carried | abstract |
+| Rule 9 | Speaking to the reader ("you") improves retention and transfer in short lessons | holds with a limit | Ginns, Martin and Marsh 2013, Educational Psychology Review 25(4), doi:10.1007/s10648-013-9228-0; d = 0.30 and 0.54; the effect fades past 35 minutes | high | 2026-11-01 | abstract |
+| Rule 9 | "No personality" is backed by screen-versus-audio research | contradicted | No such study exists; Rogowsky 2016 and Daniel and Woody 2010 compare modalities without measuring tone. Retired on 2026-11-01 | high | 2026-11-01 | abstract |
+| Rule 10 | Plain language has an international standard with four principles | holds (standard) | ISO 24495-1:2023; ABNT NBR ISO 24495-1:2024; Lei 15.263 of 2025; Federal Plain Language Guidelines | high | 2026-11-01 | summary page |
+| Rule 10 | Bolding word beginnings (Bionic Reading) does not help | holds | Snell 2024; Parker and others 2026 (section 9.3) | medium | carried | abstract |
+| Rule 10 | A label in the wrong language is a foreign word; the model copies the example's letter | holds | Phase B of the investigation, section 5.2; Min and others 2022 | medium | 2026-11-01 | full text |
+| Rule 11 | One action per step, goal before action, about seven steps | practice | W3C COGA; ASD-STE100; Google and Microsoft style guides | medium | carried | summary page |
+| Who writes | Narrative helps memory more than understanding | holds with a limit | Mar, Li, Nguyen and Ta 2021, Psychonomic Bulletin and Review 28(3), doi:10.3758/s13423-020-01853-1; 78 samples, 33,078 participants, g = 0.55, memory g above comprehension g (0.48); compares whole genres, non-clinical samples | high | 2026-11-01 | abstract |
+| Who writes | Expository text integrates better with prior knowledge | holds with a limit | Wolfe and Woodwyk 2010, British Journal of Educational Psychology 80(3), doi:10.1348/000709910X485700; "narrative helps less with mechanisms" is not its finding | medium | 2026-11-01 | abstract |
+| Without reasoning and without tools | A skill must say what to do when a tool is missing | practice | Phase B of the investigation (lacos.md, sections 2 and 4); the Anthropic skill documentation | medium | 2026-11-01 | full text |
+
+When the reader asks where a rule comes from, answer from this table: the source, the certainty and the date it was checked. The quick map below is the older summary and stays for context.
+
 ## Quick map: which evidence backs which rule
 
 - Rule 1 (structure, lead with the goal, small blocks, one sentence per line): COGA front-loading and chunking; Federal Plain Language headings; Mayer signaling and segmenting; BDA short blocks; Brann and Sidi 2024 on stage-by-stage guidance for adults with ADHD (section 8.5).

@@ -239,4 +239,4 @@ Then check the rendering, as `references/rendering.md` says: every intent is map
 
 ## Why these rules work
 
-Read `references/research-basis.md` for the evidence, the trade-offs, and what is still unknown. Run the checks in `references/tests.md` after any change to this skill.
+Read `references/research-basis.md` for the evidence, the trade-offs, and what is still unknown. It opens with a map from each rule to its source, with the certainty and the date each source was checked; when the listener asks where a rule comes from, answer from that map. Run the checks in `references/tests.md` after any change to this skill.
