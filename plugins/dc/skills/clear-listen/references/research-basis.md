@@ -20,7 +20,7 @@ Version 2, 8 October 2026. Version 1 came from about 20 searches and abstracts o
 - Rule 3 (say the structure): signaling principle; discourse signaling cues.
 - Rule 4 (repeat on purpose, in different words): transient information effect; COGA "do not rely on memory".
 - Rule 5 (say every "because"): ADHD story-comprehension studies; the reading advantage on inferential questions.
-- Rule 6 (retrieve, in the head): interpolated testing; testing effect in students with ADHD; covert retrieval.
+- Rule 6 (retrieve, in the head): interpolated testing; testing effect in students with ADHD; covert retrieval; whole-text recall beating section-by-section recall in students with ADHD (Stern and Halamish 2023), which makes the closing question the proven part.
 - Rule 7 (few numbers, in words): working-memory load; broadcast practice.
 - Rule 8 (talk to one person): personalization principle.
 - Rule 9 (moderate pace, pauses, speed control): speech-rate studies; Brazilian Portuguese rate data; playback-speed meta-analysis.
@@ -69,7 +69,9 @@ Meaning: put the core idea in the first 30 seconds, and re-anchor it at the star
 
 **General.** Prequestions before a video segment improve learning (carried over). Answering silently in the head has been reported to work about as well as answering aloud for simple material (carried over, weak).
 
-Meaning: one question per part, answerable in the head, with a pause. (Rule 6.) No study has tested whether such prompts reduce mind wandering in ADHD.
+**Direct (reading, not listening).** Stern and Halamish (2023) compared 36 university students with ADHD and 36 without, reading an expository text in Hebrew. Recalling the whole text once at the end beat recalling it section by section: 0.45 against 0.37 on the final test, d = 0.45. Neither recall condition beat restudying the text on a test 2 days later (restudy 0.42). Checked in the investigation of November 2026 (pesquisa-conferida.md, section 2.7); it is one study.
+
+Meaning: the closing question about the whole audio ("Sem voltar, quais foram as ideias principais?") is the proven part of Rule 6, and the lint requires it in every script of more than one part. The question per part, with a pause, is the condition that lost in that study; it stays as a practice default until the listener's own test (tests.md, test 10) says otherwise. No study measured the pause length, and no study has tested whether such prompts reduce mind wandering in ADHD. Added on 2026-11-01 (proposta, change 9).
 
 ## 5. Other ADHD evidence relevant to listening
 
@@ -151,8 +153,8 @@ In children with ADHD, more movement went with better working-memory performance
 ## Certainty and caveats
 
 - High certainty: segmenting helps; background sound under speech hurts; reading beats listening for self-paced, expository, inferential content; retrieval practice improves learning.
-- Medium certainty: mind wandering is the mechanism of the ADHD comprehension gap (shown for reading); interpolated questions reduce mind wandering; moderate rate and moderate expression are best; a voice change resets attention and costs the first seconds after it; modern synthetic voices are acceptable.
-- Low certainty or practice defaults: every number in SKILL.md (160 words per minute, parts of 3 to 4 minutes, pause lengths, 8 to 15 words, stressed words per sentence).
+- Medium certainty: mind wandering is the mechanism of the ADHD comprehension gap (shown for reading); a closing recall of the whole text beats recall by section in students with ADHD (one study, in reading); interpolated questions reduce mind wandering; moderate rate and moderate expression are best; a voice change resets attention and costs the first seconds after it; modern synthetic voices are acceptable.
+- Low certainty or practice defaults: every number in SKILL.md (160 words per minute, parts of 3 to 4 minutes, pause lengths, 8 to 15 words, stressed words per sentence); the recall question per part, which lost to whole-text recall in Stern and Halamish 2023.
 - Not known: listening versus reading in adult ADHD; best rate for explanatory audio in Brazilian Portuguese; speed tolerance for audio alone; two hosts versus narration in audio; whether prompts reduce mind wandering in ADHD; audio first or text first; fatigue from a synthetic voice over 20 minutes.
 
 ## Tests to run with the real listener
@@ -179,7 +181,8 @@ Mind wandering and retrieval:
 - Bozhilova and others (2018), Neuroscience and Biobehavioral Reviews. A
 - Szpunar, Khan and Schacter (2013), PNAS. DOI 10.1073/pnas.1221764110. A
 - Jing, Szpunar and Schacter (2016), Journal of Experimental Psychology: Applied. DOI 10.1037/xap0000087. A
-- Knouse, Rawson, Vaughn and Dunlosky (2016); Knouse and others (2020); Frontiers in Psychology 14:1186566 (2023) and 14:1301726 (2023); Dudukovic and others (2015). A
+- Knouse, Rawson, Vaughn and Dunlosky (2016); Knouse and others (2020); Frontiers in Psychology 14:1186566 (2023); Dudukovic and others (2015). A
+- Stern and Halamish (2023), whole-text against section-by-section recall in students with ADHD, Frontiers in Psychology 14:1301726. DOI 10.3389/fpsyg.2023.1301726. S (version 2 listed it by journal and number only)
 - Carpenter and Toftness (2017); Pan and Carpenter (2023). C
 
 ADHD and hearing:

@@ -7,9 +7,12 @@ Exit code 1 when any problem is found.
 Script format it expects: plain text, one sentence per line. Each part starts with a
 line that says "Parte N de M" (or "Part N of M"). Lines starting with "#" are notes
 and are ignored, except "# closing", which ends the last part before the final recall.
-Audio tags in square brackets ([short pause]) are ignored. A short script (up to 700
-words) may be a single part with no marker. In a dialogue, each line starts with the role
-and a colon (Guia:); the check key-after-voice-change reads those labels.
+A script with more than one part must end with a closing recall question about the whole
+audio: a question after "# closing", or a line that says "Sem voltar" or "Without going
+back" and asks a question (Rule 6). Audio tags in square brackets ([short pause]) are
+ignored. A short script (up to 700 words) may be a single part with no marker. In a
+dialogue, each line starts with the role and a colon (Guia:); the check
+key-after-voice-change reads those labels.
 
 As a module: lint(text, max_words=20, part_chars=4800) returns the list of problems.
 Tests: test_lint_audio_script.py in this directory.
@@ -22,6 +25,7 @@ SINGLE_MAX_WORDS = 700     # a single-part audio (about 4 minutes) needs no part
 CLOSING = "\x00closing"
 BACK = r"\b(como (eu )?(disse|vimos|falei|mencion\w+)|acima|anteriormente|o (primeiro|segundo|terceiro) (ponto|item)|as (I|we) (said|saw)|as mentioned|above)\b"
 PART = re.compile(r"\b(Parte|Part) (\d+|\w+) (de|of) (\d+|\w+)\b", re.I)
+CLOSING_RECALL = re.compile(r"\b(sem voltar|without going back)\b", re.I)  # Rule 6, the proven part
 TAG = re.compile(r"\[([^\]]*)\]")
 
 # The Delivery intents table of SKILL.md. Keep both in sync.
@@ -67,9 +71,12 @@ def analyze(text, max_words=MAX_WORDS, part_chars=PART_CHARS):
 
     parts, current = [], None
     speaker = None   # the role of the last spoken line that had a label (Rule 13)
+    closing_lines = []   # spoken lines after "# closing"
+    closing_recall = False   # a "Sem voltar ...?" line anywhere in the script
+    after_closing = False
     for n, line in enumerate(lines, 1):
         if line == CLOSING:
-            current = None
+            current, after_closing = None, True
             continue
         if PART.search(line):
             current = {"start": n, "text": [], "lines": [], "raw": []}
@@ -94,6 +101,10 @@ def analyze(text, max_words=MAX_WORDS, part_chars=PART_CHARS):
             speaker = role
         if current is not None:
             current["text"].append(spoken); current["lines"].append(spoken); current["raw"].append(line)
+        elif after_closing:
+            closing_lines.append(spoken)
+        if CLOSING_RECALL.search(spoken) and "?" in spoken:
+            closing_recall = True
         for sent in re.split(r"(?<=[.!?…])\s+", spoken):
             words = words_of(sent)
             if len(words) > max_words:
@@ -126,6 +137,11 @@ def analyze(text, max_words=MAX_WORDS, part_chars=PART_CHARS):
             problems.append(f"part {i} (line {p['start']}): no recall question near its end.")
         if sum(l.count("?") for l in tail) > 2:
             problems.append(f"part {i} (line {p['start']}): more than two questions at its end. Keep one recall question.")
+    # Rule 6: the closing recall about the whole audio is the proven part of the rule, so every
+    # script of more than one part must have it. A single-part audio has its one question already.
+    if len(parts) > 1 and not closing_recall and not any("?" in l for l in closing_lines):
+        problems.append(f"script has {len(parts)} parts but no closing recall question about the whole audio. "
+                        'End with a "# closing" note and "Sem voltar, quais foram as ideias principais?" (Rule 6).')
 
     # Intent checks per part. A script with no markers is one part.
     units = [(i, p["start"], p["raw"]) for i, p in enumerate(parts, 1)] if parts else [(1, 1, lines)]

@@ -288,6 +288,43 @@ class VoiceChange(unittest.TestCase):
         self.assertEqual(lint.lint(example), [])
 
 
+class ClosingRecall(unittest.TestCase):
+    """The closing recall question, added on 2026-11-01 (proposta, change 9, Rule 6)."""
+
+    CLOSING_BLOCK = ("# closing\nSem voltar, quais foram as duas instruções?\n[pause recall]\n"
+                     "No-cache guarda e confere. No-store não guarda.\n")
+
+    def test_18_multi_part_script_without_closing_recall(self):
+        # Two parts, each with its own recall question, and no closing: that is the problem.
+        text = swap(CLEAN, self.CLOSING_BLOCK, "")
+        self.assertEqual(only(lint.lint(text), "no recall question near its end"), [])
+        problems = only(lint.lint(text), "no closing recall question")
+        self.assertEqual(problems, ['script has 2 parts but no closing recall question about the whole audio. '
+                                    'End with a "# closing" note and "Sem voltar, quais foram as ideias principais?" (Rule 6).'])
+        # The "# closing" note alone is not enough: a question must follow it.
+        text = swap(CLEAN, "Sem voltar, quais foram as duas instruções?", "Para fechar, as duas instruções de novo.")
+        self.assertEqual(len(only(lint.lint(text), "no closing recall question")), 1)
+        # The question "Sem voltar..." counts even without the note, and so does its English form.
+        text = swap(CLEAN, "# closing\n", "")
+        self.assertEqual(only(lint.lint(text), "no closing recall question"), [])
+        text = swap(text, "Sem voltar, quais foram as duas instruções?", "Without going back, what were the two instructions?")
+        self.assertEqual(only(lint.lint(text), "no closing recall question"), [])
+        # A question after the note that is not "Sem voltar" also counts.
+        text = swap(CLEAN, "Sem voltar, quais foram as duas instruções?", "Quais foram as duas instruções de hoje?")
+        self.assertEqual(only(lint.lint(text), "no closing recall question"), [])
+        # A single-part script is not asked for a closing recall.
+        self.assertEqual(only(lint.lint(SKILL_EXAMPLE_NO_CACHE), "no closing recall question"), [])
+        self.assertEqual(lint.lint(CLEAN), [])
+
+    def test_18b_skill_md_rule_6_names_the_proven_part(self):
+        with open(SKILL_MD, encoding="utf-8") as f:
+            skill = f.read()
+        rule = skill.split("#### Rule 6", 1)[1].split("\n#### ", 1)[0]
+        self.assertIn("Stern and Halamish 2023", rule, "Rule 6 must name the study behind the closing question")
+        self.assertIn("Sem voltar", rule)
+        self.assertIn("practice", rule, "Rule 6 must mark the per-part question and the pause as practice")
+
+
 class Cli(unittest.TestCase):
     def run_cli(self, text, *extra):
         with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False, encoding="utf-8") as f:
