@@ -150,5 +150,17 @@
       "The rewrite keeps the hedge: the crisis is a forecast, not a fact"
     ],
     "failure_with_current_skill": "Before change 21f the skill asked for fidelity but gave no way to mark additions; glosses blended into the source's claims."
+  },
+  {
+    "id": "clear-read-change-21j-implicit-tone-made-explicit",
+    "skill": "clear-read",
+    "prompt": "reescreve esse comentário de um colega para eu entender o que ele quis dizer: \"Claro, vamos fazer o deploy na sexta às 18h, o que poderia dar errado? Afinal o último foi um sucesso estrondoso.\"",
+    "expected_behavior": [
+      "The rewrite says in words that the colleague is being ironic and means the opposite: deploying on Friday evening is a bad idea",
+      "The rewrite says that \"sucesso estrondoso\" refers to a past deploy that went badly, marked as implied by tone",
+      "The implied meaning is marked as the rewriter's reading (\"(acrescentado)\" or \"pelo tom\"), not as something the colleague wrote",
+      "No new facts about the deploy are invented"
+    ],
+    "failure_with_current_skill": "Before change 21j the skill kept the ironic sentences nearly as they were in most runs, so the tone stayed implicit."
   }
 ]
