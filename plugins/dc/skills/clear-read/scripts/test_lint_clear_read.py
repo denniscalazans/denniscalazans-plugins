@@ -1064,13 +1064,14 @@ class SkillBodySize(unittest.TestCase):
     The November 2026 investigation (guide, section 7.1) puts the part of a skill that
     survives a compaction at about 5,000 tokens, about 3,600 words. The clear-read body was
     5,129 words before the Phase E changes and 6,509 after them. Change 18b moved the lint
-    lists to references/lint.md and shortened the closing section, to about 6,050 words.
-    The ceiling is 6,200. Getting near 3,600 needs a decision by Dennis about what else
+    lists to references/lint.md and shortened the closing section, to about 6,090 words;
+    changes 17 and 18 (attribution examples, the sixth label, coherence fixes) brought it
+    to about 6,250. The ceiling is 6,300. Getting near 3,600 needs a decision by Dennis about what else
     leaves the body: candidates are the per-medium spacing list in Rule 1 (about 150
     words), the phone and HTML details of Rule 7 (about 120), and the pack paragraph of
     Rule 10 (about 110)."""
 
-    MAX_WORDS = 6200
+    MAX_WORDS = 6300
 
     def test_skill_md_word_count_is_under_the_ceiling(self):
         path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "SKILL.md")
@@ -1107,6 +1108,19 @@ class SixthLabelBeforeReading(unittest.TestCase):
         if report is None:
             self.skipTest("lint_text helper not available")
         self.assertNotIn("label-in-wrong-language", [f.rule for f in report.findings], report.render())
+
+
+class AttributionInTheThread(unittest.TestCase):
+    """Change 17: Rule 5 asks for the attribution woven into the sentence, BBC style."""
+
+    def test_rule_5_names_the_news_report_shape_and_the_source(self):
+        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "SKILL.md")
+        with open(path, encoding="utf-8") as f:
+            rule = f.read().split("### Rule 5", 1)[1].split("\n### ", 1)[0]
+        self.assertIn("the way a news report does", rule)
+        self.assertIn("Attribution first", rule)
+        self.assertNotIn("O estudo é de Richard Mayer, de 2002, e está na lista de fontes", rule,
+                         "the old strong example put the attribution in a note after the claim")
 
 
 

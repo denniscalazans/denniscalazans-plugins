@@ -120,10 +120,7 @@ Open with 2–3 sentences saying what the text is about and why it matters right
 
 **One sentence per line, in tight blocks.** Each sentence appears on its own line in the *final, rendered* output. The break between sentences is tight, with no blank line between sentences inside a block. A blank line marks a new topic, never a new sentence. This is the crucial correction: a blank line after every sentence turns each sentence into its own paragraph, which destroys grouping and produces the very wall this rule exists to prevent.
 
-So two kinds of spacing do two different jobs:
-
-- A **tight line break** separates sentences that belong together. The eye catches one thought at a time, yet the block still reads as one connected group.
-- A **blank line** separates topics. It tells the reader that a new point starts here.
+So two kinds of spacing do two different jobs: a **tight line break** separates sentences that belong together, so the eye catches one thought at a time inside one connected group, and a **blank line** separates topics, so the reader knows a new point starts here.
 
 The rule is about what the reader sees, not the raw characters, so produce whatever the medium needs and then check the rendered result. In plain text, a line break after each sentence and a blank line only between topics. In Markdown, a single newline collapses into a space, so force the tight break with two trailing spaces or a backslash, and confirm the sentences stack tightly. In HTML, end each sentence with `<br>` and wrap each topic block in its own `<p>`. In Word or other documents, a soft return (Shift+Enter) after each sentence and a full paragraph break only between topics.
 
@@ -157,7 +154,11 @@ Prefer a simpler word when one exists. When a technical term is genuinely needed
 
 Established technical terms often stay in English even inside Portuguese text (API, deploy, cache, token), because that is how the reader meets them at work. Keep them in English when the reader does, and give the plain meaning in the reader's language the first time.
 
-**Role before the name, and the name right after.** A name on its own is jargon too. "Mayer" means nothing to a reader who has never met it, and unknown names hurt a reader in a second language most. So give the role first: a researcher, a study, a standard, a law. Then give the name and the source right after, in the same sentence or the next. A role with no name is the other failure. A smart reader asks "which researcher?", and trust drops, the way it does when a restaurant calls itself "the best, according to the survey". Weak, name without role: "Mayer mostrou que ensinar os termos antes ajuda." Weak, role without name: "Um pesquisador mostrou que ensinar os termos antes ajuda." Strong: "Um estudo com alunos de ciências mostrou que ensinar os termos antes da lição ajuda. O estudo é de Richard Mayer, de 2002, e está na lista de fontes." The lint warns on both weak forms.
+**Role before the name, and the name right after.** A name on its own is jargon too. "Mayer" means nothing to a reader who has never met it, and unknown names hurt a reader in a second language most. So give the role first: a researcher, a study, a standard, a law. Then give the name and the source right after, in the same sentence or the next. A role with no name is the other failure. A smart reader asks "which researcher?", and trust drops, the way it does when a restaurant calls itself "the best, according to the survey". The lint warns on both weak forms.
+
+Weave the attribution into the sentence, the way a news report does: role, name, place, year, then the finding, in one flowing sentence. Never as a note after the fact ("O estudo é de..."), because the note reads as an afterthought and breaks the thread. The same holds for every named thing: a person, an institution, a city, a company, a law. The BBC News style guide ("Attribution first", 2003) puts the source before the claim for the ear; for the eye, the claim may open, but the source follows in the same sentence or the next, named.
+
+Weak, name without role: "Mayer mostrou que ensinar os termos antes ajuda." Weak, role without name: "Um pesquisador mostrou que ensinar os termos antes ajuda." Weak, attribution as a note: "Ensinar os termos antes ajuda. O estudo é de Richard Mayer." Strong: "Um estudo da Universidade da Califórnia, feito pelo psicólogo Richard Mayer em dois mil e dois, mostrou que ensinar os termos antes da lição ajuda."
 
 **An analogy is a loan, so pay it back.** An analogy ("think of the cache as a notebook on your desk") helps a reader build a new idea on a familiar one, so use one when the idea is abstract. Right after it, before the next heading, add one line that starts with "Where the analogy fails:" and says where the comparison stops holding. The reason is that a reader who keeps the analogy past its limit learns something false, and never finds out.
 
@@ -198,7 +199,7 @@ Count the yes answers, and let the count decide:
 
 **Pick the form by the content.** A flow or a branching structure becomes a small Mermaid diagram, or a numbered outline when Mermaid does not fit. Numbers to compare become a simple chart or a table. Dated events become a list with the date first, never a diagram, because a list wraps on a phone and a diagram cuts the text.
 
-**Build it for a phone.** Keep every diagram label at 25 characters or fewer, with no line break inside it and at most 2 nodes side by side, so the whole visual stays readable on a small screen. For an HTML page, `references/html-patterns.md` has the snippets: the figure with its "How to read" line, the icon array, the timeline and the theme tokens.
+**Build it for a phone.** Keep every diagram label at 25 characters or fewer, with no line break inside it and at most 2 nodes side by side. For an HTML page, `references/html-patterns.md` has the snippets.
 
 **Three limits.**
 

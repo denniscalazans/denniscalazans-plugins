@@ -650,5 +650,20 @@ class CheckRender(unittest.TestCase):
             os.unlink(f.name)
 
 
+class AttributionFirst(unittest.TestCase):
+    """Change 17: Rule 8 and conversation rule 5 say who before what, woven into the sentence."""
+
+    def test_30_rule_8_says_who_before_what(self):
+        with open(SKILL_MD, encoding="utf-8") as f:
+            skill = f.read()
+        rule = skill.split("#### Rule 8", 1)[1].split("\n#### ", 1)[0]
+        self.assertIn("who before what", rule)
+        self.assertIn("attribution first", rule.lower())
+        self.assertNotIn("Um estudo de 2024 mostra", rule, "the old example was a bare source with a digit")
+        conversation = skill.split("## Conversation by voice", 1)[1].split("\n## ", 1)[0]
+        self.assertIn("Say who before what", conversation)
+
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

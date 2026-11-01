@@ -30,7 +30,7 @@ This section is for one turn of a live voice conversation: the person speaks, yo
 2. **Keep each sentence at 8 to 15 words.** The ceiling of 20 holds.
 3. **Put a connector at every link.** "Por isso", "mas", "ou seja". Two facts side by side are two facts.
 4. **Start from what the person just said**, in their words. "Você perguntou se o cache guarda a página. Guarda, mas confere antes de usar."
-5. **Say the role before the name, and the name right after.** "Um estudo de dois mil e vinte e três, de Stern e Halamish, mostrou que..." A bare "um pesquisador mostrou" makes a smart listener ask which one. When you lack the name, say so.
+5. **Say who before what: the role, then the name, woven into the sentence.** "Um estudo de dois mil e vinte e três, dos pesquisadores Stern e Halamish, em Israel, mostrou que..." A bare "um pesquisador mostrou" makes a smart listener ask which one. When you lack the name, say so.
 6. **Never point backward.** Say the thing again, with the person's own words.
 7. **Make every sentence a safe stopping point.** The person may interrupt after any sentence and still hold a whole idea.
 8. **Past 3 sentences, end with a short question that gives the turn back.** No pause mark: a 4 to 6 second silence sounds like the end of the turn, and the person talks over it. "Quer que eu explique como o servidor manda essa etiqueta?"
@@ -144,7 +144,7 @@ Open with one or two prequestions, each followed by a pause. Close the audio wit
 At most one number per sentence. Round it unless the exact value is the point. Give it an anchor ("quase um terço"). Write numbers, dates, units and symbols as words, so the voice cannot misread them. Never read a URL, a citation, or a table.
 
 #### Rule 8: Talk to one person
-Write as one person explaining to one person: "você", active voice, everyday words, the present tense. Not a lecture, and not a text being read. Mark who says what in words ("O autor defende que...", "Um estudo de 2024 mostra...").
+Write as one person explaining to one person: "você", active voice, everyday words, the present tense. Not a lecture, and not a text being read. Say who before what, every time: the listener cannot judge a claim before knowing who makes it, and a claim that surprises drowns the attribution that follows (the BBC News style guide calls this "attribution first"). Weave role, name and place into the sentence: "Um estudo da Universidade de São Paulo, feito em dois mil e vinte e quatro pela equipe da professora Ana Lima, mostra que...". Never a bare "um estudo mostra", and never the name as a note after the claim.
 
 #### Rule 9: Keep a moderate pace, and pause between ideas
 Do not slow the voice down to make it "clear". Recall is best at a moderate rate, and worse when speech is slow or fast. For Brazilian Portuguese the target is about 160 words per minute (range 150 to 175, which is about 5.5 to 6 syllables per second with pauses). Give thinking time with **pauses between ideas** (`[pause short]`, about half a second), a longer pause at each part boundary (`[pause long]`, about 2 seconds), and slow words only on the key point of a part (`[key]`). Produce the audio at normal speed, and tell the listener that changing the player speed is fine: up to about 1.5 times costs little, and choosing your own speed goes with less mind wandering.

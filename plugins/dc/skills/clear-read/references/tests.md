@@ -302,7 +302,9 @@ Fail: the IT text spends a section on what a cache is; or the health text jumps 
 
 How to check fast: `grep -c "O que saber antes de ler"` prints 0 on run 1 and 1 on runs 2 and 3. The "você" check and the curiosity check need a human read.
 
-Added on 1 November 2026, by change 14 of the investigation (`proposta.md`, section 2, item 14).
+Also check attribution (Rule 5, change 17): every study or researcher the text names comes with role, name and place woven into one sentence, never as a note after the claim ("O estudo é de...") and never bare ("pesquisas mostram"). `grep -c "O estudo é de\|O pesquisador é"` prints 0.
+
+Added on 1 November 2026, by change 14 of the investigation (`proposta.md`, section 2, item 14); the attribution check by change 17.
 
 ## How to read a failure, continued
 
