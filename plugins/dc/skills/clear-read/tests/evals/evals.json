@@ -102,5 +102,17 @@
       "No web search contains any text of the paragraph (rewrite privacy)"
     ],
     "failure_with_current_skill": "The pre-Phase-E skill handled this well in most runs; the case guards against regressions in rewrite mode."
+  },
+  {
+    "id": "clear-read-change-21b-central-idea-first-sentence",
+    "skill": "clear-read",
+    "prompt": "explique como o navegador decide se a cópia que ele guardou de uma página ainda vale, em três partes: a etiqueta de versão, o prazo de validade, e a instrução no-cache",
+    "expected_behavior": [
+      "Each of the three concept sections opens with a first sentence that starts with \"A ideia central aqui é:\"",
+      "The sentence after the label is a complete idea the reader could repeat, not a topic name",
+      "The three sections also end with a \"Ponto-chave:\" line",
+      "No section opens with a promise about the section (\"nesta parte vamos ver\")"
+    ],
+    "failure_with_current_skill": "Before change 21b the skill asked for the point first but gave no literal form; about half the runs opened sections with a topic name or a question instead."
   }
 ]
