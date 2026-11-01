@@ -334,7 +334,7 @@ Run `scripts/lint_audio_script.py <script.md>` on the **neutral script** and fix
 
 Then check coverage (Rule 16): list the main ideas of the source and point to the sentence of the script that carries each one. When possible, give the script alone to a cold reader and ask the main questions; the reader should answer at least eight in ten.
 
-Then check the rendering: every intent is mapped, degraded or dropped on purpose, no neutral intent is left in the rendered text, and the render report says what was degraded.
+Then check the rendering: every intent is mapped, degraded or dropped on purpose, no neutral intent is left in the rendered text, and the render report says what was degraded. Run `scripts/check_render.py <rendered.txt>` on the rendered text, because it fails on every neutral intent that is still there.
 
 ## Why these rules work
 

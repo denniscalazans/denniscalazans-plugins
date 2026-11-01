@@ -9,75 +9,156 @@ line that says "Parte N de M" (or "Part N of M"). Lines starting with "#" are no
 and are ignored, except "# closing", which ends the last part before the final recall.
 Audio tags in square brackets ([short pause]) are ignored. A short script (up to 700
 words) may be a single part with no marker.
+
+As a module: lint(text, max_words=20, part_chars=4800) returns the list of problems.
+Tests: test_lint_audio_script.py in this directory.
 """
 import re, sys
 
-args = sys.argv[1:]
-if not args:
-    sys.exit(__doc__)
-def opt(name, default):
-    return int(args[args.index(name) + 1]) if name in args else default
-MAX_WORDS = opt("--max-words", 20)
-PART_CHARS = opt("--part-chars", 4800)   # about 5 minutes at 160 words per minute
-
-raw = open(args[0], encoding="utf-8").read()
+MAX_WORDS = 20
+PART_CHARS = 4800          # about 5 minutes at 160 words per minute
+SINGLE_MAX_WORDS = 700     # a single-part audio (about 4 minutes) needs no part markers
 CLOSING = "\x00closing"
-lines = [CLOSING if re.match(r"#\s*closing\b", l.strip(), re.I) else l.strip() for l in raw.splitlines()]
-lines = [l for l in lines if l and (l == CLOSING or not l.startswith("#"))]
-problems = []
 BACK = r"\b(como (eu )?(disse|vimos|falei|mencion\w+)|acima|anteriormente|o (primeiro|segundo|terceiro) (ponto|item)|as (I|we) (said|saw)|as mentioned|above)\b"
 PART = re.compile(r"\b(Parte|Part) (\d+|\w+) (de|of) (\d+|\w+)\b", re.I)
+TAG = re.compile(r"\[([^\]]*)\]")
 
-parts, current = [], None
-SINGLE_MAX_WORDS = 700   # a single-part audio (about 4 minutes) needs no part markers
-for n, line in enumerate(lines, 1):
-    if line == CLOSING:
-        current = None
-        continue
-    if PART.search(line):
-        current = {"start": n, "text": [], "lines": []}
-        parts.append(current)
-    spoken = re.sub(r"\[[^\]]*\]", " ", line)          # drop audio tags
-    label = re.match(r"^\s*[A-Za-zÀ-ÿ]{1,20}:\s", spoken)
-    spoken = re.sub(r"^\s*[A-Za-zÀ-ÿ ]{1,20}:\s", "", spoken)  # drop "Guia: " speaker labels
-    said = re.findall(r"[\wÀ-ÿ'-]+", spoken)
-    if label and 0 < len(said) <= 2 and "?" not in spoken:
-        problems.append(f"line {n}: agreement noise or filler line in a dialogue. Answer with the point itself.")
-    if current is not None:
-        current["text"].append(spoken); current["lines"].append(spoken)
-    for sent in re.split(r"(?<=[.!?…])\s+", spoken):
-        words = re.findall(r"[\wÀ-ÿ'-]+", sent)
-        if len(words) > MAX_WORDS:
-            problems.append(f"line {n}: sentence has {len(words)} words (max {MAX_WORDS}): {sent[:60]}...")
-    if re.search(r"[()]", spoken):
-        problems.append(f"line {n}: parentheses cannot be heard. Make the aside its own sentence.")
-    if re.search(r"\d", spoken):
-        problems.append(f"line {n}: digit found. Write numbers as words.")
-    if re.search(r"[%&@#€$=+*/<>|]|https?:|www\.", spoken):
-        problems.append(f"line {n}: symbol or URL found. Say it in words, or cut it.")
-    if re.search("[\u2014\u2013]", spoken):
-        problems.append(f"line {n}: dash found. Use a period or an ellipsis.")
-    if re.search(BACK, spoken, re.I):
-        problems.append(f"line {n}: backward reference. Say the thing again by name.")
+# The Delivery intents table of SKILL.md. Keep both in sync.
+TONE_INTENTS = {"warm", "curious", "serious", "thoughtful", "inviting", "surprised", "amused"}
+PAUSE_INTENTS = {"pause short", "pause long", "pause recall"}
+LEGACY_INTENTS = {"short pause": "pause short", "long pause": "pause long"}  # rule 6 of the intents
+NEUTRAL_INTENTS = TONE_INTENTS | PAUSE_INTENTS | {"key"} | set(LEGACY_INTENTS)
+INTENT_PREFIXES = ("say:", "stress:", "perform:")
+SLOW_INTENTS = {"key", "pause long"}
 
-lines = [l for l in lines if l != CLOSING]
-total_words = len(re.findall(r"[\wÀ-ÿ'-]+", re.sub(r"\[[^\]]*\]", " ", " ".join(lines))))
-if not parts and total_words > SINGLE_MAX_WORDS:
-    problems.append(f'no part markers found in a script of {total_words} words. Start each part with "Parte um de N".')
-if not parts and not any("?" in l for l in lines):
-    problems.append("single-part script has no question. Add one recall question.")
-for i, p in enumerate(parts, 1):
-    size = len(" ".join(p["text"]))
-    if size > PART_CHARS:
-        problems.append(f"part {i} (line {p['start']}): {size} characters, over {PART_CHARS}. Split it.")
-    tail = p["lines"][-6:]
-    if not any("?" in l for l in tail):
-        problems.append(f"part {i} (line {p['start']}): no recall question near its end.")
-    if sum(l.count("?") for l in tail) > 2:
-        problems.append(f"part {i} (line {p['start']}): more than two questions at its end. Keep one recall question.")
+# Rule 20: a relative risk needs its base in the same sentence.
+RELATIVE_RISK = re.compile(
+    r"\b(o dobro|o triplo|\w+ vezes (mais|menos)|por cento (maior|menor|a mais|a menos)"
+    r"|twice as|\w+ times (as|more|higher|lower)|percent (higher|lower|more|less))\b", re.I)
+RISK_BASE = re.compile(r"\b(em cada|de cada|in every|out of)\b", re.I)
 
-words = len(re.findall(r"[\wÀ-ÿ'-]+", re.sub(r"\[[^\]]*\]", " ", " ".join(lines))))
-print(f"words: {words}, about {words/160:.1f} min at 160 wpm, parts: {len(parts)}, problems: {len(problems)}")
-for p in problems:
-    print("  FAIL " + p)
-sys.exit(1 if problems else 0)
+
+def intent_name(tag):
+    """Normalize the inside of a bracket tag: '[Pause Long ]' -> 'pause long'."""
+    return re.sub(r"\s+", " ", tag.strip().lower())
+
+
+def is_neutral_intent(tag):
+    """True when the tag is in the Delivery intents table, or has one of its three prefixed forms."""
+    name = intent_name(tag)
+    return name in NEUTRAL_INTENTS or name.startswith(INTENT_PREFIXES)
+
+
+def canonical_intent(tag):
+    name = intent_name(tag)
+    return LEGACY_INTENTS.get(name, name)
+
+
+def words_of(text):
+    return re.findall(r"[\wÀ-ÿ'-]+", text)
+
+
+def analyze(text, max_words=MAX_WORDS, part_chars=PART_CHARS):
+    """Lint a neutral script. Returns {"problems": [...], "words": int, "parts": int}."""
+    lines = [CLOSING if re.match(r"#\s*closing\b", l.strip(), re.I) else l.strip() for l in text.splitlines()]
+    lines = [l for l in lines if l and (l == CLOSING or not l.startswith("#"))]
+    problems = []
+
+    parts, current = [], None
+    for n, line in enumerate(lines, 1):
+        if line == CLOSING:
+            current = None
+            continue
+        if PART.search(line):
+            current = {"start": n, "text": [], "lines": [], "raw": []}
+            parts.append(current)
+        tags = TAG.findall(line)
+        for tag in tags:
+            if not is_neutral_intent(tag):
+                problems.append(f"line {n}: [{tag.strip()}] is not in the Delivery intents table. Use the table, or fix the sentence.")
+        spoken = TAG.sub(" ", line)                        # drop audio tags
+        label = re.match(r"^\s*[A-Za-zÀ-ÿ]{1,20}:\s", spoken)
+        spoken = re.sub(r"^\s*[A-Za-zÀ-ÿ ]{1,20}:\s", "", spoken)  # drop "Guia: " speaker labels
+        said = words_of(spoken)
+        if label and 0 < len(said) <= 2 and "?" not in spoken:
+            problems.append(f"line {n}: agreement noise or filler line in a dialogue. Answer with the point itself.")
+        if current is not None:
+            current["text"].append(spoken); current["lines"].append(spoken); current["raw"].append(line)
+        for sent in re.split(r"(?<=[.!?…])\s+", spoken):
+            words = words_of(sent)
+            if len(words) > max_words:
+                problems.append(f"line {n}: sentence has {len(words)} words (max {max_words}): {sent[:60]}...")
+            if RELATIVE_RISK.search(sent) and not RISK_BASE.search(sent):
+                problems.append(f"line {n}: relative risk without its base. Say it as \"treze em cada cem\": {sent[:60]}...")
+        if re.search(r"[()]", spoken):
+            problems.append(f"line {n}: parentheses cannot be heard. Make the aside its own sentence.")
+        if re.search(r"\d", spoken):
+            problems.append(f"line {n}: digit found. Write numbers as words.")
+        if re.search(r"[%&@#€$=+*/<>|]|https?:|www\.", spoken):
+            problems.append(f"line {n}: symbol or URL found. Say it in words, or cut it.")
+        if re.search("[—–]", spoken):
+            problems.append(f"line {n}: dash found. Use a period or an ellipsis.")
+        if re.search(BACK, spoken, re.I):
+            problems.append(f"line {n}: backward reference. Say the thing again by name.")
+
+    lines = [l for l in lines if l != CLOSING]
+    total_words = len(words_of(TAG.sub(" ", " ".join(lines))))
+    if not parts and total_words > SINGLE_MAX_WORDS:
+        problems.append(f'no part markers found in a script of {total_words} words. Start each part with "Parte um de N".')
+    if not parts and not any("?" in l for l in lines):
+        problems.append("single-part script has no question. Add one recall question.")
+    for i, p in enumerate(parts, 1):
+        size = len(" ".join(p["text"]))
+        if size > part_chars:
+            problems.append(f"part {i} (line {p['start']}): {size} characters, over {part_chars}. Split it.")
+        tail = p["lines"][-6:]
+        if not any("?" in l for l in tail):
+            problems.append(f"part {i} (line {p['start']}): no recall question near its end.")
+        if sum(l.count("?") for l in tail) > 2:
+            problems.append(f"part {i} (line {p['start']}): more than two questions at its end. Keep one recall question.")
+
+    # Intent checks per part. A script with no markers is one part.
+    units = [(i, p["start"], p["raw"]) for i, p in enumerate(parts, 1)] if parts else [(1, 1, lines)]
+    for i, start, raw in units:
+        intents = [canonical_intent(t) for l in raw for t in TAG.findall(l)]
+        keys = intents.count("key")
+        if keys > 1:
+            problems.append(f"part {i} (line {start}): {keys} [key] intents. Keep one key point per part.")
+        opening = []
+        for k, l in enumerate(raw):
+            opening.extend(canonical_intent(t) for t in TAG.findall(l))
+            is_marker = k == 0 and bool(PART.search(l))
+            if words_of(TAG.sub(" ", l)) and not is_marker:
+                break
+        slow = sorted(SLOW_INTENTS & set(opening))
+        if slow:
+            problems.append(f"part {i} (line {start}): opens with a slow direction ({', '.join(f'[{s}]' for s in slow)}). Open at a normal pace.")
+
+    return {"problems": problems, "words": total_words, "parts": len(parts)}
+
+
+def lint(text, max_words=MAX_WORDS, part_chars=PART_CHARS):
+    """Return the list of problems in a neutral script. Empty list means it passes."""
+    return analyze(text, max_words, part_chars)["problems"]
+
+
+def main(argv):
+    args = list(argv)
+    if not args:
+        sys.exit(__doc__)
+    def opt(name, default):
+        return int(args[args.index(name) + 1]) if name in args else default
+    max_words = opt("--max-words", MAX_WORDS)
+    part_chars = opt("--part-chars", PART_CHARS)
+    with open(args[0], encoding="utf-8") as f:
+        raw = f.read()
+    result = analyze(raw, max_words, part_chars)
+    words, problems = result["words"], result["problems"]
+    print(f"words: {words}, about {words/160:.1f} min at 160 wpm, parts: {result['parts']}, problems: {len(problems)}")
+    for p in problems:
+        print("  FAIL " + p)
+    return 1 if problems else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))

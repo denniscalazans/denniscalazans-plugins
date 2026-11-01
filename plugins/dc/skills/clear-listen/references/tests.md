@@ -10,7 +10,9 @@ What it stresses: Rules 1, 2, 4, 6, 7.
 
 How to run: `python scripts/lint_audio_script.py script.md`
 
-Pass if it prints 0 problems. It checks sentence length, parentheses, digits and symbols, URLs, backward references, part markers, part length, and a question near the end of each part.
+Pass if it prints 0 problems. It checks sentence length, parentheses, digits and symbols, URLs, backward references, part markers, part length, and a question near the end of each part. Since 1 November 2026 it also checks that every bracket tag is in the Delivery intents table, that a part has at most one `[key]`, that no part opens with `[key]` or `[pause long]`, and that a relative risk ("o dobro", "por cento maior") has its base ("em cada") in the same sentence.
+
+The lint has its own unit tests, one per check: `python3 scripts/test_lint_audio_script.py`. Run them after any change to the lint. For the rendered text, `python3 scripts/check_render.py rendered.txt` fails if a neutral intent is still there.
 
 ## Test 2: Text is not audio
 
