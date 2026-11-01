@@ -45,7 +45,7 @@ Before the turn is spoken, run `python3 scripts/lint_audio_script.py <turn.txt> 
 
 ## Why the ear needs its own rules
 
-Speech disappears, the pace is not the listener's, the mind wanders more while listening, visual structure is gone, and the voice carries meaning. These five facts drive every rule below; `references/research-basis.md` opens with them and holds the evidence.
+Speech disappears, the pace is not the listener's, the mind wanders more while listening, visual structure is gone, and the voice carries meaning. These five facts drive every rule below (`references/research-basis.md`).
 
 ## What the audio is for
 
@@ -227,7 +227,7 @@ Rendering turns the neutral script into what one medium needs. It changes marks,
 
 ## Examples
 
-Two worked examples live in `references/examples.md`: the same passage written for the eye and for the ear, and a table and a chart said aloud (Rules 18 and 19 in `references/visuals-for-the-ear.md`). Read them the first time you write a script.
+Two worked examples live in `references/examples.md`: the same passage for the eye and for the ear, and a table and a chart said aloud (Rules 18 and 19). Read them the first time you write a script.
 
 ## Check before generating
 
@@ -239,4 +239,4 @@ Then check the rendering, as `references/rendering.md` says: every intent is map
 
 ## Why these rules work
 
-Read `references/research-basis.md` for the evidence, the trade-offs, and what is still unknown. It opens with a map from each rule to its source, with the certainty and the date each source was checked; when the listener asks where a rule comes from, answer from that map. Run the checks in `references/tests.md` after any change to this skill.
+`references/research-basis.md` opens with a map from each rule to its source, with the certainty and the date each was checked. When the listener asks where a rule comes from, answer from that map. Run the checks in `references/tests.md` after any change to this skill.
