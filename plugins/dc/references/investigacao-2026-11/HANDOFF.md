@@ -62,12 +62,28 @@ A Fase A está em `inventario-das-regras.md`, nesta pasta.
 Ela tem o estado de partida dos testes e o veredito por regra das duas skills, em 75 linhas.
 Ela confere os dez vereditos do guia, lista onze achados, e traz o golden set com 5 trechos.
 Ela fecha com as 7 perguntas de revisão do guia de burnout.
-O script `scripts/check_review_questions.py` confere as perguntas, e o `tests.md` da clear-read ganhou o Teste 18, que aponta para o golden set.
+
+O script `scripts/check_review_questions.py` confere as perguntas.
+O `tests.md` da clear-read ganhou o Teste 18, que aponta para o golden set.
 
 Os seis conectores de pesquisa (Valency, PubMed, Consensus, Exa, Tavily, Parallel Search) estão ligados no Claude Code.
 Então a Fase C pode rodar aqui.
 A próxima sessão começa pela Fase B (seção 6 do guia), a partir das colunas "Vale onde" e "Executável" do inventário.
 Nenhuma pergunta ao Dennis bloqueou a Fase A, e a seção 9 do inventário diz quando cada uma chega.
+
+## 3.2 Estado em 1 de novembro de 2026, noite: Fase B entregue
+
+A Fase B está em `lacos.md`, nesta pasta, com os dois rascunhos de skill mínima ao lado: `skill-minima-clear-read.md` e `skill-minima-clear-listen.md`.
+Ela fixa os quatro perfis e dá o status de cada regra por perfil, com o fallback que a skill deveria dizer.
+Ela lista o que atrapalha por canal e monta a matriz 4 por 4.
+
+Ela traz também o teste de leitor frio das skills mínimas, em duas rodadas.
+E fecha com a recomendação sobre onde mora o modo conversa, e um adendo de quatro linhas ao inventário.
+
+O trabalho rodou como dois workflows de agentes: 33 na primeira rodada e 6 na segunda.
+Os resultados brutos ficam fora do repo, no diretório da sessão.
+A próxima sessão começa pela Fase C (seção 7 do guia), com os itens da seção 9 do inventário e da seção 8 de `lacos.md`.
+Antes disso, o branch `investigacao-2026-11-adendo-1` entra por merge, e as seções 7.3 e 7.4 do guia recebem o que o adendo pede.
 
 ## 4. O que já está decidido
 
