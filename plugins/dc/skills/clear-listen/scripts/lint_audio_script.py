@@ -8,7 +8,8 @@ Script format it expects: plain text, one sentence per line. Each part starts wi
 line that says "Parte N de M" (or "Part N of M"). Lines starting with "#" are notes
 and are ignored, except "# closing", which ends the last part before the final recall.
 Audio tags in square brackets ([short pause]) are ignored. A short script (up to 700
-words) may be a single part with no marker.
+words) may be a single part with no marker. In a dialogue, each line starts with the role
+and a colon (Guia:); the check key-after-voice-change reads those labels.
 
 As a module: lint(text, max_words=20, part_chars=4800) returns the list of problems.
 Tests: test_lint_audio_script.py in this directory.
@@ -65,6 +66,7 @@ def analyze(text, max_words=MAX_WORDS, part_chars=PART_CHARS):
     problems = []
 
     parts, current = [], None
+    speaker = None   # the role of the last spoken line that had a label (Rule 13)
     for n, line in enumerate(lines, 1):
         if line == CLOSING:
             current = None
@@ -82,6 +84,14 @@ def analyze(text, max_words=MAX_WORDS, part_chars=PART_CHARS):
         said = words_of(spoken)
         if label and 0 < len(said) <= 2 and "?" not in spoken:
             problems.append(f"line {n}: agreement noise or filler line in a dialogue. Answer with the point itself.")
+        # Rule 13 (key-after-voice-change): the listener loses the first three seconds after a
+        # voice change, so the first line of a new speaker is a transition, never the key point.
+        if label and said:
+            role = label.group(0).strip().rstrip(":")
+            if speaker is not None and role != speaker and "key" in (canonical_intent(t) for t in tags):
+                problems.append(f"line {n}: [key] on the first line after a voice change ({speaker} to {role}). "
+                                "Say a transition sentence first; the listener loses the first three seconds (key-after-voice-change).")
+            speaker = role
         if current is not None:
             current["text"].append(spoken); current["lines"].append(spoken); current["raw"].append(line)
         for sent in re.split(r"(?<=[.!?…])\s+", spoken):

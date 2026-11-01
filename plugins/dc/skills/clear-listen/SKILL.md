@@ -119,7 +119,20 @@ Each role keeps its voice inside an audio and between audios of the same series.
 #### Rule 13: A second voice must earn its place
 In a two-host script, the second host asks the deep question a smart listener would ask ("por quê?", "como?", "e se...?") **before** the explanation, and voices the common wrong belief so the first host can correct it. No banter, no jokes, and no agreement noises ("Isso.", "Exato!", "Legal."). When the second host summarizes back, the first host answers with the key point itself, not with a confirmation. Each exchange moves a main concept forward.
 
-A change of voice pulls attention back, and memory is better for what comes right after it. So place the important sentence right after a voice change, choose two voices with clearly different pitch, and bring the second voice in early. Always write the dialogue yourself. Automatic two-host generators add chat and ignore these rules.
+A change of voice pulls attention back, and the listener loses the first 3 seconds of what follows it. So the important sentence never comes right after a voice change: a transition sentence comes first, then the point. Keep the changes few in each part, because the loss grows with the number of changes. Choose two voices with clearly different pitch, and bring the second voice in early, so the listener knows who is who from the start. Always write the dialogue yourself. Automatic two-host generators add chat and ignore these rules.
+
+The lint check `key-after-voice-change` fails a `[key]` on the first line of a new speaker. The example below passes it: the Guia opens with a transition line, and the key point comes on the second line.
+
+```
+# Modo: diálogo. Papéis: Guia e Curioso.
+Curioso: Então no-cache significa não guardar?
+Guia: Essa é a dúvida mais comum, e a resposta surpreende.
+Guia: No-cache significa guardar, mas conferir a etiqueta de versão antes de cada uso.
+[pause short]
+Curioso: E quem proíbe guardar?
+Guia: Essa é outra instrução.
+Guia: [key] Quem proíbe guardar é no-store, e no-cache só manda conferir.
+```
 
 #### Rule 14: Stimulation from form, not from extra content
 Novelty keeps this listener engaged, but an interesting side fact hurts learning. So get novelty from the voice change, a question, a speaker change, a contrast, or a concrete example. Never from a detail that serves no main concept. Rotate the devices, because an identical device repeated many times stops catching attention.

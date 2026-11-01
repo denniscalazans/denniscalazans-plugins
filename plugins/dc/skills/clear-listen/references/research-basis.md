@@ -27,7 +27,7 @@ Version 2, 8 October 2026. Version 1 came from about 20 searches and abstracts o
 - Rule 10 (moderate expression, varied): pitch-range studies; the expressive balance effect.
 - Rule 11 (voice only, clean signal): coherence principle; speech in noise in ADHD; WCAG 1.4.7.
 - Rule 12 (one constant voice per role, measure the rate): text-to-speech and learning studies; voice-quality studies.
-- Rule 13 (a second voice must earn its place): vicarious learning; deep questions; misconceptions; orienting to voice changes.
+- Rule 13 (a second voice must earn its place; a voice change costs 3 seconds): vicarious learning; deep questions; misconceptions; orienting to voice changes and the recognition drop right after them.
 - Rule 14 (novelty from form, rotated): seductive details; orienting and habituation.
 - Rule 15 (land the ending, short review): early mind wandering; re-watching study.
 
@@ -107,11 +107,13 @@ Meaning: moderate, varied expression, and a clean voice checked by ear. (Rules 1
 
 ## 8. Two voices
 
-- **General.** In radio messages, a change of voice triggers an orienting response, and memory improves for what follows it. In two-minute dialogues the response did not wear off after six changes. A bigger pitch difference between the voices strengthens it, and early changes work best.
+- **General.** In radio messages, a change of voice triggers an orienting response (a heart-rate deceleration), and the response did not wear off after six changes in two-minute messages. However, recognition of what comes right after the change got worse, not better, and worse with more changes: the abstract calls it a momentary cognitive overload (Potter 2000, Media Psychology 2(2), 62 listeners, nine two-minute messages). Readers of the full text place the drop in the first 3 seconds after the change, with recovery after that; the orienting response itself lasts 6 to 10 seconds. Correction to version 2, checked on 2026-11-01: version 2 read the same abstract as "memory improves for what follows it". That claim is now retired (see "Retired" below).
+- **General.** Structural features of audio, as a category, trigger orienting and improve recognition of what follows them (Potter, Lang and Bolls 2008, Journal of Media Psychology 20(4), eight of nine features). The abstract gives no list of the nine features, no effect size and no time window, so this source backs "structural features orient" and not "a voice change helps memory". The data "six changes, two minutes, no habituation" belong to Potter 2000, not to this study.
+- **General.** With one voice change per commercial and three pitch differences between the voices (12, 22 and 63 Hz), the bigger difference gave the stronger orienting response (p = 0.004), and a change in the first 20 seconds oriented while a change in the last 20 did not (Potter and others 2019, Communication Research, 41 participants). The information right after the change with the biggest pitch difference was remembered worse (45 against 63 percent), by a second-hand report. So "clearly different pitch" and "second voice early" are backed for attention, not for memory. Potter, Lynch and Krause 2015, cited in version 2 for these two sentences, studies habituation to jingles, sound effects and silence over 40 minutes of radio, not voice changes.
 - **General.** The same sound effect repeated does wear off.
 - **Analogy (video).** Learners gained more from an observed dialogue than from a monologue when the dialogue carried deep "why" and "how" questions before the explanation, or voiced a misconception that was then corrected. One study found no general advantage for dialogue. (Carried over.)
 
-Meaning: two voices help through the voice change and through what the second voice says. Chat adds load. (Rules 13, 14.) Whether two hosts beat one narrator in audio alone is untested.
+Meaning: two voices help through the voice change and through what the second voice says, but the change itself costs the first 3 seconds of what follows. So the first line of a new speaker is a transition, the key point comes after it, and each part has few changes. Chat adds load. (Rules 13, 14.) Whether two hosts beat one narrator in audio alone is untested. The full texts of Potter 2000, 2008 and 2019 are behind a paywall; the abstracts are the primary source here, and the 3-second window comes from authors who cite the full text (Rodero 2019; Xie 2009; Potter 2018).
 
 ## 9. Background sound
 
@@ -149,7 +151,7 @@ In children with ADHD, more movement went with better working-memory performance
 ## Certainty and caveats
 
 - High certainty: segmenting helps; background sound under speech hurts; reading beats listening for self-paced, expository, inferential content; retrieval practice improves learning.
-- Medium certainty: mind wandering is the mechanism of the ADHD comprehension gap (shown for reading); interpolated questions reduce mind wandering; moderate rate and moderate expression are best; a voice change resets attention; modern synthetic voices are acceptable.
+- Medium certainty: mind wandering is the mechanism of the ADHD comprehension gap (shown for reading); interpolated questions reduce mind wandering; moderate rate and moderate expression are best; a voice change resets attention and costs the first seconds after it; modern synthetic voices are acceptable.
 - Low certainty or practice defaults: every number in SKILL.md (160 words per minute, parts of 3 to 4 minutes, pause lengths, 8 to 15 words, stressed words per sentence).
 - Not known: listening versus reading in adult ADHD; best rate for explanatory audio in Brazilian Portuguese; speed tolerance for audio alone; two hosts versus narration in audio; whether prompts reduce mind wandering in ADHD; audio first or text first; fatigue from a synthetic voice over 20 minutes.
 
@@ -207,3 +209,9 @@ Voice and dialogue:
 Standards and practice:
 - Lei 15.263 de 2025, planalto.gov.br. A
 - WCAG 2.2 SC 1.4.7; W3C COGA Making Content Usable; NPR and CDC audio writing guides; Rubin on listenability. C
+
+## Retired
+
+Sentences that left a rule stay here, with the date and the reason. Nothing is deleted.
+
+- Retired on 2026-11-01: "A change of voice pulls attention back, and memory is better for what comes right after it. So place the important sentence right after a voice change, choose two voices with clearly different pitch, and bring the second voice in early." (SKILL.md, Rule 13.) Reason: contradicted by Potter 2000. The abstract reports a momentary cognitive overload after the voice change, with recognition worse right after it and worse with more changes; readers of the full text place the loss in the first 3 seconds. The pitch and timing sentences were kept, now with their real source (Potter and others 2019) and limited to attention. Rule 13 now says the opposite about placement: a transition sentence first, then the key point. See the proposta of 2026-11, change 7, and pesquisa-conferida.md, sections 2.4 and 9.

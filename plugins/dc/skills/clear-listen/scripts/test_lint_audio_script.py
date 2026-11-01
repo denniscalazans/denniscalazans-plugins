@@ -80,6 +80,30 @@ Ou seja, o problema cresce, e não é raro.
 """
 
 
+# A two-host passage in the format of SKILL.md ("Script format"). The [key] line is the
+# second line of the Guia after the voice change, so the check key-after-voice-change passes.
+DIALOGUE = """\
+# Modo: diálogo. Papéis: Guia e Curioso.
+Curioso: Então no-cache significa não guardar?
+Guia: Essa é a dúvida mais comum, e a resposta surpreende.
+Guia: No-cache significa guardar, mas conferir a etiqueta de versão antes de cada uso.
+[pause short]
+Curioso: E quem proíbe guardar?
+Guia: Essa é outra instrução.
+Guia: [key] Quem proíbe guardar é no-store, e no-cache só manda conferir.
+"""
+
+
+def skill_md_dialogue_example():
+    """The dialogue code block that SKILL.md ships under Rule 13."""
+    with open(SKILL_MD, encoding="utf-8") as f:
+        skill = f.read()
+    rule = skill.split("#### Rule 13", 1)[1].split("\n#### ", 1)[0]
+    blocks = re.findall(r"```\n(.*?)```", rule, re.S)
+    assert blocks, "SKILL.md has no dialogue example under Rule 13"
+    return blocks[0]
+
+
 def swap(text, old, new):
     """Replace one line of a fixture, and fail loudly if the line is not there."""
     assert old in text, f"fixture has no line {old!r}"
@@ -233,6 +257,35 @@ class NewChecks(unittest.TestCase):
                      "Nesse tempo, a fatia quase triplicou."):
             text = swap(CLEAN, "Isso não confere.", safe)
             self.assertEqual(only(lint.lint(text), "relative risk"), [], safe)
+
+
+class VoiceChange(unittest.TestCase):
+    """key-after-voice-change, added on 2026-11-01 (proposta, change 7, Rule 13)."""
+
+    def test_17_key_on_the_first_line_after_a_voice_change(self):
+        self.assertEqual(lint.lint(DIALOGUE), [])
+        # Move the [key] onto the first Guia line after the Curioso line: that is the problem.
+        text = swap(DIALOGUE, "Guia: Essa é outra instrução.\nGuia: [key] Quem proíbe guardar é no-store, e no-cache só manda conferir.",
+                    "Guia: [key] Quem proíbe guardar é no-store, e no-cache só manda conferir.")
+        problems = only(lint.lint(text), "key-after-voice-change")
+        self.assertEqual(problems, ["line 6: [key] on the first line after a voice change (Curioso to Guia). "
+                                    "Say a transition sentence first; the listener loses the first three seconds (key-after-voice-change)."])
+        # A pause line between the two speakers does not count as the transition sentence.
+        text = swap(DIALOGUE, "Guia: Essa é outra instrução.", "[pause short]")
+        self.assertEqual(len(only(lint.lint(text), "key-after-voice-change")), 1)
+        # The same speaker going on is not a voice change.
+        text = swap(DIALOGUE, "Guia: Essa é outra instrução.", "Guia: Essa é outra instrução.\nGuia: [key] Ela se chama no-store.")
+        text = swap(text, "Guia: [key] Quem proíbe guardar é no-store, e no-cache só manda conferir.",
+                    "Guia: Quem proíbe guardar é no-store, e no-cache só manda conferir.")
+        self.assertEqual(only(lint.lint(text), "key-after-voice-change"), [])
+        # A narration without speaker labels never triggers it.
+        self.assertEqual(only(lint.lint(CLEAN), "key-after-voice-change"), [])
+
+    def test_17b_skill_md_dialogue_example_passes_the_lint(self):
+        example = skill_md_dialogue_example()
+        self.assertIn("Curioso:", example)
+        self.assertIn("[key]", example)
+        self.assertEqual(lint.lint(example), [])
 
 
 class Cli(unittest.TestCase):
