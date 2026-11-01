@@ -127,6 +127,13 @@ A leitura cega está aberta em duas páginas, listadas na seção 4 de `experime
 A próxima sessão lê as respostas pela ferramenta de dados do artefato, abre o mapa, e escreve a seção 7 de `experimento.md`.
 Só depois disso o PR #81 pode entrar no main.
 
+## 3.7 Estado em 2 de novembro de 2026: adendo 2 incorporado
+
+O adendo 2 (`adendos/2026-11-01-visuais-e-regras-do-projeto.md`) entrou por merge nos dois branches.
+A proposta ganhou a mudança 20 (Regra 7, nunca desenhar uma sequência) e a mudança 21 (as regras do Projeto que são método).
+As duas esperam a aprovação do Dennis.
+A seção 7 da proposta dá o veredito das 14 regras, e a linha R7c do inventário mudou para "muda".
+
 ## 4. O que já está decidido
 
 - A clear-listen entra no plugin `dc`, ao lado da clear-read. O Dennis confirmou em 1 de novembro, e ela já está no `plugin.json`, no README e no CLAUDE.md.
