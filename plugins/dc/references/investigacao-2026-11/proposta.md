@@ -21,7 +21,7 @@ Os testes antigos passam antes e depois de cada commit.
 São 98 testes do lint da clear-read, o self-test do Mermaid, e os 5 trechos do golden set.
 Nenhuma regra se apaga; o que cai vira `retired` com nota.
 
-Ponto-chave: 17 mudanças, em três prioridades, cada uma com um teste que falha hoje.
+Ponto-chave: 17 mudanças planejadas, em três prioridades, cada uma com um teste que falha hoje; a seção 6 diz o que entrou.
 
 ## 1. As prioridades
 
@@ -380,3 +380,25 @@ Ponto-chave: testes primeiro, regras P1 (antes do experimento) depois, e a conve
 - Se a Regra 9 (tom) mantém "sem personalidade" apesar de Ginns 2013, ou abre para falar direto com o leitor.
 
 Ponto-chave: o plano tem 16 itens, e a decisão do Dennis é por item, não por linha.
+
+## 6. O que a implementação entregou, em 1 de novembro
+
+As 15 mudanças aprovadas estão no branch `investigacao-2026-11-fase-e`, um commit por mudança, mais quatro commits que a implementação pediu.
+Dois fluxos rodaram em paralelo, um por skill, e um verificador independente conferiu cada commit: o teste falha antes, passa depois, e nada foi apagado.
+Dois leitores frios leram cada skill inteira no fim e apontaram problemas, que viraram a mudança 18.
+
+| Mudança | O que entrou de fato | Desvio do plano |
+|---|---|---|
+| 1 a 15 | Como a seção 2 descreve, com 11 testes a mais na clear-read e 46 na clear-listen | A mudança 2 ganhou o segundo aviso de lint (`authority-without-name`) |
+| 6b (nova) | Exemplos, Regras 16 a 21, os cinco fatos sobre a escuta e as seis regras de intents saíram do corpo da clear-listen para `references/` | A meta de 3.600 palavras não foi atingida: o corpo ficou em 4.798 palavras, vindo de 5.698 |
+| 17 (nova) | Atribuição no fio, estilo BBC, nas duas skills | Nenhum |
+| 18 (nova) | As correções dos leitores frios: sexto rótulo fixo ("O que saber antes de ler"), frases longas, contradições entre seções novas e antigas | Nenhum |
+| 18b (nova) | As listas do lint da clear-read foram para `references/lint.md`, e o corpo ganhou um teste de tamanho | O corpo da clear-read ficou em 6.272 palavras, vindo de 5.129, porque as 15 mudanças acrescentaram texto |
+| 15 | Fonte dos evals dentro da skill, como o Dennis decidiu | A ferramenta `claude plugin eval` recusa evals dentro de `skills/`. As cópias que ela lê ficam em `plugins/dc/evals/`, geradas por script. O `.gitignore` mudou para deixar as duas pastas entrarem |
+
+O que fica para o Dennis decidir depois do PR:
+
+- O que mais sai do corpo das skills para chegar perto de 3.600 palavras. Os candidatos estão nos comentários dos testes de tamanho (`SkillBodySize`) das duas suítes.
+- Se a Regra 3 da clear-listen muda (mudança 16), depois do experimento.
+
+Ponto-chave: 19 commits; a skill de áudio ficou menor, a de texto ficou maior, e a meta de tamanho está registrada como pendente.

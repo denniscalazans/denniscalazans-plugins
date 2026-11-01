@@ -16,7 +16,7 @@ Ponto-chave: todas as perguntas estão respondidas, inclusive a aprovação do p
 
 | Pergunta | Resposta | O que muda |
 |---|---|---|
-| 8. Onde moram os evals | `tests/evals/` dentro de cada skill, por exemplo `plugins/dc/skills/clear-read/tests/evals/evals.json` | O `.gitignore` não muda. A Fase E escreve os evals nesse caminho e documenta como o `claude plugin eval` os acha |
+| 8. Onde moram os evals | `tests/evals/` dentro de cada skill, por exemplo `plugins/dc/skills/clear-read/tests/evals/evals.json` | A fonte dos evals ficou nesse caminho. A ferramenta `claude plugin eval` recusa evals dentro de `skills/`, então um script gera as cópias que ela lê em `plugins/dc/evals/`, e o `.gitignore` mudou para deixar as duas pastas entrarem |
 | Nova. O perfil Projeto tem Python e ffmpeg? | "Não sei. Pesquise." A pesquisa está na seção 2 | O perfil Projeto passa a ter Python e, com alta probabilidade, ffmpeg. A matriz da Fase B muda em três linhas, e `lacos.md` ganha uma errata |
 | 2. Terceira skill ou seção | Voz na clear-listen, texto fica na clear-read. O modo conversa vira a seção "Conversa por voz" no topo da clear-listen. O chat de texto continua com a clear-read, que só ganha a frase "papel antes do nome" | Confirma a recomendação da seção 6 de `lacos.md`. A renderização por motor da clear-listen precisa ir para `references/` para abrir espaço |
 | 6. Sinalização na fala: toda contagem trava, ou só antes do conteúdo? | "Não sei, quero sentir no experimento" | A Regra 3 da clear-listen fica como está até a Fase D. A Fase D gera as duas formas e o Dennis ouve às cegas |
