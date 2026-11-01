@@ -1017,6 +1017,8 @@ Assistentes de voz e TDAH:
 - Skill de inglês técnico simplificado no skillsmp.com: https://skillsmp.com/creators/tw0po1nt/fshttp.studio/agents-skills-simplified-technical-english
 - ISO 24495-1:2023, linguagem simples, parte 1: https://www.iso.org/standard/78907.html
 - DIN 8581-1, maio de 2024, a aplicação alemã da ISO: https://www.dinmedia.de/en/standard/din-8581-1/377238273
+- BBC News Styleguide (John Allen, 2003), seção "Attribution first", página 22: http://www.peteburns.com/downloads/BBC%20news%20styleguide.pdf
+- BBC Editorial Guidelines 2025, seção 3 (Accuracy), itens 3.4.4 e 3.4.6: https://www.bbc.co.uk/editorialguidelines/documents/section-3-accuracy.pdf
 
 ### 13.4 Do próprio Projeto
 

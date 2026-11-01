@@ -322,6 +322,30 @@ As 12 perguntas do perfil e a escada de degradação cobrem todos, e o que falta
 | edge-tts (GPL) | Só velocidade, volume e tom; SSML próprio bloqueado pela Microsoft | Depende do Azure | Render plain |
 | Coqui XTTS-v2 | Nenhuma marca | Português na lista | Render plain |
 
+### 5.5 A atribuição no estilo da BBC
+
+O Dennis pediu, em 1 de novembro, que a atribuição (quem disse, de onde vem) entre no fio do texto, como a BBC faz.
+Não como uma nota depois da frase ("o pesquisador é Fulano"), e nunca vaga ("um pesquisador mostrou", "segundo a pesquisa").
+A BBC tem isso escrito em dois lugares, e os dois foram lidos na fonte.
+
+O guia de estilo de redação da BBC News, escrito por John Allen em 2003, tem uma seção chamada "Attribution first" (página 22).
+Ela diz: quem fala em rádio e TV deve sempre identificar a fonte antes de fazer a afirmação, "diga quem antes de dizer o quê".
+O motivo: o ouvinte não consegue julgar a afirmação até saber quem a faz, ou se assusta com ela e perde a atribuição.
+E o guia marca a exceção: para o olho (o Ceefax, o teletexto da BBC), a ordem inverte, afirmação primeiro e atribuição depois.
+
+As Diretrizes Editoriais da BBC, na seção de precisão (item 3.4.4 da edição de 2025), dizem: uma fonte nomeada e declarada é sempre preferível.
+E o item 3.4.6: o que não foi possível verificar deve ser dito e atribuído.
+
+O que isso muda nas skills:
+
+| Skill | Regra | O que entra |
+|---|---|---|
+| clear-listen | Regra 13 (diálogo) e a conversa por voz | Atribuição antes da afirmação: "A psicóloga Fulana, da Universidade de Oxford, encontrou que...". É a regra do ouvido |
+| clear-read | Regra 5 (papel antes do nome) | A afirmação pode vir primeiro, mas a atribuição completa vem na mesma frase ou na seguinte, com papel, nome e instituição no fio, nunca como nota solta |
+| As duas | Regra nova de atribuição vaga | "Pesquisas mostram", "segundo especialistas" e "um pesquisador" sem nome são proibidos. O lint `authority-without-name` pega |
+
+Ponto-chave: a BBC manda dizer quem antes do quê no ouvido, e o quê e depois quem no olho, e sempre com nome.
+
 Ponto-chave: as skills que existem confirmam a divisão de trabalho, a ISO já tem adoção brasileira, e os outros motores cabem na escada da clear-listen.
 
 ## 6. O que muda no inventário da Fase A
