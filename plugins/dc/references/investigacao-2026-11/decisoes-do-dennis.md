@@ -10,7 +10,7 @@ A Fase B acrescentou duas, e a conversa acrescentou mais uma.
 Este arquivo registra o que o Dennis respondeu em 1 de novembro de 2026, e o que cada resposta muda.
 Onde ele pediu ajuda em vez de decidir, o arquivo registra a ajuda dada e a escolha final.
 
-Ponto-chave: dez perguntas, nove respondidas, e uma (o perfil Projeto) respondida por pesquisa.
+Ponto-chave: todas as perguntas estão respondidas, inclusive a aprovação do plano da Fase E, e uma (o perfil Projeto) foi respondida por pesquisa.
 
 ## 1. As respostas
 
@@ -29,6 +29,9 @@ Ponto-chave: dez perguntas, nove respondidas, e uma (o perfil Projeto) respondid
 | Nova. Registrar a clear-listen no plugin | Sim, neste branch | Feito: a skill entrou no README, no CLAUDE.md e nas palavras-chave do `plugin.json` |
 | 4. Ordem das fases | Resolvida pelo andamento: A, B e C rodaram em sequência no mesmo dia | Nada muda |
 | Nova. "Um pesquisador mostrou" basta? | Não. Papel sem nome é autoridade vaga, como "o melhor restaurante, segundo a pesquisa". O papel vem primeiro e o nome e a fonte vêm logo depois | A mudança 2 da proposta ganha a segunda metade da regra e um segundo aviso de lint, `authority-without-name` |
+| Nova. O plano da Fase E entra? | Sim, os 15 consertos; a mudança 16 (contagem antes da lista) espera a Fase D. Respondido em 1 de novembro, à noite, depois de uma explicação sem códigos | A implementação roda no branch filho `investigacao-2026-11-fase-e`, um commit por mudança |
+| Nova. O parágrafo do narrador entra onde? | Nas duas skills, texto e áudio | A mudança 13 entra na clear-read e na clear-listen |
+| Nova. A Regra 9 (tom) abre para falar com o leitor? | Sim. "Sem personalidade" sai; fica "sem enfeite que não sirva a um conceito" e "como num e-mail de trabalho a um colega" | A mudança 14 segue a primeira opção da seção 5 da proposta |
 | Nova. As skills guardam de onde vêm as regras? | Sim. O Dennis quer que a skill diga que contém as referências e consiga responder "de onde vem" e buscar mais, sem carregar todos os estudos | A Fase E ganha um PR "research-basis conferido": o mapa regra, afirmação, veredito, fonte, certeza e data de conferência vira tabela no `research-basis.md` das duas skills; o `SKILL.md` ganha uma linha para o caso "o leitor pergunta por quê"; a história da composição fica em `investigacao-2026-11/` com um ponteiro |
 
 ## 2. O perfil Projeto, pela pesquisa
