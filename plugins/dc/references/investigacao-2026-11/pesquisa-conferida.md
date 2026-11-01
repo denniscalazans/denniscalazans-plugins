@@ -357,10 +357,10 @@ Quatro mudam o veredito de fato.
 
 - A contagem nua antes do conteúdo, em escuta: nenhum estudo (pergunta 1 da seção 7.3).
 - O nome próprio antes do papel: só por analogia com a catáfora (pergunta 7).
-- Ouvir contra ler sob distração em adultos com TDAH: a seção 9 diz se a busca achou algo (pergunta 6).
+- Ouvir contra ler sob distração em adultos com TDAH: buscado em 25 resumos e não achado (pergunta 6, seção 9).
 - A velocidade de fala explicativa em português brasileiro que este leitor tolera (pergunta 5).
 - A pausa de 4 a 6 segundos depois de uma pergunta: padrão de prática, sem estudo.
-- "Um número por frase" contra "até dois": a seção 9 diz.
+- "Um número por frase" contra "até dois": nenhum estudo fixa o número; é prática de rádio (seção 9).
 - Diagramas, interativos e sobrecarga em adultos com TDAH: continua sem estudo, como a pesquisa consolidada já dizia.
 
 ## 8. Correções já aplicadas e as que ficam para a Fase E
@@ -389,6 +389,28 @@ Ponto-chave: cinco correções já estão no guia, e as outras entram com os PRs
 
 ## 9. Rodada de fechamento
 
-Em andamento.
-Dez agentes abrem os textos completos de Potter 2000, Potter 2008, Potter 2019, Lorch 2012 e Chen e Lorch 2018.
-Mais Michalek 2014, Rodero 2017, a literatura de exemplos resolvidos, números por frase, e as perguntas 6 e 7.
+Dez agentes cobriram as lacunas que o crítico apontou.
+Os textos completos de Potter 2000, Potter 2008 e Potter 2019 continuam fechados (paywall, e a cópia de 2000 no ResearchGate é um scan ilegível).
+Para esses três, o resumo é a fonte primária, e a janela em segundos vem de quem citou o artigo depois de lê-lo.
+
+| Item | Veredito | O que a rodada achou | Consequência |
+|---|---|---|---|
+| Potter 2000: a memória melhora logo depois da troca de voz | ❌ | O resumo diz "momentary cognitive overload", pior quanto mais trocas. Quem leu o texto situa a queda nos primeiros 3 segundos, com recuperação depois (Rodero 2019; Xie 2009; Potter 2018). A orientação cardíaca dura de 6 a 10 segundos | A R13b (a segunda voz) passa a dizer: a troca chama a atenção, mas o ouvinte perde os primeiros 3 segundos; abra com uma frase descartável e só então dê a informação; use poucas trocas |
+| Potter, Lang e Bolls 2008: nove recursos e reconhecimento | 🟡 | O resumo diz que os recursos, como categoria, melhoram o reconhecimento do que vem logo depois. A lista dos nove não está no resumo; o estudo-irmão de 1997 (ERIC ED415554) a traz, com a troca de voz entre eles | Não citar 2008 para "queda depois da troca"; citar 1997 para a lista; sem tamanho de efeito nem janela para 2008 |
+| Potter e colegas 2019: diferença de tom e troca cedo | 🟡 | 41 participantes, uma troca por comercial, três diferenças de tom (12, 22 e 63 Hz). Maior diferença, orientação mais forte (p = 0,004). A troca nos primeiros 20 segundos orientou; nos últimos 20, não. Mas a informação logo depois da troca de maior diferença foi lembrada pior (45% contra 63%), segundo relato de segunda mão | As duas frases da R13b ganham fonte, limitadas à atenção. "Dê alguns segundos entre a troca e a informação-chave" entra junto |
+| Lorch 2012: o que a prévia dizia | 🟡 (texto completo do companheiro de 2013) | As prévias nomeiam o tópico e sua posição: "Yet another problem we face... is environmental damage", "One of the environmental problems is air pollution". A enumeração é só enquadramento; nunca um número isolado | A hipótese da Fase D fica "prévia que nomeia o tópico", não "contagem que entrega conteúdo". O exemplo "esta seção cobre três causas" sai do guia |
+| Chen e Lorch 2018: "cortou as pausas pela metade" | 🟡 (tese de 2015, texto completo) | Com troca de voz nos títulos: 5,73 pausas contra 12,48 e 13,27 nos outros títulos; mas não menos do que sem título (7,15), efeito pequeno (η²p = 0,037, p perto de 0,057), e sumiu no experimento 2 | O número tem fonte, com três qualificadores; a parte sólida é que títulos audíveis aumentaram as ideias anotadas (η²p = 0,32), sem diferença entre os tipos |
+| Michalek 2014 | 🟡 (texto completo) | 25 adultos com TDAH contra 38; repetição de frases em balbucio; com só áudio o grupo TDAH não diferiu; a perda veio quando um fluxo a mais (o rosto) entrou sob ruído. O título que circulava estava errado | Apoio indireto à parte "nenhum fluxo a mais" da R11 (só voz); não apoia compreensão. Título correto: "Effects of noise and audiovisual cues on speech processing in adults with and without ADHD" |
+| Números por frase | ⚪ | Nenhum estudo fixa um número. O mais perto é Fridman 2022: em consultas médicas, o conhecimento cai quando palavras quantitativas passam de 4% da conversa. A origem da regra é prática de rádio (NPR Training) | A R7 (poucos números) marca "um por frase" como prática, certeza baixa; a pesquisa consolidada 8.4 passa a "1, ou 2 quando a comparação exige"; vira parâmetro da Fase D |
+| Exemplos resolvidos (clear-read R3) | 🟡 | Sweller, van Merriënboer e Paas 2019 (revisão, sem tamanho de efeito); Barbieri e colegas 2023, meta-análise em matemática, 55 estudos, g = 0,48. Exemplos corretos sozinhos rendem mais do que corretos misturados com incorretos | Apoio indireto à R3: o "fraco" deve ficar curto e o "forte" carregar o peso; o efeito cai em leitores experientes |
+| Pergunta 6: ouvir ou ler sob distração, TDAH adulto | buscado e não achado | 25 resumos lidos no Consensus e no Valency. Vizinhos: Cain e Bignell 2014 (crianças, sem distração), Socher 2026 (crianças, com ruído, sem TDAH), Lemel 2023 (adultos com TDAH, só escuta) | A pergunta fica aberta, agora com a busca registrada |
+| Pergunta 7: nome antes do papel | buscado e não achado | Evidência indireta: nomes desconhecidos prejudicam a escuta em segunda língua (Kobeleva 2012, 110 participantes); um nome cuja forma indica a categoria custa menos (Kobeleva 2008) | Favorece dar o papel junto com o nome; continua "razoável, não provado" |
+| Rodero, Potter e Prieto 2017 | 🟡 (texto completo) | 51 ouvintes, uma voz masculina, quatro padrões de entonação. Só o padrão agudo-depois-grave melhorou recall (21,5%), e o outro padrão variado foi o pior; os dois variados venceram em reconhecimento; a frequência cardíaca não diferiu | A R10 (expressão) mantém "variada" com um limite: variação dentro da frase, não qualquer variação; e perde "atenção" como medida |
+
+Dois pontos fecham a rodada.
+A R13b (a segunda voz) é a regra que mais muda.
+A troca de voz vale pela orientação e custa 3 segundos de memória, então ela pede poucas trocas e uma frase de transição antes da informação-chave.
+E a hipótese da Fase D muda de nome.
+Não é "contagem que entrega conteúdo", é "prévia que nomeia o tópico", porque é isso que as fontes testaram.
+
+Ponto-chave: três textos completos continuam fechados, e mesmo pelos resumos a R13b precisa ser reescrita e a hipótese da contagem precisa ser renomeada.
