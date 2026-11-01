@@ -409,7 +409,9 @@ Para esses três, o resumo é a fonte primária, e a janela em segundos vem de q
 
 Dois pontos fecham a rodada.
 A R13b (a segunda voz) é a regra que mais muda.
-A troca de voz vale pela orientação e custa 3 segundos de memória, então ela pede poucas trocas e uma frase de transição antes da informação-chave.
+A troca de voz vale pela orientação e custa 3 segundos de memória.
+Então ela pede poucas trocas e uma frase de transição antes da informação-chave.
+
 E a hipótese da Fase D muda de nome.
 Não é "contagem que entrega conteúdo", é "prévia que nomeia o tópico", porque é isso que as fontes testaram.
 
