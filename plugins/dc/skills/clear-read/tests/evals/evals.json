@@ -59,19 +59,19 @@
     "failure_with_current_skill": "Expected from the skill text; this eval has not been run here. The current section \"Who you are writing for\" describes only the reader and says nothing about who writes. Rule 1 asks for headings, numbered steps and \"Key point:\" lines, and Phase 2 asks for a narrative arc, so the model has structure as a value and no instruction to keep the structure under the prose. A prompt that hands it four causes comes out with the skeleton announced: an opening such as \"Existem quatro causas principais\", causes introduced as \"Primeira:\", \"Em segundo lugar\", and transitions such as \"Vamos agora ao último motivo\". Finding 4 of the conversation with Dennis (the basis of change 13 in proposta.md) named this pattern: the text reads like an outline being read aloud, not like someone telling a friend what happened. The limit is also missing: without the Mar, Li, Nguyen and Ta (2021) finding that narrative helps memory more than comprehension, a run that does adopt a story voice may tell the environment-variable failure as an anecdote and skip the step by step the prompt asks for."
   },
   {
-    "id": "clear-read-realistic-http-cache-inside-field",
+    "id": "clear-read-realistic-http-cache-with-signal",
     "skill": "clear-read",
-    "prompt": "explique como um cache HTTP decide que a cópia que ele guardou ainda vale. Sou dev, pode ir fundo.",
+    "prompt": "já sei o que é um cache HTTP. explique como ele decide que a cópia que guardou ainda vale, pode ir fundo.",
     "expected_behavior": [
       "The text is in Brazilian Portuguese and speaks to the reader as \"você\"",
       "Every fixed label is in Portuguese: \"Ponto-chave:\", \"Como ler:\", \"Onde a analogia falha:\"; no \"Key point:\"",
-      "The basics (what a cache is, what HTTP is) take one sentence or one collapsed block; there is no section \"O que saber antes de ler\"",
+      "The request carries the signal \"já sei\", so the basics take one sentence or one collapsed block and there is no section \"O que saber antes de ler\"",
       "Each section opens with its point and ends with a \"Ponto-chave:\" line",
       "No sentence points back (\"como vimos\", \"acima\"); no bare label (\"P1\") without its name",
       "Every study or source named comes with role, name and place in the same sentence, never as \"pesquisas mostram\"",
       "No dash joins two ideas; no sentence over 25 words"
     ],
-    "failure_with_current_skill": "The pre-Phase-E skill gave English labels inside Portuguese text in about one of three runs and sometimes opened with a long basics section."
+    "failure_with_current_skill": "Before change 22 the skill cut the basics for any IT topic, signal or not; this case keeps the cut where the reader asked for it."
   },
   {
     "id": "clear-read-realistic-generic-drug-outside-field",
@@ -162,5 +162,17 @@
       "No new facts about the deploy are invented"
     ],
     "failure_with_current_skill": "Before change 21j the skill kept the ironic sentences nearly as they were in most runs, so the tone stayed implicit."
+  },
+  {
+    "id": "clear-read-change-22-it-topic-gets-the-scaffold-by-default",
+    "skill": "clear-read",
+    "prompt": "explique como um cache HTTP decide que a cópia que ele guardou ainda vale",
+    "expected_behavior": [
+      "The text opens with the section \"O que saber antes de ler\", because the request carries no signal that the reader knows the basics",
+      "That section teaches what a cache is and what an HTTP response header is, in plain words, before the first rule",
+      "The field of the reader (IT) does not shorten the scaffold",
+      "The rest of the text goes to the mechanism (validation by ETag and max-age) step by step"
+    ],
+    "failure_with_current_skill": "Before change 22 the skill treated any IT topic as inside the reader's field and cut the basics; the owner's blind reading of 1 November 2026 found a DuckDB text that \"assumed I knew everything\"."
   }
 ]

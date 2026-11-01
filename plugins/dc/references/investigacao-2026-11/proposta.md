@@ -52,6 +52,7 @@ As prioridades são três, e cada uma diz quando a mudança entra.
 | 17 | Atribuição no fio, como a BBC: papel, nome e instituição na frase, nunca em nota solta | clear-read e clear-listen | P1 |
 | 20 | Regra 7: nunca desenhar uma sequência, SVG inline para grafos, a tabela de forma por conteúdo (o adendo 2 a chamou de mudança 18) | clear-read | P2, aprovada e feita |
 | 21 | As dez regras do Projeto que são método e não estão na skill (seção 7) | clear-read | P2, aprovada e feita |
+| 22 | Regra 8: andaime completo por padrão, inclusive em temas de TI; o corte do básico só com sinal explícito no pedido | clear-read | P1, pedida pelo Dennis na leitura cega e feita |
 
 Fora das skills, mas na proposta: os nomes das seções do Projeto (seção 3) e a correção das instruções sobre o Projeto rodar o lint.
 
@@ -381,6 +382,21 @@ Cada uma vira uma frase ou um template literal na regra que a seção 7 nomeia, 
 **O teste que falha hoje.** Um por item, na seção 7.
 
 **Evidência.** As fontes nomeadas na seção 7, todas já conferidas na Fase C ou na pesquisa consolidada do Projeto.
+
+### 22. Regra 8: andaime completo por padrão (P1: pedida em 2 de novembro)
+
+**De onde vem.** A leitura cega do Dennis, em 1 de novembro.
+Um dos textos de DuckDB "assumiu que eu sei tudo", e ele disse que quer usar a clear-read para aprender sobre tudo, inclusive temas de TI que não domina.
+
+**O que muda.** A Regra 8 deixa de usar a área do leitor como sinal do que ele sabe.
+O padrão vira o andaime completo, com a seção "O que saber antes de ler", em qualquer tema.
+O básico só encolhe para uma frase ou um bloco colapsado quando o pedido traz um sinal explícito ("já sei o que é um cache HTTP", "uso DuckDB todo dia").
+Um nome de área sozinho ("é para um dev") não é sinal.
+
+**O teste que falha hoje.** O Test 19 de `tests.md` troca a rodada 1: o tema de TI sem sinal passa a ter a seção, e uma rodada nova com o sinal não tem.
+O eval do cache HTTP ganhou o sinal no pedido, e um eval novo cobre o padrão sem sinal.
+
+**Evidência.** A própria leitura cega (`experimento.md`, seção 7). Kalyuga 2003 continua valendo para quem declara que sabe o básico, e o bloco colapsado é o meio-termo.
 
 Ponto-chave: toda mudança tem um teste que falha hoje, e a única sem teste pronto é a 16, que espera o experimento.
 

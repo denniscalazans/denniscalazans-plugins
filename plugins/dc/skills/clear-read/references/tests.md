@@ -286,33 +286,25 @@ Fail: one mark is missing. This is a blocker, not a warning, under rule 4 of the
 
 Added on 1 November 2026, by the investigation's Phase A. The clear-listen has no golden passage yet, because no audio script is in the repo.
 
-## Test 19: Depth calibrated to the reader's field
+## Test 19: Depth calibrated to what the reader knows about the topic
 
-What it stresses: the three cases of Rule 8, which decide how much scaffold a text gets, and the two rules of Rule 9.
+What it stresses: Rule 8, the full scaffold by default and the cut only on an explicit signal, and the two rules of Rule 9.
 
 How to run: give the skill the same request shape three times, "explique como X prova que Y", in Portuguese.
 
-1. An IT topic, with the reader of SKILL.md (an IT professional): "explique como um cache HTTP decide que a cópia ainda vale".
-2. A health topic, with the same reader: "explique como um medicamento genérico prova que é equivalente ao de marca".
-3. The IT topic again, written for another reader with no field named: "explique como um cache HTTP decide que a cópia ainda vale, é para minha irmã".
+1. An IT topic with no signal about the reader's knowledge: "explique como um cache HTTP decide que a cópia ainda vale".
+2. The same IT topic with the signal: "já sei o que é um cache HTTP; explique como ele decide que a cópia ainda vale".
+3. A health topic: "explique como um medicamento genérico prova que é equivalente ao de marca".
 
-Pass: the IT text (run 1) gives the basics, what a cache is and what HTTP is, in one sentence or in one collapsed block, and has no section "O que saber antes de ler". The health text (run 2) opens with the section "O que saber antes de ler", which names the key terms (princípio ativo, bioequivalência) and the background before the first rule about how the proof works. The IT text for another reader with no field named (run 3) has the section too. In all three, the text speaks to the reader as "você", and no sentence is a curiosity that teaches nothing about a main idea.
+Pass: runs 1 and 3 open with the section "O que saber antes de ler", which names the key terms and the background before the first rule. Run 2 has no such section: the basics take one sentence or one collapsed block, and the text moves on. In all three, the text speaks to the reader as "você", and no sentence is a curiosity that teaches nothing about a main idea.
 
-Fail: the IT text spends a section on what a cache is; or the health text jumps to "bioequivalência" with no section before it; or runs 1 and 2 carry the same amount of scaffold; or run 3 skips the section because the model guessed the other reader's field; or a text avoids "você" and speaks of "o usuário" instead.
+Fail: run 1 skips the section because the topic is IT; run 2 spends a section on what a cache is; run 3 jumps to "bioequivalência" with no section before it; a text avoids "você" and speaks of "o usuário".
 
-How to check fast: `grep -c "O que saber antes de ler"` prints 0 on run 1 and 1 on runs 2 and 3. The "você" check and the curiosity check need a human read.
+How to check fast: `grep -c "O que saber antes de ler"` prints 1 on runs 1 and 3 and 0 on run 2. The "você" check and the curiosity check need a human read.
 
 Also check attribution (Rule 5, change 17): every study or researcher the text names comes with role, name and place woven into one sentence, never as a note after the claim ("O estudo é de...") and never bare ("pesquisas mostram"). `grep -c "O estudo é de\|O pesquisador é"` prints 0.
 
-Added on 1 November 2026, by change 14 of the investigation (`proposta.md`, section 2, item 14); the attribution check by change 17.
-
-## How to read a failure, continued
-
-- Test 14 gaps: the idea lives only in a visual or a table. Add one prose sentence; do not remove the visual.
-- Test 15 slips: check the two-tier rule in Rule 6, and the lint's `backward-reference` and `bare-label` word lists in `LANG_PACKS`.
-- Test 16 slips: check the analogy paragraph in Rule 5, and the `analogy` and `analogy_limit` lists in `LANG_PACKS`.
-- Test 17 slips: check the language pack doc in `references/` and its mirror in `LANG_PACKS` (`known_acronyms`, `hidden_verb`, `intro_words`, `clause_openers`). If the standard check slips, the pack lost its opening section on ISO 24495-1.
-- Test 19 slips: check the three cases in Rule 8 (inside the field, outside it, no reader context) and the two rules of Rule 9. If the section name differs between runs, the skill lost the fixed label "O que saber antes de ler" in Rule 8.
+Added on 1 November 2026, by change 14 of the investigation (`proposta.md`, section 2, item 14); the attribution check by change 17; the default flipped to the full scaffold on 2 November 2026 by change 22, after the owner's blind reading of the DuckDB texts.
 
 ## Test 20: The position marker in a long text
 
