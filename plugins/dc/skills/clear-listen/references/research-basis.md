@@ -29,7 +29,7 @@ Version 2, 8 October 2026. Version 1 came from about 20 searches and abstracts o
 - Rule 12 (one constant voice per role, measure the rate): text-to-speech and learning studies; voice-quality studies.
 - Rule 13 (a second voice must earn its place; a voice change costs 3 seconds): vicarious learning; deep questions; misconceptions; orienting to voice changes and the recognition drop right after them.
 - Rule 14 (novelty from form, rotated): seductive details; orienting and habituation.
-- Rule 15 (land the ending, short review): early mind wandering; re-watching study.
+- Rule 15 (land the ending, review close to the moment of use): early mind wandering; the re-watching study (Murphy 2022), which tested a second full viewing and never a summary.
 
 ## 1. Reading versus listening
 
@@ -94,6 +94,8 @@ Correction to version 1: it proposed 165 to 180 and called 150 "probably too slo
 
 **Playback speed, general.** A meta-analysis of 24 studies found a small cost at 1.5 times speed and below, and a larger cost at 2 times. All of it used video with visuals that back up missed speech, so audio alone is probably less tolerant. Letting learners control speed goes with less mind wandering (correlational).
 
+**Re-watching, general.** The study behind the speed finding (Murphy, Hoover, Agadzhanyan, Kuehn and Castel 2022, 231 UCLA students, recorded lectures of 13 to 15 minutes with slides) also compared ways of reviewing before the test. The condition that won was a second full viewing at 2 times speed right before the test (d = 0.54). No condition used a summary. Correction to version 2, checked on 2026-11-01 (pesquisa-conferida.md, section 2.5): version 2 cited this study for "a summary of 2 to 4 minutes works better than a second full listen". The study never tested a summary, and the format it did test, the full re-listen, won. That sentence is now retired (see "Retired" below). What survives is the timing: a review close to the moment of use helps. The format of the review (short summary or re-listen) is untested, and the listener settles it himself. (Rule 15.)
+
 **Pauses.** No controlled study of pause length in explanatory audio was found. Pause values in SKILL.md are practice defaults.
 
 **Not known:** the best rate for a listener with ADHD. Claims that "most people with ADHD prefer 1.5 times" come from vendor sites, not from studies.
@@ -154,8 +156,8 @@ In children with ADHD, more movement went with better working-memory performance
 
 - High certainty: segmenting helps; background sound under speech hurts; reading beats listening for self-paced, expository, inferential content; retrieval practice improves learning.
 - Medium certainty: mind wandering is the mechanism of the ADHD comprehension gap (shown for reading); a closing recall of the whole text beats recall by section in students with ADHD (one study, in reading); interpolated questions reduce mind wandering; moderate rate and moderate expression are best; a voice change resets attention and costs the first seconds after it; modern synthetic voices are acceptable.
-- Low certainty or practice defaults: every number in SKILL.md (160 words per minute, parts of 3 to 4 minutes, pause lengths, 8 to 15 words, stressed words per sentence); the recall question per part, which lost to whole-text recall in Stern and Halamish 2023.
-- Not known: listening versus reading in adult ADHD; best rate for explanatory audio in Brazilian Portuguese; speed tolerance for audio alone; two hosts versus narration in audio; whether prompts reduce mind wandering in ADHD; audio first or text first; fatigue from a synthetic voice over 20 minutes.
+- Low certainty or practice defaults: every number in SKILL.md (160 words per minute, parts of 3 to 4 minutes, pause lengths, 8 to 15 words, stressed words per sentence); the recall question per part, which lost to whole-text recall in Stern and Halamish 2023; a review close to the moment of use (one study, video lectures with slides, Murphy 2022).
+- Not known: listening versus reading in adult ADHD; best rate for explanatory audio in Brazilian Portuguese; speed tolerance for audio alone; two hosts versus narration in audio; whether prompts reduce mind wandering in ADHD; audio first or text first; fatigue from a synthetic voice over 20 minutes; the format of a later review (short summary or re-listen).
 
 ## Tests to run with the real listener
 
@@ -218,3 +220,4 @@ Standards and practice:
 Sentences that left a rule stay here, with the date and the reason. Nothing is deleted.
 
 - Retired on 2026-11-01: "A change of voice pulls attention back, and memory is better for what comes right after it. So place the important sentence right after a voice change, choose two voices with clearly different pitch, and bring the second voice in early." (SKILL.md, Rule 13.) Reason: contradicted by Potter 2000. The abstract reports a momentary cognitive overload after the voice change, with recognition worse right after it and worse with more changes; readers of the full text place the loss in the first 3 seconds. The pitch and timing sentences were kept, now with their real source (Potter and others 2019) and limited to attention. Rule 13 now says the opposite about placement: a transition sentence first, then the key point. See the proposta of 2026-11, change 7, and pesquisa-conferida.md, sections 2.4 and 9.
+- Retired on 2026-11-01: "For later review, a separate summary of 2 to 4 minutes, heard close to when the knowledge is needed, works better than a second full listen at high speed." (SKILL.md, Rule 15.) Reason: the source, Murphy, Hoover, Agadzhanyan, Kuehn and Castel 2022, never tested a summary. The condition that won was a second full viewing at 2 times speed right before the test (d = 0.54), so the study says the opposite about the one format it tested. Rule 15 now says: reviewing close to the moment of use helps, and nobody has tested the format of the review (short summary or re-listen). See the proposta of 2026-11, change 8, and pesquisa-conferida.md, sections 2.5 and 3.

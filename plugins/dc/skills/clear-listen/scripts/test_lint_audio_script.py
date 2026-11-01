@@ -512,6 +512,33 @@ class ConversationMode(unittest.TestCase):
             self.assertIn(phrase, section)
 
 
+class ReviewSentence(unittest.TestCase):
+    """Rule 15's review sentence, rewritten on 2026-11-01 (proposta, change 8).
+    Murphy 2022 never tested a summary; a second full listen at 2x right before
+    the test won. The old claim leaves the rule and stays under Retired."""
+
+    RESEARCH_BASIS_MD = os.path.join(HERE, "..", "references", "research-basis.md")
+    OLD_CLAIM = "works better than a second full listen"
+
+    def test_28_skill_md_rule_15_review_sentence(self):
+        with open(SKILL_MD, encoding="utf-8") as f:
+            skill = f.read()
+        rule = skill.split("#### Rule 15", 1)[1].split("\n#### ", 1)[0]
+        self.assertNotIn(self.OLD_CLAIM, rule, "Rule 15 still says a summary beats a second listen")
+        self.assertNotIn("summary of 2 to 4 minutes", rule)
+        self.assertIn("close to the moment of use", rule, "Rule 15 must keep the part that survived: review close to use")
+        self.assertIn("Nobody has tested the format of the review", rule)
+        self.assertIn("Murphy", rule, "Rule 15 must name the study, not say 'a study'")
+
+    def test_28b_research_basis_retires_the_old_claim(self):
+        with open(self.RESEARCH_BASIS_MD, encoding="utf-8") as f:
+            basis = f.read()
+        retired = basis.split("## Retired", 1)[1]
+        self.assertIn(self.OLD_CLAIM, retired, "the old Rule 15 sentence must be kept under Retired")
+        self.assertIn("Murphy", retired)
+        self.assertIn("Rule 15", retired)
+
+
 class Cli(unittest.TestCase):
     def run_cli(self, text, *extra):
         with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False, encoding="utf-8") as f:

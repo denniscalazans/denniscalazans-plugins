@@ -12,7 +12,7 @@ How to run: `python scripts/lint_audio_script.py script.md`
 
 Pass if it prints 0 problems. It checks sentence length, parentheses, digits and symbols, URLs, backward references, part markers, part length, and a question near the end of each part. Since 1 November 2026 it also checks that every bracket tag is in the Delivery intents table, that a part has at most one `[key]`, that no part opens with `[key]` or `[pause long]`, and that a relative risk ("o dobro", "por cento maior") has its base ("em cada") in the same sentence.
 
-The lint has its own unit tests, one per check: `python3 scripts/test_lint_audio_script.py`. Run them after any change to the lint. For the rendered text, `python3 scripts/check_render.py rendered.txt` fails if a neutral intent is still there.
+The lint has its own unit tests, one per check: `python3 scripts/test_lint_audio_script.py`. Run them after any change to the lint. Three of them read SKILL.md itself: Rule 6 names Stern and Halamish 2023 as the study behind the closing question (change 9); Rule 15 no longer says that a summary of 2 to 4 minutes works better than a second full listen, and `research-basis.md` keeps that sentence under Retired, with the reason (change 8: Murphy 2022 never tested a summary, and a second full listen at 2 times speed right before the test won); and the body stays under the word ceiling (change 6). The deterministic form of the Rule 15 check is a grep: the old claim is absent from SKILL.md and present in `research-basis.md`. For the rendered text, `python3 scripts/check_render.py rendered.txt` fails if a neutral intent is still there.
 
 ## Test 2: Text is not audio
 
