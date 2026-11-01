@@ -57,5 +57,50 @@
       "The reply does not mention the narrator paragraph, the meta-analysis, or any reasoning about how it chose to structure the text. The design stays in the scratchpad."
     ],
     "failure_with_current_skill": "Expected from the skill text; this eval has not been run here. The current section \"Who you are writing for\" describes only the reader and says nothing about who writes. Rule 1 asks for headings, numbered steps and \"Key point:\" lines, and Phase 2 asks for a narrative arc, so the model has structure as a value and no instruction to keep the structure under the prose. A prompt that hands it four causes comes out with the skeleton announced: an opening such as \"Existem quatro causas principais\", causes introduced as \"Primeira:\", \"Em segundo lugar\", and transitions such as \"Vamos agora ao último motivo\". Finding 4 of the conversation with Dennis (the basis of change 13 in proposta.md) named this pattern: the text reads like an outline being read aloud, not like someone telling a friend what happened. The limit is also missing: without the Mar, Li, Nguyen and Ta (2021) finding that narrative helps memory more than comprehension, a run that does adopt a story voice may tell the environment-variable failure as an anecdote and skip the step by step the prompt asks for."
+  },
+  {
+    "id": "clear-read-realistic-http-cache-inside-field",
+    "skill": "clear-read",
+    "prompt": "explique como um cache HTTP decide que a cópia que ele guardou ainda vale. Sou dev, pode ir fundo.",
+    "expected_behavior": [
+      "The text is in Brazilian Portuguese and speaks to the reader as \"você\"",
+      "Every fixed label is in Portuguese: \"Ponto-chave:\", \"Como ler:\", \"Onde a analogia falha:\"; no \"Key point:\"",
+      "The basics (what a cache is, what HTTP is) take one sentence or one collapsed block; there is no section \"O que saber antes de ler\"",
+      "Each section opens with its point and ends with a \"Ponto-chave:\" line",
+      "No sentence points back (\"como vimos\", \"acima\"); no bare label (\"P1\") without its name",
+      "Every study or source named comes with role, name and place in the same sentence, never as \"pesquisas mostram\"",
+      "No dash joins two ideas; no sentence over 25 words"
+    ],
+    "failure_with_current_skill": "The pre-Phase-E skill gave English labels inside Portuguese text in about one of three runs and sometimes opened with a long basics section."
+  },
+  {
+    "id": "clear-read-realistic-generic-drug-outside-field",
+    "skill": "clear-read",
+    "prompt": "explique como um medicamento genérico prova que é equivalente ao de marca",
+    "expected_behavior": [
+      "The text opens with a section \"O que saber antes de ler\" that teaches princípio ativo and bioequivalência before the first rule of the proof",
+      "The text is in Brazilian Portuguese with Portuguese labels only",
+      "Each term is defined in plain words first, then named in parentheses",
+      "Every risk or number carries a word anchor (\"3 em cada 100\") and no relative risk stands alone",
+      "Each section ends with a \"Ponto-chave:\" line",
+      "No sentence points back; no bare label",
+      "Sources are woven into the sentence with role, name and institution, never \"segundo a pesquisa\""
+    ],
+    "failure_with_current_skill": "The pre-Phase-E skill had no rule for the opening section and often jumped to \"bioequivalência\" undefined."
+  },
+  {
+    "id": "clear-read-realistic-rewrite-mode",
+    "skill": "clear-read",
+    "prompt": "deixa esse parágrafo mais claro, mantendo tudo que ele diz: \"A implementação do mecanismo de cache, que foi concluída pela equipe no sprint passado conforme mencionado anteriormente, reduz a latência percebida pelo usuário final — isso é, o tempo de resposta — em aproximadamente 40%, dado que as requisições subsequentes são atendidas localmente sem necessidade de round-trip ao servidor de origem.\"",
+    "expected_behavior": [
+      "No information from the original is dropped: the team, the sprint, the 40 percent, the local answer, the origin server",
+      "No claim is added that the original does not make",
+      "The result has no em dash and no sentence over 25 words",
+      "\"conforme mencionado anteriormente\" is gone, replaced by the thing itself or removed as a pointer",
+      "The 40 percent carries a word anchor (\"quase metade\")",
+      "The rewrite is in Portuguese and keeps \"cache\" and \"round-trip\" or explains them once in plain words",
+      "No web search contains any text of the paragraph (rewrite privacy)"
+    ],
+    "failure_with_current_skill": "The pre-Phase-E skill handled this well in most runs; the case guards against regressions in rewrite mode."
   }
 ]

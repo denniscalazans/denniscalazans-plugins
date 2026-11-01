@@ -57,5 +57,50 @@
       "The script passes python3 scripts/lint_audio_script.py <script.md>."
     ],
     "failure_with_current_skill": "Without the narrator paragraph the model applies Rule 3 as a reflex: 'São dois motivos. O primeiro...', 'Agora, o segundo', and opens with 'Neste áudio, duas coisas', so the listener holds an announced skeleton for a one-minute recap. Or, told to narrate, it tells the story of the stale page in one image and drops the step by step of the version check, so the listener remembers the anecdote and cannot say what the browser does before using the copy."
+  },
+  {
+    "id": "clear-listen-realistic-project-eval-1",
+    "skill": "clear-listen",
+    "prompt": "faz a versão narrada desse guia do cache http pra eu ouvir indo pro trabalho\n\n[The source guide is the file plugins/dc/skills/clear-listen/tests/evals/files/guia-cache-http.md in this repository. Read it first.]",
+    "expected_behavior": [
+      "lint_audio_script.py prints 0 problems",
+      "The core idea of the guide is stated within the first 80 words",
+      "Each part starts with 'Parte N de M' written in words, followed by a re-entry line that names what the part builds on",
+      "Every part ends with exactly one recall question followed by its answer",
+      "No header syntax is read literally (no 'max-age=31536000', no 'If-None-Match' spelled as code)",
+      "Every factual claim in the script is in the source guide, and all three main concepts are present",
+      "At least one dense element of the guide (the response table or the file name with a hash) is spoken as plain explanation or pointed to the written guide",
+      "Every study or author named is attributed who-before-what, with role and name woven into the sentence"
+    ],
+    "failure_with_current_skill": "Carried from the Project's eval set of 14 October 2026 (SET_VERSION 2026-10-14-r1): A PT-BR narration script for one voice, written for the ear from the guide: spoken map, core idea in the first 30 seconds, one part per main concept with a re-entry line, a recall question closing each part, no tables, code, digits, URLs or parentheses, and the response table and header syntax replaced by plain spoken explanation."
+  },
+  {
+    "id": "clear-listen-realistic-project-eval-2",
+    "skill": "clear-listen",
+    "prompt": "quero ouvir como podcast, com dois apresentadores, só a parte do no-cache vs no-store e da etiqueta de versão\n\n[The source guide is the file plugins/dc/skills/clear-listen/tests/evals/files/guia-cache-http.md in this repository. Read it first.]",
+    "expected_behavior": [
+      "lint_audio_script.py prints 0 problems",
+      "The second host speaks within the first three lines",
+      "The second host voices the misconception that no-cache means do not store, and the first host corrects it",
+      "Deleting every line of the second host removes at least one question or misconception that matters",
+      "No line is banter, a joke, or a bare agreement ('Legal!', 'Exato!')",
+      "Only the requested concepts are covered, and no fact is added",
+      "Every study or author named is attributed who-before-what, with role and name woven into the sentence"
+    ],
+    "failure_with_current_skill": "Carried from the Project's eval set of 14 October 2026 (SET_VERSION 2026-10-14-r1): A two-host PT-BR script (Guia and Curioso). The Curioso asks a deep question before each explanation and voices the no-cache misconception, which the Guia corrects. No banter. The key sentence comes right after a voice change."
+  },
+  {
+    "id": "clear-listen-realistic-project-eval-3",
+    "skill": "clear-listen",
+    "prompt": "me dá um resumo em áudio bem curto disso, tipo 1 minuto, pra revisar antes da reunião\n\n[The source guide is the file plugins/dc/skills/clear-listen/tests/evals/files/guia-cache-http.md in this repository. Read it first.]",
+    "expected_behavior": [
+      "lint_audio_script.py prints 0 problems",
+      "The script has between 130 and 200 spoken words",
+      "The core idea is in the first two sentences",
+      "All three main concepts are named",
+      "It ends with one takeaway sentence",
+      "Every study or author named is attributed who-before-what, with role and name woven into the sentence"
+    ],
+    "failure_with_current_skill": "Carried from the Project's eval set of 14 October 2026 (SET_VERSION 2026-10-14-r1): A single-part PT-BR review script of about 160 words: core idea first, the three concepts in one or two sentences each, one recall question, one takeaway."
   }
 ]
