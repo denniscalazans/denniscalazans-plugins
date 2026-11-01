@@ -85,20 +85,42 @@ Os resultados brutos ficam fora do repo, no diretório da sessão.
 A próxima sessão começa pela Fase C (seção 7 do guia), com os itens da seção 9 do inventário e da seção 8 de `lacos.md`.
 Antes disso, o branch `investigacao-2026-11-adendo-1` entra por merge, e as seções 7.3 e 7.4 do guia recebem o que o adendo pede.
 
+## 3.3 Estado em 1 de novembro de 2026, madrugada: Fase C entregue
+
+A Fase C está em `pesquisa-conferida.md`, nesta pasta.
+Ela confere na fonte cada estudo que as duas skills citam, por tema, e diz o que ficou de pé e o que caiu.
+Ela traz as buscas novas (contagem, rótulos, troca de voz, narrativa, instrução literal) e as skills e normas que já existem.
+Ela fecha com as mudanças que o inventário ganha e com as correções de citação, que já entraram no guia (seção 13.2).
+
+O adendo 1 entrou por merge, e as seções 7.3 e 7.4 do guia receberam o que ele pedia.
+O questionário com o Dennis rodou no mesmo dia, e as respostas estão em `decisoes-do-dennis.md`.
+
+## 3.4 Estado em 1 de novembro de 2026, madrugada: Fase E, o plano
+
+O plano da Fase E está em `proposta.md`, nesta pasta: 16 mudanças, em três prioridades.
+Cada mudança tem o que muda, o teste que falha hoje, e a evidência das Fases A, B e C.
+O Dennis aprova por item.
+A implementação roda no branch filho `investigacao-2026-11-fase-e`, um commit por mudança.
+
+A próxima sessão começa pela aprovação do plano.
+Depois, implementa na ordem da seção 4 de `proposta.md`, com os testes primeiro.
+A Fase D (seção 8 do guia) vira um artefato interativo, e a seção 3 de `decisoes-do-dennis.md` diz como.
+
 ## 4. O que já está decidido
 
-- A clear-listen entra no plugin `dc`, ao lado da clear-read. O Dennis confirmou em 1 de novembro. Falta registrar no `plugin.json` e no README, e isso é um PR dele.
+- A clear-listen entra no plugin `dc`, ao lado da clear-read. O Dennis confirmou em 1 de novembro, e ela já está no `plugin.json`, no README e no CLAUDE.md.
+- As dez perguntas da seção 12 do guia estão respondidas em `decisoes-do-dennis.md`. Evals em `tests/evals/` dentro da skill. Voz na clear-listen e texto na clear-read. "O que saber antes de ler" e "Exercícios de fixação" como nomes das seções.
 - As entregas ficam em `plugins/dc/references/investigacao-2026-11/`, porque o `.gitignore` do repo ignora `docs/` e `**/evals/`.
 - A ordem das fases é A, B, C, E (proposta num branch), D (experimento sobre o branch), e só então o merge.
 - Nenhuma mudança entra em skill sem um teste que falhe antes e passe depois, e com os testes antigos passando.
 
 ## 5. O que ainda está aberto
 
-As perguntas que só o Dennis responde estão na seção 12 do guia. As que bloqueiam mais cedo:
+As perguntas da seção 12 do guia estão respondidas. O que ainda está aberto:
 
-1. Onde moram os evals: tirar `**/evals/` do `.gitignore`, ou usar outra pasta (pergunta 8).
-2. Nomes novos para as seções "O chão" e "Para este guia ficar" (pergunta 1). Ele disse em 24 de outubro que os dois soam como português traduzido.
-3. Se o modo conversa vira seção da clear-listen ou arquivo próprio (pergunta 2).
+1. A aprovação do plano da Fase E, item a item (`proposta.md`, seção 5).
+2. Os dois roteiros neutros (suplementos e burnout) que o Dennis vai colar, para o golden set da clear-listen.
+3. Se a contagem antes do conteúdo trava ou ajuda: o Dennis quer sentir no experimento (pergunta 6).
 
 ## 6. O que a sessão de 1 de novembro descobriu e ainda não entrou em lugar nenhum
 
