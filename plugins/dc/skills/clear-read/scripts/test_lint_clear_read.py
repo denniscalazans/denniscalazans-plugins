@@ -1058,5 +1058,35 @@ class CommandLine(unittest.TestCase):
         self.assertIn("cannot read", out.getvalue())
 
 
+class SkillBodySize(unittest.TestCase):
+    """The body of SKILL.md stays short enough to survive a context compaction.
+
+    The November 2026 investigation (guide, section 7.1) puts the part of a skill that
+    survives a compaction at about 5,000 tokens, about 3,600 words. The clear-read body was
+    5,129 words before the Phase E changes and 6,509 after them. Change 18b moved the lint
+    lists to references/lint.md and shortened the closing section, to about 6,050 words.
+    The ceiling is 6,200. Getting near 3,600 needs a decision by Dennis about what else
+    leaves the body: candidates are the per-medium spacing list in Rule 1 (about 150
+    words), the phone and HTML details of Rule 7 (about 120), and the pack paragraph of
+    Rule 10 (about 110)."""
+
+    MAX_WORDS = 6200
+
+    def test_skill_md_word_count_is_under_the_ceiling(self):
+        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "SKILL.md")
+        with open(path, encoding="utf-8") as f:
+            words = len(f.read().split())
+        self.assertLess(words, self.MAX_WORDS,
+                        f"SKILL.md has {words} words (ceiling {self.MAX_WORDS}). Move a block to references/, do not delete it.")
+
+    def test_lint_reference_lists_every_finding(self):
+        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "references", "lint.md")
+        with open(path, encoding="utf-8") as f:
+            text = f.read()
+        for needle in ("label-in-wrong-language", "Rule 10", "check_mermaid", "eight kinds", "eleven kinds"):
+            self.assertIn(needle, text, f"references/lint.md should mention {needle!r}")
+
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)

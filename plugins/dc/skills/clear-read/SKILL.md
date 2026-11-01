@@ -267,42 +267,7 @@ When the output is a file, run the lint from the skill folder before you hand th
 python3 scripts/lint_clear_read.py path/to/document.md
 ```
 
-It reads Markdown or HTML, prints one line per finding, and ends with `N problems`. It needs only Python 3, with no extra packages. It detects the language of the text (Portuguese or English) from common words, or takes `--lang pt` or `--lang en`. Then it applies that language's word lists, which mirror the language packs in `references/`.
-
-A **problem** is a rule break, so fix every one. The lint reports eight kinds:
-
-- A dash used as a joiner (Rule 2).
-- A sentence over 25 words (Rule 2).
-- A block over 4 sentences (Rule 1).
-- A backward reference, which points the reader back to a passage instead of repeating the thing itself (Rule 6).
-- A bare label such as "P1" with nothing that names it (Rule 6).
-- A visual (a Mermaid block, a figure, an image, or an SVG that is not an icon) with no "How to read:" line right after it (Rule 7).
-- An analogy with no "Where the analogy fails:" line before the next heading (Rule 5).
-- A fixed label in the wrong language, such as "Key point:" in a Portuguese text (Rule 10).
-
-A **warning** is a prompt to re-read that line, so keep the text only on purpose. The lint reports eleven kinds:
-
-- A possible passive (Rule 2).
-- A hidden verb, such as "perform an analysis" or "realizar a verificação" (Rule 2).
-- A clause of 5 or more words between commas, between the subject and its verb (Rule 2).
-- An acronym whose first mention has no full name next to it (Rule 5).
-- A name before its role, such as "Mayer mostrou que" with no researcher, study, standard or law named in the sentence (Rule 5).
-- A role with no name, such as "um pesquisador mostrou que" or "segundo a pesquisa", with no name, year or link by the end of the next sentence (Rule 5).
-- A one-word heading (Rule 1).
-- An H2 section with no "Key point:" line (Rule 1).
-- A "How to read:" line with no conclusion after it (Rule 7).
-- A bare "acima" in Portuguese, which can be spatial or a pointer back (Rule 6).
-- An average sentence length over 17 words (Rule 2).
-
-**When the document has Mermaid diagrams**, also run the phone check, because a label that fits a desktop can be cut on a phone and the lint cannot see that:
-
-```bash
-npm install --no-save mermaid@11 playwright@1   # once per working directory
-npx playwright install chromium                 # once per machine, or set CHROMIUM_PATH
-node scripts/check_mermaid.cjs path/to/document.html
-```
-
-It renders every diagram the way a published page does, at 390px, and fails on a cut label, a `<br/>` inside a label, a label over 25 characters, text under 12px, or sideways scroll. It reads `.md` files too (the ```mermaid fences), and `--self-test` checks the checker itself.
+It prints one line per finding and ends with `N problems`. A **problem** is a rule break, so fix every one: a dash as a joiner, a sentence over 25 words, a block over 4 sentences, a backward reference, a bare label, a visual with no "How to read" line, an analogy with no limit line, and a fixed label in the wrong language. A **warning** asks you to re-read the line and keep it only on purpose: passives, hidden verbs, inserted clauses, acronyms and names without their role, one-word headings, sections without a Key point. `references/lint.md` lists all nineteen findings with the rule behind each one, and the phone check for Mermaid diagrams (`scripts/check_mermaid.cjs`), which you run whenever the document has a diagram.
 
 When the output is a chat reply, apply the same checks by eye, because the list is short enough to hold in mind.
 
@@ -320,9 +285,7 @@ Key point: when the last line lands, the reader should feel finished, not merely
 
 ## Why these rules work (reference)
 
-These rules are not arbitrary. They come from research on attention difficulties, plain-language writing, and second-language reading. When a rule feels excessive, or when someone pushes back on it, read `references/research-basis.md` for the evidence behind it: sentence-length targets, the value of explicit connectors and signposting, and why chunking lowers the reading load. Consult it as needed; it is not required for everyday use.
-
-To check the skill still works after a change, run the checks in `references/tests.md`. They cover mode consistency, the Rule 1 spacing, jargon handling, research compliance, procedure staging, rewrite privacy, the visual plan, active voice, the language packs, zero backtracking, and the channel test (a cold reader with only the text, or only the visuals). The lint has its own unit tests in `scripts/test_lint_clear_read.py`, and the Mermaid check has `--self-test`.
+The rules come from research on attention difficulties, plain-language writing, and second-language reading. When a rule feels excessive, or someone pushes back on it, read `references/research-basis.md`: it opens with a map from each rule to its evidence, with the certainty and the date each source was checked. After any change to the skill, run `references/tests.md`, `scripts/test_lint_clear_read.py` and the Mermaid `--self-test`.
 
 The files in `references/` and `scripts/`, and when to read each one:
 
@@ -333,5 +296,6 @@ The files in `references/` and `scripts/`, and when to read each one:
 | `references/html-patterns.md` | The output is an HTML page |
 | `references/research-basis.md` | A rule needs its evidence, or someone pushes back on it |
 | `references/tests.md` | You changed the skill, or you want to test a document with a cold reader |
+| `references/lint.md` | You want the full list of what the lint reports |
 | `scripts/lint_clear_read.py` | Before you deliver any file |
 | `scripts/check_mermaid.cjs` | Before you deliver a file with Mermaid diagrams |
