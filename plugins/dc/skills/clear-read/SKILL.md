@@ -177,6 +177,8 @@ Assume the reader can hold only a few new things in mind at once, because a tire
 
 **Open with two or three questions, and answer them in the body.** Right after the opening, list two or three questions the text will answer, each one a question the reader could try to answer now ("Antes de ler, tente responder: ..."). Guessing before reading prepares the memory for the answer. Where the body answers one, mark it in one line ("Resposta da pergunta 1: ..."). The questions are method; a quiz that comes back days later is the Project's product and stays out of the skill.
 
+**Close with a recall of the whole text.** The last block before the sources is one line, "Without looking back: what were the main ideas?" ("Sem voltar: quais foram as ideias principais?"), followed by the answers in a collapsed block. Recalling the whole text once at the end beat recalling it section by section, in a 2023 study by the psychologists Stern and Halamish with 36 students with ADHD and 36 without.
+
 ### Rule 7: Visual plan
 A visual has one job: to show a relation that prose carries badly. So plan each visual before you draw it, and draw only the ones that earn their place. Building the relation in the reader's head is what helps, so a visual exists to make that building possible, not to decorate the page.
 

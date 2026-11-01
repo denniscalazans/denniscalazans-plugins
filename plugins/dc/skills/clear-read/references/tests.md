@@ -327,3 +327,17 @@ Fail: no marker; a marker in a short text; a marker used as a promise ("nos pró
 How to check fast: `grep -c "Conceito [0-9] de 5"` prints 5.
 
 Added on 2 November 2026, by change 21 of the investigation (item a).
+
+## Test 21: The closing recall
+
+What it stresses: Rule 6, the closing line "Sem voltar: quais foram as ideias principais?" with the answers collapsed.
+
+How to run: any explain-from-scratch request in Portuguese with three or more main concepts.
+
+Pass: the last block before the sources is the closing line, the answers follow in a collapsed block (`<details>` in HTML, or a block the reader can skip in Markdown), and there is no section-by-section quiz before it.
+
+Fail: no closing line; the answers visible before the reader tries; a quiz after every section instead.
+
+How to check fast: `grep -c "Sem voltar"` prints 1.
+
+Added on 2 November 2026, by change 21 of the investigation (item e).
