@@ -685,6 +685,7 @@ As outras ficam registradas como "sem prova", no mesmo formato da seção 7 da p
 5. Qual a velocidade de fala explicativa em português brasileiro que este leitor tolera? Hoje o valor, 160 palavras por minuto, é um padrão de prática, não uma medida.
 6. Ouvir ou ler, sob distração, em adultos com TDAH: não há comparação direta.
 7. O nome próprio antes do papel ("Mayer mostrou") custa mais do que o papel antes do nome? Nenhum estudo achado mediu isso.
+8. A família da linguagem fácil tem alguma regra que sirva a este leitor sem reduzir o conteúdo? Essa família é Leichte Sprache na Alemanha, Easy Read no Reino Unido, FALC na França e UNE 153101 na Espanha. A regra "uma ideia por linha" já é a Regra 1 da clear-read, e as outras precisam de leitura. A pergunta veio do adendo 1 (`adendos/2026-11-01-normas-e-skills-existentes.md`).
 
 Três pesquisas que valem a pena na próxima rodada, com a ferramenta certa:
 
@@ -728,7 +729,28 @@ A fonte a conferir é o repo oficial.
 4. Ler `.agents/skills/update-skills-from-changelog/SKILL.md` e avaliar se o mesmo mecanismo serve para manter o perfil de engine atualizado.
 5. Buscar o mesmo para outros motores de voz que o Dennis possa usar um dia, como Kokoro e Edge TTS. A clear-listen é neutra em relação ao motor.
 
-Ponto-chave: a ElevenLabs tem uma skill oficial para a API, e a clear-listen cobre só o roteiro para o ouvido.
+**Skills de ASD-STE100 que já existem.**
+O adendo 1 (`adendos/2026-11-01-normas-e-skills-existentes.md`) achou três skills prontas sobre a norma da aviação em catálogos públicos.
+São `asd-ste100-skill` e `humanizer-en-asd-ste100`, no skills.sh, e uma terceira no skillsmp.com.
+Nenhuma foi lida.
+
+6. Ler as três skills de ASD-STE100 e comparar com o que a clear-read já tem. A pergunta que importa: alguma delas traz o dicionário da norma em forma que um lint consiga usar? Hoje o lint da clear-read confere a forma, não o vocabulário.
+
+**A norma ISO que a clear-read não cita.**
+Os pacotes de língua citam a Lei 15.263 (Brasil) e as Federal Plain Language Guidelines (Estados Unidos).
+Nenhum cita a norma internacional de linguagem simples, a ISO 24495-1:2023, que é o guarda-chuva das duas.
+
+A norma alemã DIN 8581-1, de maio de 2024, é a aplicação da ISO ao alemão.
+Ela serve de modelo do que uma norma ABNT faria para o português.
+
+7. Conferir na fonte a ISO 24495-1:2023 e a DIN 8581-1, pelos links da seção 13.3. Registrar os quatro princípios da ISO e o que a lei brasileira copia deles. A proposta para a Fase E: o SKILL.md da clear-read e os dois pacotes de língua citam a ISO como base. A lei e as diretrizes nacionais entram como aplicação, e isso deixa a skill portátil para uma terceira língua.
+
+O adendo 1 traz também uma classificação em três famílias.
+São elas: linguagem controlada (ASD-STE100), linguagem simples (ISO 24495-1, Lei 15.263) e linguagem fácil (Leichte Sprache, Easy Read).
+A clear-read fica entre as duas primeiras, e o zero retrocesso não vem de nenhuma das três.
+A Fase C usa a classificação para marcar de onde vem cada regra conferida.
+
+Ponto-chave: a ElevenLabs tem a skill da API, três skills de ASD-STE100 esperam leitura, e a ISO 24495-1 é a base que falta citar.
 
 ## 8. Fase D: o experimento
 
@@ -984,11 +1006,16 @@ Assistentes de voz e TDAH:
 - [TDAH] Bryant e colegas 2026, Journal of Medical Internet Research (JMIR) Formative Research, co-design de chatbot: https://doi.org/10.2196/85013
 - [TDAH] O'Connell e colegas 2024, conferência Human-Robot Interaction (HRI), robô companheiro de estudo: https://doi.org/10.1145/3610977.3634929
 
-### 13.3 Skills da ElevenLabs (seção 7.4)
+### 13.3 Skills da ElevenLabs e de ASD-STE100, e as normas (seção 7.4)
 
 - Repositório oficial: https://github.com/elevenlabs/skills
 - Página de agent tooling da ElevenLabs: https://elevenlabs.io/docs/eleven-api/resources/agent-tooling
 - Wiki do repositório: https://github.com/elevenlabs/skills/wiki
+- Skill `asd-ste100-skill`: https://www.skills.sh/danyuchn/asd-ste100-skill/simplified-technical-english-(asd-ste100)
+- Skill `humanizer-en-asd-ste100`: https://www.skills.sh/samber/cc-skills/humanizer-en-asd-ste100
+- Skill de inglês técnico simplificado no skillsmp.com: https://skillsmp.com/creators/tw0po1nt/fshttp.studio/agents-skills-simplified-technical-english
+- ISO 24495-1:2023, linguagem simples, parte 1: https://www.iso.org/standard/78907.html
+- DIN 8581-1, maio de 2024, a aplicação alemã da ISO: https://www.dinmedia.de/en/standard/din-8581-1/377238273
 
 ### 13.4 Do próprio Projeto
 

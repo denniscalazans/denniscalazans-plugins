@@ -265,6 +265,7 @@ Cada skill ganhou três rascunhos, de três ângulos.
 O primeiro ângulo é o mais curto possível.
 O segundo é o processo-primeiro: desenhar, ler como o leitor, corrigir, escrever.
 O terceiro é o substituto do lint, em que as checagens do lint viram autochecagem por olho.
+
 Um juiz por skill pontuou os três em quatro critérios.
 Os critérios: portabilidade, fidelidade aos nove itens da seção 2.2 do guia, literalidade (exemplo de saída em cada regra) e tamanho.
 
@@ -305,7 +306,9 @@ Um checador rodou o lint real no resultado, conferiu as marcas do golden set e r
 Três lições saíram da primeira rodada.
 
 **O modelo sem raciocínio executou "conhecido antes do novo".**
-O inventário marca a R6e (conhecido antes do novo) como "não executável enquanto escreve", e a conversa de 1 de novembro mostrou isso com a skill completa.
+O inventário marca a R6e (conhecido antes do novo) como "não executável enquanto escreve".
+A conversa de 1 de novembro mostrou isso com a skill completa.
+
 A skill mínima deu a string literal ("Você já sabe que... Agora...") e o modelo a produziu sem raciocínio e sem ferramenta.
 
 Então a regra executa quando a skill dá o template, e não executa quando dá só o princípio.
