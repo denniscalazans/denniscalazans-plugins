@@ -124,8 +124,8 @@ As medidas automáticas e o leitor frio artificial estão em `experimento.md` e 
 Os quatro textos têm nomes cegos, e o mapa está selado no banco da página privada e fora do repo.
 A leitura cega está aberta em duas páginas, listadas na seção 4 de `experimento.md`.
 
-A próxima sessão lê as respostas pela ferramenta de dados do artefato, abre o mapa, e escreve a seção 7 de `experimento.md`.
-Só depois disso o PR #81 pode entrar no main.
+O Dennis respondeu em 1 de novembro e mandou abrir o mapa em 2 de novembro; a seção 7 de `experimento.md` tem a conclusão.
+O merge do PR #81 no main é a decisão dele, com essa conclusão na mão.
 
 ## 3.7 Estado em 2 de novembro de 2026: adendo 2 incorporado
 

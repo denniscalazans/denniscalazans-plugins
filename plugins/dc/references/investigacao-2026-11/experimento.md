@@ -2,7 +2,9 @@
 
 CRIADO: 2026-11-01 (Berlim), no Claude Code.
 FASE: D, do guia `guia-de-investigacao.md` (seção 8).
-STATUS: as medidas automáticas e o leitor frio artificial estão prontos. A leitura cega pelo Dennis e por outras pessoas está aberta e sem data de fim.
+STATUS: o Dennis fez a primeira passada em 1 de novembro e mandou abrir o mapa em 2 de novembro.
+
+A conclusão está na seção 7. A volta de um dia depois ainda pode ser respondida, mas já não é cega.
 
 ## 0. O que este arquivo é
 
@@ -11,7 +13,8 @@ Este arquivo guarda o desenho, o que já foi medido e onde as respostas das pess
 A conclusão em cinco frases entra na seção 7 quando as respostas chegarem.
 
 Os textos estão em `experimento/textos/`, com nomes cegos: `duckdb-1`, `duckdb-2`, `suplementos-1`, `suplementos-2`.
-Qual é a skill antiga e qual é a nova está selado fora deste arquivo, até a leitura cega terminar.
+O mapa foi aberto em 2 de novembro, a pedido do Dennis.
+Nos dois pares, o texto 1 é a skill nova e o texto 2 é a antiga.
 
 Ponto-chave: dois pares de textos, quatro medidas automáticas, um leitor frio artificial, e a leitura cega aberta numa página.
 
@@ -115,34 +118,49 @@ Ponto-chave: o experimento mede o pacote inteiro da Fase E, e isso precisa ficar
 4. Uma tabela por par, condições nas colunas, medidas nas linhas. Sem estatística pesada; o que se procura é direção consistente.
 5. Escrever a seção 7 em cinco frases, e só então decidir o merge do PR #81.
 
-## 7. Conclusão, parte 1: a primeira passada do Dennis
+## 7. Conclusão
 
 O Dennis leu os quatro textos em 1 de novembro, das 22h40 às 23h31 (horário de Londres), como dono da página.
 A resposta está em `experimento/respostas/dennis-2026-11-01.json`.
-A volta de um dia depois ainda não aconteceu, então o mapa cego continua selado, e esta seção usa os nomes cegos.
+Em 2 de novembro ele mandou abrir o mapa.
+Nos dois pares, o texto 1 é a skill nova e o texto 2 é a antiga, e ele leu a antiga primeiro.
 
-| Par | Texto | Ordem de leitura | Minutos lendo | Esforço (1 a 5) | Releituras | Pontos lembrados |
+| Par | Versão | Minutos lendo | Esforço (1 a 5) | Releituras | Pontos lembrados | Comentário do Dennis |
 |---|---|---|---|---|---|---|
-| suplementos | 2 | primeiro | 7 | 2 | uma | 4 de 6 |
-| suplementos | 1 | segundo | 4,5 | 2 | uma | 3,5 de 9 |
-| duckdb | 2 | primeiro | 10,5 | 3 | duas ou três | 4,5 de 7 |
-| duckdb | 1 | segundo | 19 | 2 | duas ou três | 4,5 de 9 |
+| suplementos | antiga (texto 2) | 7 | 2 | uma | 4 de 6 | "mais duro", termos "mais soltos" |
+| suplementos | nova (texto 1) | 4,5 | 2 | uma | 3,5 de 9 | "mais fluido", "mais suave para o meu cérebro" |
+| duckdb | antiga (texto 2) | 10,5 | 3 | duas ou três | 4,5 de 7 | "assume que eu sei tudo, e isso não é verdade" |
+| duckdb | nova (texto 1) | 19 | 2 | duas ou três | 4,5 de 9 | "esse exemplo do DuckDB é mais confuso do que o do suplemento" |
 
-Como ler: cada par tem perguntas diferentes por texto, então os pontos não se comparam dentro do par. O esforço e as releituras se comparam.
-Os pontos saem da leitura das respostas contra a lista de `experimento/fontes/perguntas.json`, feita pelo agente.
+Como ler: cada par tem perguntas diferentes por texto, então os pontos não se comparam dentro do par. O esforço, as releituras e os comentários se comparam.
+O tempo do último texto inclui as respostas ao texto anterior, então não vale como medida.
 
-O que a primeira passada diz:
+As medidas automáticas, com o mapa aberto:
 
-- Nos dois pares o Dennis marcou "deu igual". No par de suplementos, o comentário dele vai além da nota. O texto 1 foi "mais fluido" e "mais suave para o meu cérebro"; o texto 2 foi "mais duro", com os termos "mais soltos". Ele mesmo avisa que leu o 2 primeiro, e a segunda leitura de um assunto é sempre mais fácil.
-- No par de DuckDB, o esforço caiu de 3 para 2 entre o texto 2 e o texto 1, com o mesmo número de releituras. O tempo de leitura do texto 1 (19 minutos) inclui as respostas às três perguntas do texto anterior, então não vale como medida.
-- A queixa mais útil veio do texto 2 de DuckDB. Nas palavras do Dennis: "o texto não explicou muito bem; essa skill assume que eu sei tudo, e isso não é verdade". É a calibragem da Regra 8, que trata o leitor de TI como quem já sabe o básico de DuckDB. O Dennis diz que não sabe, e isso vira um achado para a Regra 8, seja qual for a versão.
-- As respostas de recordação foram curtas e certas na direção, com os detalhes perdidos (os nomes das substâncias, o atalho do Hugging Face, os números). Isso é o esperado logo depois da leitura; a volta de um dia depois mede o que fica.
+| Medida | suplementos antiga | suplementos nova | duckdb antiga | duckdb nova |
+|---|---|---|---|---|
+| Palavras | 2.039 | 2.002 | 2.462 | 2.274 |
+| Linhas "Você já sabe que... Agora..." | 0 | 4 | 1 | 5 |
+| Autoridade vaga ("pesquisas mostram") | 4 | 0 | 0 | 0 |
+| Seção "O que saber antes de ler" | 0 | 1 | 0 | 0 |
+| Leitor frio artificial | 15 de 15 | 15 de 15 | 16 de 16 | 16 de 16 |
 
-Ponto-chave: o texto 1 de cada par saiu igual ou um pouco melhor, e a queixa sobre o DuckDB é o achado mais concreto.
+Como ler: as linhas de reentrada e a autoridade vaga são o que as mudanças 1 a 19 prometiam mudar, e mudaram.
+O leitor artificial não separa nada.
 
-## 8. O que falta para fechar
+A conclusão, em cinco frases:
 
-- A volta de um dia depois do Dennis, pelo mesmo link e navegador, a partir de 2 de novembro às 23h31 (Londres).
-- Outras pessoas, se o Dennis quiser, pela cópia pública.
-- Abrir o mapa selado e reescrever a seção 7 com as condições no lugar dos nomes cegos, em cinco frases.
-- Só então decidir o merge do PR #81.
+1. Com uma pessoa e dois pares, a skill nova saiu igual ou um pouco melhor: esforço 2 contra 3 no DuckDB, "mais fluido" nos suplementos.
+2. As medidas automáticas separam as versões onde as regras novas atuam: a nova usou a reentrada e zero autoridade vaga; a antiga deixou quatro.
+3. A recordação na hora não separou as versões, nem no leitor artificial nem no Dennis.
+4. O achado mais útil não foi sobre a versão: os dois textos de DuckDB cortaram o básico porque o leitor "é de TI" (mudança 22).
+5. A nova foi lida sempre em segundo lugar, então parte da vantagem pode ser a segunda leitura; o resultado autoriza seguir, não prova.
+
+Ponto-chave: a direção é a favor da skill nova, com uma pessoa, dois pares e um viés de ordem conhecido.
+
+## 8. O que fica em aberto
+
+- A volta de um dia depois do Dennis ainda pode ser respondida pelo mesmo link, mas já não é cega.
+- Outras pessoas podem responder pela cópia pública; as respostas delas continuam cegas, porque a página não mostra o mapa.
+- Uma segunda rodada com a ordem invertida (a nova primeiro) tiraria o viés de ordem, e mediria as mudanças 20 a 22.
+- O merge do PR #81 no main é a decisão do Dennis, com esta conclusão na mão.
