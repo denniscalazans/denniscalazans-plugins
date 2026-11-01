@@ -98,6 +98,10 @@ Warnings (reported, never fatal):
                         before knowing what it is. Common sentence starters (This, Tests,
                         Isso, Testes), acronyms and labels are not names, and the present
                         tense of tools ("O Git mostra", "GitHub shows") is not evidence.
+    empty-word          an evaluative word that carries no fact ("crucial", "robust",
+                        "powerful") or a meta-concept that names nothing ("at the level
+                        of", "approach", "aspect"); pt: "crucial", "robusto", "poderoso",
+                        "a nível de", "abordagem", "aspecto". Warning (Rule 9).
     double-negative     two negations in one sentence, so the reader flips the meaning
                         twice. en: "not ... no/nothing/never", "don't fail to", "not
                         un-". pt: "não ... nenhum/nada/nunca/ninguém", "não deixe de",
@@ -198,6 +202,7 @@ LANG_PACKS = {
             r"\bunlike an?\b",
         ],
         "analogy_limit_hint": "Where the analogy fails:",
+        "empty_words": r"\b(?:crucial|robust|powerful|seamless|cutting-edge|state-of-the-art|holistic|at the level of|approach|aspects?|paradigm|synerg(?:y|ies)|leverage)\b",
         "double_negative": r"\b(?:not|n't|never|no)\b[^.;:?!]{0,40}?\b(?:no|nothing|never|nobody|none|nowhere)\b|\b(?:do not|don't|never) fail to\b|\bnot un\w+",
         "labels": {
             "key_point": ("Key point:", r"key point\s*:"),
@@ -350,6 +355,7 @@ LANG_PACKS = {
             r"\bao contrário de (?:um|uma)\b",
         ],
         "analogy_limit_hint": "Onde a analogia falha:",
+        "empty_words": r"\b(?:crucial|crucia(?:l|is)|robust[oa]s?|poderos[oa]s?|impec[áa]ve(?:l|is)|hol[íi]stic[oa]s?|a n[íi]vel de|em n[íi]vel de|abordage(?:m|ns)|aspectos?|paradigmas?|sinergias?|alavancar)\b",
         "double_negative": r"\bn[ãa]o\b[^.;:?!]{0,40}?\b(?:nenhum|nenhuma|nada|nunca|ningu[ée]m|jamais)\b|\bn[ãa]o deix[ea] de\b|\bn[ãa]o [ée] imposs[íi]vel\b",
         "labels": {
             "key_point": ("Ponto-chave:", r"ponto[- ]chave\s*:"),
@@ -1253,6 +1259,20 @@ def _mermaid_is_chain(code):
     return all(out.get(n, 0) <= 1 and inn.get(n, 0) <= 1 for n in nodes)
 
 
+def check_empty_words(block, sentences, pack, findings):
+    """Rule 9: an evaluative or meta-concept word that carries no fact is cut."""
+    pat = re.compile(pack["empty_words"], re.I)
+    seen = set()
+    for s in sentences:
+        for m in pat.finditer(s):
+            w = m.group(0).lower()
+            if w in seen:
+                continue
+            seen.add(w)
+            findings.append(Finding(block.line, "warning", "empty-word",
+                                    f"\"{m.group(0)}\" carries no fact. Say what it was hiding, or cut it."))
+
+
 def check_double_negatives(block, sentences, pack, findings):
     """Rule 2: say what is; a double negative flips the meaning twice."""
     pat = re.compile(pack["double_negative"], re.I)
@@ -1371,6 +1391,7 @@ def lint_text(text, name="document.md", kind=None, lang="auto", max_words=DEFAUL
     for b, sents in zip(blocks, sentences_by_block):
         if b.kind not in ("heading", "visual"):
             check_double_negatives(b, sents, pack, findings)
+            check_empty_words(b, sents, pack, findings)
     if lang_is_certain:
         check_label_language(blocks, sentences_by_block, pack, findings)
     if total_sentences:

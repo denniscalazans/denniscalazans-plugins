@@ -127,6 +127,7 @@ A label in another language is a foreign word in the reader's text. So the lint 
 | The line that opens the counter-pattern after a problem | "O que funciona:" |
 | The first line of a section that builds on another | "Você já sabe que... Agora..." |
 | The opening section of a text outside the reader's field (Rule 8) | "O que saber antes de ler" |
+| An empty word (Rule 9) | "crucial", "robusto", "poderoso", "impecável", "holístico", "a nível de", "abordagem", "aspecto", "paradigma", "sinergia", "alavancar": the lint warns `empty-word`; say the fact or cut the word |
 | A label with a number | "Passo 3", "Etapa 2", "Conceito 1" (each one followed by its name) |
 
 ## Common slips in Portuguese, and the fix

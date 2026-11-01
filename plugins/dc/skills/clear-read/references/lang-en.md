@@ -125,6 +125,7 @@ A label in another language is a foreign word in the reader's text. So the lint 
 | The line that opens the counter-pattern after a problem | "What works:" |
 | The first line of a section that builds on another | "You already know that... Now..." |
 | The opening section of a text outside the reader's field (Rule 8) | "What to know before reading" |
+| An empty word (Rule 9) | "crucial", "robust", "powerful", "seamless", "cutting-edge", "state-of-the-art", "holistic", "at the level of", "approach", "aspect", "paradigm", "synergy", "leverage": the lint warns `empty-word`; say the fact or cut the word |
 | A label with a number | "Step 3", "Phase 2", "Part 1" (each one followed by its name) |
 
 ## Common slips in English, and the fix

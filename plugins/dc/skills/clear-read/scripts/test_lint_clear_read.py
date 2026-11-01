@@ -1191,5 +1191,23 @@ class DoubleNegativesWarn(unittest.TestCase):
         self.assertIn("double-negative", ids(report.findings), report.render())
 
 
+class EmptyWordsWarn(unittest.TestCase):
+    """Change 21i: evaluative and meta-concept words that carry no fact warn (Rule 9)."""
+
+    def test_pt_empty_words_warn_once_each(self):
+        text = CLEAN_PT.replace("Caso contrário, o cache busca o valor no banco e guarda uma cópia.", "O cache é uma abordagem robusta e crucial, robusta mesmo.")
+        report = run_on_text(text, lang="pt")
+        hits = [f for f in report.findings if f.rule == "empty-word"]
+        self.assertEqual(len(hits), 3, report.render())
+
+    def test_pt_clean_text_has_none(self):
+        self.assertNotIn("empty-word", ids(run_on_text(CLEAN_PT, lang="pt").findings))
+
+    def test_en_empty_words_warn(self):
+        text = "# The cache\n\nA read cache sits in front of the database.\nIt is a robust approach at the level of the service.\n\nKey point: the cache answers first.\n"
+        report = run_on_text(text, lang="en")
+        self.assertEqual(len([f for f in report.findings if f.rule == "empty-word"]), 3, report.render())
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=1)
