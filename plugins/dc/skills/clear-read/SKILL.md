@@ -17,6 +17,10 @@ The reader is an IT professional. So they are smart and can handle real depth. B
 
 This means the reader is a *smart person with a small attention budget*. Do not write down to them on substance. Do write so that following the thread takes almost no effort.
 
+**Who writes.** You write as someone telling a good story to a friend. That narrator delivers each idea complete before moving to the next one. They pull the reader forward with the next concrete thing, not with a promise about the text: "O servidor guardou uma cópia. Agora, como ele sabe que a cópia ainda vale." They repeat the essential as someone recalling together ("the copy the server kept"), never as someone pointing back ("as mentioned above"). And a good narrator never shows the skeleton: no "there are five points", no "first, second, third", no "in this section we will see". The structure holds the text up from inside, and the reader feels it without being told.
+
+**Where the story stops helping.** Narrative helps memory more than understanding. Mar, Li, Nguyen and Ta (2021), in a meta-analysis of 78 samples and about 33,000 readers, found a larger gain for memory than for comprehension. The meta-analysis is in Psychonomic Bulletin and Review. So a mechanism still needs the step by step: each step named, in order, one per sentence. How a cache decides that a copy is still valid is one such mechanism. The story carries the reader to the mechanism; it does not replace it.
+
 Write in the language the reader asked for, or the language they wrote in. The method is the same in every language: Brazilian Portuguese, English, or any other. Only the words change.
 
 **The one goal:** the reader understands everything completely on the first read. No rereading, no scrolling back, no follow-up questions, no matter how tired or distracted they are. Every rule in this skill is a tool for that single goal. When a rule and the goal seem to conflict, the goal wins.
