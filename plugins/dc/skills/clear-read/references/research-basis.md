@@ -183,3 +183,8 @@ Limits of this group: small samples, university students, English or Hebrew text
 - Google developer documentation style guide; Microsoft Writing Style Guide.
 - Masrai (2019) and related work on L2 vocabulary frequency and reading comprehension.
 - The sources added on 13 October 2026 (Latimier 2021, Adesope 2017, Brod 2021, Mayer and Pilegard 2014, Sundararajan and Adesope 2020, Schroeder 2018, Garcia-Retamero and Cokely 2017, Berney and Bétrancourt 2016, Leahy and Sweller 2016, Minear 2023, Knouse 2011, Brann and Sidi 2024, Ben-Yehudah and Brann 2019, Yeari 2018) are listed with their DOIs in section 8.
+
+## Retired
+
+Retired on 2026-11-01: "the plain-language standard behind the rules (Lei 15.263 in Brazil, the Federal Plain Language Guidelines in the United States)" (Rule 10). Reason: change 12 of the November 2026 investigation. The parenthesis now names the international standard, ISO 24495-1:2023, first, and lists the national law and guidelines as applications of it, so the packs stay portable to a third language.
+Retired on 2026-11-01: the heading "## The legal basis" in `lang-pt-br.md`, and the heading "## The standard behind the rules" in `lang-en.md` over the United States guidelines. Reason: change 12. Both packs now open with a section "The standard behind the rules" about ISO 24495-1, and the national sections are "How Brazil applies it" and "How the United States applies it". No sentence under the old headings was removed.

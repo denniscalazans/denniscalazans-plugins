@@ -269,6 +269,8 @@ Fail: a warning is missing (the pack lost a word list), or a clean sample from T
 
 Then the reading check: ask the skill for a short report in each language. Pass if the Portuguese text uses "você", dates with the month in words and the decimal comma, and keeps API, deploy and cache in English. Pass if the English text uses "must" only for requirements, "you" for the reader, and the decimal point.
 
+Then the standard check: both packs open with the international standard, ISO 24495-1:2023, and its four principles, and name the national law or guidelines as applications of it. How to check fast: `grep -c "24495" references/lang-pt-br.md references/lang-en.md` prints 1 or more for each pack.
+
 ## Test 18: The golden set (do not change this)
 
 What it stresses: a rewrite of the skill must not erase what already works.
@@ -289,4 +291,4 @@ Added on 1 November 2026, by the investigation's Phase A. The clear-listen has n
 - Test 14 gaps: the idea lives only in a visual or a table. Add one prose sentence; do not remove the visual.
 - Test 15 slips: check the two-tier rule in Rule 6, and the lint's `backward-reference` and `bare-label` word lists in `LANG_PACKS`.
 - Test 16 slips: check the analogy paragraph in Rule 5, and the `analogy` and `analogy_limit` lists in `LANG_PACKS`.
-- Test 17 slips: check the language pack doc in `references/` and its mirror in `LANG_PACKS` (`known_acronyms`, `hidden_verb`, `intro_words`, `clause_openers`).
+- Test 17 slips: check the language pack doc in `references/` and its mirror in `LANG_PACKS` (`known_acronyms`, `hidden_verb`, `intro_words`, `clause_openers`). If the standard check slips, the pack lost its opening section on ISO 24495-1.

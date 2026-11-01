@@ -4,9 +4,38 @@ Read this file when the reader's language is Portuguese.
 It adds what is specific to Portuguese on top of the eleven rules in SKILL.md.
 The lint keeps its own copy of these words in `LANG_PACKS["pt"]` in `scripts/lint_clear_read.py`. The two are maintained by hand, so when you change one, change the other.
 
-## The legal basis
+## The standard behind the rules
+
+The international plain-language standard is ISO 24495-1:2023, "Plain language, Part 1: Governing principles and guidelines".
+It is neutral about language, so it is the base of every pack.
+The Brazilian edition and the Brazilian law below are applications of it.
+
+It defines plain language by what the reader can do, not by sentence length or word choice.
+The wording, structure and design are so clear that intended readers can easily find what they need, understand what they find, and use that information.
+The definition comes from the International Plain Language Federation, and the ISO adopted it.
+
+The standard has four principles, and each one is a check the skill already runs.
+
+| Principle of ISO 24495-1 | What the reader can do | Where the skill carries it |
+|---|---|---|
+| Relevant | Receive what they need, at the depth they need | Rule 8 (calibrate the depth to what the reader knows) and "Who you are writing for" in SKILL.md |
+| Findable | Find it without reading everything | Rule 1 (message headings, the goal first, one topic per block) |
+| Understandable | Understand it on the first read | Rules 2, 5 and 10 (short sentences, plain meaning before the term, plain words) |
+| Usable | Act on it | Rule 11 (procedures) and the cold-reader tests in `references/tests.md` |
+
+Clause 5.2.2 of the standard asks the writer to "introduce new information by building on information readers already know".
+Rule 6 carries that as the opening line "Você já sabe que... Agora...".
+
+Source: [ISO 24495-1:2023 at iso.org](https://www.iso.org/standard/78907.html).
+
+## How Brazil applies it
+
+Brazil applies the standard in two documents.
+The Associação Brasileira de Normas Técnicas (ABNT) published the Brazilian edition on 25 July 2024, as the norma brasileira (NBR) ABNT NBR ISO 24495-1:2024.
+It is an identical adoption of the ISO, so it adds no rule of its own.
 
 Brazil has a plain-language law: Lei 15.263, de 14 de novembro de 2025, the Política Nacional de Linguagem Simples.
+The law does not cite the ISO, but it shares its goal: a text the reader can find, understand and use.
 Its article 5 lists the writing techniques.
 The skill already carries most of them, so the table says where each one lives.
 
