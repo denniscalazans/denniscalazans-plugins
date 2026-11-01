@@ -45,7 +45,7 @@ SLOW_INTENTS = {"key", "pause long"}
 
 # Rule 20: a relative risk needs its base in the same sentence.
 RELATIVE_RISK = re.compile(
-    r"\b(o dobro|o triplo|\w+ vezes (mais|menos)|por cento (maior|menor|a mais|a menos)"
+    r"\b(o dobro|o triplo|dobrou|dobraram|triplicou|triplicaram|quadruplicou|\w+ vezes (mais|menos)|por cento (maior|menor|a mais|a menos)"
     r"|twice as|\w+ times (as|more|higher|lower)|percent (higher|lower|more|less))\b", re.I)
 RISK_BASE = re.compile(r"\b(em cada|de cada|in every|out of)\b", re.I)
 

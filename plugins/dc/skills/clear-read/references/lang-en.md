@@ -49,7 +49,7 @@ The skill already carries most of the guidelines, so the table says where each o
 | Use "must" to indicate requirements | This file, "Modal verbs" |
 | Use pronouns to speak directly to readers | This file, "Register" |
 | Minimize abbreviations | Rule 5, and the lint rule `acronym-without-full-name` |
-| Use short, simple words; Omit unnecessary words | Rule 10 and Rule 8 |
+| Use short, simple words; Omit unnecessary words | Rule 10 and Rule 9 |
 | Use the same term consistently for a specific thought or object | Rule 5 (one word, one meaning) |
 | Avoid legal, foreign, and technical jargon | Rule 5 |
 | Write short sentences | Rule 2 |

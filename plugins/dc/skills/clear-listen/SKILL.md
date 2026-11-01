@@ -5,7 +5,7 @@ description: "Use when the output will be heard: a narration, the audio version 
 
 # Clear-Listen
 
-This skill serves one listener. It is the sibling of clear-read. Clear-read removes the effort of reading. Clear-listen removes the effort of listening.
+This skill serves one listener. It is the sibling of clear-read: that one removes the effort of reading, this one the effort of listening.
 
 Never produce audio by reading a clear-read text aloud. A text that is easy for the eye is often hard for the ear, because the ear loses everything that clear-read relies on: headings, bold, line breaks, tables, diagrams, parentheses, and the option to look back.
 
@@ -30,7 +30,7 @@ This section is for one turn of a live voice conversation: the person speaks, yo
 2. **Keep each sentence at 8 to 15 words.** The ceiling of 20 holds.
 3. **Put a connector at every link.** "Por isso", "mas", "ou seja". Two facts side by side are two facts.
 4. **Start from what the person just said**, in their words. "Você perguntou se o cache guarda a página. Guarda, mas confere antes de usar."
-5. **Say who before what: the role, then the name, woven into the sentence.** "Um estudo de dois mil e vinte e três, dos pesquisadores Stern e Halamish, em Israel, mostrou que..." A bare "um pesquisador mostrou" makes a smart listener ask which one. When you lack the name, say so.
+5. **Say who before what: the role, then the name, woven into the sentence.** "Em dois mil e vinte e três, os pesquisadores Stern e Halamish mostraram que..." A bare "um pesquisador mostrou" makes a smart listener ask which one. When you lack the name, say so.
 6. **Never point backward.** Say the thing again, with the person's own words.
 7. **Make every sentence a safe stopping point.** The person may interrupt after any sentence and still hold a whole idea.
 8. **Past 3 sentences, end with a short question that gives the turn back.** No pause mark: a 4 to 6 second silence sounds like the end of the turn, and the person talks over it. "Quer que eu explique como o servidor manda essa etiqueta?"
@@ -45,7 +45,7 @@ Before the turn is spoken, run `python3 scripts/lint_audio_script.py <turn.txt> 
 
 ## Why the ear needs its own rules
 
-Speech disappears, the pace is not the listener's, the mind wanders more while listening, visual structure is gone, and the voice carries meaning. These five facts drive every rule below (`references/research-basis.md`).
+Speech disappears, the pace is not the listener's, the mind wanders more while listening, visual structure is gone, and the voice carries meaning. These five facts drive every rule below.
 
 ## What the audio is for
 
@@ -74,7 +74,7 @@ So the neutral script is the source of truth, and it never contains the syntax o
 With only this file, no search, no engine profile, no lint: three substitutes.
 
 1. **Only facts from the user's source**, and "a fonte não diz" for the rest. Open the producer note with "facts not verified in this session". No source text: ask for one, never write from memory.
-2. **Render plain when there is no engine profile** (`references/rendering.md`). Never fill the profile from memory as fact: hand it to the user blank, or mark every line as a guess to test, as `references/rendering.md` says, and render plain until it returns.
+2. **No engine profile: build one, marked as guesses.** Read the engine's own guide if you can, fill the profile in `references/rendering.md`, and mark every line as a guess to test; never fill it from memory as fact. With nothing to read at all, render plain.
 3. **The lint's checks by hand**, in one producer note, which says the lint and cold reader did not run.
    - Read each part aloud; a stumble is the listener's.
    - Over 20 words: split.
@@ -85,7 +85,7 @@ With only this file, no search, no engine profile, no lint: three substitutes.
    - Filler ("Exato!"): the key point instead.
    - Part marker missing or in digits: "Parte dois de três".
    - No recall question per part: add one, pause, answer.
-   - Over two closing questions: one recall plus "Sem voltar".
+   - Over two questions at the end of a part: keep one recall question; the whole audio closes with "Sem voltar".
    - A part over 800 words: split.
    - Each main idea has its sentence.
    - A relative risk ("o dobro") without its base ("em cada cem"): add the base.
@@ -109,7 +109,7 @@ The script adds no new fact. Its source is a verified text: a clear-read guide, 
    - **Core idea.** Write the single core idea of the whole audio in one sentence. It goes into the first 30 seconds, and it returns at the start of each later part.
 3. **Spoken names.** For each term, decide the one name you will say every time, and one short meaning to repeat with it. Also decide how each technical term, acronym or code-like name sounds aloud, and write it that way (a header such as `Cache-Control` becomes "a instrução cache control"). Syntax is never read: say what the thing does.
 4. **Cuts and coverage.** List what stays in the written text only, with the fit list in "What the audio is for". Then check the other direction: every main idea of the source has a sentence in the script. A main idea that lives only in a table or a chart of the source still gets its spoken sentence (Rule 16, in `references/visuals-for-the-ear.md`).
-5. **Questions.** One prequestion per main concept for the opening. One recall question per part. One closing question about the whole audio, after the last part.
+5. **Questions.** One or two prequestions for the opening, on the concepts the listener most likely gets wrong (Rule 6). One recall question per part. One closing question about the whole audio, after the last part.
 6. **Delivery.** One tone intent per part, from the vocabulary in "Delivery intents" (for example warm, curious, serious), so the voice changes between parts. Also plan the stressed term of each part, and every hard name that needs a pronunciation. Change the *kind* of novelty from part to part (a question, an example, a contrast, a voice change), because the same device repeated stops working.
 7. **Medium.** Name the medium this audio will be produced with: which voice engine and model, or a human reader. Ask the environment, not your memory (Phase 4; `references/rendering.md`, step 1). The medium does not change the writing. It only decides the rendering, and the measured rate you plan with.
 8. **Length.** Target length in minutes, then words. Use the measured rate of the chosen voice on the chosen medium. Until it is measured, plan with 160 words per minute for Brazilian Portuguese (range 150 to 175). Never copy an English or Spanish words-per-minute target: Portuguese words have about 2.1 syllables, English words about 1.4, so the same number means a different speed.
@@ -117,7 +117,7 @@ The script adds no new fact. Its source is a verified text: a clear-read guide, 
 ### Phase 3: Write
 
 #### Rule 1: Short standalone parts, with a spoken map and the core idea first
-Open the audio with what it is about, why it matters, and how many parts it has. **Say the core idea within the first 30 seconds**, because a mind that wanders early misses the foundation for everything after. Start each part with "Parte N de M", then a **re-entry line**: one sentence that makes sense without the earlier parts and re-anchors the core idea ("Agora, a segunda causa do problema: ..."). Then the goal of the part in one sentence. Keep each part to 3 or 4 minutes, and never over 5.
+Open the audio with what it is about, why it matters, and how many parts it has. **Say the core idea within the first 30 seconds**, because a mind that wanders early misses the foundation for everything after. Start each part with "Parte N de M", numbers as words ("Parte dois de três"), then a **re-entry line**: one sentence that makes sense without the earlier parts and re-anchors the core idea ("Agora, a segunda causa do problema: ..."). Then the goal of the part in one sentence. Keep each part to 3 or 4 minutes, and never over 5.
 
 A part is one main concept, not a time slot. When the source is short, the parts are short. Never pad a part to reach a length. An audio with a single part (a one-minute recap, or one concept on request) skips the part count and the "Parte N de M" line, because announcing "part one of one" is noise. It still opens with the core idea and still ends with the takeaway.
 
@@ -138,22 +138,22 @@ In text, repetition is waste. In audio, repetition is the listener's only way to
 The first thing a drifting listener loses is the link between facts. So state each causal link in words ("por isso", "o motivo é", "como resultado"), and state the conclusion yourself. Do not leave an inference for the listener to make.
 
 #### Rule 6: Make the listener retrieve, in the head
-Open with one or two prequestions, each followed by a pause. Close the audio with "Sem voltar, quais foram as ideias principais?", a recall pause, then the list. This closing question is the proven part of the rule: in a study with 36 university students with ADHD and 36 without (Stern and Halamish 2023), recalling the whole text once at the end beat recalling it section by section. Every script of more than one part has it, and the lint checks for it. Also close each part with **one** recall question, a recall pause (the `[pause recall]` intent, 4 to 6 seconds), then the answer in one sentence. The question per part is practice, not proof: it is the condition that lost in that study, and the listener's own test decides whether it stays (`references/tests.md`, test 10). The 4 to 6 second pause is a practice default too, because no study measured the pause length. Every question must be answerable in one short phrase, silently, while walking, because this listener has no hands free and will not write. The learning benefit of built-in questions is solid, also for students with ADHD. The attention benefit is likely but less certain. Students with ADHD test themselves less on their own, so the audio does the prompting.
+Open with one or two prequestions, each followed by a pause. Close the audio with "Sem voltar, quais foram as ideias principais?", a recall pause, then the list. This closing question is the proven part of the rule: in a 2023 study by the psychologists Stern and Halamish, with 36 university students with ADHD and 36 without, recalling the whole text once at the end beat recalling it section by section. Every script of more than one part has it, and the lint checks for it. Also close each part with **one** recall question, a recall pause (the `[pause recall]` intent, 4 to 6 seconds), then the answer in one sentence. The question per part is practice, not proof: it is the condition that lost in that study, and the listener's own test decides whether it stays (`references/tests.md`, test 10). The 4 to 6 second pause is a practice default too, because no study measured the pause length. Every question must be answerable in one short phrase, silently, while walking, because this listener has no hands free and will not write. The learning benefit of built-in questions is solid, also for students with ADHD. The attention benefit is likely but less certain. Students with ADHD test themselves less on their own, so the audio does the prompting.
 
 #### Rule 7: Few numbers, in words
 At most one number per sentence. Round it unless the exact value is the point. Give it an anchor ("quase um terço"). Write numbers, dates, units and symbols as words, so the voice cannot misread them. Never read a URL, a citation, or a table.
 
 #### Rule 8: Talk to one person
-Write as one person explaining to one person: "você", active voice, everyday words, the present tense. Not a lecture, and not a text being read. Say who before what, every time: the listener cannot judge a claim before knowing who makes it, and a claim that surprises drowns the attribution that follows (the BBC News style guide calls this "attribution first"). Weave role, name and place into the sentence: "Um estudo da Universidade de São Paulo, feito em dois mil e vinte e quatro pela equipe da professora Ana Lima, mostra que...". Never a bare "um estudo mostra", and never the name as a note after the claim.
+Write as one person explaining to one person: "você", active voice, everyday words, the present tense. Not a lecture, and not a text being read. Say who before what, every time: the listener cannot judge a claim before knowing who makes it, and a claim that surprises drowns the attribution that follows (the BBC News style guide calls this "attribution first"). Keep the attribution short and in direct order, so the sentence stays under Rule 2: "Em dois mil e vinte e quatro, pesquisadores da Universidade de São Paulo mostraram que...". Never a bare "um estudo mostra", and never the name as a note after the claim.
 
 #### Rule 9: Keep a moderate pace, and pause between ideas
-Do not slow the voice down to make it "clear". Recall is best at a moderate rate, and worse when speech is slow or fast. For Brazilian Portuguese the target is about 160 words per minute (range 150 to 175, which is about 5.5 to 6 syllables per second with pauses). Give thinking time with **pauses between ideas** (`[pause short]`, about half a second), a longer pause at each part boundary (`[pause long]`, about 2 seconds), and slow words only on the key point of a part (`[key]`). Produce the audio at normal speed, and tell the listener that changing the player speed is fine: up to about 1.5 times costs little, and choosing your own speed goes with less mind wandering.
+Do not slow the voice down to make it "clear". Recall is best at a moderate rate, and worse when speech is slow or fast. For Brazilian Portuguese the target is about 160 words per minute (range 150 to 175, which is about 5.5 to 6 syllables per second with pauses). Give thinking time with **pauses between ideas** (`[pause short]`, about half a second), a longer pause at each part boundary (`[pause long]`, about 2 seconds, before the "Parte N de M" line), and slow words only on the key point of a part (`[key]`). Produce the audio at normal speed, and tell the listener that changing the player speed is fine: up to about 1.5 times costs little, and choosing your own speed goes with less mind wandering.
 
 #### Rule 10: Moderate expression, varied between parts
 A flat voice loses the listener, and an over-acted voice loses credibility. The best results come from moderate intonation at a medium rate. Change the tone intent between parts, let pitch move, and stress 1 or 2 words per sentence at most (3 to 5 key terms per part). Mark only the most important of them with `[stress: ...]`, at most one per part, and let word order carry the others. Stress on everything is the same as stress on nothing. Calm does not mean flat.
 
 #### Rule 11: Voice only, clean signal
-No music, no ambience and no sound effects under the voice. This holds even when the medium can generate them: a capability of the engine is not a reason to use it. Background sound makes speech harder to follow, more so for a listener with ADHD in a noisy place. Keep the level constant, and help a noisy environment with repeated key terms, not with loudness. If a jingle is ever used, it plays alone, before or after the speech. Never mix white or pink noise into the audio. If the listener wants to try noise, he adds it himself and tests it.
+No music, no ambience and no sound effects under the voice. This holds even when the medium can generate them: a capability of the engine is not a reason to use it. Background sound makes speech harder to follow, more so for a listener with ADHD in a noisy place. Keep the level constant, and help a noisy environment with repeated key terms, not with loudness. If a jingle is ever used, it plays alone, before or after the speech. Never mix white or pink noise into the audio; a listener who wants it adds it and tests it.
 
 #### Rule 12: One clean, constant voice per role
 Each role keeps its voice inside an audio and between audios of the same series. A modern synthetic voice gives the same learning as a human voice in the studies that exist, but those used English voices. So check the chosen Portuguese voice by ear for naturalness, and replace a voice that sounds rough, robotic or unstable. After generating, **measure the real rate** (words divided by minutes of audio), because a voice engine's speed setting is not words per minute.
@@ -219,7 +219,7 @@ Write intents in English, in square brackets. A tone intent and `[key]` sit at t
 | Recall pause | `[pause recall]` | 4 to 6 seconds of silence after a recall question, so the listener can answer in the head |
 | Pronunciation | `[say: termo = respelling]` | How a hard name in the next sentence sounds, written as a respelling in the listener's language. Add the phonetic alphabet form after a second `=` when you know it: `[say: cache = quéche = /kæʃ/]` |
 
-Six rules for intents live in `references/intents.md`. The short form: intents never carry content, so a dropped intent costs polish and never meaning; never invent an intent, fix the sentence instead; never open a part with a slow direction, slowness belongs to `[key]` only; speaker roles are not intents; performance (`[perform: whispering]`) only when the user asks for a demonstration; and older `[short pause]` and `[long pause]` read as `[pause short]` and `[pause long]`.
+Six rules for intents live in `references/intents.md`. The two that matter most while writing: intents never carry content, so a dropped intent costs polish and never meaning; and never open a part with a slow direction, because slowness belongs to `[key]` only.
 
 ## Phase 4: Render for the medium
 

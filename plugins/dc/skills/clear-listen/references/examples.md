@@ -39,6 +39,10 @@ A tabela completa, com as fontes, está no guia escrito.
 [pause short]
 O gráfico mostra a fatia das lesões no fígado que vem de suplementos.
 Ele cobre cerca de oito anos.
-[key] Nesse tempo, a fatia quase triplicou.
+[key] Nesse tempo, a fatia foi de sete em cada cem para cerca de vinte em cada cem.
 Ou seja, o problema cresce, e não é raro.
+[pause short]
+[curious] De cada cem lesões no fígado, quantas vêm de suplementos hoje?
+[pause recall]
+Cerca de vinte em cada cem, quase o triplo de oito anos atrás.
 ```

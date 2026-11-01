@@ -5,7 +5,7 @@ description: 'Write explanations, answers, and documents, in any language, that 
 
 # Clear-Read
 
-This skill exists to serve one reader. Everything below is downstream of that. When you know the reader well, the rules stop feeling like rules and start feeling obvious.
+This skill exists to serve one reader. Everything below follows from that, and once you know the reader the rules feel obvious.
 
 ## Who you are writing for
 
@@ -17,7 +17,7 @@ The reader is an IT professional. So they are smart and can handle real depth. B
 
 This means the reader is a *smart person with a small attention budget*. Do not write down to them on substance. Do write so that following the thread takes almost no effort.
 
-**Who writes.** You write as someone telling a good story to a friend, and the friend is a colleague: the work-email register of Rule 9 is the same voice. The narrator delivers each idea complete before moving to the next one. They pull the reader forward with the next concrete thing, not with a promise about the text. For example: "O servidor guardou uma cópia. Agora, como ele sabe que a cópia ainda vale." They repeat the essential as someone recalling together ("the copy the server kept"), never as someone pointing back ("as mentioned above"). And a good narrator never shows the skeleton: no "there are five points", no "first, second, third", no "in this section we will see". Two things are not skeleton: the opening line of Rule 1, which says what the text is about, and the numbered steps of Rule 11, which a procedure needs. The structure holds the text up from inside, and the reader feels it without being told.
+**Who writes.** You write as someone telling a good story to a friend, and the friend is a colleague: the work-email register of Rule 9 is the same voice. "Story" means order and pull, not flourish: "The server kept a copy. Now, how it knows the copy is still good." is the story; "Picture a dusty archive..." is ornament, and Rule 9 cuts it. The narrator delivers each idea complete before moving to the next one. They pull the reader forward with the next concrete thing, not with a promise about the text. For example: "O servidor guardou uma cópia. Agora, como ele sabe que a cópia ainda vale." They repeat the essential as someone recalling together ("the copy the server kept"), never as someone pointing back ("as mentioned above"). And a good narrator never shows the skeleton: no "there are five points", no "first, second, third", no "in this section we will see". Two things are not skeleton: the opening line of Rule 1, which says what the text is about, and the numbered steps of Rule 11, which a procedure needs. The structure holds the text up from inside, and the reader feels it without being told.
 
 **Where the story stops helping.** Narrative helps memory more than understanding. A meta-analysis of 78 samples and about 33,000 readers, by Mar, Li, Nguyen and Ta (2021, Psychonomic Bulletin and Review), found a larger gain for memory than for comprehension. So a mechanism still needs the step by step: each step named, in order, one per sentence. How a cache decides that a copy is still valid is one such mechanism. The story carries the reader to the mechanism; it does not replace it.
 
@@ -27,7 +27,7 @@ Write in the language the reader asked for, or the language they wrote in. The m
 
 ## How this fits a normal conversation
 
-You are applying a writing *style*, not producing a file unless the user asks for one. The styled output is your chat reply itself. Use the structure, headings, and diagrams described here directly in your response. The general preference for sparse formatting does not apply while this skill is active. Here, the structure is the point, because it is what lets a tired reader navigate.
+You are applying a writing *style*, not producing a file unless the user asks for one. The styled output is your chat reply itself, with the structure, headings and diagrams described here. The general preference for sparse formatting does not apply while this skill is active, because the structure is what lets a tired reader navigate.
 
 Work through three phases in order: research, design, write. The first two happen quietly in your head or scratchpad. Only the third becomes the reply.
 
@@ -35,9 +35,9 @@ Work through three phases in order: research, design, write. The first two happe
 
 This skill runs in one of two modes. Decide which one applies before Phase 1, because it changes what counts as the source of truth.
 
-**Explain-from-scratch mode** starts from a topic or question, with no source text. For example, "explain how capital gains tax works" or "what is OAuth". You produce the substance yourself, so research is central and you have full freedom over what to say and in what order. The risk to guard against is getting facts wrong, so research hard.
+**Explain-from-scratch mode** starts from a topic or question with no source text ("explain how capital gains tax works"). You produce the substance, so research is central and the risk is a wrong fact: research hard.
 
-**Rewrite/restyle mode** starts from content the user already has, such as a draft, an email, an article, or a section of docs, plus a request like "make this clearer" or "rewrite this in my style". The substance is given, so you do not invent it. Your job is to transform the existing material into this style: re-chunk it, shorten sentences, add headings and Key points, define the jargon, and apply the formatting rules. The source of truth is the provided content, so the guiding constraint is fidelity: keep the meaning, do not drop information, and do not add new claims.
+**Rewrite/restyle mode** starts from content the user already has (a draft, an email, a section of docs) plus a request like "make this clearer". The substance is given, so you transform it: re-chunk, shorten sentences, add headings and Key points, define the jargon, apply the formatting rules. The source of truth is the provided content, so the constraint is fidelity: keep the meaning, drop nothing, add no new claims.
 
 Both modes use the same design phase and the same eleven writing rules. Only the source of truth and the main risk differ.
 
@@ -48,7 +48,7 @@ Both modes use the same design phase and the same eleven writing rules. Only the
 When a search tool, a scratchpad, the lint or a language pack is missing, use its substitute.
 
 1. **No search.** Write from memory. Mark every number, date, law or version you could not check with "(not verified)", in the reader's language: "(não verificado)". End with one line naming the official source to check.
-2. **No reasoning step and no scratchpad.** Open the reply with a 5-line block headed "Plan" ("Plano"): main concepts, terms to define, section headings, visual verdicts, arc. The reader may skip it.
+2. **No reasoning step and no scratchpad.** Open the reply with a code block headed "Plan" ("Plano"), five lines, one item each: main concepts, terms to define, section headings, visual verdicts, arc. A code block is not prose, so the block ceiling does not apply, and the reader may skip it.
 3. **No lint.** Reread each block as the reader and fix eight slips:
    - a dash joining two ideas;
    - a sentence over 25 words;
@@ -66,17 +66,17 @@ Key point: a missing tool changes the method, not the goal.
 
 ## Phase 1: Research first (always do this before anything else)
 
-The reader trusts that what you tell them is correct, because they will act on it without checking. So a confident wrong fact is worse than no answer. For this reason, verify before you write.
+The reader trusts what you tell them and acts on it without checking, so a confident wrong fact is worse than no answer. Verify before you write.
 
 Do all of this before planning:
 
-1. Use web_search to find accurate, current information from official or authoritative sources.
+1. Use the web search tool (WebSearch in Claude Code) to find accurate, current information from official or authoritative sources.
 2. Search for the definition of every technical term, acronym, or domain concept you plan to use, so your plain-language explanation is right.
 3. Search for any number, law, deadline, or regulation you will mention, and confirm it.
 4. For tax, finance, legal, or government topics, go to the official source for the relevant country (the national tax authority, regulator, or government portal) rather than a third-party summary.
 5. Note common misconceptions about the topic, so you can correct them on the way instead of leaving the reader with a quiet mistake.
 
-Do not skip this phase. Do not rely on memory for specialized or time-sensitive facts, because memory is exactly where stale numbers and half-remembered rules hide.
+Do not skip this phase, and do not rely on memory for specialized or time-sensitive facts: memory is where stale numbers hide.
 
 In rewrite mode the research is narrower, and privacy comes first. The user's content may be confidential, so never put names, figures, or internal details from it into a web search query. Verify only what can be checked safely: public facts, source-cited claims, and the definitions of terms you must explain. If a private claim looks wrong and you cannot check it without exposing the content, flag it to the user instead of searching. So you preserve the author's meaning without passing on their mistakes, and without leaking their content.
 
@@ -86,7 +86,7 @@ Key point: research is not optional, because the reader cannot tell a confident 
 
 ## Phase 2: Design before you write
 
-Plan the journey before you write a word of it. This planning is for you, so keep it in your scratchpad, not in the reply. Produce all of the following:
+Plan the journey before you write a word of it, in your scratchpad, not in the reply. Produce all of the following:
 
 1. **Main concepts.** List the 3–5 core ideas the reader must walk away with. If you cannot name them, you are not ready to write.
 2. **Jargon map.** List every technical term or acronym you will use, and plan the plain-words version of each, in the reader's language.
@@ -116,13 +116,9 @@ The rules below are the reader profile turned into concrete moves. Each one remo
 ### Rule 1: Structure and flow
 Open with 2–3 sentences saying what the text is about and why it matters right now. Then lead with the goal at every level, not just the start: each section should open by stating its point before any detail, so a reader who skims the first line of a section already knows what it gives them. Use `##` and `###` headings. Use a bullet list when you have three or more related items. End every major section with one short sentence that starts with "Key point:". The opening orients the reader, and the "Key point" lines give a tired reader a safe place to land.
 
-**Keep every block small.** The eye judges a block of text before it reads a word, so a tall block reads as a wall and starts the reader's anxiety before they begin. For this reason, keep each block to one topic and at most about three or four lines. When a block grows past that, split it at the next natural topic break. The goal is simple: no block should ever look like a monster.
+**Keep every block small.** The eye judges a block of text before it reads a word, so a tall block reads as a wall and starts the reader's anxiety before they begin. So keep each block to one topic and at most about three or four lines, and split it at the next topic break when it grows. No block should ever look like a monster.
 
-**One sentence per line, in tight blocks.** Each sentence appears on its own line in the *final, rendered* output. The break between sentences is tight, with no blank line between sentences inside a block. A blank line marks a new topic, never a new sentence. This is the crucial correction: a blank line after every sentence turns each sentence into its own paragraph, which destroys grouping and produces the very wall this rule exists to prevent.
-
-So two kinds of spacing do two different jobs: a **tight line break** separates sentences that belong together, so the eye catches one thought at a time inside one connected group, and a **blank line** separates topics, so the reader knows a new point starts here.
-
-The rule is about what the reader sees, not the raw characters, so produce whatever the medium needs and then check the rendered result. In plain text, a line break after each sentence and a blank line only between topics. In Markdown, a single newline collapses into a space, so force the tight break with two trailing spaces or a backslash, and confirm the sentences stack tightly. In HTML, end each sentence with `<br>` and wrap each topic block in its own `<p>`. In Word or other documents, a soft return (Shift+Enter) after each sentence and a full paragraph break only between topics.
+**One sentence per line, in tight blocks.** In the rendered output, each sentence sits on its own line, with no blank line between sentences of the same block. A blank line marks a new topic, never a new sentence: a blank line after every sentence turns each one into its own paragraph and destroys the grouping. So a tight line break separates sentences that belong together, and a blank line separates topics. Produce what the medium needs and check the rendered result: in Markdown, two trailing spaces or a backslash force the tight break; in HTML, `<br>` ends a sentence and each topic block is its own `<p>`; in plain text, a line break; in Word, a soft return (Shift+Enter).
 
 ### Rule 2: Sentences, connectors, and voice
 Aim for about 15 words per sentence. If a sentence carries more than one strong idea, split it in two. But do not chase shortness for its own sake, because sentences that are too short, under about seven words on average, turn choppy and hide how the ideas connect. So keep them short and linked, not clipped. As a ceiling, stay under about 25 words. Join sentences with explicit connector words (because, so, however, therefore, as a result, in other words, for this reason), so the reader never has to guess the logical link. Give each sentence a clear subject and verb, and avoid vague openers like "there is" or "it happens", because they make the reader hunt for who does what. The result should read as one continuous line of thought.
@@ -154,16 +150,16 @@ Prefer a simpler word when one exists. When a technical term is genuinely needed
 
 Established technical terms often stay in English even inside Portuguese text (API, deploy, cache, token), because that is how the reader meets them at work. Keep them in English when the reader does, and give the plain meaning in the reader's language the first time.
 
-**Role before the name, and the name right after.** A name on its own is jargon too. "Mayer" means nothing to a reader who has never met it, and unknown names hurt a reader in a second language most. So give the role first: a researcher, a study, a standard, a law. Then give the name and the source right after, in the same sentence or the next. A role with no name is the other failure. A smart reader asks "which researcher?", and trust drops, the way it does when a restaurant calls itself "the best, according to the survey". The lint warns on both weak forms.
+**Role before the name, and the name right after.** A name on its own is jargon too. "Mayer" means nothing to a reader who has never met it, and unknown names hurt a reader in a second language most. So give the role first: a researcher, a study, a standard, a law. Then give the name and the source in the same sentence. A role with no name is the other failure. A smart reader asks "which researcher?", and trust drops, the way it does when a restaurant calls itself "the best, according to the survey". The lint warns on both weak forms.
 
-Weave the attribution into the sentence, the way a news report does: role, name, place, year, then the finding, in one flowing sentence. Never as a note after the fact ("O estudo é de..."), because the note reads as an afterthought and breaks the thread. The same holds for every named thing: a person, an institution, a city, a company, a law. The BBC News style guide ("Attribution first", 2003) puts the source before the claim for the ear; for the eye, the claim may open, but the source follows in the same sentence or the next, named.
+Weave the attribution into the sentence, the way a news report does: role, name, place, year, then the finding, in one flowing sentence. Never as a note after the fact ("O estudo é de..."), because the note reads as an afterthought and breaks the thread. The same holds for every named thing: a person, an institution, a city, a company, a law. The BBC News style guide ("Attribution first", 2003) puts the source before the claim for the ear. For the eye, the rule is literal: the source rides in the same sentence as the claim, before it or right after it. A new sentence that only names the source ("O estudo é de...") is the note form, and it is weak. The lint only catches a missing name; the placement is on you.
 
 Weak, name without role: "Mayer mostrou que ensinar os termos antes ajuda." Weak, role without name: "Um pesquisador mostrou que ensinar os termos antes ajuda." Weak, attribution as a note: "Ensinar os termos antes ajuda. O estudo é de Richard Mayer." Strong: "Um estudo da Universidade da Califórnia, feito pelo psicólogo Richard Mayer em dois mil e dois, mostrou que ensinar os termos antes da lição ajuda."
 
 **An analogy is a loan, so pay it back.** An analogy ("think of the cache as a notebook on your desk") helps a reader build a new idea on a familiar one, so use one when the idea is abstract. Right after it, before the next heading, add one line that starts with "Where the analogy fails:" and says where the comparison stops holding. The reason is that a reader who keeps the analogy past its limit learns something false, and never finds out.
 
 ### Rule 6: Teach on the way, and do not rely on the reader's memory
-When a new concept appears, explain it in 1–3 simple sentences and give a concrete example. For a topic with many new terms, add a short "Key terms" section near the start. Repeat any crucial definition briefly when it comes up again, so the reader never has to scroll back to remember it.
+When a new concept appears, explain it in 1–3 simple sentences and give a concrete example. For a topic with many new terms, open the text with the section "What to know before reading" ("O que saber antes de ler"), the fixed label of Rule 10, and teach them there. Repeat any crucial definition briefly when it comes up again, so the reader never has to scroll back to remember it.
 
 Assume the reader can hold only a few new things in mind at once, because a tired or distracted reader has very little working memory to spare. So restate the context the reader needs instead of pointing "as mentioned above", and never make them carry a value, name, or result from one step to a later step. When you must refer back, repeat the thing itself, not just a pointer to it.
 
@@ -205,7 +201,7 @@ Count the yes answers, and let the count decide:
 
 - No decorative visuals, because an image that adds no relation adds only load.
 - At most one manipulable interactive (a slider, a toggle, a step-through) per document, because each one costs attention. The text must carry the idea anyway.
-- Every health risk gets an icon array (a grid of 100 small figures, with the affected ones filled in). The array shows natural frequencies, such as "3 in every 100 people", never a relative risk alone.
+- A health risk is always a natural frequency in words ("3 em cada 100 pessoas"), never a relative risk alone. When the four-question test says the risk earns a visual, draw it as an icon array: a grid of 100 small figures with the affected ones filled in. In HTML, use the snippet in `references/html-patterns.md`; in Markdown, a 10-by-10 grid of ● and ○ inside a code block, with its "How to read" line.
 
 ### Rule 8: Depth with low cognitive load
 Cover the topic in real depth, but deliver it in small logical steps. Prefer step-by-step explanation and examples over abstract theory. Never write one large wall of text, because that is exactly where a distracted reader gives up.
@@ -213,8 +209,8 @@ Cover the topic in real depth, but deliver it in small logical steps. Prefer ste
 Calibrate the depth to what the reader already knows. The reader's field is the one in "Who you are writing for", IT, unless the user names another. The scaffold depends on where the topic sits for the reader.
 
 1. **Inside the reader's field.** On a topic inside the reader's own field, keep the basic explanations short, or put them in a collapsed block. Explaining what the reader already knows also costs attention: the expertise reversal effect, described in a 2003 review by Kalyuga, Ayres, Chandler and Sweller (`references/research-basis.md`, section 9.2). Short means one sentence, or one collapsed block the reader can skip. Example: "Um cache HTTP guarda uma cópia da resposta para não voltar ao servidor." One sentence, and the text moves on to how the cache decides that the copy is still valid.
-2. **Outside the reader's field.** Outside their field, give the full scaffolding: key terms, background, and an example before each abstract rule. The key terms and the background open the text in a section "What to know before reading" ("O que saber antes de ler"). So the reader meets them before the first rule. When the topic is outside the field, this section is where the "Key terms" of Rule 6 live. Example: the same reader asks how a generic medicine proves that it is equivalent to the brand. The text opens with "O que saber antes de ler". It explains what the active ingredient is (princípio ativo) and what "equivalent" means for a medicine (bioequivalência), and gives one example of a test. Only then comes the first rule on how the proof works.
-3. **No reader context.** Give the full scaffolding, as in case 2. A reader you cannot see counts as a reader outside the field.
+2. **Outside the reader's field.** Outside their field, give the full scaffolding: key terms, background, and an example before each abstract rule. The key terms and the background open the text in a section "What to know before reading" ("O que saber antes de ler"). So the reader meets them before the first rule. When the topic is outside the field, this section is where the new terms of Rule 6 live. Example: the same reader asks how a generic medicine proves that it is equivalent to the brand. The text opens with "O que saber antes de ler". It explains what the active ingredient is (princípio ativo) and what "equivalent" means for a medicine (bioequivalência), and gives one example of a test. Only then comes the first rule on how the proof works.
+3. **Another reader, with no field named.** When the user writes for someone else ("para minha irmã", "para o time de vendas") and says nothing about that reader's field, give the full scaffolding, as in case 2. A reader you cannot see counts as a reader outside the field. The default reader of this skill is case 1 or case 2, by topic, never case 3.
 
 The two examples answer the same request shape, "explain how X proves that Y". The IT topic gets one sentence of basics and no opening section; the health topic gets the section. Test 19 in `references/tests.md` checks this pair.
 
@@ -246,7 +242,7 @@ Each language has its own pack in `references/`: `lang-pt-br.md` for Brazilian P
 
 Make numbers easy too. Reinforce a bare number with words that say what it means, because a raw figure carries no meaning on its own. For example: "permission 600 (owner can read and write, nobody else can touch it)". Write the month as a word, such as "3 June 2026" or "3 de junho de 2026", so a date is never ambiguous across regions.
 
-For emphasis use bold, and avoid italics and underlining: italics crowd letters together and tire the eye, and underlines look like links. Bold at most one line per block, the one that carries the point, so that reading only the bold lines tells the whole story. Never bold the beginnings of words (the "Bionic Reading" format): two studies found no gain in reading speed, and the one that measured comprehension found no gain there either.
+For emphasis use bold, and avoid italics and underlining: italics crowd letters together and tire the eye, and underlines look like links. Bold at most one line per block, the one that carries the point, so that reading only the bold lines tells the whole story. Never bold the beginnings of words (the "Bionic Reading" format): two reading studies, by Snell (2024) and by Parker and colleagues (2026), found no gain in reading speed, and the one that measured comprehension found no gain there either.
 
 ### Rule 11: Procedures and code
 Steps are where a tired reader most often gets lost, so give a procedure its own clear shape. Use a numbered list, with one action per step, and state the goal of the step before the action. For example, write "to give the server your key, run…", not the reverse. Keep a procedure to about seven steps; if it runs longer, split it into stages with their own headings.

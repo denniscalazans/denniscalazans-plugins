@@ -75,8 +75,12 @@ A tabela completa, com as fontes, está no guia escrito.
 [pause short]
 O gráfico mostra a fatia das lesões no fígado que vem de suplementos.
 Ele cobre cerca de oito anos.
-[key] Nesse tempo, a fatia quase triplicou.
+[key] Nesse tempo, a fatia foi de sete em cada cem para cerca de vinte em cada cem.
 Ou seja, o problema cresce, e não é raro.
+[pause short]
+[curious] De cada cem lesões no fígado, quantas vêm de suplementos hoje?
+[pause recall]
+Cerca de vinte em cada cem, quase o triplo de oito anos atrás.
 """
 
 
@@ -121,9 +125,9 @@ class CleanFixture(unittest.TestCase):
 
     def test_skill_md_example_passages_pass_the_intent_checks(self):
         self.assertEqual(lint.lint(SKILL_EXAMPLE_NO_CACHE), [])
-        # The chart passage is a fragment with no recall question, so only that may fail.
-        problems = lint.lint(SKILL_EXAMPLE_CHART)
-        self.assertEqual(problems, ["single-part script has no question. Add one recall question."])
+        # The chart passage (references/examples.md) closes with a recall question and says the
+        # risk with its base, so it passes clean.
+        self.assertEqual(lint.lint(SKILL_EXAMPLE_CHART), [])
 
 
 class ExistingChecks(unittest.TestCase):
@@ -246,7 +250,8 @@ class NewChecks(unittest.TestCase):
                       "O risco fica duas vezes mais alto com a dose alta.",
                       "O risco é quarenta por cento maior com o extrato.",
                       "The risk is twice as high with the extract.",
-                      "The risk is forty percent higher with the extract."):
+                      "The risk is forty percent higher with the extract.",
+                      "Nesse tempo, a fatia quase triplicou."):
             text = swap(CLEAN, "Isso não confere.", risky)
             problems = only(lint.lint(text), "relative risk without its base")
             self.assertEqual(len(problems), 1, risky)
@@ -254,7 +259,7 @@ class NewChecks(unittest.TestCase):
         for safe in ("Treze em cada cem pessoas têm a lesão, contra seis em cada cem sem o suplemento.",
                      "O risco é o dobro: treze em cada cem, contra seis em cada cem.",
                      "Twice as many: thirteen in every hundred, against six in every hundred.",
-                     "Nesse tempo, a fatia quase triplicou."):
+                     "Nesse tempo, a fatia foi de sete em cada cem para vinte em cada cem."):
             text = swap(CLEAN, "Isso não confere.", safe)
             self.assertEqual(only(lint.lint(text), "relative risk"), [], safe)
 
@@ -320,7 +325,7 @@ class ClosingRecall(unittest.TestCase):
         with open(SKILL_MD, encoding="utf-8") as f:
             skill = f.read()
         rule = skill.split("#### Rule 6", 1)[1].split("\n#### ", 1)[0]
-        self.assertIn("Stern and Halamish 2023", rule, "Rule 6 must name the study behind the closing question")
+        self.assertIn("Stern and Halamish", rule, "Rule 6 must name the study behind the closing question")
         self.assertIn("Sem voltar", rule)
         self.assertIn("practice", rule, "Rule 6 must mark the per-part question and the pause as practice")
 

@@ -294,11 +294,11 @@ How to run: give the skill the same request shape three times, "explique como X 
 
 1. An IT topic, with the reader of SKILL.md (an IT professional): "explique como um cache HTTP decide que a cópia ainda vale".
 2. A health topic, with the same reader: "explique como um medicamento genérico prova que é equivalente ao de marca".
-3. The IT topic again, with no reader context at all (a fresh session, no mention of who reads).
+3. The IT topic again, written for another reader with no field named: "explique como um cache HTTP decide que a cópia ainda vale, é para minha irmã".
 
-Pass: the IT text (run 1) gives the basics, what a cache is and what HTTP is, in one sentence or in one collapsed block, and has no section "O que saber antes de ler". The health text (run 2) opens with the section "O que saber antes de ler", which names the key terms (princípio ativo, bioequivalência) and the background before the first rule about how the proof works. The IT text with no reader context (run 3) has the section too. In all three, the text speaks to the reader as "você", and no sentence is a curiosity that teaches nothing about a main idea.
+Pass: the IT text (run 1) gives the basics, what a cache is and what HTTP is, in one sentence or in one collapsed block, and has no section "O que saber antes de ler". The health text (run 2) opens with the section "O que saber antes de ler", which names the key terms (princípio ativo, bioequivalência) and the background before the first rule about how the proof works. The IT text for another reader with no field named (run 3) has the section too. In all three, the text speaks to the reader as "você", and no sentence is a curiosity that teaches nothing about a main idea.
 
-Fail: the IT text spends a section on what a cache is; or the health text jumps to "bioequivalência" with no section before it; or runs 1 and 2 carry the same amount of scaffold; or run 3 skips the section because the model guessed the reader; or a text avoids "você" and speaks of "o usuário" instead.
+Fail: the IT text spends a section on what a cache is; or the health text jumps to "bioequivalência" with no section before it; or runs 1 and 2 carry the same amount of scaffold; or run 3 skips the section because the model guessed the other reader's field; or a text avoids "você" and speaks of "o usuário" instead.
 
 How to check fast: `grep -c "O que saber antes de ler"` prints 0 on run 1 and 1 on runs 2 and 3. The "você" check and the curiosity check need a human read.
 

@@ -53,8 +53,8 @@ The skill already carries most of them, so the table says where each one lives.
 | XII. redigir frases preferencialmente na voz ativa | Rule 2 (active voice, present tense) |
 | XIII. evitar frases intercaladas | Rule 2, and the lint rule `inserted-clause` |
 | XIV. evitar o uso de substantivos no lugar de verbos | Rule 2, and the lint rule `hidden-verb` |
-| XV. evitar redundâncias e palavras desnecessárias | Rule 8 (cut empty words) |
-| XVI. evitar palavras imprecisas | Rule 8 (name the real thing) |
+| XV. evitar redundâncias e palavras desnecessárias | Rule 9 (no ornament that does not serve a concept) and Rule 2 (the verb, not a noun made from it) |
+| XVI. evitar palavras imprecisas | Rule 5 (one word for one meaning) and Rule 10 (plain words, exact terms kept) |
 | XVIII. testar com o público-alvo se a mensagem está compreensível | `references/tests.md` (the cold-reader tests) |
 
 Source: [Lei 15.263/2025 at the Senado](https://legis.senado.leg.br/norma/41699861/publicacao/41699940).
