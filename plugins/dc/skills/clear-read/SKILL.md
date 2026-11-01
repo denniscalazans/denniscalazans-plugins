@@ -39,6 +39,26 @@ Both modes use the same design phase and the same eleven writing rules. Only the
 
 ---
 
+## Without reasoning and without tools
+
+When a search tool, a scratchpad, the lint or a language pack is missing, use its substitute.
+
+1. **No search.** Write from memory. Mark every number, date, law or version you could not check with "(not verified)", in the reader's language: "(não verificado)". End with one line naming the official source to check.
+2. **No scratchpad.** Open the reply with a 5-line block headed "Plan" ("Plano"): main concepts, terms to define, section headings, visual verdicts, arc. The reader may skip it.
+3. **No lint.** Reread each block as the reader and fix seven slips:
+   - a dash joining two ideas;
+   - a sentence over 25 words;
+   - a block over 4 sentences, counting the bold opening;
+   - a pointer back ("as mentioned above");
+   - a bare label ("P1");
+   - a visual with no how-to-read line;
+   - an analogy with no analogy-limit line.
+4. **No language pack.** Write every fixed label in the reader's language ("Ponto-chave:", never "Key point:"). Expand every acronym on first use, except the daily ones (API, URL, PDF).
+
+Key point: a missing tool changes the method, not the goal.
+
+---
+
 ## Phase 1: Research first (always do this before anything else)
 
 The reader trusts that what you tell them is correct, because they will act on it without checking. So a confident wrong fact is worse than no answer. For this reason, verify before you write.
