@@ -175,6 +175,8 @@ Assume the reader can hold only a few new things in mind at once, because a tire
 - Each section stands alone. When a section depends on another, its first line says in one clause what it builds on, and then names what comes next. Use this template and fill both slots: "You already know that X. Now Y." In Portuguese: "Você já sabe que X. Agora Y." X is the one thing from the earlier section that this section uses, with its meaning. Y is what this section adds. In English: "You already know that memory fades without review. Now, what to do about it." In Portuguese: "Você já sabe que estresse crônico é a exigência que não para. Agora, o que ele faz com o tempo."
 - Blocks end on a complete thought, so every stopping point is a safe place to be interrupted.
 
+**Open with two or three questions, and answer them in the body.** Right after the opening, list two or three questions the text will answer, each one a question the reader could try to answer now ("Antes de ler, tente responder: ..."). Guessing before reading prepares the memory for the answer. Where the body answers one, mark it in one line ("Resposta da pergunta 1: ..."). The questions are method; a quiz that comes back days later is the Project's product and stays out of the skill.
+
 ### Rule 7: Visual plan
 A visual has one job: to show a relation that prose carries badly. So plan each visual before you draw it, and draw only the ones that earn their place. Building the relation in the reader's head is what helps, so a visual exists to make that building possible, not to decorate the page.
 

@@ -126,5 +126,17 @@
       "The correction is right: no-cache means store, but revalidate before each use"
     ],
     "failure_with_current_skill": "Before change 21c the skill corrected the misconception inside the prose in some runs and skipped it in others; the literal block form did not exist."
+  },
+  {
+    "id": "clear-read-change-21d-prequestions-answered-in-body",
+    "skill": "clear-read",
+    "prompt": "explique por que um notebook Jupyter dá erro quando uma célula roda antes da célula que cria a variável",
+    "expected_behavior": [
+      "Right after the opening there are two or three questions introduced by \"Antes de ler\" or an equivalent invitation to guess",
+      "Each question is answered in the body with a marked line \"Resposta da pergunta N:\"",
+      "The questions are about the main concepts (kernel, memory, order of execution), not trivia",
+      "There is no quiz at the end that repeats the questions as a test"
+    ],
+    "failure_with_current_skill": "Before change 21d the skill had no prequestions; no run produced them."
   }
 ]
