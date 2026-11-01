@@ -42,6 +42,7 @@ This table is the answer to "where does this rule come from?". One row per claim
 | Who writes | Expository text integrates better with prior knowledge | holds with a limit | Wolfe and Woodwyk 2010, British Journal of Educational Psychology 80(3), doi:10.1348/000709910X485700; "narrative helps less with mechanisms" is not its finding | medium | 2026-11-01 | abstract |
 | Without reasoning and without tools | A skill must say what to do when a tool is missing | practice | Phase B of the investigation (lacos.md, sections 2 and 4); the Anthropic skill documentation | medium | 2026-11-01 | full text |
 | Rule 7 | A sequence of steps is a list, never a diagram; real graphs are inline SVG; form follows content | holds with a limit | Berney and Bétrancourt 2016 (form by content); the Project's phone test of 24 September 2026 and its playbook rule pb-004 (practice) | high for "never a sequence", medium for the SVG preference | 2026-11-02 | full text |
+| Rule 3 | Voicing a common wrong belief and refuting it teaches more than the fact alone | holds | Muller and Sharma 2007, UniServe Science Proceedings; over 1,000 students; gain of 0.5 to 1 standard deviation | high | 2026-11-02 | full text |
 
 When the reader asks where a rule comes from, answer from this table: the source, the certainty and the date it was checked. The quick map below is the older summary and stays for context.
 

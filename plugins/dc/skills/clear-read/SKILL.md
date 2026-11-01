@@ -142,6 +142,8 @@ The lint (see "Before you deliver") flags each possible passive as a warning. So
 ### Rule 3: Problem plus counter-pattern
 Never name a problem on its own, because a problem without a fix just adds worry. Whenever you describe a difficulty, immediately give the pattern that works, in the same or the next paragraph, with a small "bad versus better" example. When the fix gets its own line, open it with "What works:" ("O que funciona:"), one of the fixed labels of Rule 10. Always pair the problem with what to do instead, using connector words.
 
+**A common wrong belief gets its own block.** When Phase 1 found a misconception the reader likely holds, say it, refuse it, and give the fact with its source, in this literal shape: "Many people think X. That is not the case. In fact, Y. Source: Z." ("Muita gente acha que X. Isso não confere. Na verdade, Y. Fonte: Z."). Giving voice to the wrong belief and refuting it teaches more than stating the fact alone: in a study with over a thousand students, by Muller and Sharma (2007), the refutation format gained half to one standard deviation.
+
 ### Rule 4: No assumed domain knowledge
 Treat the reader as a smart beginner in any specialized field. Do not assume knowledge of tax, finance, legal, or domain jargon, even when it looks basic, because "basic" is relative and a reader in a second language may know the concept under a different word. Build each concept from the ground up.
 

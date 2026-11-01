@@ -114,5 +114,17 @@
       "No section opens with a promise about the section (\"nesta parte vamos ver\")"
     ],
     "failure_with_current_skill": "Before change 21b the skill asked for the point first but gave no literal form; about half the runs opened sections with a topic name or a question instead."
+  },
+  {
+    "id": "clear-read-change-21c-misconception-block",
+    "skill": "clear-read",
+    "prompt": "explique o que a instrução no-cache do HTTP faz de verdade",
+    "expected_behavior": [
+      "The text has one block that opens with \"Muita gente acha que\" and continues with \"Isso não confere.\" and \"Na verdade,\"",
+      "The block names a source after \"Fonte:\"",
+      "The misconception is the real common one: that no-cache means do not store",
+      "The correction is right: no-cache means store, but revalidate before each use"
+    ],
+    "failure_with_current_skill": "Before change 21c the skill corrected the misconception inside the prose in some runs and skipped it in others; the literal block form did not exist."
   }
 ]
