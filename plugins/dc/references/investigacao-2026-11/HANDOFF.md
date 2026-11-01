@@ -118,6 +118,15 @@ Os evals rodam com `claude plugin eval plugins/dc --runs 1 --case "<id>"`, e cus
 A próxima sessão começa pela revisão do PR do branch filho e pela Fase D: a página do experimento, com 2 pares de guia primeiro.
 A seção 3 de `decisoes-do-dennis.md` diz como a página coleta respostas.
 
+## 3.6 Estado em 1 de novembro de 2026, noite: Fase D, parte 1
+
+As medidas automáticas e o leitor frio artificial estão em `experimento.md` e na pasta `experimento/`.
+Os quatro textos têm nomes cegos, e o mapa está selado no banco da página privada e fora do repo.
+A leitura cega está aberta em duas páginas, listadas na seção 4 de `experimento.md`.
+
+A próxima sessão lê as respostas pela ferramenta de dados do artefato, abre o mapa, e escreve a seção 7 de `experimento.md`.
+Só depois disso o PR #81 pode entrar no main.
+
 ## 4. O que já está decidido
 
 - A clear-listen entra no plugin `dc`, ao lado da clear-read. O Dennis confirmou em 1 de novembro, e ela já está no `plugin.json`, no README e no CLAUDE.md.

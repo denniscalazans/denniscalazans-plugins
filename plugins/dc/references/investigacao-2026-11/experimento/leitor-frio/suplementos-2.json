@@ -1,0 +1,19 @@
+{
+ "voltas": 2,
+ "tropecos": [
+  "Os números mostram que ela não é exceção, e eles vêm de uma pesquisa recente do grupo de consumidores britânico Which?",
+  "Nesses casos a causa é uma mistura de suplementos de ervas e de dieta.",
+  "Ele afirma que o solo de hoje tem menos nutrientes do que décadas atrás, e também lançou a própria marca de suplemento de fibra."
+ ],
+ "palavras_lidas": 1500,
+ "pontos_acertados": {
+  "s1": 3,
+  "s2": 3,
+  "s3": 3,
+  "s4": 3,
+  "s5": 1,
+  "s6": 2
+ },
+ "pontos_possiveis": 15,
+ "texto": "suplementos-2"
+}
