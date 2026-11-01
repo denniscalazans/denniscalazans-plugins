@@ -138,5 +138,17 @@
       "There is no quiz at the end that repeats the questions as a test"
     ],
     "failure_with_current_skill": "Before change 21d the skill had no prequestions; no run produced them."
+  },
+  {
+    "id": "clear-read-change-21f-two-layers-in-rewrite",
+    "skill": "clear-read",
+    "prompt": "reescreve esse trecho de forma clara, explicando o que for preciso: \"A Castellum anunciou que venderá os ativos fora da Suécia, cerca de 19 bilhões de coroas, antes da crise que o acionista prevê.\"",
+    "expected_behavior": [
+      "Every fact of the source stays: Castellum, the sale, outside Sweden, about 19 billion kronor, the shareholder's forecast",
+      "Anything the rewrite adds to explain (what Castellum is, what a krona is worth) is marked \"(acrescentado)\" or sits in a section \"O que o artigo não diz\"",
+      "No added fact is presented as if the source said it",
+      "The rewrite keeps the hedge: the crisis is a forecast, not a fact"
+    ],
+    "failure_with_current_skill": "Before change 21f the skill asked for fidelity but gave no way to mark additions; glosses blended into the source's claims."
   }
 ]
