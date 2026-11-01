@@ -78,6 +78,7 @@ Plan the journey before you write a word of it. This planning is for you, so kee
    - a principle: the rule plus the case where it does not hold;
    - a fact: the number with its word anchor and its source.
 10. **Language pack.** Read the pack for the reader's language, `references/lang-pt-br.md` or `references/lang-en.md` (Rule 10 says what it holds).
+11. **Read as the reader.** Go through the design sentence by sentence: the headings, the first line of each section, and the "Key point" lines. Ask two questions of each: what does the reader already have that I can use? And what am I leaving open? The first question finds the known part to start the sentence from. The second finds a name without its meaning, a result the reader must carry, or a pointer to something off screen. Treat the two questions as a check criterion: fix the sentence that fails, and move on. The questions and your answers stay in the scratchpad, not in the reply.
 
 Key point: design the arc first, because a reader can only follow a path that you have already laid out.
 
@@ -152,7 +153,7 @@ Assume the reader can hold only a few new things in mind at once, because a tire
 - Same words every time. Reuse the exact name and the same short meaning, never a synonym, because a new word reads as a new thing.
 - No backward references. Never "as mentioned above", "the former", "the second idea" on their own. Name the thing and say what it is.
 - Known before new. Start each sentence with what the reader already holds, and end it with the new information. Weak: "This avoids errors in production." Strong: "The cache before deploy avoids errors in production."
-- Each section stands alone. When a section depends on another, its first line says in one clause what it builds on: "You already know that memory fades without review. Now, what to do about it."
+- Each section stands alone. When a section depends on another, its first line says in one clause what it builds on, and then names what comes next. Use this template and fill both slots: "You already know that X. Now Y." In Portuguese: "Você já sabe que X. Agora Y." X is the one thing from the earlier section that this section uses, with its meaning. Y is what this section adds. Two complete examples. English: "You already know that memory fades without review. Now, what to do about it." Portuguese: "Você já sabe que estresse crônico é a exigência que não para. Agora, o que ele faz com o tempo."
 - Blocks end on a complete thought, so every stopping point is a safe place to be interrupted.
 
 ### Rule 7: Visual plan

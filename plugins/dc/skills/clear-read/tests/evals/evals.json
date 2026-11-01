@@ -1,0 +1,31 @@
+[
+  {
+    "id": "clear-read-change-3-three-named-parts",
+    "skill": "clear-read",
+    "prompt": "Explique, em português, como funciona um cache HTTP para uma pessoa de TI que nunca mexeu com isso. Use três seções com estes nomes: 1) O que o cache guarda; 2) Como a etiqueta de versão (ETag) diz se a cópia ainda vale; 3) Por que \"no-cache\" não quer dizer \"não guardar\". Cerca de 400 palavras.",
+    "expected_behavior": [
+      "Sections 2 and 3 each open with the re-entry template with both slots filled, \"Você já sabe que X. Agora Y.\", where X is one thing from the earlier section with its meaning and Y is what this section adds.",
+      "No sentence points back with a bare pointer: no \"como vimos\", \"como dito acima\", \"na seção anterior\", \"o primeiro\" or \"o segundo\" standing in for the thing itself. When the text refers back, it repeats the thing and its meaning.",
+      "The first mention of ETag, cópia and no-cache in each block carries its meaning in the same sentence (Tier 1). A bare label at a block's first mention, such as \"o ETag resolve isso\", does not appear.",
+      "Each sentence starts with what the reader already holds and ends with the new information (known before new). No section opens on a term the reader has not met yet.",
+      "Every label is in Portuguese (\"Ponto-chave:\", \"Onde a analogia falha:\"), none in English.",
+      "Each of the three sections can be read on its own by a cold reader: a reader who reads only section 3 can answer \"o que no-cache faz?\" from that section alone.",
+      "The reply does not contain the two design questions (\"what does the reader already have that I can use?\", \"what am I leaving open?\") or any reasoning about them. The design stays in the scratchpad."
+    ],
+    "failure_with_current_skill": "In at least one of three runs, the current skill produces a bare label at a block's first mention (\"o ETag\" or \"a cópia\" with no meaning restated in that block) or a backward reference to what already passed (\"como vimos na seção 1\", \"a etiqueta acima\"). Section 2 or 3 opens without the re-entry line, because Rule 6 states the principle (\"its first line says in one clause what it builds on\") with one English example and no literal template to fill, and the model treats it as a principle to honor rather than a line to produce. Phase B (lacos.md, section 5.2) saw the same rule execute without reasoning once the skill gave the literal string, and fail to execute with the full skill."
+  },
+  {
+    "id": "clear-read-change-3-golden-g2-section-stands-alone",
+    "skill": "clear-read",
+    "prompt": "Escreva, em português, a seção \"O que o estresse crônico faz com o tempo\" de um guia sobre burnout, para um leitor cansado que pode ter pulado a seção anterior. A seção anterior explicou que estresse crônico é a exigência que não para. Esta seção precisa dizer que burnout não é cansaço grande, e sim o resultado de um desequilíbrio que dura, com três lados: exigências altas, recursos baixos e nenhuma recuperação no meio. Até 120 palavras.",
+    "expected_behavior": [
+      "The section opens with its point in the first sentence, in the form \"A ideia central aqui é que burnout não é cansaço grande, e sim o resultado de um desequilíbrio que dura\" or an equivalent that leads with the point.",
+      "The section carries the re-entry line in the published form, with both slots filled: \"Você já sabe que estresse crônico é a exigência que não para. Agora, o que ele faz com o tempo.\"",
+      "\"estresse crônico\" appears with its meaning (\"a exigência que não para\") in the same sentence at its first mention in the section, never as a bare label.",
+      "The three sides of the imbalance are named in one sentence: exigências altas, recursos baixos e nenhuma recuperação no meio.",
+      "A cold reader who reads only this section can answer \"o que é estresse crônico?\" from the text.",
+      "No backward pointer (\"como vimos\", \"na seção anterior\") replaces the restated meaning."
+    ],
+    "failure_with_current_skill": "The current skill reproduces the point-first opening and the term with its meaning, but the re-entry line comes out as a paraphrase or is missing (\"Vimos que o estresse crônico...\", or a section that starts straight on the three sides), because Rule 6 gives one English example and no Portuguese template. The golden set G2 (inventario-das-regras.md, section G2) asks for the exact published form \"Você já sabe que... Agora...\"."
+  }
+]
