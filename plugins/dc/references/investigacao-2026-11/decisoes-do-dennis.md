@@ -28,6 +28,7 @@ Ponto-chave: dez perguntas, nove respondidas, e uma (o perfil Projeto) respondid
 | Nova. Exportar o roteiro neutro para o golden set da clear-listen | Os dois: suplementos (3 minutos e meio) e burnout (12 minutos) | Pendente de o Dennis colar os roteiros aqui ou salvá-los em `roteiros/`. A clear-listen ganha o golden set quando eles chegarem |
 | Nova. Registrar a clear-listen no plugin | Sim, neste branch | Feito: a skill entrou no README, no CLAUDE.md e nas palavras-chave do `plugin.json` |
 | 4. Ordem das fases | Resolvida pelo andamento: A, B e C rodaram em sequência no mesmo dia | Nada muda |
+| Nova. "Um pesquisador mostrou" basta? | Não. Papel sem nome é autoridade vaga, como "o melhor restaurante, segundo a pesquisa". O papel vem primeiro e o nome e a fonte vêm logo depois | A mudança 2 da proposta ganha a segunda metade da regra e um segundo aviso de lint, `authority-without-name` |
 | Nova. As skills guardam de onde vêm as regras? | Sim. O Dennis quer que a skill diga que contém as referências e consiga responder "de onde vem" e buscar mais, sem carregar todos os estudos | A Fase E ganha um PR "research-basis conferido": o mapa regra, afirmação, veredito, fonte, certeza e data de conferência vira tabela no `research-basis.md` das duas skills; o `SKILL.md` ganha uma linha para o caso "o leitor pergunta por quê"; a história da composição fica em `investigacao-2026-11/` com um ponteiro |
 
 ## 2. O perfil Projeto, pela pesquisa

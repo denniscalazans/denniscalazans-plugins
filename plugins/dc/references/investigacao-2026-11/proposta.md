@@ -34,7 +34,7 @@ As prioridades são três, e cada uma diz quando a mudança entra.
 | Nº | Mudança | Skill | Prioridade |
 |---|---|---|---|
 | 1 | Rótulos na língua do leitor, e dois testes de lint | clear-read | P1 |
-| 2 | Papel antes do nome: a Regra 5 estendida, e um aviso de lint | clear-read | P1 |
+| 2 | Papel antes do nome, e o nome logo depois: a Regra 5 estendida, e dois avisos de lint | clear-read | P1 |
 | 3 | "Conhecido antes do novo" com template, e a etapa "ler como o leitor" | clear-read | P1 |
 | 4 | A seção "Sem raciocínio e sem ferramentas" | clear-read e clear-listen | P1 |
 | 5 | A seção "Conversa por voz" no topo da clear-listen | clear-listen | P1 |
@@ -83,16 +83,26 @@ Depois, o lint a pega, porque o detector em português aceita "é como" mais ver
 ### 2. Papel antes do nome (P1: antes do experimento)
 
 **O que muda.** A Regra 5 passa a cobrir nome de pessoa, de estudo, de norma e de lei.
-O papel vem antes do nome, e o nome só entra quando a frase seguinte precisa dele.
+O papel vem antes do nome, e o nome e a fonte vêm logo em seguida, na mesma frase ou na próxima.
 
-Exemplo fraco: "Mayer mostrou que ensinar os termos antes ajuda."
-Exemplo forte: "Pesquisas com alunos mostram que ensinar os termos antes da lição ajuda. O pesquisador é Richard Mayer."
+O Dennis acrescentou em 1 de novembro: um papel sem nome é autoridade vaga, como "o melhor restaurante, segundo a pesquisa".
+O leitor inteligente pergunta "que pesquisa?", e a confiança cai.
 
-**O teste que falha hoje.** Um teste no lint: "Mayer mostrou que" passa hoje; depois, o lint avisa `name-before-role`.
-A checagem procura um nome com maiúscula seguido de verbo de evidência ("mostrou", "achou", "demonstrou", "found", "showed").
-Ela só avisa quando a frase não tem um substantivo de papel ("pesquisador", "estudo", "norma", "lei", "researcher", "study").
+Exemplo fraco, nome sem papel: "Mayer mostrou que ensinar os termos antes ajuda."
+Exemplo fraco, papel sem nome: "Um pesquisador mostrou que ensinar os termos antes ajuda."
+Exemplo forte: "Um estudo com alunos de ciências mostrou que ensinar os termos antes da lição ajuda. O estudo é de Richard Mayer, de 2002, e está na lista de fontes."
 
-**Evidência.** Achado 2 da conversa de 1 de novembro. Fase C, seção 4.2: um rótulo sem referente custa até fechar (catáfora, cerca de 80 ms por tentativa). Nomes desconhecidos prejudicam a escuta em segunda língua (Kobeleva 2012).
+**O teste que falha hoje.** Dois testes no lint.
+"Mayer mostrou que" passa hoje; depois, o lint avisa `name-before-role`, porque o nome veio antes do papel.
+
+"Um pesquisador mostrou que", "estudos mostram que" e "segundo a pesquisa" passam hoje.
+Depois, o lint avisa `authority-without-name` quando nenhum nome ou fonte aparece na mesma frase ou na seguinte.
+
+A primeira checagem procura um nome com maiúscula seguido de verbo de evidência ("mostrou", "achou", "demonstrou", "found", "showed") sem substantivo de papel na frase.
+A segunda procura o substantivo de papel com verbo de evidência.
+Ela exige um nome com maiúscula, um ano ou um link até o fim da frase seguinte.
+
+**Evidência.** Achado 2 da conversa de 1 de novembro, e a correção do Dennis no mesmo dia (autoridade vaga). Fase C, seção 4.2: um rótulo sem referente custa até fechar (catáfora, cerca de 80 ms por tentativa). Nomes desconhecidos prejudicam a escuta em segunda língua (Kobeleva 2012).
 
 ### 3. "Conhecido antes do novo" com template, e a etapa "ler como o leitor" (P1: antes do experimento)
 
