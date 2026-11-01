@@ -283,8 +283,14 @@ Ponto-chave: nenhuma linha das skills muda sem um teste que prove a mudança e s
 
 Criar a pasta `plugins/dc/references/investigacao-2026-11/` em `denniscalazans-plugins`.
 A pasta não se chama `docs/` porque o `.gitignore` do repo ignora `docs/` e `**/evals/`.
-Copiar para ela: `claude/clear-read-pesquisa-consolidada.md`, `claude/clear-listen-evals.json`, `claude/clear-listen-trigger-evals.json` e `dev/tools/lint_guide.py` da Biblioteca.
-Toda entrega das fases vai para essa pasta.
+
+A subpasta `projeto/` já tem as cópias de 1 de novembro de 2026.
+São elas: as instruções do Projeto, a pesquisa consolidada, o playbook de áudio, o playbook de conectores e a spec da revisão espaçada.
+Mais os dois arquivos de evals da clear-listen, o guia de exemplo dos evals, e `lint_guide.py` da Biblioteca.
+
+São cópias do conjunto SET_VERSION 2026-10-14-r1.
+Quando o Projeto mudar, copiar de novo.
+Toda entrega das fases vai para `plugins/dc/references/investigacao-2026-11/`.
 
 Copiar a clear-listen inteira (SKILL.md, references, scripts) para `plugins/dc/skills/clear-listen/`.
 Feito em 1 de novembro de 2026, no branch `investigacao-2026-11`, a partir da cópia de Settings > Skills.
@@ -298,7 +304,7 @@ Para cada regra, preencher uma linha com as colunas da tabela abaixo.
 |---|---|
 | Regra | Nome e número |
 | O que ela pede | Uma frase |
-| Evidência | Qual estudo ou padrão a sustenta, e com que certeza: alta, média, baixa ou nenhuma. Usar o `research-basis.md` de cada skill e a pesquisa consolidada copiada no passo 0 |
+| Evidência | Qual estudo ou padrão a sustenta, e com que certeza: alta, média, baixa ou nenhuma. Usar o `research-basis.md` de cada skill e `projeto/clear-read-pesquisa-consolidada.md` |
 | Testável? | O lint pega? Um teste de `tests.md` pega? Um leitor frio pega? Ou é só um desejo escrito? |
 | Executável? | O modelo consegue aplicar a regra enquanto escreve, ou só conferir depois? A conversa mostrou que "conhecido antes do novo" é do segundo tipo |
 | Vale onde? | Texto, página, áudio longo, conversa. Marcar onde a regra ajuda, onde é neutra e onde atrapalha |
@@ -682,11 +688,47 @@ As outras ficam registradas como "sem prova", no mesmo formato da seção 7 da p
 
 Três pesquisas que valem a pena na próxima rodada, com a ferramenta certa:
 
+- Clonar o repositório oficial de skills da ElevenLabs e ler a skill `text-to-speech` (seção 7.4).
 - Abrir na fonte os dois estudos de prévia em áudio (2012 e 2018) e ler o que exatamente a prévia dizia. Se ela entregava conteúdo junto com a contagem, a tese sobre promessa e esses estudos concordam. Ferramenta: web fetch nas páginas do DOI.
 - Buscar no Valency, por significado: "working memory load of enumeration in spoken instructions" e "forward reference cost in discourse comprehension". A busca de 1 de novembro foi por palavras-chave.
 - Uma busca no Consensus, porque o plano é pequeno: "advance organizers spoken lecture working memory attention deficit".
 
 Ponto-chave: sete perguntas abertas, e as três primeiras têm resposta no experimento com o Dennis.
+
+### 7.4 Não reinventar a roda: o que já existe para a ElevenLabs
+
+O Dennis pediu isto em 1 de novembro de 2026.
+Antes de escrever regras de áudio, ver o que a ElevenLabs e os repositórios de skills já publicaram.
+Uma busca rápida no mesmo dia achou o que está abaixo.
+A Fase C confere na fonte e decide o que reaproveitar.
+
+**A ElevenLabs tem um repositório oficial de skills.**
+Ele fica em https://github.com/elevenlabs/skills, com licença MIT, e instala com `npx skills add elevenlabs/skills`.
+As skills ficam na raiz do repo: `text-to-speech`, `speech-to-text`, `realtime`, `agents`, `speech-engine`, `sound-effects`, `music`, `voice-changer`, `voice-isolator`, `dubbing`, `onboarding`, `setup-api-key`.
+A página oficial que aponta para o repo é https://elevenlabs.io/docs/eleven-api/resources/agent-tooling.
+
+O que essas skills parecem cobrir, pela leitura das páginas de índice: como chamar a API e o SDK.
+O que elas parecem não cobrir: como escrever um roteiro para o ouvido, e os detalhes de v4 (tags de áudio, pausas, pronúncia).
+Isso precisa de conferência, porque a página de índice não mostra o conteúdo de `text-to-speech/SKILL.md` nem da pasta `references/` dele.
+
+Dois padrões desse repo interessam à investigação, além do conteúdo:
+
+- Ele tem uma pasta `evals/` na raiz. É o formato que a seção 7.1 recomenda e que o repo do Dennis hoje ignora no `.gitignore`.
+- Ele tem uma skill interna chamada `update-skills-from-changelog`, em `.agents/skills/`. Ela atualiza as skills a partir do changelog do produto. Isso é exatamente o problema da seção 7.1: o modelo e o motor de voz mudam, e a skill precisa acompanhar. O perfil de engine da clear-listen pode ganhar o mesmo mecanismo.
+
+Registros em catálogos de terceiros (claudskills.com, claudeskills.info, skillselion.com, agentskillsfinder.com) listam skills chamadas `elevenlabs`, `elevenlabs-tts` e `elevenlabs-voices`.
+São cópias ou variantes, de autores diversos.
+A fonte a conferir é o repo oficial.
+
+**Tarefas para a Fase C:**
+
+1. Clonar `elevenlabs/skills` e ler `text-to-speech/SKILL.md` e a pasta `references/` dele. Anotar o que cobre v4, tags, pausas, pronúncia e limites por chamada.
+2. Comparar com o perfil `eleven_v4` do playbook de áudio do Projeto (`projeto/clear-read-audio-playbook.md`, seção 11.1). Onde a skill oficial tem dado que o playbook marcou como [to test], a skill oficial vence, depois de conferir na documentação.
+3. Decidir a divisão de trabalho: a skill oficial cuida da API, e a clear-listen cuida do roteiro para o ouvido. A clear-listen passa a apontar para a skill oficial em vez de repetir o que ela já diz.
+4. Ler `.agents/skills/update-skills-from-changelog/SKILL.md` e avaliar se o mesmo mecanismo serve para manter o perfil de engine atualizado.
+5. Buscar o mesmo para outros motores de voz que o Dennis possa usar um dia, como Kokoro e Edge TTS. A clear-listen é neutra em relação ao motor.
+
+Ponto-chave: a ElevenLabs tem uma skill oficial para a API, e a clear-listen cobre só o roteiro para o ouvido.
 
 ## 8. Fase D: o experimento
 
@@ -942,7 +984,13 @@ Assistentes de voz e TDAH:
 - [TDAH] Bryant e colegas 2026, Journal of Medical Internet Research (JMIR) Formative Research, co-design de chatbot: https://doi.org/10.2196/85013
 - [TDAH] O'Connell e colegas 2024, conferência Human-Robot Interaction (HRI), robô companheiro de estudo: https://doi.org/10.1145/3610977.3634929
 
-### 13.3 Do próprio Projeto
+### 13.3 Skills da ElevenLabs (seção 7.4)
+
+- Repositório oficial: https://github.com/elevenlabs/skills
+- Página de agent tooling da ElevenLabs: https://elevenlabs.io/docs/eleven-api/resources/agent-tooling
+- Wiki do repositório: https://github.com/elevenlabs/skills/wiki
+
+### 13.4 Do próprio Projeto
 
 - Instruções do Projeto, SET_VERSION 2026-10-14-r1.
 - `claude/clear-read-pesquisa-consolidada.md`, 13 de outubro de 2026.
@@ -950,4 +998,4 @@ Assistentes de voz e TDAH:
 - clear-listen: SKILL.md, references/research-basis.md, references/tests.md, scripts/lint_audio_script.py.
 - Memória do Projeto: notas de 13, 14 e 24 de outubro de 2026 sobre a clear-read, o Projeto e os nomes das seções.
 
-Ponto-chave: 19 páginas da Anthropic, cerca de 30 estudos, e os arquivos do próprio Projeto.
+Ponto-chave: 19 páginas da Anthropic, cerca de 30 estudos, o repositório de skills da ElevenLabs, e os arquivos do próprio Projeto.
