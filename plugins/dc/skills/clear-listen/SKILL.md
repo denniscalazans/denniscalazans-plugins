@@ -1,6 +1,6 @@
 ---
 name: "clear-listen"
-description: "Use when the output will be heard: a narration, the audio version of a guide, a podcast or two-host dialogue, an audio summary, a voice-over, or any text-to-speech script. Triggers: \"quero ouvir\", \"versão em áudio\", \"narra isso\", \"faz um podcast disso\", \"resumo em áudio\", \"read this to me\". Not for screen-only text (use clear-read) or for transcribing audio."
+description: "Use when the output will be heard: a narration, the audio version of a guide, a podcast or two-host dialogue, an audio summary, a voice-over, any text-to-speech script, or one turn of a live voice conversation that an engine will speak. Triggers: \"quero ouvir\", \"versão em áudio\", \"narra isso\", \"faz um podcast disso\", \"resumo em áudio\", \"read this to me\". Not for screen-only text (use clear-read) or for transcribing audio."
 ---
 
 # Clear-Listen
@@ -18,7 +18,30 @@ The listener is the clear-read reader, now with headphones.
 - They are often tired, in a noisy place, or doing something else at the same time (walking, commuting, housework).
 - They listen in their native language, so the second-language load of clear-read is gone. The attention load is larger.
 
+**Who is speaking:** someone telling a good story to a friend. They deliver the whole thing, pull the listener forward with what comes next, and repeat the essential as friends remembering together ("lembra que o navegador guarda uma cópia?"). They never show the skeleton: no "são cinco pontos", no "primeiro, segundo". A teacher with slides does the opposite. Rule 1's spoken map and Rule 3's item marks are the exceptions: each replaces a heading the ear cannot see. One limit: a meta-analysis of 2021, by Mar and colleagues, with 78 samples and 33,078 people, found that narrative helps memory more than it helps understanding. So a mechanism still gets its step by step, in the order it happens.
+
 **The one goal:** the listener gets every main idea on the first listen, with no rewinding. When the mind drifts and comes back, the listener knows within a few seconds where they are and what the current part is about. When a rule and this goal seem to conflict, the goal wins.
+
+## Conversation by voice
+
+This section is for one turn of a live voice conversation: the person speaks, you answer in about 30 seconds, and a voice engine reads the answer exactly as written. Text chat stays in clear-read. The four phases below are for a recorded audio, not for a turn: no script file, no producer note, no engine profile, no rendering. Every character you write is heard. The other rules of this skill hold, with these limits.
+
+1. **Answer first, in up to 3 sentences, before any structure.** Six sentences is the ceiling. Offer the rest instead of squeezing it in.
+2. **Keep each sentence at 8 to 15 words.** The ceiling of 20 holds.
+3. **Put a connector at every link.** "Por isso", "mas", "ou seja". Two facts side by side are two facts.
+4. **Start from what the person just said**, in their words. "Você perguntou se o cache guarda a página. Guarda, mas confere antes de usar."
+5. **Say the role before the name, and the name right after.** "Um estudo de dois mil e vinte e três, de Stern e Halamish, mostrou que..." A bare "um pesquisador mostrou" makes a smart listener ask which one. When you lack the name, say so.
+6. **Never point backward.** Say the thing again, with the person's own words.
+7. **Make every sentence a safe stopping point.** The person may interrupt after any sentence and still hold a whole idea.
+8. **Past 3 sentences, end with a short question that gives the turn back.** No pause mark: a 4 to 6 second silence sounds like the end of the turn, and the person talks over it. "Quer que eu explique como o servidor manda essa etiqueta?"
+9. **Redefine a term when it returns after 3 exchanges**, in the same words as the first time.
+10. **Announce structure only through content.** "Agora, o que fazer com isso." Never "São três pontos" or "Parte um de dois": a count is a promise the ear must hold.
+11. **Never number. One step per turn, the next when the person asks.** No "primeiro, segundo", no "1.": the engine reads the digit or drops it. Goal, then action, like a navigation app. "Agora, abra o terminal. Me avisa quando estiver aberto."
+12. **Say the skeleton in one sentence, in place of the visual.** "Imagine três caixas: o navegador, o cache e o servidor." Then offer the drawing in writing.
+13. **Name the problem, and the way out in the next sentence.**
+14. **Punctuation is the only sound control.** No square brackets, no delivery intents, no bold, no markdown. A period is the pause, a short sentence is the stress. The engine reads the mark or drops it, and both cost the listener.
+
+Before the turn is spoken, run `python3 scripts/lint_audio_script.py <turn.txt> --conversa`. It fails on any square bracket, part marker, bare ordinal, list line or heading, on more than 6 sentences, and on more than 3 sentences without a closing question.
 
 ## Why the ear needs its own rules
 
@@ -52,6 +75,26 @@ This skill separates two things that are easy to mix up.
 
 So the neutral script is the source of truth, and it never contains the syntax of one engine. Changing the engine, or the model, means rendering the same script again. It never means rewriting the script.
 
+## Without reasoning and without tools
+
+With only this file, no search, no engine profile, no lint: three substitutes.
+
+1. **Only facts from the user's source**, and "a fonte não diz" for the rest. Open the producer note with "facts not verified in this session". No source text: ask for one, never write from memory.
+2. **Render plain when there is no engine profile** (`references/rendering.md`). Never fill the profile from memory: hand it to the user blank and render plain until it returns.
+3. **The twelve checks by hand**, in one producer note, which says the lint and cold reader did not run.
+   - Read each part aloud; a stumble is the listener's.
+   - Over 20 words: split.
+   - A parenthesis: its own sentence.
+   - A digit, symbol, address or code: words.
+   - A dash: two sentences or a connector.
+   - "Como eu disse": say it again.
+   - Filler ("Exato!"): the key point instead.
+   - Part marker missing or in digits: "Parte dois de três".
+   - No recall question per part: add one, pause, answer.
+   - Over two closing questions: one recall plus "Sem voltar".
+   - A part over 800 words: split.
+   - Each main idea has its sentence.
+
 ## Four phases
 
 Work in order: source, design, write, render. The neutral script and its rendered form are the output.
@@ -67,9 +110,9 @@ The script adds no new fact. Its source is a verified text: a clear-read guide, 
    - **Core idea.** Write the single core idea of the whole audio in one sentence. It goes into the first 30 seconds, and it returns at the start of each later part.
 3. **Spoken names.** For each term, decide the one name you will say every time, and one short meaning to repeat with it. Also decide how each technical term, acronym or code-like name sounds aloud, and write it that way (a header such as `Cache-Control` becomes "a instrução cache control"). Syntax is never read: say what the thing does.
 4. **Cuts and coverage.** List what stays in the written text only, with the fit list in "What the audio is for". Then check the other direction: every main idea of the source has a sentence in the script. A main idea that lives only in a table or a chart of the source still gets its spoken sentence (Rule 16).
-5. **Questions.** One prequestion per main concept for the opening. One recall question per part.
+5. **Questions.** One prequestion per main concept for the opening. One recall question per part. One closing question about the whole audio, after the last part.
 6. **Delivery.** One tone intent per part, from the vocabulary in "Delivery intents" (for example warm, curious, serious), so the voice changes between parts. Also plan the stressed term of each part, and every hard name that needs a pronunciation. Change the *kind* of novelty from part to part (a question, an example, a contrast, a voice change), because the same device repeated stops working.
-7. **Medium.** Name the medium this audio will be produced with: which voice engine and model, or a human reader. Ask the environment, not your memory (Phase 4, step 1). The medium does not change the writing. It only decides the rendering, and the measured rate you plan with.
+7. **Medium.** Name the medium this audio will be produced with: which voice engine and model, or a human reader. Ask the environment, not your memory (Phase 4; `references/rendering.md`, step 1). The medium does not change the writing. It only decides the rendering, and the measured rate you plan with.
 8. **Length.** Target length in minutes, then words. Use the measured rate of the chosen voice on the chosen medium. Until it is measured, plan with 160 words per minute for Brazilian Portuguese (range 150 to 175). Never copy an English or Spanish words-per-minute target: Portuguese words have about 2.1 syllables, English words about 1.4, so the same number means a different speed.
 
 ### Phase 3: Write
@@ -96,7 +139,7 @@ In text, repetition is waste. In audio, repetition is the listener's only way to
 The first thing a drifting listener loses is the link between facts. So state each causal link in words ("por isso", "o motivo é", "como resultado"), and state the conclusion yourself. Do not leave an inference for the listener to make.
 
 #### Rule 6: Make the listener retrieve, in the head
-Open with one or two prequestions, each followed by a pause. Close each part with **one** recall question, a recall pause (the `[pause recall]` intent, 4 to 6 seconds), then the answer in one sentence. Close the audio with "Sem voltar, quais foram as ideias principais?", a pause, then the list. Every question must be answerable in one short phrase, silently, while walking, because this listener has no hands free and will not write. The learning benefit of built-in questions is solid, also for students with ADHD. The attention benefit is likely but less certain. Students with ADHD test themselves less on their own, so the audio does the prompting.
+Open with one or two prequestions, each followed by a pause. Close the audio with "Sem voltar, quais foram as ideias principais?", a recall pause, then the list. This closing question is the proven part of the rule: in a study with 36 university students with ADHD and 36 without (Stern and Halamish 2023), recalling the whole text once at the end beat recalling it section by section. Every script of more than one part has it, and the lint checks for it. Also close each part with **one** recall question, a recall pause (the `[pause recall]` intent, 4 to 6 seconds), then the answer in one sentence. The question per part is practice, not proof: it is the condition that lost in that study, and the listener's own test decides whether it stays (`references/tests.md`, test 10). The 4 to 6 second pause is a practice default too, because no study measured the pause length. Every question must be answerable in one short phrase, silently, while walking, because this listener has no hands free and will not write. The learning benefit of built-in questions is solid, also for students with ADHD. The attention benefit is likely but less certain. Students with ADHD test themselves less on their own, so the audio does the prompting.
 
 #### Rule 7: Few numbers, in words
 At most one number per sentence. Round it unless the exact value is the point. Give it an anchor ("quase um terço"). Write numbers, dates, units and symbols as words, so the voice cannot misread them. Never read a URL, a citation, or a table.
@@ -119,13 +162,26 @@ Each role keeps its voice inside an audio and between audios of the same series.
 #### Rule 13: A second voice must earn its place
 In a two-host script, the second host asks the deep question a smart listener would ask ("por quê?", "como?", "e se...?") **before** the explanation, and voices the common wrong belief so the first host can correct it. No banter, no jokes, and no agreement noises ("Isso.", "Exato!", "Legal."). When the second host summarizes back, the first host answers with the key point itself, not with a confirmation. Each exchange moves a main concept forward.
 
-A change of voice pulls attention back, and memory is better for what comes right after it. So place the important sentence right after a voice change, choose two voices with clearly different pitch, and bring the second voice in early. Always write the dialogue yourself. Automatic two-host generators add chat and ignore these rules.
+A change of voice pulls attention back, and the listener loses the first 3 seconds of what follows it. So the important sentence never comes right after a voice change: a transition sentence comes first, then the point. Keep the changes few in each part, because the loss grows with the number of changes. Choose two voices with clearly different pitch, and bring the second voice in early, so the listener knows who is who from the start. Always write the dialogue yourself. Automatic two-host generators add chat and ignore these rules.
+
+The lint check `key-after-voice-change` fails a `[key]` on the first line of a new speaker. The example below passes it: the Guia opens with a transition line, and the key point comes on the second line.
+
+```
+# Modo: diálogo. Papéis: Guia e Curioso.
+Curioso: Então no-cache significa não guardar?
+Guia: Essa é a dúvida mais comum, e a resposta surpreende.
+Guia: No-cache significa guardar, mas conferir a etiqueta de versão antes de cada uso.
+[pause short]
+Curioso: E quem proíbe guardar?
+Guia: Essa é outra instrução.
+Guia: [key] Quem proíbe guardar é no-store, e no-cache só manda conferir.
+```
 
 #### Rule 14: Stimulation from form, not from extra content
 Novelty keeps this listener engaged, but an interesting side fact hurts learning. So get novelty from the voice change, a question, a speaker change, a contrast, or a concrete example. Never from a detail that serves no main concept. Rotate the devices, because an identical device repeated many times stops catching attention.
 
 #### Rule 15: Land the ending, and offer a short review
-The last part connects the main concepts in a few sentences and gives one thing to remember. The listener should feel finished, not cut off. For later review, a separate summary of 2 to 4 minutes, heard close to when the knowledge is needed, works better than a second full listen at high speed.
+The last part connects the main concepts in a few sentences and gives one thing to remember. The listener should feel finished, not cut off. For later review, reviewing close to the moment of use helps: in a memory study by Murphy and colleagues (2022; 231 students, recorded lectures of 13 to 15 minutes), a second full viewing at 2 times speed right before the test gave the best recall. Nobody has tested the format of the review, a short summary or a re-listen. So offer the review and name the moment ("ouça de novo antes da reunião"), and leave the format to the listener.
 
 #### Rule 16: Main ideas are always carried by the audio
 Every main idea of the source gets its own spoken sentence, even when the source carries it in a table, a chart or a diagram. Details may point to the written guide; a main idea never may. The test: a listener who never opens the guide still leaves with every main idea. A cold-reader check of the script (someone who answers the main questions from the script alone) is the proof.
@@ -190,102 +246,7 @@ Rules for intents:
 
 ## Phase 4: Render for the medium
 
-Rendering turns the neutral script into what one medium needs. It changes marks, never words. Keep the neutral script, and write the rendered text to a second file, named after the medium (for example `guia-audio-script.md` and `guia-audio-render-eleven-v4.txt`).
-
-### Step 1: Find out which medium, and get its profile
-
-Never assume the medium, and never render from memory of how an engine used to work, because engines change between models and between months.
-
-1. **Which medium?** Look, in this order: what the user said in this request, the project's instructions and saved preferences, and the voice tools this session really has. If two engines or two models are possible and nothing chooses between them, ask one question.
-2. **Where is its profile?** An engine profile is a short document that the environment keeps: a project doc such as an audio playbook, a section of the project instructions, or a file next to the scripts. Read the profile of the exact model in use. A profile for "v4" does not describe "v3".
-3. **No profile?** Build one before generating. Read the engine's own guide (a model-guide tool, the tool's schema, or the official documentation), fill in the contract below, and save it where the environment keeps profiles, so the next audio reuses it. Mark each line as stated by the documentation, or as a guess to test.
-4. **Nothing to read at all?** Use the **plain** rendering below, and tell the user that the delivery intents were turned into punctuation only.
-
-### Step 2: What an engine profile must answer
-
-A profile is complete when it answers these questions for one engine and one model.
-
-| Question | Why the rendering needs it |
-|---|---|
-| Which engine and model, and when was the profile last checked? | Behavior changes between models and over time |
-| How is tone directed: inline marks, a separate instruction field, a setting, or not at all? | Decides where each tone intent goes |
-| What happens to text in brackets or angle brackets that the engine does not know? | Some engines read it aloud. Then every unmapped mark must be removed |
-| How is a pause made, and how long does each pause mark really last? | Maps the three pause intents. Measure it, because a mark named "long pause" can last about one second |
-| How is one word stressed? | Maps `[stress]` and `[key]` |
-| How is a pronunciation forced: phonetic alphabet, respelling, a dictionary, or nothing? | Maps `[say]` |
-| Can speed be set? What rate was measured for each voice? | Planning length, and fixing "too fast" |
-| One voice per call, or several voices in one call? | Decides how a dialogue is split |
-| How are numbers, dates, symbols and links read? | Whether the script's words-only rule is enough |
-| How many characters per call? What does a call cost? Is a retry charged? | Splitting, and telling the user the cost |
-| What is unreliable or experimental? | What to check by ear, and what not to depend on |
-| Which mark does each intent of this skill become? | The mapping table itself, one row per intent |
-
-### Step 3: Map every intent, or degrade it
-
-For each intent in the script, use the profile's mapping. When the medium cannot do an intent, go down this ladder and stop at the first step the medium supports. The last step works on every medium, because it is only text.
-
-| Intent | First choice | Then | Last step, always possible |
-|---|---|---|---|
-| Tone | The engine's own tone direction | One instruction for the whole call, when the engine has an instruction field | Nothing. The wording already carries the attitude |
-| Key point | The engine's direction for slower, weighted speech | A pause before the sentence | Start the sentence with the words that name it ("O ponto-chave é") |
-| Stress | The engine's emphasis mark | A pause right before the word | Move the word to the end of the sentence, where speech stresses it by itself |
-| Pause short | The engine's pause mark | An ellipsis | A paragraph break |
-| Pause long | The engine's pause mark | Two paragraph breaks, or the end of a generation call | A spoken bridge ("Agora, a segunda parte.") |
-| Pause recall | An engine pause that really lasts 4 to 6 seconds | Real silence added when the audio files are joined: end one call at the question, and start the next call at the answer | A spoken wait ("Pense um instante.") followed by a long pause |
-| Pronunciation | The phonetic alphabet form, if the engine reads it | The respelling written in place of the word | The plain word, with the respelling kept in the producer note for a human check |
-| Performance | The engine's mark, only in a requested demonstration | Drop it | Drop it |
-
-Rules for rendering:
-
-1. **Leave no neutral intent behind.** After rendering, search the rendered text for every intent of this skill (`[pause`, `[key]`, `[stress`, `[say`, `[perform`, and each tone word the profile maps to another mark). On an engine that reads unknown marks aloud, one forgotten `[pause short]` becomes spoken words.
-2. **Change marks, never words.** The spoken words of the rendered text and of the neutral script are the same, except for a degradation from the ladder, which is listed in the report.
-3. **One call starts from zero.** When the audio is generated in several calls, repeat the tone at the start of each call, because an engine does not remember the previous call.
-4. **Respect the engine's own limits** from the profile: characters per call, concurrent calls, cost. Never retry a charged call by calling it again.
-5. **Write a render report** of three short lists at the top of the rendered file, as producer notes: intents mapped, intents degraded (and to what), intents dropped. Tell the user anything degraded or dropped in one line.
-
-### Two renderings that need no profile
-
-- **Human reader.** Keep the neutral script as it is. The intents are stage notes, and a person reads them correctly. Add a first note that explains the marks in one line each.
-- **Plain** (unknown engine, or an engine with no direction at all). Remove every mark. Turn `[pause short]` into an ellipsis, `[pause long]` into a blank line, `[pause recall]` into a spoken wait plus a blank line, `[key]` into the opening words "O ponto-chave é", and `[say]` into the respelling written in place of the word. Drop tone and stress.
-
-### Example: one neutral passage, three media
-
-Neutral script:
-
-```
-[pause short]
-[curious] O que a instrução no-cache manda o navegador fazer?
-[pause recall]
-[key] Ela manda guardar a cópia e conferir a etiqueta antes de usar.
-```
-
-The same lines for an engine that takes inline marks in brackets, for an engine that takes SSML, and as plain text. The exact marks come from each engine's profile. These three only show the shape. In the first one, the recall pause is real silence added at the join of two calls, because that engine's pause mark is too short.
-
-```
-# call 1
-[curious] O que a instrução no-cache manda o navegador fazer?
-# join: 5 seconds of silence
-# call 2
-[slower, emphatic] Ela manda guardar a cópia e conferir a etiqueta antes de usar.
-```
-
-```
-<break time="0.5s"/> O que a instrução no-cache manda o navegador fazer?
-<break time="3s"/><break time="2s"/>
-Ela manda guardar a cópia e conferir a etiqueta antes de usar.
-```
-
-```
-... O que a instrução no-cache manda o navegador fazer?
-
-Pense um instante.
-
-O ponto-chave é este: ela manda guardar a cópia e conferir a etiqueta antes de usar.
-```
-
-### Step 4: Check what came out
-
-After generating, measure the real rate (words divided by minutes), and compare the length with the plan. Measure the pauses too when you can (a silence detector on the audio file), because a pause that is shorter than planned takes away the listener's time to answer. If you cannot hear audio, say so, and ask the listener to judge the tone, the stress and each pronunciation. When the listener reports a problem, fix it at the right layer: a wrong idea or a lost listener is a script problem, and a wrong sound is a profile problem. Record a profile fix in the profile, so every later audio gets it.
+Rendering turns the neutral script into what one medium needs. It changes marks, never words. How one medium does each intent lives in an **engine profile**: a short document that the environment keeps, one per engine and model, as a project doc such as an audio playbook, a section of the project instructions, or a file next to the scripts. The whole method is in `references/rendering.md`: the four steps, what a profile must answer, the degradation ladder, the render rules, and one passage rendered for three media. Read `references/rendering.md` before generating audio. Never render from memory of how an engine used to work, because engines change between models and between months.
 
 ## Example: the same content for the eye and for the ear
 
@@ -334,7 +295,7 @@ Run `scripts/lint_audio_script.py <script.md>` on the **neutral script** and fix
 
 Then check coverage (Rule 16): list the main ideas of the source and point to the sentence of the script that carries each one. When possible, give the script alone to a cold reader and ask the main questions; the reader should answer at least eight in ten.
 
-Then check the rendering: every intent is mapped, degraded or dropped on purpose, no neutral intent is left in the rendered text, and the render report says what was degraded.
+Then check the rendering, as `references/rendering.md` says: every intent is mapped, degraded or dropped on purpose, and `scripts/check_render.py <rendered.txt>` passes on the rendered text.
 
 ## Why these rules work
 

@@ -1,0 +1,61 @@
+[
+  {
+    "id": "clear-listen-render-reads-reference",
+    "skill": "clear-listen",
+    "prompt": "Aqui está o roteiro neutro do áudio do guia de cache HTTP (anexo guia-audio-script.md, já passou no lint). Gera o áudio com o ElevenLabs, modelo v3, voz Guia. O perfil do motor está em docs/audio-playbook.md.",
+    "expected_behavior": [
+      "Reads references/rendering.md (the Phase 4 method) before rendering, and reads the engine profile named in the request.",
+      "Keeps the neutral script untouched and writes the rendered text to a second file named after the medium (for example guia-audio-render-eleven-v3.txt).",
+      "Maps every delivery intent with the profile, or degrades it down the ladder, and leaves no neutral intent ([pause, [key], [stress, [say) in the rendered text.",
+      "Writes the render report (mapped, degraded, dropped) as producer notes at the top of the rendered file, and tells the user in one line what was degraded or dropped.",
+      "Runs scripts/check_render.py on the rendered text before generating.",
+      "Repeats the tone at the start of each generation call, and never retries a charged call by calling it again."
+    ],
+    "failure_with_current_skill": "Before change 6 the method was inline in SKILL.md, so the model rendered from the body. The risk after the move is a model that skips references/rendering.md and renders from memory of the engine: neutral intents left in the text, no render report, no second file."
+  },
+  {
+    "id": "clear-listen-conversation-turns-no-skeleton",
+    "skill": "clear-listen",
+    "prompt": "Estamos numa conversa por voz: você fala, um motor de voz lê sua resposta como está, e eu ouço andando. Responda cada pergunta como um turno de uns trinta segundos, uma de cada vez. Sobre o guia de cache HTTP: (1) O no-cache manda não guardar? (2) Então quem proíbe guardar? (3) O que é a etiqueta de versão? (4) Como eu vejo se o meu site manda essa etiqueta? (5) Qual é o risco de deixar o cache muito longo?",
+    "expected_behavior": [
+      "Each of the five answers is a short prose turn: no part marker such as \"Parte um de cinco\" or \"Part 1 of 5\".",
+      "No square brackets anywhere in the five answers: no [pause short], no [warm], no [key], no [1].",
+      "No bare ordinal: no sentence starts with \"Primeiro,\", \"Segundo,\", \"Em primeiro lugar,\", \"First,\" or \"Second,\".",
+      "No numbered or bulleted list line, no heading, no bold: the procedure of question 4 is given one step per turn, with the offer of the next step.",
+      "Each turn has at most 6 sentences, and the first sentence is the answer itself.",
+      "A turn of more than 3 sentences ends with a short question that gives the turn back, and no pause mark follows it.",
+      "Each turn starts from the words of the question (\"Você perguntou se o no-cache manda não guardar. Não manda.\"), and any study or author is named by role and then by name, never as a bare \"um pesquisador\".",
+      "Every answer passes python3 scripts/lint_audio_script.py <turn.txt> --conversa."
+    ],
+    "failure_with_current_skill": "Before change 5 the skill had no section for a live turn, so the model applied the recorded-audio rules to the conversation: answers opened with \"Parte um de cinco\", carried delivery intents in square brackets ([warm], [pause recall]) that the engine read aloud or dropped, announced \"São três motivos\" and marked items with \"Primeiro,\", \"Segundo,\", and gave the procedure of question 4 as a numbered list. Several turns ran past six sentences and ended on a recall pause that sounded like the end of the turn."
+  },
+  {
+    "id": "clear-listen-no-tools-source-only",
+    "skill": "clear-listen",
+    "prompt": "Você não tem busca na web, não pode rodar scripts e eu não sei qual motor de voz vou usar. Faz a versão em áudio do texto abaixo sobre cache HTTP, em duas partes. Texto: 'O navegador guarda uma cópia da página. A instrução no-cache manda guardar, mas conferir a etiqueta de versão antes de cada uso. A instrução no-store proíbe guardar. Se o servidor não manda etiqueta, o navegador baixa a página de novo a cada visita.' Pergunta extra: quanto tempo o cache guarda a cópia por padrão?",
+    "expected_behavior": [
+      "Every fact in the script comes from the four sentences the user pasted; the script adds no fact about HTTP caching from memory (no header names, no default times, no browser behaviour that the text does not state).",
+      "The extra question about the default time is answered with 'a fonte não diz' or an equivalent, never with a number from memory.",
+      "The first producer note opens with 'facts not verified in this session' (or the same meaning in the producer's language).",
+      "No engine profile is invented: the reply hands the user the blank profile questions (or names references/rendering.md) and renders plain, with the intents turned into punctuation only, until a profile comes back.",
+      "One producer note lists the twelve checks done by hand (read aloud, over 20 words, parenthesis, digit or symbol, dash, backward pointer, filler, part marker, recall question per part, closing questions, part over 800 words, each main idea has its sentence) and says that the lint and the cold reader did not run.",
+      "The neutral script itself still follows the Phase 3 rules: 'Parte um de duas', one recall question per part, the closing 'Sem voltar' question."
+    ],
+    "failure_with_current_skill": "Before change 4-listen the skill said 'If no verified source exists, run clear-read Phase 1 first' and nothing about what to do when no search exists. The model either skipped the research in silence and filled the default cache time from memory, or stopped and said it could not proceed. Without an engine profile it rendered from memory of one engine, and it reported the script as linted when no lint had run."
+  },
+  {
+    "id": "clear-listen-narrator-no-skeleton",
+    "skill": "clear-listen",
+    "prompt": "Faz um áudio de um minuto, uma parte só, para eu ouvir no caminho do trabalho. O assunto: por que o meu site às vezes mostra a versão velha da página, e o que o navegador faz antes de usar a cópia guardada. Fonte: 'O navegador guarda uma cópia de cada página que baixa. Antes de usar a cópia, ele manda ao servidor a etiqueta de versão que recebeu com ela. Se o servidor responde que a versão não mudou, o navegador usa a cópia. Se mudou, o servidor manda a página nova. Quando o servidor não manda etiqueta, o navegador usa a cópia até o prazo de validade vencer, sem perguntar. Um prazo de validade longo é o motivo mais comum de o visitante ver a versão velha.'",
+    "expected_behavior": [
+      "Judge count: the script has zero announcements of structure. No 'são dois motivos', no 'são três passos', no 'vou falar de duas coisas', no 'primeiro,' / 'segundo,' / 'em primeiro lugar'. The turns arrive through content ('Agora, o que o navegador faz antes de usar a cópia.').",
+      "Delivers the whole thing: every fact of the six source sentences is in the script, and nothing is held back with 'depois eu explico' or 'isso fica para outro áudio'.",
+      "Pulls the listener forward with what comes next: at least one sentence opens the next part of the story as a hook or a question ('E se o servidor nunca mandou etiqueta?').",
+      "Repeats the essential as two people remembering together ('lembra que o navegador guarda uma cópia?'), never with a backward pointer ('como eu disse', 'o que falei antes').",
+      "The limit of the narrator holds: the mechanism (what the browser does before using the copy) is given step by step, in the order it happens, one step per sentence, each link said with 'por isso' or 'porque'. It is not compressed into an image or an anecdote alone.",
+      "One part only, so no 'Parte um de um' line (Rule 1); the script still opens with the core idea and closes with the takeaway.",
+      "The script passes python3 scripts/lint_audio_script.py <script.md>."
+    ],
+    "failure_with_current_skill": "Without the narrator paragraph the model applies Rule 3 as a reflex: 'São dois motivos. O primeiro...', 'Agora, o segundo', and opens with 'Neste áudio, duas coisas', so the listener holds an announced skeleton for a one-minute recap. Or, told to narrate, it tells the story of the stale page in one image and drops the step by step of the version check, so the listener remembers the anecdote and cannot say what the browser does before using the copy."
+  }
+]
