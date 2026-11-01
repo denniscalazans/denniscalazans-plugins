@@ -269,6 +269,21 @@ Fail: a warning is missing (the pack lost a word list), or a clean sample from T
 
 Then the reading check: ask the skill for a short report in each language. Pass if the Portuguese text uses "você", dates with the month in words and the decimal comma, and keeps API, deploy and cache in English. Pass if the English text uses "must" only for requirements, "you" for the reader, and the decimal point.
 
+## Test 18: The golden set (do not change this)
+
+What it stresses: a rewrite of the skill must not erase what already works.
+
+How to run: open `plugins/dc/references/investigacao-2026-11/inventario-das-regras.md`, section 7. It holds five passages from published guides (G1 to G5), each with its URL, the rules it shows, and the mark that a new skill version must reproduce: the "Where the analogy fails" line, the "You already know... Now..." re-entry line, the order meaning-term-acronym, the "What works:" counter-pattern, and the "How to read" line with its conclusion.
+
+1. Run the lint on each passage. Each one must end with `0 problems`.
+2. With the changed skill, ask the model to rewrite the same source content. Compare the output with the passage.
+
+Pass: every mark listed for the passage is present in the new output.
+
+Fail: one mark is missing. This is a blocker, not a warning, under rule 4 of the investigation guide (`guia-de-investigacao.md`, section 4).
+
+Added on 1 November 2026, by the investigation's Phase A. The clear-listen has no golden passage yet, because no audio script is in the repo.
+
 ## How to read a failure, continued
 
 - Test 14 gaps: the idea lives only in a visual or a table. Add one prose sentence; do not remove the visual.

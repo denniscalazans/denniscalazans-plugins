@@ -56,6 +56,17 @@ Faça uma pergunta por vez, e só quando a resposta bloquear o trabalho. As perg
 Trabalhe neste mesmo branch, investigacao-2026-11. Um commit por entrega de fase, com mensagem curta em inglês. Não faça merge em main.
 ```
 
+## 3.1 Estado em 1 de novembro de 2026, fim do dia: Fase A entregue
+
+A Fase A está em `inventario-das-regras.md`, nesta pasta.
+Ela tem o estado de partida dos testes, o veredito por regra das duas skills (75 linhas), os dez vereditos do guia conferidos, onze achados, o golden set (5 trechos) e as 7 perguntas de revisão do guia de burnout.
+O script `scripts/check_review_questions.py` confere as perguntas, e o `tests.md` da clear-read ganhou o Teste 18, que aponta para o golden set.
+
+Os seis conectores de pesquisa (Valency, PubMed, Consensus, Exa, Tavily, Parallel Search) estão ligados no Claude Code.
+Então a Fase C pode rodar aqui.
+A próxima sessão começa pela Fase B (seção 6 do guia), a partir das colunas "Vale onde" e "Executável" do inventário.
+Nenhuma pergunta ao Dennis bloqueou a Fase A, e a seção 9 do inventário diz quando cada uma chega.
+
 ## 4. O que já está decidido
 
 - A clear-listen entra no plugin `dc`, ao lado da clear-read. O Dennis confirmou em 1 de novembro. Falta registrar no `plugin.json` e no README, e isso é um PR dele.
