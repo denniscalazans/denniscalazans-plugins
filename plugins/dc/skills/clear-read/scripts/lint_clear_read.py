@@ -91,6 +91,18 @@ Warnings (reported, never fatal):
                         participle or a gerund. A list ("A, B and C"), an opening phrase
                         ("However, ...", "No entanto, ...") and a clause that opens with a
                         conjunction or a preposition ("after a week of tests") do not count.
+    name-before-role    a capitalized name, then an evidence verb ("Mayer mostrou", "Mayer and
+                        Moreno showed", "Richard Mayer found"), with no role noun (researcher,
+                        study, standard, law; pt: pesquisador, estudo, norma, lei) in the same
+                        sentence or the one before it in the block. The reader meets a name
+                        before knowing what it is. Common sentence starters (This, Tests,
+                        Isso, Testes), acronyms and labels are not names, and the present
+                        tense of tools ("O Git mostra", "GitHub shows") is not evidence.
+    authority-without-name  a role noun with an evidence or claim verb ("um pesquisador
+                        mostrou", "estudos mostram", "the law requires"), or a vague source
+                        ("segundo a pesquisa", "according to research"), with no capitalized
+                        name, year, numbered reference (Lei 15.263, ISO 24495-1) or link by
+                        the end of the next sentence. The reader asks "which researcher?".
 
 What the lint ignores: YAML front matter, HTML comments, fenced code blocks,
 inline code (replaced by the word "code"), <script>, <style>, <pre>, <svg>,
@@ -130,6 +142,10 @@ MIDDLE_DOT = "·"
 #                  at the start of a sentence). check_label_language flags a label
 #                  written in another pack's form.
 #   passive        the data of the passive heuristic (see check_passive)
+#   sources        the data of the two source checks (see check_sources): role nouns,
+#                  evidence verbs (past tense and claims by people), claim verbs (present
+#                  tense, allowed only after a role noun), vague-source phrases, words that
+#                  look like names at the start of a sentence but are not, and the two hints
 
 _PT_DET = r"(?:[nd]?[oa]|pel[oa])"   # o, a, no, na, do, da, pelo, pela
 
@@ -250,6 +266,34 @@ LANG_PACKS = {
             },
             "accent_rule": False,
             "agent": r"\bby\b",
+        },
+        "sources": {
+            "roles": r"(?:researchers?|scientists?|stud(?:y|ies)|research|evidence|papers?|surveys?|experiments?|"
+                     r"trials?|meta-analys[ie]s|reports?|standards?|laws?|regulations?|guidelines?|acts?|decrees?|"
+                     r"agenc(?:y|ies)|courts?|universit(?:y|ies)|institutes?|journals?|authors?|professors?|"
+                     r"psychologists?|economists?|linguists?|experts?|specialists?|lab|laboratory|articles?|books?)",
+            "evidence_verbs": r"(?:found|showed|demonstrated|proved|proven|concluded|discovered|reported|observed|"
+                              r"measured|estimated|argued|argues|claimed|claims|confirmed|revealed)",
+            "claim_verbs": r"(?:finds?|shows?|shown|demonstrates?|proves?|concludes?|reports?|observes?|suggests?|"
+                           r"suggested|indicates?|indicated|says|said|say|requires?|required|recommends?|recommended|"
+                           r"confirms?|reveals?|warns?|warned|agrees?|agreed|estimates?)",
+            "vague": [
+                r"\baccording to (?:the )?(?:research|studies|experts|science|literature)\b",
+                r"\bexperts (?:say|agree|warn)\b",
+                r"\bit is well known\b",
+            ],
+            "not_names": {
+                "this", "that", "these", "those", "it", "they", "we", "he", "she", "you", "one", "each", "every",
+                "all", "some", "many", "most", "few", "several", "both", "neither", "either", "none", "nothing",
+                "nobody", "everyone", "someone", "anyone", "everything", "something", "what", "which", "who",
+                "whoever", "there", "here", "our", "their", "his", "her", "its", "my", "your", "a", "an", "the",
+                "testing", "tests", "test", "profiling", "measurements", "measurement", "logs", "metrics",
+                "monitoring", "benchmarks", "experience", "history", "practice", "time", "data", "results",
+                "numbers", "figures", "feedback", "users", "customers", "clients", "people", "readers", "teams",
+                "developers", "engineers", "analysis", "later", "today", "yesterday",
+            },
+            "role_hint": "\"a researcher, Richard Mayer, showed that\"",
+            "name_hint": "\"The study is by Richard Mayer, from 2002.\"",
         },
     },
     "pt": {
@@ -378,6 +422,41 @@ LANG_PACKS = {
             "accent_rule": True,     # an accent before the ending ("rápido", "líquido") means an adjective
             "agent": r"\b(?:por|pel[oa]s?)\b",
         },
+        "sources": {
+            "roles": r"(?:pesquisador(?:a|es|as)?|cientistas?|estudos?|pesquisas?|evidências?|artigos?|levantamentos?|"
+                     r"experimentos?|meta-an[áa]lises?|relat[óo]rios?|normas?|leis?|regulamentos?|diretriz(?:es)?|"
+                     r"decretos?|portarias?|resolu(?:ção|ções)|ag[êe]ncias?|tribuna(?:l|is)|universidades?|"
+                     r"institutos?|revistas?|autor(?:a|es|as)?|professor(?:a|es|as)?|psic[óo]log[oa]s?|economistas?|"
+                     r"linguistas?|especialistas?|peritos?|laborat[óo]rios?|livros?)",
+            "evidence_verbs": r"(?:mostrou|mostraram|achou|acharam|demonstrou|demonstraram|provou|provaram|comprovou|"
+                              r"comprovaram|concluiu|concluíram|descobriu|descobriram|constatou|constataram|relatou|"
+                              r"relataram|observou|observaram|encontrou|encontraram|verificou|verificaram|estimou|"
+                              r"estimaram|mediu|mediram|argumenta|argumentam|argumentou|argumentaram|defende|defendem|"
+                              r"defendeu|defenderam|afirma|afirmam|afirmou|afirmaram)",
+            "claim_verbs": r"(?:mostra|mostram|acha|acham|demonstra|demonstram|prova|provam|comprova|comprovam|conclui|"
+                           r"concluem|descobre|descobrem|constata|constatam|relata|relatam|observa|observam|sugere|"
+                           r"sugerem|sugeriu|sugeriram|indica|indicam|indicou|indicaram|aponta|apontam|apontou|"
+                           r"apontaram|revela|revelam|revelou|revelaram|diz|dizem|disse|disseram|exige|exigem|exigiu|"
+                           r"determina|determinam|determinou|recomenda|recomendam|recomendou|recomendaram|confirma|"
+                           r"confirmam|confirmou|confirmaram|estima|estimam|calcula|calculam|calculou)",
+            "vague": [
+                r"\bsegundo (?:a |as |os )?(?:pesquisas?|estudos|especialistas|ciência|literatura)\b",
+                r"\bde acordo com (?:a |as |os )?(?:pesquisas?|estudos|especialistas|ciência|literatura)\b",
+                r"\bespecialistas (?:dizem|afirmam|concordam|alertam)\b",
+            ],
+            "not_names": {
+                "isso", "isto", "aquilo", "ele", "ela", "eles", "elas", "nós", "você", "vocês", "eu", "cada",
+                "muitos", "muitas", "poucos", "poucas", "alguns", "algumas", "vários", "várias", "ambos", "ambas",
+                "nenhum", "nenhuma", "ninguém", "alguém", "qualquer", "nada", "tudo", "todos", "todas", "quem",
+                "qual", "quais", "o", "a", "os", "as", "um", "uma", "uns", "umas", "seu", "sua", "seus", "suas",
+                "nosso", "nossa", "meu", "minha", "testes", "teste", "medições", "medição", "logs", "métricas",
+                "monitoramento", "experiência", "prática", "história", "tempo", "dados", "resultados", "números",
+                "feedback", "usuários", "clientes", "pessoas", "leitores", "equipes", "desenvolvedores", "análise",
+                "depois", "hoje", "ontem",
+            },
+            "role_hint": "\"um pesquisador, Richard Mayer, mostrou que\"",
+            "name_hint": "\"O estudo é de Richard Mayer, de 2002.\"",
+        },
     },
 }
 
@@ -413,6 +492,16 @@ GLOBAL_ACRONYMS = {
 }
 ACRONYM = re.compile(r"\b([A-Z]{2,6})s?\b")
 ROMAN_NUMERAL = re.compile(r"^[IVXLCDM]+$")
+
+# A source is named by a person or organization (a capitalized word with a lowercase letter),
+# a year, a numbered reference such as "Lei 15.263" or "ISO 24495-1", or a link.
+LINK_IN_RAW = re.compile(r"\]\(|https?://|<a\s", re.I)
+_CAP_WORD = r"[A-ZÀ-Ý][\wÀ-ɏ'’-]*"
+_NAME_CONNECTORS = {"e", "and", "&", "de", "da", "do", "dos", "das", "van", "von", "der", "di", "la", "le"}
+NAME_RUN = (_CAP_WORD + r"(?:\s+(?:" + _CAP_WORD + r"|(?:" + "|".join(sorted(_NAME_CONNECTORS - {"&"})) + r"|&)\s+" + _CAP_WORD + r"))*")
+_DETERMINERS = r"(?:a|an|the|one|some|this|these|those|um|uma|o|os|as|alguns|algumas|esse|essa|este|esta|outros?|outras?)"
+YEAR = re.compile(r"\b(?:1[89]\d{2}|20\d{2})\b")
+NUMBERED_REFERENCE = re.compile(r"\b[A-ZÀ-Ý][\wÀ-ɏ]*\s+(?:n[º°.]?\s*)?\d[\d.,/-]*")
 
 # A visual is a diagram, a chart or a picture: a Mermaid block, a figure, an image, or an SVG
 # that is not a small inline icon. Tables are not visuals for the "How to read" rule.
@@ -499,6 +588,7 @@ class Block:
     text: str
     kind: str  # "heading", "para" or "item"
     level: int = 0
+    has_link: bool = False   # a Markdown link, an <a href>, or a raw URL in the block
 
 
 @dataclass
@@ -632,7 +722,8 @@ def markdown_to_blocks(text):
     def flush():
         nonlocal cur
         if cur and cur["parts"]:
-            blocks.append(Block(cur["line"], clean_inline(" ".join(cur["parts"])), cur["kind"]))
+            raw = " ".join(cur["parts"])
+            blocks.append(Block(cur["line"], clean_inline(raw), cur["kind"], has_link=bool(LINK_IN_RAW.search(raw))))
         cur = None
 
     for n, raw in enumerate(text.split("\n"), 1):
@@ -688,7 +779,7 @@ def html_to_blocks(text):
     text = re.sub(r"<code\b[^>]*>.*?</code\s*>", lambda m: " code " + "\n" * m.group(0).count("\n"), text, flags=re.S | re.I)
     blocks = []
     buf = []
-    state = {"line": 1, "kind": "para", "level": 0, "start": None}
+    state = {"line": 1, "kind": "para", "level": 0, "start": None, "link": False}
 
     def add_text(seg):
         if seg.strip() and state["start"] is None:
@@ -698,9 +789,10 @@ def html_to_blocks(text):
     def flush():
         joined = clean_inline(html_lib.unescape("".join(buf)))
         if joined:
-            blocks.append(Block(state["start"] or state["line"], joined, state["kind"], state["level"]))
+            has_link = state["link"] or bool(re.search(r"https?://", "".join(buf)))
+            blocks.append(Block(state["start"] or state["line"], joined, state["kind"], state["level"], has_link))
         buf.clear()
-        state["kind"], state["level"], state["start"] = "para", 0, None
+        state["kind"], state["level"], state["start"], state["link"] = "para", 0, None, False
 
     pos = 0
     for m in re.finditer(r"<[^>]+>", text):
@@ -711,6 +803,8 @@ def html_to_blocks(text):
         name_m = re.match(r"</?\s*([a-zA-Z][a-zA-Z0-9-]*)", tag)
         name = name_m.group(1).lower() if name_m else ""
         closing = tag.startswith("</")
+        if name == "a" and not closing and re.search(r"\bhref\s*=", tag, re.I):
+            state["link"] = True
         if name == "br":
             buf.append("\n")
         elif name == "x-visual":
@@ -1063,6 +1157,113 @@ def check_inserted_clauses(block, sentences, pack, findings):
                                 f"\"{snippet(s)}\". Move it to its own sentence, so the subject and its verb stay together."))
 
 
+_SOURCES_CACHE = {}
+
+
+def _source_patterns(pack):
+    """Compiled patterns of the two source checks for a pack: name then evidence verb, role noun
+    then a verb (evidence or claim) within five words, a role noun anywhere, and the vague phrases."""
+    key = id(pack)
+    if key not in _SOURCES_CACHE:
+        so = pack["sources"]
+        verbs = r"(?:" + so["evidence_verbs"] + "|" + so["claim_verbs"] + r")"
+        _SOURCES_CACHE[key] = {
+            "name_verb": re.compile(r"\b(?P<name>" + NAME_RUN + r")(?:\s+et\s+al\.?)?(?:\s+\(\d{4}\))?\s+"
+                                    r"(?P<verb>" + so["evidence_verbs"] + r")\b"),
+            # An optional appositive between commas right after the role ("a researcher, Richard Mayer,"),
+            # then up to five plain words, then the verb. A comma later in the gap ends the match, so
+            # "the regulation you will mention, and confirm it" is not a claim.
+            "role_verb": re.compile(r"(?:\b" + _DETERMINERS + r"\s+)?\b(?:" + so["roles"] + r")\b"
+                                    r"(?:,\s+[\wÀ-ɏ'’()-]+(?:\s+[\wÀ-ɏ'’()-]+){0,4},)?(?:\s+[\wÀ-ɏ'’()-]+){0,5}?\s+"
+                                    + verbs + r"\b", re.I),
+            "role": re.compile(r"\b(?:" + so["roles"] + r")\b", re.I),
+            "vague": [re.compile(p, re.I) for p in so["vague"]],
+        }
+    return _SOURCES_CACHE[key]
+
+
+def _looks_like_name(token, pack):
+    """A capitalized word with a lowercase letter that is not a common sentence starter, an acronym,
+    a label or a role noun."""
+    so = pack["sources"]
+    bare = token.rstrip(".,;:")
+    if not bare or not bare[0].isupper() or not re.search(r"[a-zà-ɏ]", bare):
+        return False
+    low = bare.lower()
+    if low in so["not_names"] or low in pack["intro_words"] or low in pack["stopwords"]:
+        return False
+    return not re.fullmatch(so["roles"], low, re.I)
+
+
+def _name_tokens(run, pack):
+    """The tokens of a matched name run, with the leading determiners, acronyms and labels dropped."""
+    tokens = run.split()
+    while tokens and not _looks_like_name(tokens[0], pack):
+        tokens.pop(0)
+    return tokens
+
+
+def _names_a_source(sentence, block, pack):
+    """True when the sentence carries a name, a year, a numbered reference or a link."""
+    tokens = WORD.findall(sentence)
+    for i, tok in enumerate(tokens):
+        if tok.lower() in _NAME_CONNECTORS or not _looks_like_name(tok, pack):
+            continue
+        if i > 0 or (len(tokens) > 1 and _looks_like_name(tokens[1], pack)):
+            return True
+    if YEAR.search(sentence) or NUMBERED_REFERENCE.search(sentence):
+        return True
+    return block.has_link or "URL" in tokens
+
+
+def check_sources(blocks, sentences_by_block, pack, findings):
+    """Rule 5: the role comes before the name, and the name comes right after the role.
+
+    name-before-role: a capitalized name then an evidence verb, with no role noun in the sentence
+    or in the one before it in the same block. authority-without-name: a role noun with a verb, or
+    a vague source phrase, with no name, year, numbered reference or link by the end of the next
+    sentence (the next sentence may open the next prose block)."""
+    pats = _source_patterns(pack)
+    so = pack["sources"]
+    prose = [i for i, b in enumerate(blocks) if b.kind not in ("heading", "visual")]
+    for n, i in enumerate(prose):
+        b = blocks[i]
+        sentences = sentences_by_block[i]
+        nxt = blocks[prose[n + 1]] if n + 1 < len(prose) else None
+        nxt_first = sentences_by_block[prose[n + 1]][0] if nxt and sentences_by_block[prose[n + 1]] else ""
+        if nxt is not None and i + 1 < len(blocks) and any(blocks[k].kind == "heading" for k in range(i + 1, prose[n + 1])):
+            nxt, nxt_first = None, ""
+        for k, s in enumerate(sentences):
+            has_role = pats["role"].search(s) is not None
+            if not has_role and not (k > 0 and pats["role"].search(sentences[k - 1])):
+                for m in pats["name_verb"].finditer(s):
+                    tokens = _name_tokens(m.group("name"), pack)
+                    if not tokens:
+                        continue
+                    phrase = " ".join(tokens + [m.group("verb")])
+                    findings.append(Finding(b.line, "warning", "name-before-role",
+                                            f"\"{phrase}\" gives the name before its role, so the reader meets a name "
+                                            f"without knowing what it is. Say the role first, then the name right "
+                                            f"after, for example {so['role_hint']}."))
+                    break
+            m = pats["role_verb"].search(s) if has_role else None
+            if m is None:
+                m = next((p.search(s) for p in pats["vague"] if p.search(s)), None)
+            if m is None:
+                continue
+            if _names_a_source(s, b, pack):
+                continue
+            if k + 1 < len(sentences):
+                if _names_a_source(sentences[k + 1], b, pack):
+                    continue
+            elif nxt is not None and _names_a_source(nxt_first, nxt, pack):
+                continue
+            findings.append(Finding(b.line, "warning", "authority-without-name",
+                                    f"\"{snippet(m.group(0), 40)}\" points to a source with no name, year or link in "
+                                    f"this sentence or the next, so the reader asks \"which one?\". Name the source "
+                                    f"right after the role, for example {so['name_hint']}."))
+
+
 def lint_text(text, name="document.md", kind=None, lang="auto", max_words=DEFAULT_MAX_WORDS,
               avg_words=DEFAULT_AVG_WORDS, max_sentences=DEFAULT_MAX_SENTENCES,
               show_warnings=True):
@@ -1105,6 +1306,7 @@ def lint_text(text, name="document.md", kind=None, lang="auto", max_words=DEFAUL
     check_visuals(blocks, sentences_by_block, pack, findings)
     check_acronyms(blocks, sentences_by_block, pack, findings)
     check_analogies(blocks, pack, findings)
+    check_sources(blocks, sentences_by_block, pack, findings)
     if lang_is_certain:
         check_label_language(blocks, sentences_by_block, pack, findings)
     if total_sentences:

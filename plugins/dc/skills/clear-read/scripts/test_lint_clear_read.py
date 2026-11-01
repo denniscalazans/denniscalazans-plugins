@@ -746,6 +746,135 @@ class LabelsFollowTheReaderLanguage(unittest.TestCase):
             self.assertEqual(k, keys[0])
 
 
+class SourcesNeedRoleThenName(unittest.TestCase):
+    """Role before name, and the name right after (Rule 5).
+
+    "Mayer mostrou" is a name without a role, so the reader does not know who Mayer is.
+    "Um pesquisador mostrou" is a role without a name, so the reader asks "which researcher?".
+    Both are warnings. The strong form gives the role first and the name in the same or
+    the next sentence: "Um estudo mostrou que X. O estudo é de Richard Mayer, de 2002."
+    """
+
+    STRONG_PT = ("Um estudo com alunos de ciências mostrou que ensinar os termos antes da lição ajuda. "
+                 "O estudo é de Richard Mayer, de 2002, e está na lista de fontes.")
+
+    def _rules(self, text, lang):
+        report = run_on_text(text, lang=lang)
+        return report, [f for f in report.findings if f.rule in ("name-before-role", "authority-without-name")]
+
+    def test_pt_name_before_role_warns(self):
+        report, hits = self._rules("Mayer mostrou que ensinar os termos antes ajuda.", "pt")
+        self.assertEqual([f.rule for f in hits], ["name-before-role"], report.render())
+        self.assertEqual(hits[0].level, "warning")
+        self.assertIn("Mayer mostrou", hits[0].message)
+        self.assertEqual(report.exit_code, 0)
+
+    def test_en_name_before_role_warns(self):
+        report, hits = self._rules("Mayer showed that teaching the terms first helps.", "en")
+        self.assertEqual([f.rule for f in hits], ["name-before-role"], report.render())
+        self.assertIn("Mayer showed", hits[0].message)
+
+    def test_two_names_and_a_full_name_are_one_finding_each(self):
+        for text, lang, phrase in (
+            ("Mayer e Moreno mostraram que o exemplo ajuda.", "pt", "Mayer e Moreno mostraram"),
+            ("Richard Mayer found that the example helps.", "en", "Richard Mayer found"),
+            ("Em 2002, Mayer demonstrou que o exemplo ajuda.", "pt", "Mayer demonstrou"),
+        ):
+            report, hits = self._rules(text, lang)
+            self.assertEqual(len(hits), 1, (text, report.render()))
+            self.assertEqual(hits[0].rule, "name-before-role")
+            self.assertIn(phrase, hits[0].message)
+
+    def test_pt_role_without_name_warns(self):
+        for text in ("Um pesquisador mostrou que ensinar os termos antes ajuda.",
+                     "Estudos mostram que ensinar os termos antes ajuda.",
+                     "Segundo a pesquisa, ensinar os termos antes ajuda."):
+            report, hits = self._rules(text, "pt")
+            self.assertEqual([f.rule for f in hits], ["authority-without-name"], (text, report.render()))
+            self.assertEqual(hits[0].level, "warning")
+            self.assertEqual(report.exit_code, 0)
+
+    def test_en_role_without_name_warns(self):
+        for text in ("Studies show that teaching the terms first helps.",
+                     "A researcher found that teaching the terms first helps.",
+                     "According to research, teaching the terms first helps."):
+            report, hits = self._rules(text, "en")
+            self.assertEqual([f.rule for f in hits], ["authority-without-name"], (text, report.render()))
+
+    def test_strong_form_passes(self):
+        report, hits = self._rules(self.STRONG_PT, "pt")
+        self.assertEqual(hits, [], report.render())
+        en = ("A study with science students showed that teaching the terms before the lesson helps. "
+              "The study is by Richard Mayer, from 2002, and it is in the source list.")
+        report, hits = self._rules(en, "en")
+        self.assertEqual(hits, [], report.render())
+
+    def test_role_and_name_in_the_same_sentence_pass(self):
+        for text, lang in (("O pesquisador Richard Mayer mostrou que o exemplo ajuda.", "pt"),
+                           ("Um estudo de Mayer, de 2002, mostrou que o exemplo ajuda.", "pt"),
+                           ("A researcher, Richard Mayer, showed that the example helps.", "en"),
+                           ("The 2002 study by Mayer found that the example helps.", "en")):
+            report, hits = self._rules(text, lang)
+            self.assertEqual(hits, [], (text, report.render()))
+
+    def test_role_in_the_sentence_before_the_name_passes(self):
+        text = ("Richard Mayer é um pesquisador de psicologia da educação. "
+                "Mayer mostrou que ensinar os termos antes da lição ajuda.")
+        report, hits = self._rules(text, "pt")
+        self.assertEqual(hits, [], report.render())
+
+    def test_year_or_link_counts_as_a_source(self):
+        for text, lang in (("Um estudo de 2002 mostrou que o exemplo ajuda.", "pt"),
+                           ("Estudos mostram que o exemplo ajuda ([fonte](https://example.org/mayer)).", "pt"),
+                           ("Studies show that the example helps, see https://example.org/mayer for the data.", "en")):
+            report, hits = self._rules(text, lang)
+            self.assertEqual(hits, [], (text, report.render()))
+
+    def test_name_two_sentences_later_is_too_late(self):
+        text = ("Um estudo mostrou que o exemplo ajuda. "
+                "Ele usou alunos de ciências. "
+                "O estudo é de Richard Mayer, de 2002.")
+        report, hits = self._rules(text, "pt")
+        self.assertEqual([f.rule for f in hits], ["authority-without-name"], report.render())
+        self.assertIn("Um estudo mostrou", hits[0].message)
+
+    def test_name_in_the_first_sentence_of_the_next_block_counts(self):
+        text = ("Um estudo mostrou que o exemplo ajuda.\n\n"
+                "O estudo é de Richard Mayer, de 2002, e está na lista de fontes.\n")
+        report, hits = self._rules(text, "pt")
+        self.assertEqual(hits, [], report.render())
+
+    def test_common_sentence_starters_are_not_names(self):
+        for text, lang in (("Isso mostrou que o cache estava lento.", "pt"),
+                           ("Testes mostraram que o cache estava lento.", "pt"),
+                           ("Ele mostrou o resultado para a equipe.", "pt"),
+                           ("Ninguém mostrou o resultado para a equipe.", "pt"),
+                           ("This showed that the cache was slow.", "en"),
+                           ("Tests showed that the cache was slow.", "en"),
+                           ("Nothing showed up in the logs.", "en"),
+                           ("Profiling showed that the cache was slow.", "en")):
+            report, hits = self._rules(text, lang)
+            self.assertEqual(hits, [], (text, report.render()))
+
+    def test_tools_in_the_present_tense_are_not_sources(self):
+        for text, lang in (("O Git mostra o diff antes do commit.", "pt"),
+                           ("A Tabela 2 mostra o resultado de cada rodada.", "pt"),
+                           ("GitHub shows the diff before the commit.", "en")):
+            report, hits = self._rules(text, lang)
+            self.assertEqual(hits, [], (text, report.render()))
+
+    def test_acronyms_and_labels_are_not_names(self):
+        for text, lang in (("A OMS mostrou que lavar as mãos ajuda.", "pt"),
+                           ("P1 showed the gap in the first week.", "en")):
+            report, hits = self._rules(text, lang)
+            self.assertNotIn("name-before-role", [f.rule for f in hits], (text, report.render()))
+
+    def test_clean_fixtures_stay_clean(self):
+        for text, lang in ((CLEAN_PT, "pt"), (CLEAN_MD, "en")):
+            report, hits = self._rules(text, lang)
+            self.assertEqual(hits, [], report.render())
+
+
 class HiddenVerbsWarn(unittest.TestCase):
     """A verb beats a noun made from a verb ("perform an analysis", "realizar a verificação")."""
 

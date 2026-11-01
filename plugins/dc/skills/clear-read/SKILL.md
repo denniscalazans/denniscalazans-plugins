@@ -136,6 +136,8 @@ Prefer a simpler word when one exists. When a technical term is genuinely needed
 
 Established technical terms often stay in English even inside Portuguese text (API, deploy, cache, token), because that is how the reader meets them at work. Keep them in English when the reader does, and give the plain meaning in the reader's language the first time.
 
+**Role before the name, and the name right after.** A name on its own is jargon too. "Mayer" means nothing to a reader who has never met it, and unknown names hurt a reader in a second language most. So give the role first: a researcher, a study, a standard, a law. Then give the name and the source right after, in the same sentence or the next. A role with no name is the other failure. A smart reader asks "which researcher?", and trust drops, the way it does when a restaurant calls itself "the best, according to the survey". Weak, name without role: "Mayer mostrou que ensinar os termos antes ajuda." Weak, role without name: "Um pesquisador mostrou que ensinar os termos antes ajuda." Strong: "Um estudo com alunos de ciências mostrou que ensinar os termos antes da lição ajuda. O estudo é de Richard Mayer, de 2002, e está na lista de fontes." The lint warns on both weak forms.
+
 **An analogy is a loan, so pay it back.** An analogy ("think of the cache as a notebook on your desk") helps a reader build a new idea on a familiar one, so use one when the idea is abstract. Right after it, before the next heading, add one line that starts with "Where the analogy fails:" and says where the comparison stops holding. The reason is that a reader who keeps the analogy past its limit learns something false, and never finds out.
 
 ### Rule 6: Teach on the way, and do not rely on the reader's memory
@@ -244,12 +246,14 @@ A **problem** is a rule break, so fix every one. The lint reports eight kinds:
 - An analogy with no "Where the analogy fails:" line before the next heading (Rule 5).
 - A fixed label in the wrong language, such as "Key point:" in a Portuguese text (Rule 10).
 
-A **warning** is a prompt to re-read that line, so keep the text only on purpose. The lint reports nine kinds:
+A **warning** is a prompt to re-read that line, so keep the text only on purpose. The lint reports eleven kinds:
 
 - A possible passive (Rule 2).
 - A hidden verb, such as "perform an analysis" or "realizar a verificação" (Rule 2).
 - A clause of 5 or more words between commas, between the subject and its verb (Rule 2).
 - An acronym whose first mention has no full name next to it (Rule 5).
+- A name before its role, such as "Mayer mostrou que" with no researcher, study, standard or law named in the sentence (Rule 5).
+- A role with no name, such as "um pesquisador mostrou que" or "segundo a pesquisa", with no name, year or link by the end of the next sentence (Rule 5).
 - A one-word heading (Rule 1).
 - An H2 section with no "Key point:" line (Rule 1).
 - A "How to read:" line with no conclusion after it (Rule 7).
