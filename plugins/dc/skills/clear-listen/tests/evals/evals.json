@@ -28,5 +28,19 @@
       "Every answer passes python3 scripts/lint_audio_script.py <turn.txt> --conversa."
     ],
     "failure_with_current_skill": "Before change 5 the skill had no section for a live turn, so the model applied the recorded-audio rules to the conversation: answers opened with \"Parte um de cinco\", carried delivery intents in square brackets ([warm], [pause recall]) that the engine read aloud or dropped, announced \"São três motivos\" and marked items with \"Primeiro,\", \"Segundo,\", and gave the procedure of question 4 as a numbered list. Several turns ran past six sentences and ended on a recall pause that sounded like the end of the turn."
+  },
+  {
+    "id": "clear-listen-no-tools-source-only",
+    "skill": "clear-listen",
+    "prompt": "Você não tem busca na web, não pode rodar scripts e eu não sei qual motor de voz vou usar. Faz a versão em áudio do texto abaixo sobre cache HTTP, em duas partes. Texto: 'O navegador guarda uma cópia da página. A instrução no-cache manda guardar, mas conferir a etiqueta de versão antes de cada uso. A instrução no-store proíbe guardar. Se o servidor não manda etiqueta, o navegador baixa a página de novo a cada visita.' Pergunta extra: quanto tempo o cache guarda a cópia por padrão?",
+    "expected_behavior": [
+      "Every fact in the script comes from the four sentences the user pasted; the script adds no fact about HTTP caching from memory (no header names, no default times, no browser behaviour that the text does not state).",
+      "The extra question about the default time is answered with 'a fonte não diz' or an equivalent, never with a number from memory.",
+      "The first producer note opens with 'facts not verified in this session' (or the same meaning in the producer's language).",
+      "No engine profile is invented: the reply hands the user the blank profile questions (or names references/rendering.md) and renders plain, with the intents turned into punctuation only, until a profile comes back.",
+      "One producer note lists the twelve checks done by hand (read aloud, over 20 words, parenthesis, digit or symbol, dash, backward pointer, filler, part marker, recall question per part, closing questions, part over 800 words, each main idea has its sentence) and says that the lint and the cold reader did not run.",
+      "The neutral script itself still follows the Phase 3 rules: 'Parte um de duas', one recall question per part, the closing 'Sem voltar' question."
+    ],
+    "failure_with_current_skill": "Before change 4-listen the skill said 'If no verified source exists, run clear-read Phase 1 first' and nothing about what to do when no search exists. The model either skipped the research in silence and filled the default cache time from memory, or stopped and said it could not proceed. Without an engine profile it rendered from memory of one engine, and it reported the script as linted when no lint had run."
   }
 ]

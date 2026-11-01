@@ -73,6 +73,26 @@ This skill separates two things that are easy to mix up.
 
 So the neutral script is the source of truth, and it never contains the syntax of one engine. Changing the engine, or the model, means rendering the same script again. It never means rewriting the script.
 
+## Without reasoning and without tools
+
+With only this file, no search, no engine profile, no lint: three substitutes.
+
+1. **Only facts from the user's source**, and "a fonte não diz" for the rest. Open the producer note with "facts not verified in this session". No source text: ask for one, never write from memory.
+2. **Render plain when there is no engine profile** (`references/rendering.md`). Never fill the profile from memory: hand it to the user blank and render plain until it returns.
+3. **The twelve checks by hand**, in one producer note, which says the lint and cold reader did not run.
+   - Read each part aloud; a stumble is the listener's.
+   - Over 20 words: split.
+   - A parenthesis: its own sentence.
+   - A digit, symbol, address or code: words.
+   - A dash: two sentences or a connector.
+   - "Como eu disse": say it again.
+   - Filler ("Exato!"): the key point instead.
+   - Part marker missing or in digits: "Parte dois de três".
+   - No recall question per part: add one, pause, answer.
+   - Over two closing questions: one recall plus "Sem voltar".
+   - A part over 800 words: split.
+   - Each main idea has its sentence.
+
 ## Four phases
 
 Work in order: source, design, write, render. The neutral script and its rendered form are the output.

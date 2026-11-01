@@ -331,10 +331,11 @@ class SkillBodySize(unittest.TestCase):
 
     # The proposta asks for fewer than 3,600 words (about 5,000 tokens, the part of a skill
     # that survives a compaction). Moving Phase 4 out took the body from 5,972 words to
-    # 4,617, and changes 4, 5 and 13 of the same proposta still add about 500 words to it.
-    # So the ceiling is 5,200 for now. Getting under 3,600 needs a decision about what else
+    # 4,617. Change 5 (conversation by voice) took it to 5,121 and change 4 (without
+    # reasoning and without tools) to about 5,320; change 13 still adds a paragraph.
+    # So the ceiling is 5,400 for now. Getting under 3,600 needs a decision about what else
     # leaves the body (candidates: Rules 16 to 21, the two Phase 3 examples).
-    MAX_WORDS = 5200
+    MAX_WORDS = 5400
     RENDERING_MD = os.path.join(HERE, "..", "references", "rendering.md")
 
     @staticmethod
@@ -366,6 +367,49 @@ class SkillBodySize(unittest.TestCase):
                      "### Two renderings that need no profile", "### Example: one neutral passage, three media",
                      "Rules for rendering:", "Leave no neutral intent behind", "scripts/check_render.py"):
             self.assertIn(kept, rendering, f"{kept!r} did not arrive in references/rendering.md")
+
+
+class WithoutToolsSection(unittest.TestCase):
+    """The section "Without reasoning and without tools" of SKILL.md, added on 2026-11-01
+    (proposta, change 4-listen): what to do when the search, the engine profile and the lint
+    do not exist. Its texts come from the fallbacks of lacos.md, table 2.3."""
+
+    HEADING = "## Without reasoning and without tools"
+    MAX_SECTION_WORDS = 200
+
+    @classmethod
+    def setUpClass(cls):
+        with open(SKILL_MD, encoding="utf-8") as f:
+            cls.skill = f.read()
+
+    def section(self):
+        start = self.skill.index(self.HEADING)
+        end = self.skill.index("\n## ", start + len(self.HEADING))
+        return self.skill[start:end]
+
+    def test_20_section_exists_before_phase_1(self):
+        self.assertTrue(self.HEADING in self.skill, "SKILL.md has no section 'Without reasoning and without tools'")
+        self.assertLess(self.skill.index(self.HEADING), self.skill.index("### Phase 1: Source"),
+                        "the section must come before Phase 1")
+
+    def test_20b_three_substitutes(self):
+        section = self.section()
+        # 1. Only facts from the user's source, and "a fonte não diz" for the rest.
+        self.assertIn("a fonte não diz", section)
+        self.assertIn("facts not verified in this session", section)
+        # 2. Render plain when there is no engine profile, never from memory.
+        self.assertIn("render plain", section.lower())
+        self.assertIn("references/rendering.md", section)
+        # 3. The twelve checks by hand instead of the lint, and say that it did not run.
+        self.assertIn("did not run", section)
+
+    def test_20c_twelve_checks_one_line_each_under_200_words(self):
+        section = self.section()
+        checks = [line for line in section.splitlines() if re.match(r"^\s+- ", line)]
+        self.assertEqual(len(checks), 12, f"expected twelve check lines, found {len(checks)}")
+        words = len(section.split())
+        self.assertLess(words, self.MAX_SECTION_WORDS,
+                        f"the section has {words} words (ceiling {self.MAX_SECTION_WORDS})")
 
 
 class ConversationMode(unittest.TestCase):
