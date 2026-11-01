@@ -1,0 +1,16 @@
+[
+  {
+    "id": "clear-listen-render-reads-reference",
+    "skill": "clear-listen",
+    "prompt": "Aqui está o roteiro neutro do áudio do guia de cache HTTP (anexo guia-audio-script.md, já passou no lint). Gera o áudio com o ElevenLabs, modelo v3, voz Guia. O perfil do motor está em docs/audio-playbook.md.",
+    "expected_behavior": [
+      "Reads references/rendering.md (the Phase 4 method) before rendering, and reads the engine profile named in the request.",
+      "Keeps the neutral script untouched and writes the rendered text to a second file named after the medium (for example guia-audio-render-eleven-v3.txt).",
+      "Maps every delivery intent with the profile, or degrades it down the ladder, and leaves no neutral intent ([pause, [key], [stress, [say) in the rendered text.",
+      "Writes the render report (mapped, degraded, dropped) as producer notes at the top of the rendered file, and tells the user in one line what was degraded or dropped.",
+      "Runs scripts/check_render.py on the rendered text before generating.",
+      "Repeats the tone at the start of each generation call, and never retries a charged call by calling it again."
+    ],
+    "failure_with_current_skill": "Before change 6 the method was inline in SKILL.md, so the model rendered from the body. The risk after the move is a model that skips references/rendering.md and renders from memory of the engine: neutral intents left in the text, no render report, no second file."
+  }
+]

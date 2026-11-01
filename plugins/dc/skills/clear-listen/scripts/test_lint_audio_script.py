@@ -325,6 +325,49 @@ class ClosingRecall(unittest.TestCase):
         self.assertIn("practice", rule, "Rule 6 must mark the per-part question and the pause as practice")
 
 
+class SkillBodySize(unittest.TestCase):
+    """The body of SKILL.md stays short, so it survives a context compaction
+    (proposta of 2026-11, change 6: Phase 4 moved to references/rendering.md)."""
+
+    # The proposta asks for fewer than 3,600 words (about 5,000 tokens, the part of a skill
+    # that survives a compaction). Moving Phase 4 out took the body from 5,972 words to
+    # 4,617, and changes 4, 5 and 13 of the same proposta still add about 500 words to it.
+    # So the ceiling is 5,200 for now. Getting under 3,600 needs a decision about what else
+    # leaves the body (candidates: Rules 16 to 21, the two Phase 3 examples).
+    MAX_WORDS = 5200
+    RENDERING_MD = os.path.join(HERE, "..", "references", "rendering.md")
+
+    @staticmethod
+    def wc_w(path):
+        """The word count of `wc -w` in a UTF-8 locale (whitespace-separated runs)."""
+        with open(path, encoding="utf-8") as f:
+            return len(f.read().split())
+
+    def test_19_skill_md_word_count_is_under_the_ceiling(self):
+        words = self.wc_w(SKILL_MD)
+        self.assertLess(words, self.MAX_WORDS,
+                        f"SKILL.md has {words} words (ceiling {self.MAX_WORDS}). Move a block to references/, do not delete it.")
+
+    def test_19b_phase_4_lives_in_the_rendering_reference(self):
+        with open(SKILL_MD, encoding="utf-8") as f:
+            skill = f.read()
+        # The body keeps the phase, one paragraph, and the rule to read the reference.
+        self.assertIn("## Phase 4: Render for the medium", skill)
+        self.assertIn("Read `references/rendering.md` before generating audio", skill)
+        # The method itself is not in the body any more.
+        for moved in ("### Step 2: What an engine profile must answer", "### Step 3: Map every intent, or degrade it",
+                      "### Example: one neutral passage, three media", "Rules for rendering:"):
+            self.assertNotIn(moved, skill, f"{moved!r} is still in SKILL.md")
+        self.assertTrue(os.path.exists(self.RENDERING_MD), "references/rendering.md is missing")
+        with open(self.RENDERING_MD, encoding="utf-8") as f:
+            rendering = f.read()
+        for kept in ("### Step 1: Find out which medium, and get its profile", "### Step 2: What an engine profile must answer",
+                     "### Step 3: Map every intent, or degrade it", "### Step 4: Check what came out",
+                     "### Two renderings that need no profile", "### Example: one neutral passage, three media",
+                     "Rules for rendering:", "Leave no neutral intent behind", "scripts/check_render.py"):
+            self.assertIn(kept, rendering, f"{kept!r} did not arrive in references/rendering.md")
+
+
 class Cli(unittest.TestCase):
     def run_cli(self, text, *extra):
         with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False, encoding="utf-8") as f:
