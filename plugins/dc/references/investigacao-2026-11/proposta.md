@@ -50,8 +50,8 @@ As prioridades são três, e cada uma diz quando a mudança entra.
 | 15 | Evals em `tests/evals/`, com e sem a skill | clear-read e clear-listen | P2 |
 | 16 | Regra 3 da clear-listen: a prévia que nomeia o tópico | clear-listen | P3, depois da Fase D |
 | 17 | Atribuição no fio, como a BBC: papel, nome e instituição na frase, nunca em nota solta | clear-read e clear-listen | P1 |
-| 20 | Regra 7: nunca desenhar uma sequência, SVG inline para grafos, a tabela de forma por conteúdo (o adendo 2 a chamou de mudança 18) | clear-read | P2, à espera de aprovação |
-| 21 | As dez regras do Projeto que são método e não estão na skill (seção 7) | clear-read | P2, à espera de aprovação |
+| 20 | Regra 7: nunca desenhar uma sequência, SVG inline para grafos, a tabela de forma por conteúdo (o adendo 2 a chamou de mudança 18) | clear-read | P2, aprovada e feita |
+| 21 | As dez regras do Projeto que são método e não estão na skill (seção 7) | clear-read | P2, aprovada e feita |
 
 Fora das skills, mas na proposta: os nomes das seções do Projeto (seção 3) e a correção das instruções sobre o Projeto rodar o lint.
 
@@ -345,7 +345,7 @@ Teste determinístico: um grep de "say who before" no arquivo da clear-listen e 
 
 **Evidência.** Fase C, seção 5.5: o guia de estilo da BBC News de 2003, seção "Attribution first". As Diretrizes Editoriais da BBC de 2025, itens 3.4.4 e 3.4.6. A decisão do Dennis em `decisoes-do-dennis.md`.
 
-### 20. Regra 7: nunca desenhar uma sequência (P2: à espera de aprovação)
+### 20. Regra 7: nunca desenhar uma sequência (P2: aprovada em 2 de novembro)
 
 **De onde vem.** O adendo 2 (`adendos/2026-11-01-visuais-e-regras-do-projeto.md`), escrito depois da Fase E, que o chamou de mudança 18.
 O número 18 já estava em uso na implementação, então aqui ele é 20.
@@ -369,7 +369,7 @@ Hoje um documento com um `flowchart TD` de 4 nós em fila passa calado; depois, 
 
 **Evidência.** Berney e Bétrancourt 2016 para a forma por conteúdo, e a regra pb-004 do playbook da Biblioteca. O teste do Projeto de 24 de setembro de 2026 mostrou o app do celular cortando o rótulo de um nó Mermaid. Certeza alta para "nunca sequência em diagrama", média para a preferência por SVG.
 
-### 21. As regras do Projeto que são método (P2: à espera de aprovação)
+### 21. As regras do Projeto que são método (P2: aprovada em 2 de novembro)
 
 **De onde vem.** A seção 5 do adendo 2 lista 14 regras das instruções do Projeto que a skill não tem, ou tem só em parte.
 A seção 7 deste arquivo dá o veredito de cada uma.
@@ -433,6 +433,7 @@ Dois leitores frios leram cada skill inteira no fim e apontaram problemas, que v
 | 17 (nova) | Atribuição no fio, estilo BBC, nas duas skills | Nenhum |
 | 18 (nova) | As correções dos leitores frios: sexto rótulo fixo ("O que saber antes de ler"), frases longas, contradições entre seções novas e antigas | Nenhum |
 | 18b (nova) | As listas do lint da clear-read foram para `references/lint.md`, e o corpo ganhou um teste de tamanho | O corpo da clear-read ficou em 6.272 palavras, vindo de 5.129, porque as 15 mudanças acrescentaram texto |
+| 20 e 21 | Feitas em 2 de novembro, em 11 commits: a Regra 7 nova com o aviso `sequence-as-diagram` e as duas seções de `html-patterns.md`; os dez itens da seção 7, com três avisos de lint novos (`double-negative`, `empty-word`), três testes em `tests.md` e quatro evals | O corpo da clear-read foi a 7.022 palavras; o teto do teste subiu para 7.100, com a meta de 3.600 registrada |
 | 15 | Fonte dos evals dentro da skill, como o Dennis decidiu | A ferramenta `claude plugin eval` recusa evals dentro de `skills/`. As cópias que ela lê ficam em `plugins/dc/evals/`, geradas por script. O `.gitignore` mudou para deixar as duas pastas entrarem |
 
 O que fica para o Dennis decidir depois do PR:

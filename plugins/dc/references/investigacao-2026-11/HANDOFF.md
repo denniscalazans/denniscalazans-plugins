@@ -131,7 +131,7 @@ Só depois disso o PR #81 pode entrar no main.
 
 O adendo 2 (`adendos/2026-11-01-visuais-e-regras-do-projeto.md`) entrou por merge nos dois branches.
 A proposta ganhou a mudança 20 (Regra 7, nunca desenhar uma sequência) e a mudança 21 (as regras do Projeto que são método).
-As duas esperam a aprovação do Dennis.
+O Dennis aprovou as duas em 2 de novembro, e elas estão feitas no branch filho, em 11 commits.
 A seção 7 da proposta dá o veredito das 14 regras, e a linha R7c do inventário mudou para "muda".
 
 ## 4. O que já está decidido
