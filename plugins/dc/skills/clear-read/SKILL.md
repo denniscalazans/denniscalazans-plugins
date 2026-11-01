@@ -137,6 +137,8 @@ The lint (see "Before you deliver") flags each possible passive as a warning. So
 
 **Keep subject, verb and object together.** A clause between commas in the middle of a sentence ("The server, which the team installed last week, restarts every night") pushes the subject away from its verb, so the reader holds the subject in mind while reading the aside. Move the aside to its own sentence: "The team installed the server last week. It restarts every night."
 
+**Say what is, not what is not.** Write the positive form: "Keep the copy for ten minutes", not "Do not keep the copy for more than ten minutes". A negation makes the reader build the positive and then flip it. Use one only when the reader brings the wrong belief ("This does not delete the file"), and never two in one sentence. The lint warns on a double negative (`double-negative`).
+
 **Use the verb, not a noun made from it.** "Analyze", not "perform an analysis"; "decide", not "make a decision"; in Portuguese "verificar", not "realizar a verificação". The noun form adds a light verb and a word, and hides who does what. The lint flags both patterns as warnings.
 
 ### Rule 3: Problem plus counter-pattern

@@ -98,6 +98,10 @@ Warnings (reported, never fatal):
                         before knowing what it is. Common sentence starters (This, Tests,
                         Isso, Testes), acronyms and labels are not names, and the present
                         tense of tools ("O Git mostra", "GitHub shows") is not evidence.
+    double-negative     two negations in one sentence, so the reader flips the meaning
+                        twice. en: "not ... no/nothing/never", "don't fail to", "not
+                        un-". pt: "não ... nenhum/nada/nunca/ninguém", "não deixe de",
+                        "não é impossível". Warning (Rule 2).
     sequence-as-diagram  a Mermaid flowchart (```mermaid fence or <pre class="mermaid">)
                         whose nodes form one chain with no branch (A --> B --> C). A
                         sequence is a numbered list, never a diagram (Rule 7). Warning.
@@ -194,6 +198,7 @@ LANG_PACKS = {
             r"\bunlike an?\b",
         ],
         "analogy_limit_hint": "Where the analogy fails:",
+        "double_negative": r"\b(?:not|n't|never|no)\b[^.;:?!]{0,40}?\b(?:no|nothing|never|nobody|none|nowhere)\b|\b(?:do not|don't|never) fail to\b|\bnot un\w+",
         "labels": {
             "key_point": ("Key point:", r"key point\s*:"),
             "analogy_limit": ("Where the analogy fails:", r"where the analogy fails\s*:"),
@@ -345,6 +350,7 @@ LANG_PACKS = {
             r"\bao contrário de (?:um|uma)\b",
         ],
         "analogy_limit_hint": "Onde a analogia falha:",
+        "double_negative": r"\bn[ãa]o\b[^.;:?!]{0,40}?\b(?:nenhum|nenhuma|nada|nunca|ningu[ée]m|jamais)\b|\bn[ãa]o deix[ea] de\b|\bn[ãa]o [ée] imposs[íi]vel\b",
         "labels": {
             "key_point": ("Ponto-chave:", r"ponto[- ]chave\s*:"),
             "analogy_limit": ("Onde a analogia falha:", r"onde a analogia falha\s*:"),
@@ -1247,6 +1253,17 @@ def _mermaid_is_chain(code):
     return all(out.get(n, 0) <= 1 and inn.get(n, 0) <= 1 for n in nodes)
 
 
+def check_double_negatives(block, sentences, pack, findings):
+    """Rule 2: say what is; a double negative flips the meaning twice."""
+    pat = re.compile(pack["double_negative"], re.I)
+    for s in sentences:
+        m = pat.search(s)
+        if m:
+            findings.append(Finding(block.line, "warning", "double-negative",
+                                    f"\"{m.group(0)}\" is a double negative. Say what is, in the positive form."))
+            break
+
+
 def check_sequence_diagrams(text, findings):
     """Rule 7: a sequence of steps is a list, never a diagram."""
     sources = [(m.start(), m.group(1)) for m in MERMAID_FENCE.finditer(text)]
@@ -1351,6 +1368,9 @@ def lint_text(text, name="document.md", kind=None, lang="auto", max_words=DEFAUL
     check_analogies(blocks, pack, findings)
     check_sources(blocks, sentences_by_block, pack, findings)
     check_sequence_diagrams(text, findings)
+    for b, sents in zip(blocks, sentences_by_block):
+        if b.kind not in ("heading", "visual"):
+            check_double_negatives(b, sents, pack, findings)
     if lang_is_certain:
         check_label_language(blocks, sentences_by_block, pack, findings)
     if total_sentences:

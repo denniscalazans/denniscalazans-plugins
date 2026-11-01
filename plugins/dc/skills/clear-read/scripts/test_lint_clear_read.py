@@ -1067,13 +1067,13 @@ class SkillBodySize(unittest.TestCase):
     lists to references/lint.md and shortened the closing section, to about 6,090 words;
     changes 17 and 18 (attribution examples, the sixth label, coherence fixes) brought it
     to about 6,250, and changes 20 and 21 (Dennis's addendum 2: visuals and the Project's
-    rules that are method, approved on 2 November 2026) add about 600 more. The ceiling is
-    6,900. Getting near 3,600 needs a decision by Dennis about what else
+    rules that are method, approved on 2 November 2026) add about 800 more. The ceiling is
+    7,100. Getting near 3,600 needs a decision by Dennis about what else
     leaves the body: candidates are the per-medium spacing list in Rule 1 (about 150
     words), the phone and HTML details of Rule 7 (about 120), and the pack paragraph of
     Rule 10 (about 110)."""
 
-    MAX_WORDS = 6900
+    MAX_WORDS = 7100
 
     def test_skill_md_word_count_is_under_the_ceiling(self):
         path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "SKILL.md")
@@ -1170,6 +1170,25 @@ class SequenceAsDiagram(unittest.TestCase):
                     "<p>Como ler: cada caixa é um passo.<br>O fluxo vai do pedido à resposta.</p><p>Ponto-chave: o cache responde primeiro.</p>")
         report = run_on_text(html_doc, name="sample.html", lang="pt")
         self.assertIn("sequence-as-diagram", ids(report.findings), report.render())
+
+
+class DoubleNegativesWarn(unittest.TestCase):
+    """Change 21g: say what is; a double negative warns (Rule 2)."""
+
+    def test_pt_double_negative_warns(self):
+        text = CLEAN_PT.replace("Caso contrário, o cache busca o valor no banco e guarda uma cópia.", "Não há nenhum caso em que o cache deixe de guardar uma cópia.")
+        report = run_on_text(text, lang="pt")
+        self.assertIn("double-negative", ids(report.findings), report.render())
+
+    def test_pt_single_negation_passes(self):
+        text = CLEAN_PT.replace("Caso contrário, o cache busca o valor no banco e guarda uma cópia.", "O cache não apaga o arquivo original.")
+        report = run_on_text(text, lang="pt")
+        self.assertNotIn("double-negative", ids(report.findings), report.render())
+
+    def test_en_double_negative_warns(self):
+        text = "# The cache\n\nA read cache sits in front of the database.\nDo not fail to set a time to live on each copy.\n\nKey point: the cache answers first.\n"
+        report = run_on_text(text, lang="en")
+        self.assertIn("double-negative", ids(report.findings), report.render())
 
 
 if __name__ == "__main__":
