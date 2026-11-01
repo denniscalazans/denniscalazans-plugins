@@ -115,6 +115,34 @@ Ponto-chave: o experimento mede o pacote inteiro da Fase E, e isso precisa ficar
 4. Uma tabela por par, condições nas colunas, medidas nas linhas. Sem estatística pesada; o que se procura é direção consistente.
 5. Escrever a seção 7 em cinco frases, e só então decidir o merge do PR #81.
 
-## 7. Conclusão
+## 7. Conclusão, parte 1: a primeira passada do Dennis
 
-Em aberto. Entra quando as respostas chegarem.
+O Dennis leu os quatro textos em 1 de novembro, das 22h40 às 23h31 (horário de Londres), como dono da página.
+A resposta está em `experimento/respostas/dennis-2026-11-01.json`.
+A volta de um dia depois ainda não aconteceu, então o mapa cego continua selado, e esta seção usa os nomes cegos.
+
+| Par | Texto | Ordem de leitura | Minutos lendo | Esforço (1 a 5) | Releituras | Pontos lembrados |
+|---|---|---|---|---|---|---|
+| suplementos | 2 | primeiro | 7 | 2 | uma | 4 de 6 |
+| suplementos | 1 | segundo | 4,5 | 2 | uma | 3,5 de 9 |
+| duckdb | 2 | primeiro | 10,5 | 3 | duas ou três | 4,5 de 7 |
+| duckdb | 1 | segundo | 19 | 2 | duas ou três | 4,5 de 9 |
+
+Como ler: cada par tem perguntas diferentes por texto, então os pontos não se comparam dentro do par. O esforço e as releituras se comparam.
+Os pontos saem da leitura das respostas contra a lista de `experimento/fontes/perguntas.json`, feita pelo agente.
+
+O que a primeira passada diz:
+
+- Nos dois pares o Dennis marcou "deu igual". No par de suplementos, o comentário dele vai além da nota. O texto 1 foi "mais fluido" e "mais suave para o meu cérebro"; o texto 2 foi "mais duro", com os termos "mais soltos". Ele mesmo avisa que leu o 2 primeiro, e a segunda leitura de um assunto é sempre mais fácil.
+- No par de DuckDB, o esforço caiu de 3 para 2 entre o texto 2 e o texto 1, com o mesmo número de releituras. O tempo de leitura do texto 1 (19 minutos) inclui as respostas às três perguntas do texto anterior, então não vale como medida.
+- A queixa mais útil veio do texto 2 de DuckDB. Nas palavras do Dennis: "o texto não explicou muito bem; essa skill assume que eu sei tudo, e isso não é verdade". É a calibragem da Regra 8, que trata o leitor de TI como quem já sabe o básico de DuckDB. O Dennis diz que não sabe, e isso vira um achado para a Regra 8, seja qual for a versão.
+- As respostas de recordação foram curtas e certas na direção, com os detalhes perdidos (os nomes das substâncias, o atalho do Hugging Face, os números). Isso é o esperado logo depois da leitura; a volta de um dia depois mede o que fica.
+
+Ponto-chave: o texto 1 de cada par saiu igual ou um pouco melhor, e a queixa sobre o DuckDB é o achado mais concreto.
+
+## 8. O que falta para fechar
+
+- A volta de um dia depois do Dennis, pelo mesmo link e navegador, a partir de 2 de novembro às 23h31 (Londres).
+- Outras pessoas, se o Dennis quiser, pela cópia pública.
+- Abrir o mapa selado e reescrever a seção 7 com as condições no lugar dos nomes cegos, em cinco frases.
+- Só então decidir o merge do PR #81.
