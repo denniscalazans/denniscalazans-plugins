@@ -275,16 +275,16 @@ Then the standard check: both packs open with the international standard, ISO 24
 
 What it stresses: a rewrite of the skill must not erase what already works.
 
-How to run: open `plugins/dc/references/investigacao-2026-11/inventario-das-regras.md`, section 7. It holds five passages from published guides (G1 to G5), each with its URL, the rules it shows, and the mark that a new skill version must reproduce: the "Where the analogy fails" line, the "You already know... Now..." re-entry line, the order meaning-term-acronym, the "What works:" counter-pattern, and the "How to read" line with its conclusion.
+How to run: open `references/golden-set.md`. It holds five passages from guides written with this skill (G1 to G5), each with its source guide, the rules it shows, and the mark that a new skill version must reproduce: the "Where the analogy fails" line, the "You already know... Now..." re-entry line, the order meaning-term-acronym, the "What works:" counter-pattern, and the "How to read" line with its conclusion.
 
 1. Run the lint on each passage. Each one must end with `0 problems`.
 2. With the changed skill, ask the model to rewrite the same source content. Compare the output with the passage.
 
 Pass: every mark listed for the passage is present in the new output.
 
-Fail: one mark is missing. This is a blocker, not a warning, under rule 4 of the investigation guide (`guia-de-investigacao.md`, section 4).
+Fail: one mark is missing. This is a blocker, not a warning: a new version that loses what already works is a regression.
 
-Added on 1 November 2026, by the investigation's Phase A. The clear-listen has no golden passage yet, because no audio script is in the repo.
+Added on 1 November 2026. The clear-listen has no golden passage yet.
 
 ## Test 19: Depth calibrated to what the reader knows about the topic
 
@@ -304,7 +304,7 @@ How to check fast: `grep -c "O que saber antes de ler"` prints 1 on runs 1 and 3
 
 Also check attribution (Rule 5, change 17): every study or researcher the text names comes with role, name and place woven into one sentence, never as a note after the claim ("O estudo é de...") and never bare ("pesquisas mostram"). `grep -c "O estudo é de\|O pesquisador é"` prints 0.
 
-Added on 1 November 2026, by change 14 of the investigation (`proposta.md`, section 2, item 14); the attribution check by change 17; the default flipped to the full scaffold on 2 November 2026 by change 22, after the owner's blind reading of the DuckDB texts.
+Added on 1 November 2026; the attribution check and the full-scaffold default on 2 November 2026, after a blind reading of two DuckDB texts.
 
 ## Test 20: The position marker in a long text
 
@@ -318,7 +318,7 @@ Fail: no marker; a marker in a short text; a marker used as a promise ("nos pró
 
 How to check fast: `grep -c "Conceito [0-9] de 5"` prints 5.
 
-Added on 2 November 2026, by change 21 of the investigation (item a).
+Added on 2 November 2026.
 
 ## Test 21: The closing recall
 
@@ -332,7 +332,7 @@ Fail: no closing line; the answers visible before the reader tries; a quiz after
 
 How to check fast: `grep -c "Sem voltar"` prints 1.
 
-Added on 2 November 2026, by change 21 of the investigation (item e).
+Added on 2 November 2026.
 
 ## Test 22: The general rule before the exceptions, and branches as a table
 
@@ -346,4 +346,4 @@ Fail: the exceptions come first; the branches are prose sentences with "se" in t
 
 How to check fast: `grep -c "^| Se "` prints 4 (or 3 or more).
 
-Added on 2 November 2026, by change 21 of the investigation (item h).
+Added on 2 November 2026.

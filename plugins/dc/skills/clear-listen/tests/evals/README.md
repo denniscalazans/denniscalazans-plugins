@@ -25,4 +25,4 @@ Each run is a full Claude session on your own credential, so start with `--runs 
 2. Rebuild the runnable copies: `python3 plugins/dc/skills/clear-read/scripts/build_eval_cases.py plugins/dc/skills/clear-listen`.
 3. Commit the JSON and the folders together.
 
-Added on 1 November 2026, by change 15 of the investigation (`plugins/dc/references/investigacao-2026-11/proposta.md`).
+Added on 1 November 2026.

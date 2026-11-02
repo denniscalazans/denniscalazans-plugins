@@ -198,7 +198,7 @@ class ExistingChecks(unittest.TestCase):
 
 
 class NewChecks(unittest.TestCase):
-    """The four checks added on 2026-11-01 (proposta, change 10)."""
+    """The four checks added on 2026-11-01."""
 
     def test_13_intent_outside_the_table_is_a_problem(self):
         text = swap(CLEAN, "Isso não confere.", "[whispers] Isso não confere.")
@@ -265,7 +265,7 @@ class NewChecks(unittest.TestCase):
 
 
 class VoiceChange(unittest.TestCase):
-    """key-after-voice-change, added on 2026-11-01 (proposta, change 7, Rule 13)."""
+    """key-after-voice-change, added on 2026-11-01."""
 
     def test_17_key_on_the_first_line_after_a_voice_change(self):
         self.assertEqual(lint.lint(DIALOGUE), [])
@@ -294,7 +294,7 @@ class VoiceChange(unittest.TestCase):
 
 
 class ClosingRecall(unittest.TestCase):
-    """The closing recall question, added on 2026-11-01 (proposta, change 9, Rule 6)."""
+    """The closing recall question, added on 2026-11-01."""
 
     CLOSING_BLOCK = ("# closing\nSem voltar, quais foram as duas instruções?\n[pause recall]\n"
                      "No-cache guarda e confere. No-store não guarda.\n")
@@ -331,16 +331,15 @@ class ClosingRecall(unittest.TestCase):
 
 
 class SkillBodySize(unittest.TestCase):
-    """The body of SKILL.md stays short, so it survives a context compaction
-    (proposta of 2026-11, change 6: Phase 4 moved to references/rendering.md)."""
+    """The body of SKILL.md stays short, so it survives a context compaction."""
 
-    # The proposta asks for fewer than 3,600 words (about 5,000 tokens, the part of a skill
+    # The target is fewer than 3,600 words (about 5,000 tokens, the part of a skill
     # that survives a compaction). Change 6 moved Phase 4 to references/rendering.md (5,972
     # to 4,617 words); changes 4, 5 and 13 then added about 870 words. Change 6b moved the
     # two worked examples (references/examples.md), Rules 16 to 21 (references/
     # visuals-for-the-ear.md) and the five listening facts (research-basis.md) out, and
     # the body landed at about 4,720 words. The ceiling is 4,800. Getting under 3,600 still
-    # needs a decision by Dennis about what else leaves the body: candidates are the six
+    # needs a decision by the maintainer about what else leaves the body: candidates are the six
     # "Rules for intents" (about 230 words), the Script format list (about 180) and a
     # shorter Conversation by voice section (about 490 today).
     MAX_WORDS = 4800
@@ -378,9 +377,8 @@ class SkillBodySize(unittest.TestCase):
 
 
 class WithoutToolsSection(unittest.TestCase):
-    """The section "Without reasoning and without tools" of SKILL.md, added on 2026-11-01
-    (proposta, change 4-listen): what to do when the search, the engine profile and the lint
-    do not exist. Its texts come from the fallbacks of lacos.md, table 2.3."""
+    """The section "Without reasoning and without tools" of SKILL.md, added on 2026-11-01: what to do when the search, the engine profile and the lint
+    do not exist. Its texts are the fallbacks for a run without tools."""
 
     HEADING = "## Without reasoning and without tools"
     MAX_SECTION_WORDS = 300
@@ -414,15 +412,14 @@ class WithoutToolsSection(unittest.TestCase):
     def test_20c_seventeen_checks_one_line_each_under_the_ceiling(self):
         section = self.section()
         checks = [line for line in section.splitlines() if re.match(r"^\s+- ", line)]
-        self.assertEqual(len(checks), 17, f"expected seventeen check lines (12 original plus the 5 added in Phase E), found {len(checks)}")
+        self.assertEqual(len(checks), 17, f"expected seventeen check lines (12 original plus the 5 added in November 2026), found {len(checks)}")
         words = len(section.split())
         self.assertLess(words, self.MAX_SECTION_WORDS,
                         f"the section has {words} words (ceiling {self.MAX_SECTION_WORDS})")
 
 
 class ConversationMode(unittest.TestCase):
-    """--conversa: one turn of a live voice conversation, added on 2026-11-01
-    (proposta, change 5, the section "Conversation by voice" of SKILL.md)."""
+    """--conversa: one turn of a live voice conversation, added on 2026-11-01."""
 
     # A 30-second turn that follows the fourteen rules: four sentences, no mark, a question at the end.
     TURN = ("Você perguntou se o cache guarda a página. Guarda, mas confere a etiqueta de versão antes de usar.\n"
@@ -524,7 +521,7 @@ class ConversationMode(unittest.TestCase):
 
 
 class ReviewSentence(unittest.TestCase):
-    """Rule 15's review sentence, rewritten on 2026-11-01 (proposta, change 8).
+    """Rule 15's review sentence, rewritten on 2026-11-01.
     Murphy 2022 never tested a summary; a second full listen at 2x right before
     the test won. The old claim leaves the rule and stays under Retired."""
 
@@ -551,8 +548,7 @@ class ReviewSentence(unittest.TestCase):
 
 
 class NarratorParagraph(unittest.TestCase):
-    """The narrator paragraph in "Who you are writing for" (proposta of 2026-11,
-    change 13): someone telling a good story to a friend, who never shows the
+    """The narrator paragraph in "Who you are writing for": someone telling a good story to a friend, who never shows the
     skeleton. With its limit: in Mar and colleagues 2021, narrative helped memory
     more than understanding, so a mechanism still needs its step by step.
     The deterministic form is a grep for the phrase; the judge eval is
