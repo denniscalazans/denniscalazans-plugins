@@ -9,6 +9,33 @@ So the English rules lean on short words, present tense and explicit connectors 
 
 ## The standard behind the rules
 
+The international plain-language standard is ISO 24495-1:2023, "Plain language, Part 1: Governing principles and guidelines".
+It is neutral about language, so it is the base of every pack.
+The United States law and guidelines below are applications of it.
+
+It defines plain language by what the reader can do, not by sentence length or word choice.
+The wording, structure and design are so clear that intended readers can easily find what they need, understand what they find, and use that information.
+The definition comes from the International Plain Language Federation, and the ISO adopted it.
+
+The standard has four principles, and each one is a check the skill already runs.
+
+| Principle of ISO 24495-1 | What the reader can do | Where the skill carries it |
+|---|---|---|
+| Relevant | Receive what they need, at the depth they need | Rule 8 (calibrate the depth to what the reader knows) and "Who you are writing for" in SKILL.md |
+| Findable | Find it without reading everything | Rule 1 (message headings, the goal first, one topic per block) |
+| Understandable | Understand it on the first read | Rules 2, 5 and 10 (short sentences, plain meaning before the term, plain words) |
+| Usable | Act on it | Rule 11 (procedures) and the cold-reader tests in `references/tests.md` |
+
+Clause 5.2.2 of the standard asks the writer to "introduce new information by building on information readers already know".
+Rule 6 carries that as the opening line "You already know that... Now...".
+
+Source: [ISO 24495-1:2023 at iso.org](https://www.iso.org/standard/78907.html).
+
+## How the United States applies it
+
+The United States rules are older than the ISO.
+They cover the same ground in concrete techniques, so this pack treats them as the English application of the standard.
+
 The United States Plain Writing Act of 2010 requires federal agencies to write for their audience.
 The Federal Plain Language Guidelines (March 2011) list the techniques.
 The current edition lives on Digital.gov, adapted from PlainLanguage.gov.
@@ -22,7 +49,7 @@ The skill already carries most of the guidelines, so the table says where each o
 | Use "must" to indicate requirements | This file, "Modal verbs" |
 | Use pronouns to speak directly to readers | This file, "Register" |
 | Minimize abbreviations | Rule 5, and the lint rule `acronym-without-full-name` |
-| Use short, simple words; Omit unnecessary words | Rule 10 and Rule 8 |
+| Use short, simple words; Omit unnecessary words | Rule 10 and Rule 9 |
 | Use the same term consistently for a specific thought or object | Rule 5 (one word, one meaning) |
 | Avoid legal, foreign, and technical jargon | Rule 5 |
 | Write short sentences | Rule 2 |
@@ -87,11 +114,18 @@ Decimal point, as the reader expects: "4.6", not "4,6".
 
 ## Markers the lint looks for, in English
 
+The first six rows are the fixed labels of the method (Rule 10), and each has one form per language.
+A label in another language is a foreign word in the reader's text. So the lint flags "Ponto-chave:" in an English text as the problem `label-in-wrong-language`.
+
 | Marker | English form |
 |---|---|
 | The key-point line that closes a section | "Key point:" |
 | The legend line under a visual | "How to read:" |
 | The line that limits an analogy | "Where the analogy fails:" |
+| The line that opens the counter-pattern after a problem | "What works:" |
+| The first line of a section that builds on another | "You already know that... Now..." |
+| The opening section of a text outside the reader's field (Rule 8) | "What to know before reading" |
+| An empty word (Rule 9) | "crucial", "robust", "powerful", "seamless", "cutting-edge", "state-of-the-art", "holistic", "at the level of", "approach", "aspect", "paradigm", "synergy", "leverage": the lint warns `empty-word`; say the fact or cut the word |
 | A label with a number | "Step 3", "Phase 2", "Part 1" (each one followed by its name) |
 
 ## Common slips in English, and the fix

@@ -1,0 +1,121 @@
+{
+ "duckdb": [
+  {
+   "id": "d1",
+   "prompt": "No guia sobre DuckDB e formatos de arquivo, por que o computador lê menos em Parquet do que em CSV para somar uma única coluna?",
+   "cue": "Pense na ordem em que cada formato escreve a tabela.",
+   "points": [
+    "CSV, JSON e JSONL escrevem a tabela linha por linha.",
+    "O Parquet guarda cada coluna em um bloco separado.",
+    "O computador lê só o bloco da coluna pedida e pula as outras colunas."
+   ]
+  },
+  {
+   "id": "d2",
+   "prompt": "No guia sobre DuckDB, por que o DuckDB responde a consultas SQL sem servidor para instalar ou manter?",
+   "cue": "Pense em onde o motor do DuckDB vive.",
+   "points": [
+    "O DuckDB é um banco de dados em forma de biblioteca.",
+    "O DuckDB responde de dentro do programa que o chama."
+   ]
+  },
+  {
+   "id": "d3",
+   "prompt": "No guia sobre DuckDB e notebooks, por que uma célula de notebook dá erro quando roda antes da célula que cria a variável usada?",
+   "cue": "Pense em quem guarda as variáveis na memória.",
+   "points": [
+    "O kernel é o programa que executa as células e guarda as variáveis.",
+    "O kernel só conhece o que as células já rodadas criaram.",
+    "A memória do kernel segue a ordem dos cliques, não a ordem da página."
+   ]
+  },
+  {
+   "id": "d4",
+   "prompt": "No guia sobre DuckDB e Hugging Face, como o DuckDB consulta um dataset do Hugging Face que foi publicado em CSV?",
+   "cue": "Pense no endereço e no que o site gera sozinho.",
+   "points": [
+    "O Hugging Face gera uma cópia em Parquet e guarda a cópia ao lado.",
+    "O endereço hf:// liga o DuckDB ao Hugging Face.",
+    "O atalho @~parquet no endereço alcança a cópia em Parquet."
+   ]
+  },
+  {
+   "id": "d5",
+   "prompt": "No guia sobre DuckDB e Claude Code, por que o Claude roda uma consulta do DuckDB em vez de abrir um CSV grande?",
+   "cue": "Pense no limite de texto de cada conversa.",
+   "points": [
+    "O arquivo inteiro não cabe na janela de contexto do Claude.",
+    "O DuckDB lê o arquivo fora da conversa e devolve só o resumo."
+   ]
+  },
+  {
+   "id": "d6",
+   "prompt": "No guia sobre DuckDB, qual é a diferença entre o Parquet e o DuckDB, e por que os dois combinam?",
+   "cue": "Pense em quem guarda e em quem pergunta.",
+   "points": [
+    "O Parquet é um arquivo que guarda a tabela coluna por coluna.",
+    "O DuckDB é uma biblioteca que lê o arquivo e responde à consulta SQL.",
+    "Parquet e DuckDB não gastam trabalho com as colunas que a pergunta não usa."
+   ]
+  }
+ ],
+ "suplementos": [
+  {
+   "id": "s1",
+   "prompt": "No guia sobre suplementos, por que tanta gente toma vários suplementos sem saber se precisa?",
+   "cue": "O que chega antes do médico?",
+   "points": [
+    "Anúncios e redes sociais chegam antes do médico.",
+    "76% tomam ao menos um suplemento; quase um quinto toma quatro ou mais por dia.",
+    "A maioria começa sem exame que mostre uma falta."
+   ]
+  },
+  {
+   "id": "s2",
+   "prompt": "No guia sobre suplementos, por que um produto natural em dose alta ainda pode lesar o fígado e os rins?",
+   "cue": "Pense em quem processa o excesso dentro do corpo.",
+   "points": [
+    "Um suplemento entra no corpo como qualquer substância; fígado e rins processam o excesso.",
+    "Vitamina A, glutamina, ashwagandha e extrato de chá verde são tóxicos em dose alta.",
+    "Nos EUA, 20% dos danos ao fígado vêm de misturas de suplementos."
+   ]
+  },
+  {
+   "id": "s3",
+   "prompt": "No guia sobre suplementos, como uma pilha de vários suplementos cria riscos que nenhum rótulo mostra sozinho?",
+   "cue": "São quatro jeitos; um deles envolve a vitamina B6.",
+   "points": [
+    "A mesma substância duas vezes (multivitamínico mais B6, dano nos nervos).",
+    "Disputa na absorção (ferro, cálcio e magnésio juntos).",
+    "Acúmulo das vitaminas lipossolúveis (A, D, E, K) e mistura com remédios de receita."
+   ]
+  },
+  {
+   "id": "s4",
+   "prompt": "No guia sobre suplementos, como os especialistas propõem decidir se vale tomar um suplemento?",
+   "cue": "Três condições: motivo, duração e quem fica sabendo.",
+   "points": [
+    "Quando corrige uma falta comprovada, por um tempo.",
+    "Comida primeiro, exame antes, e o médico sabendo de tudo.",
+    "Uma razão concreta para cada um; os especialistas não proíbem."
+   ]
+  },
+  {
+   "id": "s5",
+   "prompt": "No guia sobre suplementos, que pergunta o British Liver Trust pede que cada pessoa se faça antes de tomar um suplemento?",
+   "cue": "Benefícios e riscos.",
+   "points": [
+    "Se os benefícios potenciais superam os possíveis riscos."
+   ]
+  },
+  {
+   "id": "s6",
+   "prompt": "No guia sobre suplementos, o que aconteceu com Ginger Smith, e o que ela toma hoje?",
+   "cue": "Uma pedra, uma operação, uma rotina nova.",
+   "points": [
+    "Uma pedra no rim de dois a três centímetros, causada pelo coquetel de suplementos; operação e meses de recuperação.",
+    "Hoje toma um multivitamínico por dia."
+   ]
+  }
+ ]
+}
