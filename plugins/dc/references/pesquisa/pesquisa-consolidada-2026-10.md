@@ -130,7 +130,7 @@ Limites: são estudos pequenos, com universitários, em inglês ou hebraico, e n
 **Estado em 13 de outubro de 2026.**
 A Onda 1 foi dividida em duas partes.
 
-- **Onda 1A, feita:** a Biblioteca tem a aba "Revisar", com a coleção `reviews`. O desenho está em `claude/specs/2026-10-13-revisao-na-biblioteca-design.md`.
+- **Onda 1A, feita:** a Biblioteca tem a aba "Revisar", com a coleção `reviews`. O desenho está em uma especificação à parte.
 - **Onda 1B, a fazer:** o guia novo, com "O chão" e com a memória da posição de leitura.
 
 Uma descoberta mudou o item 2 desta lista.
@@ -154,10 +154,10 @@ Então o guia não grava no banco. As respostas ficam na Biblioteca, e o guia s�
 
 10. clear-read: regra de plano visual no lugar da Regra 7, voz ativa e tempo presente, e o lint.
 11. clear-listen: regras para dizer estrutura, tabela, gráfico e risco em voz alta.
-12. Skill irmã para visuais. ⚠️ Decisão do Dennis: criar a skill ou manter as regras no projeto.
+12. Skill irmã para visuais. ⚠️ Decisão pendente: criar a skill ou manter as regras no projeto.
 13. Instruções do projeto sem os 6 conflitos internos.
 
-### Testes com o Dennis
+### Testes com o leitor
 
 - Interativo contra visual estático, com conceitos sorteados dentro do mesmo guia e recordação em 7 dias.
 - Fundo completo contra fundo mínimo, em 8 guias de temas pareados.
@@ -220,6 +220,7 @@ Teto sugerido: 5 a 7 mini-lições por guia.
 
 Com 3 ou 4 "sim", o visual é fundamental.
 Com 1 ou 2, ele é reforço e só entra se for barato.
+
 Com zero, ele não entra.
 Exceção: todo risco de saúde ganha icon array com frequência natural.
 Orçamento por guia: 3 a 5 visuais fundamentais, no máximo 1 interativo de manipulação, zero decorativos.
@@ -315,9 +316,10 @@ Caixas de revisão: 1, 3, 7, 21 e 60 dias. Acertou, sobe uma caixa. Errou, volta
 
 Antes de publicar: lint, capturas a 390px no claro e no escuro, e o teste de ablação.
 No teste de ablação, três leitores frios recebem só o texto, só o roteiro de áudio ou só os visuais com legenda.
+
 Limiares de partida: texto 90%, áudio 80% das ideias principais, visuais 50%.
 Depois de publicar: recordação com pista em 1, 7 e 30 dias por conceito, confiança antes da resposta, e esforço percebido num toque.
-O leitor frio mede se a informação está no canal. Ele não mede se o Dennis vai absorvê-la.
+O leitor frio mede se a informação está no canal. Ele não mede se o leitor real vai absorvê-la.
 
 ## 9. Achados no caminho
 

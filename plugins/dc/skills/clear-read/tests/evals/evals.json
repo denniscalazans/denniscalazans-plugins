@@ -12,7 +12,7 @@
       "Each of the three sections can be read on its own by a cold reader: a reader who reads only section 3 can answer \"o que no-cache faz?\" from that section alone.",
       "The reply does not contain the two design questions (\"what does the reader already have that I can use?\", \"what am I leaving open?\") or any reasoning about them. The design stays in the scratchpad."
     ],
-    "failure_with_current_skill": "In at least one of three runs, the current skill produces a bare label at a block's first mention (\"o ETag\" or \"a cópia\" with no meaning restated in that block) or a backward reference to what already passed (\"como vimos na seção 1\", \"a etiqueta acima\"). Section 2 or 3 opens without the re-entry line, because Rule 6 states the principle (\"its first line says in one clause what it builds on\") with one English example and no literal template to fill, and the model treats it as a principle to honor rather than a line to produce. Phase B (lacos.md, section 5.2) saw the same rule execute without reasoning once the skill gave the literal string, and fail to execute with the full skill."
+    "failure_with_current_skill": "In at least one of three runs, the current skill produces a bare label at a block's first mention (\"o ETag\" or \"a cópia\" with no meaning restated in that block) or a backward reference to what already passed (\"como vimos na seção 1\", \"a etiqueta acima\"). Section 2 or 3 opens without the re-entry line, because Rule 6 states the principle (\"its first line says in one clause what it builds on\") with one English example and no literal template to fill, and the model treats it as a principle to honor rather than a line to produce. An earlier test of the skill without reasoning saw the same rule execute without reasoning once the skill gave the literal string, and fail to execute with the full skill."
   },
   {
     "id": "clear-read-change-3-golden-g2-section-stands-alone",
@@ -26,7 +26,7 @@
       "A cold reader who reads only this section can answer \"o que é estresse crônico?\" from the text.",
       "No backward pointer (\"como vimos\", \"na seção anterior\") replaces the restated meaning."
     ],
-    "failure_with_current_skill": "The current skill reproduces the point-first opening and the term with its meaning, but the re-entry line comes out as a paraphrase or is missing (\"Vimos que o estresse crônico...\", or a section that starts straight on the three sides), because Rule 6 gives one English example and no Portuguese template. The golden set G2 (inventario-das-regras.md, section G2) asks for the exact published form \"Você já sabe que... Agora...\"."
+    "failure_with_current_skill": "The current skill reproduces the point-first opening and the term with its meaning, but the re-entry line comes out as a paraphrase or is missing (\"Vimos que o estresse crônico...\", or a section that starts straight on the three sides), because Rule 6 gives one English example and no Portuguese template. The golden set G2 (references/golden-set.md) asks for the exact published form \"Você já sabe que... Agora...\"."
   },
   {
     "id": "clear-read-change-4-cold-writer-no-tools-http-cache",
@@ -40,7 +40,7 @@
       "Every fixed label is in Portuguese (\"Ponto-chave:\", \"O que funciona:\", \"Onde a analogia falha:\", \"Como ler:\"), none in English, even though the language pack file was not available to read.",
       "The method of the skill still shows: meaning before the term before the acronym for ETag, section 2 opens with \"Você já sabe que X. Agora Y.\", and each section ends with a \"Ponto-chave:\" line."
     ],
-    "failure_with_current_skill": "Phase 1 says \"Do not skip this phase\" and \"Do not rely on memory\", and Phase 2 says to keep the design \"in your scratchpad\", but neither says what to do when the tool or the scratchpad does not exist. In the Phase B cold-reader test (lacos.md, sections 2.2 and 5.2) a writer with the full skill and no tools either stalled on the research step or skipped it in silence, quoting the browser default and the ETag mechanics as checked facts with no \"(não verificado)\" mark and no source line, and ran no replacement for the lint, so blocks of 5 sentences and a backward pointer (\"do bloco anterior\") got through. The skill-minima file of the investigation gave the four substitutes and the by-eye checks, and the same writer then marked what it had not verified and kept the blocks within the limits."
+    "failure_with_current_skill": "Phase 1 says \"Do not skip this phase\" and \"Do not rely on memory\", and Phase 2 says to keep the design \"in your scratchpad\", but neither says what to do when the tool or the scratchpad does not exist. In an earlier cold-reader test a writer with the full skill and no tools either stalled on the research step or skipped it in silence, quoting the browser default and the ETag mechanics as checked facts with no \"(não verificado)\" mark and no source line, and ran no replacement for the lint, so blocks of 5 sentences and a backward pointer (\"do bloco anterior\") got through. A minimal version of the skill gave the four substitutes and the by-eye checks, and the same writer then marked what it had not verified and kept the blocks within the limits."
   },
   {
     "id": "clear-read-change-13-narrator-no-skeleton-announcements",
@@ -56,7 +56,7 @@
       "Every label is in Portuguese (\"Ponto-chave:\", \"Onde a analogia falha:\"), none in English.",
       "The reply does not mention the narrator paragraph, the meta-analysis, or any reasoning about how it chose to structure the text. The design stays in the scratchpad."
     ],
-    "failure_with_current_skill": "Expected from the skill text; this eval has not been run here. The current section \"Who you are writing for\" describes only the reader and says nothing about who writes. Rule 1 asks for headings, numbered steps and \"Key point:\" lines, and Phase 2 asks for a narrative arc, so the model has structure as a value and no instruction to keep the structure under the prose. A prompt that hands it four causes comes out with the skeleton announced: an opening such as \"Existem quatro causas principais\", causes introduced as \"Primeira:\", \"Em segundo lugar\", and transitions such as \"Vamos agora ao último motivo\". Finding 4 of the conversation with Dennis (the basis of change 13 in proposta.md) named this pattern: the text reads like an outline being read aloud, not like someone telling a friend what happened. The limit is also missing: without the Mar, Li, Nguyen and Ta (2021) finding that narrative helps memory more than comprehension, a run that does adopt a story voice may tell the environment-variable failure as an anecdote and skip the step by step the prompt asks for."
+    "failure_with_current_skill": "Expected from the skill text; this eval has not been run here. The current section \"Who you are writing for\" describes only the reader and says nothing about who writes. Rule 1 asks for headings, numbered steps and \"Key point:\" lines, and Phase 2 asks for a narrative arc, so the model has structure as a value and no instruction to keep the structure under the prose. A prompt that hands it four causes comes out with the skeleton announced: an opening such as \"Existem quatro causas principais\", causes introduced as \"Primeira:\", \"Em segundo lugar\", and transitions such as \"Vamos agora ao último motivo\". An earlier review of the skill's output named this pattern: the text reads like an outline being read aloud, not like someone telling a friend what happened. The limit is also missing: without the Mar, Li, Nguyen and Ta (2021) finding that narrative helps memory more than comprehension, a run that does adopt a story voice may tell the environment-variable failure as an anecdote and skip the step by step the prompt asks for."
   },
   {
     "id": "clear-read-realistic-http-cache-with-signal",
@@ -173,6 +173,6 @@
       "The field of the reader (IT) does not shorten the scaffold",
       "The rest of the text goes to the mechanism (validation by ETag and max-age) step by step"
     ],
-    "failure_with_current_skill": "Before change 22 the skill treated any IT topic as inside the reader's field and cut the basics; the owner's blind reading of 1 November 2026 found a DuckDB text that \"assumed I knew everything\"."
+    "failure_with_current_skill": "Before change 22 the skill treated any IT topic as inside the reader's field and cut the basics; a blind reading in November 2026 found a DuckDB text that \"assumed I knew everything\"."
   }
 ]

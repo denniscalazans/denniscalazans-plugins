@@ -1061,14 +1061,14 @@ class CommandLine(unittest.TestCase):
 class SkillBodySize(unittest.TestCase):
     """The body of SKILL.md stays short enough to survive a context compaction.
 
-    The November 2026 investigation (guide, section 7.1) puts the part of a skill that
+    Anthropic's skill guidance puts the part of a skill that
     survives a compaction at about 5,000 tokens, about 3,600 words. The clear-read body was
-    5,129 words before the Phase E changes and 6,509 after them. Change 18b moved the lint
+    5,129 words before the November 2026 changes and 6,509 after them. Change 18b moved the lint
     lists to references/lint.md and shortened the closing section, to about 6,090 words;
     changes 17 and 18 (attribution examples, the sixth label, coherence fixes) brought it
-    to about 6,250, and changes 20 and 21 (Dennis's addendum 2: visuals and the Project's
-    rules that are method, approved on 2 November 2026) add about 800 more. The ceiling is
-    7,100. Getting near 3,600 needs a decision by Dennis about what else
+    to about 6,250, and changes 20 and 21 (visuals and ten page habits that are method,
+    added on 2 November 2026) add about 800 more. The ceiling is
+    7,100. Getting near 3,600 needs a decision by the maintainer about what else
     leaves the body: candidates are the per-medium spacing list in Rule 1 (about 150
     words), the phone and HTML details of Rule 7 (about 120), and the pack paragraph of
     Rule 10 (about 110)."""

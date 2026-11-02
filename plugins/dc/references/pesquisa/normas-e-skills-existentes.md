@@ -1,11 +1,7 @@
-# Adendo 1: normas de linguagem simples e skills que já existem
+# Normas de linguagem clara e skills que já existem
 
-ESCRITO: 2026-11-01 15:30 (Berlim), pelo Claude, numa conversa com o Dennis depois do handoff.
-PARA: o agente que executa o guia de investigação.
-
-Quando incorporar: na Fase C, no fim da fase em andamento.
-O que muda: a seção 7.4 do guia ganha dois itens, e a seção 7.3 ganha uma pergunta.
-O inventário da Fase A não muda.
+Levantamento de 1 de novembro de 2026.
+Ele cobre as normas de linguagem simples, as famílias de linguagem clara, e as skills públicas parecidas com a clear-read e a clear-listen.
 
 ## 1. Skills de ASD-STE100 já existem em catálogos públicos
 

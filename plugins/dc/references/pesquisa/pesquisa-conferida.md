@@ -1,8 +1,7 @@
-# Pesquisa conferida: fala, narrativa, diálogo e as skills que já existem
+# Pesquisa conferida: os estudos por trás da clear-read e da clear-listen, lidos na fonte
 
-VERIFICADO: 2026-11-01 (Berlim), no Claude Code.
-FASE: C, do guia `guia-de-investigacao.md` (seção 7).
-STATUS: entregue; a seção 9 traz a rodada de fechamento.
+Conferida em 1 de novembro de 2026. Cada estudo citado pelas duas skills foi lido na fonte, com o veredito, a citação correta e o limite.
+O resumo por regra está no mapa de evidência de cada skill (`references/research-basis.md`); este arquivo guarda o detalhe.
 
 Legenda dos vereditos: ✅ confirmado na fonte · 🟡 precisa de contexto · ❌ incorreto · 🕒 desatualizado · ⚪ não verificável nesta rodada.
 
@@ -151,7 +150,7 @@ Ponto-chave: a direção de quase tudo se mantém, mas 24 afirmações precisam 
 ### 4.1 A contagem antes do conteúdo (pergunta 1)
 
 Nenhum estudo mede o custo de uma contagem nua ("são cinco pontos") antes do conteúdo, em escuta.
-A preocupação do Dennis fica como não testada, não refutada.
+A preocupação levantada fica como não testada, não refutada.
 
 O que existe aponta para "ajuda", com uma condição.
 Nas prévias que funcionaram, a frase entregava os nomes dos tópicos ou "os três passos principais".
@@ -324,7 +323,7 @@ As 12 perguntas do perfil e a escada de degradação cobrem todos, e o que falta
 
 ### 5.5 A atribuição no estilo da BBC
 
-O Dennis pediu, em 1 de novembro, que a atribuição (quem disse, de onde vem) entre no fio do texto, como a BBC faz.
+A revisão de 1 de novembro pediu que a atribuição (quem disse, de onde vem) entre no fio do texto, como a BBC faz.
 Não como uma nota depois da frase ("o pesquisador é Fulano"), e nunca vaga ("um pesquisador mostrou", "segundo a pesquisa").
 A BBC tem isso escrito em dois lugares, e os dois foram lidos na fonte.
 
