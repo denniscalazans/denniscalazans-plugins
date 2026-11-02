@@ -164,3 +164,24 @@ Ponto-chave: a direção é a favor da skill nova, com uma pessoa, dois pares e 
 - Outras pessoas podem responder pela cópia pública; as respostas delas continuam cegas, porque a página não mostra o mapa.
 - Uma segunda rodada com a ordem invertida (a nova primeiro) tiraria o viés de ordem, e mediria as mudanças 20 a 22.
 - O merge do PR #81 no main é a decisão do Dennis, com esta conclusão na mão.
+
+## 9. O experimento de áudio
+
+O Dennis pediu um experimento de áudio antes do merge, em 2 de novembro, com o limite de uso quase no fim.
+Então ele é mínimo: um guia (suplementos), um roteiro de resumo de 3 minutos por versão da clear-listen, uma voz, uma tomada por áudio.
+
+Dois agentes escreveram os roteiros a partir da mesma ficha de fatos, sem web.
+Um usou a clear-listen do branch da investigação (a antiga) e o outro a do branch filho (a nova).
+Os dois zeraram o lint da própria skill: 514 e 516 palavras faladas.
+A renderização para o Eleven v4 seguiu a tabela da seção 11.1 do playbook de áudio do Projeto, com o script `experimento/audio/render_v4.py`.
+
+Os arquivos estão em `experimento/audio/`, com nomes cegos A e B: o roteiro neutro e o texto renderizado de cada um.
+O mapa está selado no banco da página privada, documento `meta/mapa-audio`.
+Os áudios vivem na ElevenLabs, cerca de 3 mil créditos cada.
+
+O Dennis ouve sem saber qual é qual e responde: esforço de 1 a 5, quantas vezes voltou, e três perguntas de recordação.
+As perguntas: a ideia central, os quatro jeitos da pilha, e a pergunta antes de comprar.
+A seção 7 da clear-listen ganha o veredito quando as respostas chegarem.
+
+Ponto-chave: dois áudios de 3 minutos, cegos, do mesmo guia; o resto do experimento de áudio fica para uma segunda rodada.
+
