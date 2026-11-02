@@ -106,6 +106,43 @@ A próxima sessão começa pela aprovação do plano.
 Depois, implementa na ordem da seção 4 de `proposta.md`, com os testes primeiro.
 A Fase D (seção 8 do guia) vira um artefato interativo, e a seção 3 de `decisoes-do-dennis.md` diz como.
 
+## 3.5 Estado em 1 de novembro de 2026, noite: Fase E implementada
+
+As 15 mudanças aprovadas, mais as mudanças 17 e 18 e dois commits de tamanho, estão no branch `investigacao-2026-11-fase-e`.
+A seção 6 de `proposta.md` lista o que entrou e os desvios.
+Os dois corpos de skill têm agora um teste de tamanho com a meta de 3.600 palavras registrada e o teto real.
+
+Os testes rodam assim, da raiz do repo: `python3 plugins/dc/skills/clear-read/scripts/test_lint_clear_read.py`, `python3 plugins/dc/skills/clear-listen/scripts/test_lint_audio_script.py`, e `node plugins/dc/skills/clear-read/scripts/check_mermaid.cjs --self-test`.
+Os evals rodam com `claude plugin eval plugins/dc --runs 1 --case "<id>"`, e custam créditos do Dennis.
+
+A próxima sessão começa pela revisão do PR do branch filho e pela Fase D: a página do experimento, com 2 pares de guia primeiro.
+A seção 3 de `decisoes-do-dennis.md` diz como a página coleta respostas.
+
+## 3.6 Estado em 1 de novembro de 2026, noite: Fase D, parte 1
+
+As medidas automáticas e o leitor frio artificial estão em `experimento.md` e na pasta `experimento/`.
+Os quatro textos têm nomes cegos, e o mapa está selado no banco da página privada e fora do repo.
+A leitura cega está aberta em duas páginas, listadas na seção 4 de `experimento.md`.
+
+O Dennis respondeu em 1 de novembro e mandou abrir o mapa em 2 de novembro; a seção 7 de `experimento.md` tem a conclusão.
+O merge do PR #81 no main é a decisão dele, com essa conclusão na mão.
+
+## 3.7 Estado em 2 de novembro de 2026: adendo 2 incorporado
+
+O adendo 2 (`adendos/2026-11-01-visuais-e-regras-do-projeto.md`) entrou por merge nos dois branches.
+A proposta ganhou a mudança 20 (Regra 7, nunca desenhar uma sequência) e a mudança 21 (as regras do Projeto que são método).
+O Dennis aprovou as duas em 2 de novembro, e elas estão feitas no branch filho, em 11 commits.
+A seção 7 da proposta dá o veredito das 14 regras, e a linha R7c do inventário mudou para "muda".
+
+## 3.8 Estado em 2 de novembro de 2026: experimento fechado, merges à espera do "junta"
+
+A seção 7 de `experimento.md` tem a conclusão em cinco frases; a seção 9 tem o experimento de áudio mínimo.
+Os dois PRs esperam a palavra do Dennis para o merge: o #82 no branch da investigação e depois o #81 no main.
+
+A próxima sessão começa pela segunda rodada do experimento, listada na seção 8 de `experimento.md`.
+Ela tem a ordem invertida, as mudanças 20 a 22 medidas, e o áudio com esforço e recordação.
+Antes disso, atualizar o plugin instalado para a versão nova das skills.
+
 ## 4. O que já está decidido
 
 - A clear-listen entra no plugin `dc`, ao lado da clear-read. O Dennis confirmou em 1 de novembro, e ela já está no `plugin.json`, no README e no CLAUDE.md.

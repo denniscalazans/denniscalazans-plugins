@@ -269,6 +269,8 @@ Fail: a warning is missing (the pack lost a word list), or a clean sample from T
 
 Then the reading check: ask the skill for a short report in each language. Pass if the Portuguese text uses "você", dates with the month in words and the decimal comma, and keeps API, deploy and cache in English. Pass if the English text uses "must" only for requirements, "you" for the reader, and the decimal point.
 
+Then the standard check: both packs open with the international standard, ISO 24495-1:2023, and its four principles, and name the national law or guidelines as applications of it. How to check fast: `grep -c "24495" references/lang-pt-br.md references/lang-en.md` prints 1 or more for each pack.
+
 ## Test 18: The golden set (do not change this)
 
 What it stresses: a rewrite of the skill must not erase what already works.
@@ -284,9 +286,64 @@ Fail: one mark is missing. This is a blocker, not a warning, under rule 4 of the
 
 Added on 1 November 2026, by the investigation's Phase A. The clear-listen has no golden passage yet, because no audio script is in the repo.
 
-## How to read a failure, continued
+## Test 19: Depth calibrated to what the reader knows about the topic
 
-- Test 14 gaps: the idea lives only in a visual or a table. Add one prose sentence; do not remove the visual.
-- Test 15 slips: check the two-tier rule in Rule 6, and the lint's `backward-reference` and `bare-label` word lists in `LANG_PACKS`.
-- Test 16 slips: check the analogy paragraph in Rule 5, and the `analogy` and `analogy_limit` lists in `LANG_PACKS`.
-- Test 17 slips: check the language pack doc in `references/` and its mirror in `LANG_PACKS` (`known_acronyms`, `hidden_verb`, `intro_words`, `clause_openers`).
+What it stresses: Rule 8, the full scaffold by default and the cut only on an explicit signal, and the two rules of Rule 9.
+
+How to run: give the skill the same request shape three times, "explique como X prova que Y", in Portuguese.
+
+1. An IT topic with no signal about the reader's knowledge: "explique como um cache HTTP decide que a cópia ainda vale".
+2. The same IT topic with the signal: "já sei o que é um cache HTTP; explique como ele decide que a cópia ainda vale".
+3. A health topic: "explique como um medicamento genérico prova que é equivalente ao de marca".
+
+Pass: runs 1 and 3 open with the section "O que saber antes de ler", which names the key terms and the background before the first rule. Run 2 has no such section: the basics take one sentence or one collapsed block, and the text moves on. In all three, the text speaks to the reader as "você", and no sentence is a curiosity that teaches nothing about a main idea.
+
+Fail: run 1 skips the section because the topic is IT; run 2 spends a section on what a cache is; run 3 jumps to "bioequivalência" with no section before it; a text avoids "você" and speaks of "o usuário".
+
+How to check fast: `grep -c "O que saber antes de ler"` prints 1 on runs 1 and 3 and 0 on run 2. The "você" check and the curiosity check need a human read.
+
+Also check attribution (Rule 5, change 17): every study or researcher the text names comes with role, name and place woven into one sentence, never as a note after the claim ("O estudo é de...") and never bare ("pesquisas mostram"). `grep -c "O estudo é de\|O pesquisador é"` prints 0.
+
+Added on 1 November 2026, by change 14 of the investigation (`proposta.md`, section 2, item 14); the attribution check by change 17; the default flipped to the full scaffold on 2 November 2026 by change 22, after the owner's blind reading of the DuckDB texts.
+
+## Test 20: The position marker in a long text
+
+What it stresses: Rule 1, the "Conceito N de M" marker that opens each concept section when the text has 4 or more main concepts.
+
+How to run: ask for an explanation with five named concepts in Portuguese, for example "explique os cinco pilares do HTTP: método, cabeçalho, corpo, status e cache".
+
+Pass: each concept section opens with "Conceito N de 5" on its first line, the numbers are consistent, and a text with 3 concepts or fewer has no marker.
+
+Fail: no marker; a marker in a short text; a marker used as a promise ("nos próximos conceitos veremos").
+
+How to check fast: `grep -c "Conceito [0-9] de 5"` prints 5.
+
+Added on 2 November 2026, by change 21 of the investigation (item a).
+
+## Test 21: The closing recall
+
+What it stresses: Rule 6, the closing line "Sem voltar: quais foram as ideias principais?" with the answers collapsed.
+
+How to run: any explain-from-scratch request in Portuguese with three or more main concepts.
+
+Pass: the last block before the sources is the closing line, the answers follow in a collapsed block (`<details>` in HTML, or a block the reader can skip in Markdown), and there is no section-by-section quiz before it.
+
+Fail: no closing line; the answers visible before the reader tries; a quiz after every section instead.
+
+How to check fast: `grep -c "Sem voltar"` prints 1.
+
+Added on 2 November 2026, by change 21 of the investigation (item e).
+
+## Test 22: The general rule before the exceptions, and branches as a table
+
+What it stresses: Rule 1 (the general rule first) and Rule 11 (three or more "if X, then Y" branches become a table in any text).
+
+How to run: ask in Portuguese how the HTTP cache decides what to do when the copy is fresh, when it is stale with an ETag, when it is stale without one, and when the server says no-store.
+
+Pass: the text states the general rule first (the cache serves a fresh copy), then the exceptions; the four branches appear as a two-column table "Se ... então ..." and not as four buried clauses.
+
+Fail: the exceptions come first; the branches are prose sentences with "se" in the middle; the table has one row per word instead of one per branch.
+
+How to check fast: `grep -c "^| Se "` prints 4 (or 3 or more).
+
+Added on 2 November 2026, by change 21 of the investigation (item h).

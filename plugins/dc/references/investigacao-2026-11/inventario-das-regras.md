@@ -142,7 +142,7 @@ Como ler as colunas.
 |---|---|---|---|---|---|---|---|
 | R7a: o teste das 4 perguntas | Contar os "sim" e decidir: fundamental, reforço ou nada | Schroeder 2018, construir vence estudar (alta). Os limiares 3-4, 1-2, 0 são heurística (baixa) | T7, T8 | Sim, na Fase 2. É a única regra já escrita como processo | Página. Texto no chat com Mermaid. Áudio: Regra 17 da clear-listen. Conversa: atrapalha | Neutra | Mantém com teste. Os números são padrões a ajustar, não constantes |
 | R7b: "How to read" mais uma frase de conclusão | Toda figura ganha as duas linhas | Schroeder 2018; atenção dividida (média) | Lint: problema `visual-without-how-to-read`, aviso sem conclusão | Sim | Página, texto | A conclusão é entrega. "How to read" sem conclusão é promessa | Mantém com teste. Golden set, trecho G5 |
-| R7c: a forma pelo conteúdo | Fluxo vira diagrama; números viram tabela; datas viram lista | Prática; Berney e Bétrancourt 2016 para animação (média) | `check_mermaid.cjs`, em parte | Sim | Página | Neutra | Mantém |
+| R7c: a forma pelo conteúdo | Fluxo vira diagrama; números viram tabela; datas viram lista | Prática; Berney e Bétrancourt 2016 para animação (média). Adendo 2: o Projeto derrubou o Mermaid para sequências em 24 de setembro de 2026 | `check_mermaid.cjs`, em parte | Sim | Página | Promessa: manda desenhar uma sequência, e o desenho repete a prosa | Muda (adendo 2, mudança 20 da proposta): nunca desenhar uma sequência, SVG inline para grafos, tabela de forma por conteúdo |
 | R7d: construir para o celular | Rótulo com 25 caracteres ou menos, 2 nós lado a lado | Prática, tela de 390 px (baixa) | `check_mermaid.cjs` e seu `--self-test` | Sim | Página | Neutra | Mantém com teste. Documentar que o self-test precisa de `npm install mermaid@11` |
 | R7e: três limites | Nada decorativo; 1 interativo por documento; icon array em todo risco de saúde | Sundararajan e Adesope 2020, direção confirmada e número não (média); Berney 2016; Garcia-Retamero e Cokely 2017 (alta para o icon array) | `lint_guide.py` do Projeto, não da skill | Sim | Página | Entrega | Mantém. O icon array tem a prova mais forte da regra |
 
@@ -603,3 +603,12 @@ As decisões abaixo vão aparecer, e a fase certa pergunta uma por vez.
 - Para o golden set da clear-listen, o Dennis exporta um roteiro neutro já gerado. Serve o de suplementos, de 3 minutos e meio, ou o de burnout, de 12 minutos. Sem ele, a clear-listen não tem trecho dourado.
 
 Ponto-chave: a Fase B pode começar agora, e a primeira pergunta ao Dennis só chega na Fase D ou E.
+
+## 10. Adendo 2: a leitura no sentido Projeto para skill
+
+O adendo `adendos/2026-11-01-visuais-e-regras-do-projeto.md` corrigiu uma direção que o inventário não percorreu.
+Ele lista 14 regras das instruções do Projeto e pergunta se cada uma está na skill.
+Os vereditos estão na seção 7 de `proposta.md`: 10 entram na skill como método e 4 já existem.
+A linha R7c da seção 3.5 mudou de "mantém" para "muda" por causa dele.
+
+Ponto-chave: o inventário tinha só a direção skill para prova; o adendo 2 acrescentou a direção Projeto para skill.

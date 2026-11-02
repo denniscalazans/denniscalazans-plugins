@@ -21,7 +21,7 @@ Os testes antigos passam antes e depois de cada commit.
 São 98 testes do lint da clear-read, o self-test do Mermaid, e os 5 trechos do golden set.
 Nenhuma regra se apaga; o que cai vira `retired` com nota.
 
-Ponto-chave: 17 mudanças, em três prioridades, cada uma com um teste que falha hoje.
+Ponto-chave: 19 mudanças planejadas e 2 à espera de aprovação, cada uma com um teste que falha hoje; a seção 6 diz o que entrou.
 
 ## 1. As prioridades
 
@@ -50,6 +50,9 @@ As prioridades são três, e cada uma diz quando a mudança entra.
 | 15 | Evals em `tests/evals/`, com e sem a skill | clear-read e clear-listen | P2 |
 | 16 | Regra 3 da clear-listen: a prévia que nomeia o tópico | clear-listen | P3, depois da Fase D |
 | 17 | Atribuição no fio, como a BBC: papel, nome e instituição na frase, nunca em nota solta | clear-read e clear-listen | P1 |
+| 20 | Regra 7: nunca desenhar uma sequência, SVG inline para grafos, a tabela de forma por conteúdo (o adendo 2 a chamou de mudança 18) | clear-read | P2, aprovada e feita |
+| 21 | As dez regras do Projeto que são método e não estão na skill (seção 7) | clear-read | P2, aprovada e feita |
+| 22 | Regra 8: andaime completo por padrão, inclusive em temas de TI; o corte do básico só com sinal explícito no pedido | clear-read | P1, pedida pelo Dennis na leitura cega e feita |
 
 Fora das skills, mas na proposta: os nomes das seções do Projeto (seção 3) e a correção das instruções sobre o Projeto rodar o lint.
 
@@ -343,6 +346,62 @@ Teste determinístico: um grep de "say who before" no arquivo da clear-listen e 
 
 **Evidência.** Fase C, seção 5.5: o guia de estilo da BBC News de 2003, seção "Attribution first". As Diretrizes Editoriais da BBC de 2025, itens 3.4.4 e 3.4.6. A decisão do Dennis em `decisoes-do-dennis.md`.
 
+### 20. Regra 7: nunca desenhar uma sequência (P2: aprovada em 2 de novembro)
+
+**De onde vem.** O adendo 2 (`adendos/2026-11-01-visuais-e-regras-do-projeto.md`), escrito depois da Fase E, que o chamou de mudança 18.
+O número 18 já estava em uso na implementação, então aqui ele é 20.
+
+**O que muda.** O parágrafo "Pick the form by the content" da Regra 7 sai, e entra o texto da seção 4 do adendo.
+Uma sequência de passos sem ramificação vira lista numerada ou um stepper em HTML, nunca diagrama, porque caixas em fila repetem a prosa.
+
+Um grafo de verdade vira SVG inline com os tokens de tema.
+O Mermaid fica só para um fluxo linear simples que precisa ficar em Markdown.
+Até 8 atores e suas ligações viram um mapa em SVG com a relação escrita na seta.
+Números viram gráfico em SVG (com a skill `dataviz`) ou tabela.
+
+Muitos atores com vários atributos viram tabela; um grupo grande mostra só os citados, até 8, mais "e outros N".
+Eventos datados viram linha do tempo em HTML, nunca diagrama.
+Todo diagrama precisa acrescentar uma relação que a prosa carrega mal; o que só repete a prosa é cortado.
+`references/html-patterns.md` ganha duas seções: o mapa de atores em SVG (regra pb-004 do playbook) e o stepper para uma sequência.
+
+**O teste que falha hoje.** O lint ganha o aviso `sequence-as-diagram`: um bloco Mermaid `flowchart` com arestas só em cadeia (A, B, C, sem ramo) avisa.
+Hoje um documento com um `flowchart TD` de 4 nós em fila passa calado; depois, avisa.
+É aviso e não problema, porque o Markdown puro ainda aceita o fluxo linear.
+
+**Evidência.** Berney e Bétrancourt 2016 para a forma por conteúdo, e a regra pb-004 do playbook da Biblioteca. O teste do Projeto de 24 de setembro de 2026 mostrou o app do celular cortando o rótulo de um nó Mermaid. Certeza alta para "nunca sequência em diagrama", média para a preferência por SVG.
+
+### 21. As regras do Projeto que são método (P2: aprovada em 2 de novembro)
+
+**De onde vem.** A seção 5 do adendo 2 lista 14 regras das instruções do Projeto que a skill não tem, ou tem só em parte.
+A seção 7 deste arquivo dá o veredito de cada uma.
+Dez entram na skill; esta mudança as implementa, uma por commit, depois que o Dennis aprovar.
+
+**O que muda.** As dez entradas da seção 7 marcadas "entra".
+Cada uma vira uma frase ou um template literal na regra que a seção 7 nomeia, com o teste que a mesma seção dá.
+
+**O teste que falha hoje.** Um por item, na seção 7.
+
+**Evidência.** As fontes nomeadas na seção 7, todas já conferidas na Fase C ou na pesquisa consolidada do Projeto.
+
+### 22. Regra 8: andaime completo por padrão (P1: pedida em 2 de novembro)
+
+**De onde vem.** A leitura cega do Dennis, em 1 de novembro.
+Um dos textos de DuckDB "assumiu que eu sei tudo".
+Ele disse que quer usar a clear-read para aprender sobre tudo, inclusive temas de TI que não domina.
+
+**O que muda.** A Regra 8 deixa de usar a área do leitor como sinal do que ele sabe.
+O padrão vira o andaime completo, com a seção "O que saber antes de ler", em qualquer tema.
+
+O básico só encolhe para uma frase ou um bloco colapsado com um sinal explícito no pedido.
+Exemplos de sinal: "já sei o que é um cache HTTP", "uso DuckDB todo dia".
+Um nome de área sozinho ("é para um dev") não é sinal.
+
+**O teste que falha hoje.** O Test 19 de `tests.md` troca a rodada 1.
+O tema de TI sem sinal passa a ter a seção, e uma rodada nova com o sinal não tem.
+O eval do cache HTTP ganhou o sinal no pedido, e um eval novo cobre o padrão sem sinal.
+
+**Evidência.** A própria leitura cega (`experimento.md`, seção 7). Kalyuga 2003 continua valendo para quem declara que sabe o básico, e o bloco colapsado é o meio-termo.
+
 Ponto-chave: toda mudança tem um teste que falha hoje, e a única sem teste pronto é a 16, que espera o experimento.
 
 ## 3. Fora das skills: o Projeto
@@ -380,3 +439,51 @@ Ponto-chave: testes primeiro, regras P1 (antes do experimento) depois, e a conve
 - Se a Regra 9 (tom) mantém "sem personalidade" apesar de Ginns 2013, ou abre para falar direto com o leitor.
 
 Ponto-chave: o plano tem 16 itens, e a decisão do Dennis é por item, não por linha.
+
+## 6. O que a implementação entregou, em 1 de novembro
+
+As 15 mudanças aprovadas estão no branch `investigacao-2026-11-fase-e`, um commit por mudança, mais quatro commits que a implementação pediu.
+Dois fluxos rodaram em paralelo, um por skill, e um verificador independente conferiu cada commit: o teste falha antes, passa depois, e nada foi apagado.
+Dois leitores frios leram cada skill inteira no fim e apontaram problemas, que viraram a mudança 18.
+
+| Mudança | O que entrou de fato | Desvio do plano |
+|---|---|---|
+| 1 a 15 | Como a seção 2 descreve, com 11 testes a mais na clear-read e 46 na clear-listen | A mudança 2 ganhou o segundo aviso de lint (`authority-without-name`) |
+| 6b (nova) | Exemplos, Regras 16 a 21, os cinco fatos sobre a escuta e as seis regras de intents saíram do corpo da clear-listen para `references/` | A meta de 3.600 palavras não foi atingida: o corpo ficou em 4.798 palavras, vindo de 5.698 |
+| 17 (nova) | Atribuição no fio, estilo BBC, nas duas skills | Nenhum |
+| 18 (nova) | As correções dos leitores frios: sexto rótulo fixo ("O que saber antes de ler"), frases longas, contradições entre seções novas e antigas | Nenhum |
+| 18b (nova) | As listas do lint da clear-read foram para `references/lint.md`, e o corpo ganhou um teste de tamanho | O corpo da clear-read ficou em 6.272 palavras, vindo de 5.129, porque as 15 mudanças acrescentaram texto |
+| 20 e 21 | Feitas em 2 de novembro, em 11 commits: a Regra 7 nova com o aviso `sequence-as-diagram` e as duas seções de `html-patterns.md`; os dez itens da seção 7, com três avisos de lint novos (`double-negative`, `empty-word`), três testes em `tests.md` e quatro evals | O corpo da clear-read foi a 7.022 palavras; o teto do teste subiu para 7.100, com a meta de 3.600 registrada |
+| 15 | Fonte dos evals dentro da skill, como o Dennis decidiu | A ferramenta `claude plugin eval` recusa evals dentro de `skills/`. As cópias que ela lê ficam em `plugins/dc/evals/`, geradas por script. O `.gitignore` mudou para deixar as duas pastas entrarem |
+
+O que fica para o Dennis decidir depois do PR:
+
+- O que mais sai do corpo das skills para chegar perto de 3.600 palavras. Os candidatos estão nos comentários dos testes de tamanho (`SkillBodySize`) das duas suítes.
+- Se a Regra 3 da clear-listen muda (mudança 16), depois do experimento.
+
+Ponto-chave: 19 commits; a skill de áudio ficou menor, a de texto ficou maior, e a meta de tamanho está registrada como pendente.
+
+## 7. As 14 regras do Projeto, com veredito
+
+A seção 5 do adendo 2 pede um veredito por regra: entra na skill (método), fica no Projeto (produto), ou já existe.
+A régua é a da seção 14 das instruções do Projeto.
+Método serve a qualquer leitor cansado em qualquer texto; produto é a Biblioteca, a revisão espaçada e os selos.
+
+| Regra do Projeto | Veredito | Onde entra, e o teste |
+|---|---|---|
+| Marcador de progresso no topo de cada conceito ("Conceito 2 de 4") | Entra, como opção para texto longo | Regra 1: em texto com 4 ou mais conceitos, cada seção de conceito abre com "Conceito N de M" na primeira linha. É posição, não anúncio de contagem, e a Fase D decide a contagem antes de lista, não isto. Teste em `tests.md`: um pedido de 5 conceitos sai com os marcadores |
+| A ideia central em palavras na primeira frase da seção ("A ideia central aqui é") | Entra, como template literal | Regra 1 já pede que a seção abra pelo ponto; ganha a forma literal "A ideia central aqui é: ..." nas duas línguas, como a mudança 3 fez com a reentrada. O golden set G2 já a usa. Teste: grep no eval das três partes |
+| Bloco "Mito corrigido" com fonte | Entra | Regra 3 ganha o bloco literal: "Muita gente acha que X. Isso não confere. Na verdade, Y. Fonte: Z." A Fase 1, item 5, já manda anotar os erros comuns. Evidência: Muller e Sharma 2007 (dar voz ao erro e refutar). Teste: eval com um tema que tem um mito conhecido |
+| Pré-perguntas no começo, respondidas no corpo, repetidas no quiz | Entra em parte | As pré-perguntas e a resposta no corpo são método (Regra 6; a clear-listen já as tem). O quiz repetido é produto da Biblioteca e fica no Projeto. Evidência: Decisão 1 da pesquisa consolidada. Teste: eval, o texto abre com 2 ou 3 perguntas e cada uma tem resposta marcada no corpo |
+| "Recapitule de cabeça" no fim: recordação do texto inteiro | Entra | Regra 6 ganha o fecho: "Sem voltar: quais foram as ideias principais?" seguido das respostas num bloco colapsado. Evidência: Stern e Halamish 2023 (texto inteiro venceu por seção). Teste: grep da frase no eval |
+| Duas camadas sempre visíveis: o que a fonte diz e o que foi acrescentado | Entra, no modo reescrever | A seção "Two modes" ganha a regra: o que não vem da fonte leva a marca "(acrescentado)" ou vai para a seção "O que o artigo não diz". Para HTML já existe em `html-patterns.md` seção 8. Teste: eval de reescrita com um fato de fora |
+| Toda ideia carregada pelo texto, nenhuma só por visual | Já existe | Regra 7, "the text still carries every idea". O Test 14 de `tests.md` ganha uma linha que confere isso com o leitor frio só do texto |
+| Rótulo com conteúdo, nunca código nu | Já existe | Regra 6, e o lint `bare-label` |
+| Negrito como trilha: só a linha mais importante de cada bloco | Já existe | Regra 10 |
+| Toda analogia com "Onde a analogia falha" | Já existe | Regra 5, e o lint `analogy-without-limit` |
+| Pouca negação: dizer o que é, não o que não é | Entra | Regra 2 ganha a frase: "diga o que é; uma negação só quando o leitor traz a crença errada". Evidência: Lei 15.263 e as diretrizes de linguagem simples. Teste: aviso de lint `double-negative` para "não ... nenhum", "não deixe de" |
+| A ideia principal antes das exceções; várias ramificações viram tabela | Entra | Regra 1 ganha "a regra geral antes das exceções"; a Regra 11 generaliza: 3 ou mais ramos "se X, então Y" viram tabela em qualquer texto, não só em procedimento. Teste em `tests.md` |
+| Cortar metaconceitos vazios ("nível", "abordagem") e avaliativos vazios ("crucial", "robusto") | Entra | Regra 9 (sem enfeite) ganha a lista; os pacotes de língua ganham as palavras; o lint ganha o aviso `empty-word`. Teste unitário no lint |
+| Explicar o que o artigo deixa implícito: ironia, sarcasmo, tom | Entra, no modo reescrever | A seção "Two modes" ganha: "o que a fonte diz pelo tom, o texto diz em palavras". Teste: eval de reescrita com uma frase irônica |
+
+Ponto-chave: dez regras entram na skill e quatro já existem; nenhuma fica só no Projeto, porque a Biblioteca e os selos não estavam na lista.

@@ -247,6 +247,49 @@ Put the script at the end of the body, after the sections, so they exist when it
 </script>
 ```
 
+## 11. An actor map as inline SVG (Rule 7)
+
+Up to about 8 actors and their links. The relation is written on the arrow, the colors come from the theme tokens, and the text wraps because each label is short. From the Project's playbook rule pb-004.
+
+```html
+<figure class="fig">
+<svg viewBox="0 0 340 170" role="img" aria-label="Quem controla quem">
+  <defs><marker id="seta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--muted)"/></marker></defs>
+  <rect x="10" y="20" width="120" height="44" rx="8" fill="var(--paper)" stroke="var(--line)"/>
+  <text x="70" y="47" text-anchor="middle" fill="var(--ink)" font-size="13">Fundo Alfa</text>
+  <rect x="210" y="20" width="120" height="44" rx="8" fill="var(--paper)" stroke="var(--line)"/>
+  <text x="270" y="47" text-anchor="middle" fill="var(--ink)" font-size="13">Castellum</text>
+  <path d="M130 42H208" stroke="var(--muted)" stroke-width="1.5" fill="none" marker-end="url(#seta)"/>
+  <text x="169" y="34" text-anchor="middle" fill="var(--muted)" font-size="11">dono de 12%</text>
+  <rect x="210" y="110" width="120" height="44" rx="8" fill="var(--paper)" stroke="var(--line)"/>
+  <text x="270" y="137" text-anchor="middle" fill="var(--ink)" font-size="13">Entra</text>
+  <path d="M270 64V108" stroke="var(--muted)" stroke-width="1.5" fill="none" marker-end="url(#seta)"/>
+  <text x="300" y="90" fill="var(--muted)" font-size="11">controla</text>
+</svg>
+<figcaption><strong>Como ler:</strong> cada seta sai de quem age e aponta para quem recebe; o texto na seta é a relação.<br>
+O Fundo Alfa manda na Castellum, e a Castellum manda na Entra.</figcaption>
+</figure>
+```
+
+Keep at most 8 boxes. A group with dozens of members shows only the ones the text names, plus one box "e outras N empresas".
+
+## 12. A stepper for a sequence (Rule 7)
+
+A sequence of steps with no branch never becomes a diagram. In HTML it is an ordered list styled as a stepper: the number is the position, the bold line is the goal, the plain line is the action.
+
+```html
+<ol class="stepper">
+  <li><strong>Para o servidor conhecer a sua chave</strong><br>Rode <code>ssh-copy-id usuario@servidor</code> e digite a senha uma última vez.</li>
+  <li><strong>Para conferir que a chave entrou</strong><br>Rode <code>ssh usuario@servidor</code>; ele entra sem pedir senha.</li>
+</ol>
+```
+
+```css
+.stepper { counter-reset: passo; list-style: none; padding: 0; }
+.stepper li { counter-increment: passo; position: relative; padding: 8px 0 8px 40px; border-left: 2px solid var(--line); }
+.stepper li::before { content: counter(passo); position: absolute; left: -14px; top: 8px; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: var(--paper); text-align: center; line-height: 26px; font-weight: 700; }
+```
+
 ## Checklist before you deliver an HTML page
 
 1. `python3 scripts/lint_clear_read.py page.html` prints `0 problems`.

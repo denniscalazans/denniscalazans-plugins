@@ -16,7 +16,7 @@ Ponto-chave: todas as perguntas estão respondidas, inclusive a aprovação do p
 
 | Pergunta | Resposta | O que muda |
 |---|---|---|
-| 8. Onde moram os evals | `tests/evals/` dentro de cada skill, por exemplo `plugins/dc/skills/clear-read/tests/evals/evals.json` | O `.gitignore` não muda. A Fase E escreve os evals nesse caminho e documenta como o `claude plugin eval` os acha |
+| 8. Onde moram os evals | `tests/evals/` dentro de cada skill, por exemplo `plugins/dc/skills/clear-read/tests/evals/evals.json` | A fonte dos evals ficou nesse caminho. A ferramenta `claude plugin eval` recusa evals dentro de `skills/`, então um script gera as cópias que ela lê em `plugins/dc/evals/`, e o `.gitignore` mudou para deixar as duas pastas entrarem |
 | Nova. O perfil Projeto tem Python e ffmpeg? | "Não sei. Pesquise." A pesquisa está na seção 2 | O perfil Projeto passa a ter Python e, com alta probabilidade, ffmpeg. A matriz da Fase B muda em três linhas, e `lacos.md` ganha uma errata |
 | 2. Terceira skill ou seção | Voz na clear-listen, texto fica na clear-read. O modo conversa vira a seção "Conversa por voz" no topo da clear-listen. O chat de texto continua com a clear-read, que só ganha a frase "papel antes do nome" | Confirma a recomendação da seção 6 de `lacos.md`. A renderização por motor da clear-listen precisa ir para `references/` para abrir espaço |
 | 6. Sinalização na fala: toda contagem trava, ou só antes do conteúdo? | "Não sei, quero sentir no experimento" | A Regra 3 da clear-listen fica como está até a Fase D. A Fase D gera as duas formas e o Dennis ouve às cegas |
@@ -33,6 +33,8 @@ Ponto-chave: todas as perguntas estão respondidas, inclusive a aprovação do p
 | Nova. O parágrafo do narrador entra onde? | Nas duas skills, texto e áudio | A mudança 13 entra na clear-read e na clear-listen |
 | Nova. A Regra 9 (tom) abre para falar com o leitor? | Sim. "Sem personalidade" sai; fica "sem enfeite que não sirva a um conceito" e "como num e-mail de trabalho a um colega" | A mudança 14 segue a primeira opção da seção 5 da proposta |
 | Nova. Como a atribuição entra no texto? | No fio, como a BBC faz, para tudo que tem nome (pessoa, instituição, lugar, empresa, estudo, lei): "Uma pesquisa da Universidade de Oxford, no Reino Unido, feita pelo psicólogo Fulano, encontrou que...". Fluida, gentil, sem nota solta depois da frase. O Dennis citou o BBC Lê como modelo | A proposta ganha a mudança 17 (atribuição no fio) para as duas skills, e a seção 5.5 de `pesquisa-conferida.md` traz a fonte da BBC |
+| Nova. As mudanças 20 e 21 (adendo 2) entram? | Sim, as duas. Respondido em 2 de novembro, depois de uma explicação sem códigos | Feitas no branch filho em 11 commits |
+| Nova. A skill pode cortar o básico em temas de TI? | Não. "A ideia seria usar a Clear Read para aprender sobre tudo." A área não diz o que o leitor sabe de cada tema | A Regra 8 vira andaime por padrão; o corte só com sinal explícito no pedido (mudança 22) |
 | Nova. As skills guardam de onde vêm as regras? | Sim. O Dennis quer que a skill diga que contém as referências e consiga responder "de onde vem" e buscar mais, sem carregar todos os estudos | A Fase E ganha um PR "research-basis conferido": o mapa regra, afirmação, veredito, fonte, certeza e data de conferência vira tabela no `research-basis.md` das duas skills; o `SKILL.md` ganha uma linha para o caso "o leitor pergunta por quê"; a história da composição fica em `investigacao-2026-11/` com um ponteiro |
 
 ## 2. O perfil Projeto, pela pesquisa
