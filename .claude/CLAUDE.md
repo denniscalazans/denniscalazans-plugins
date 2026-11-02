@@ -16,7 +16,11 @@ Never commit personal material:
 
 Research stays, written impersonally: studies checked at the source, sources, standards, and evidence maps go in `plugins/<plugin>/references/pesquisa/` or inside the skill. What the skills need goes inside the skill: rules, tests, evals, golden examples. Working records stay in private storage outside this repository.
 
-Housekeeping changes that must not cut a release (moves, removals, wording in tests or references) are merged with `[skip ci]` in the merge commit title, so the Version Release workflow does not run.
+Everything inside `plugins/<plugin>/` ships to every machine that installs the plugin. Installed copies change only when the version changes.
+
+So removing a file that already went out in a release always cuts a new version: merge without `[skip ci]`, or bump the version by hand. Otherwise every installed copy keeps the file.
+
+Only housekeeping that removes nothing already released (wording in tests or references, moves of unreleased files) is merged with `[skip ci]` in the merge commit title, so the Version Release workflow does not run.
 
 ## Architecture
 
