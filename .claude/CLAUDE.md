@@ -12,9 +12,9 @@ Never commit personal material:
 - answers, measurements or notes from the maintainer's own reading or listening;
 - names of the maintainer's employer, colleagues or family, and private links (artifacts, flows, documents);
 - copies of private project instructions, playbooks or personal knowledge bases;
-- working folders of an investigation (guides, handoffs, proposals, experiment logs).
+- working folders of an investigation (guides, handoffs, proposals, experiment logs and answers).
 
-What the skills need goes inside the skill, written impersonally: rules, tests, evals, golden examples, and evidence maps that cite published sources. Working records stay in private storage outside this repository.
+Research stays, written impersonally: studies checked at the source, sources, standards, and evidence maps go in `plugins/<plugin>/references/pesquisa/` or inside the skill. What the skills need goes inside the skill: rules, tests, evals, golden examples. Working records stay in private storage outside this repository.
 
 Housekeeping changes that must not cut a release (moves, removals, wording in tests or references) are merged with `[skip ci]` in the merge commit title, so the Version Release workflow does not run.
 

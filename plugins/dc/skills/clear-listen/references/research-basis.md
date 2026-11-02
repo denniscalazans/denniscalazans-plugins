@@ -24,7 +24,7 @@ These five facts lived in `SKILL.md` until 1 November 2026. They moved here to k
 
 ## Evidence map, checked at the source
 
-This table is the answer to "where does this rule come from?". One row per claim. Verdict: **holds** (the source says it), **holds with a limit** (the source says it, with a narrower scope than the rule), **contradicted** (the source says the opposite; the old sentence is under Retired), **practice** (expert guidance or the project's own tests, no controlled study), **untested** (no study found). Checked: the date someone read the source for this map, or "carried" for a source carried over from an earlier version and not re-read. Access: what was read, the full text, the abstract, or a summary page. The sources were read and checked in November 2026.
+This table is the answer to "where does this rule come from?". One row per claim. Verdict: **holds** (the source says it), **holds with a limit** (the source says it, with a narrower scope than the rule), **contradicted** (the source says the opposite; the old sentence is under Retired), **practice** (expert guidance or the project's own tests, no controlled study), **untested** (no study found). Checked: the date someone read the source for this map, or "carried" for a source carried over from an earlier version and not re-read. Access: what was read, the full text, the abstract, or a summary page. The sources were read and checked in November 2026; the detail per study is in `plugins/dc/references/pesquisa/pesquisa-conferida.md`, and the full list of sources in `plugins/dc/references/pesquisa/fontes.md`.
 
 | Rule | Claim, as the skill makes it | Verdict | Source | Certainty | Checked | Access |
 |---|---|---|---|---|---|---|
