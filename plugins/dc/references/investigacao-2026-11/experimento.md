@@ -183,5 +183,15 @@ O Dennis ouve sem saber qual é qual e responde: esforço de 1 a 5, quantas veze
 As perguntas: a ideia central, os quatro jeitos da pilha, e a pergunta antes de comprar.
 A seção 7 da clear-listen ganha o veredito quando as respostas chegarem.
 
-Ponto-chave: dois áudios de 3 minutos, cegos, do mesmo guia; o resto do experimento de áudio fica para uma segunda rodada.
+O resultado, em 2 de novembro: o Dennis ouviu os dois.
+Antes de responder as perguntas, ele disse "parece que o áudio A é o novo e o B é o antigo".
+Ele acertou: A é a nova, B é a antiga.
+Com o limite de uso no fim, ele pediu para seguir sem as medidas de esforço e recordação.
+
+O que isso diz: as duas versões soam diferentes a ponto de o ouvinte adivinhar qual é a nova.
+A diferença mais visível nos roteiros é a estrutura falada.
+A antiga anuncia "primeira ideia, segunda ideia" e abre com uma contagem; a nova avança pelo conteúdo ("agora, a pilha").
+Esforço, releituras e recordação ficam sem medida nesta rodada.
+
+Ponto-chave: o ouvinte reconheceu a versão nova pelo estilo; o que ela rende em esforço e memória fica para a segunda rodada.
 

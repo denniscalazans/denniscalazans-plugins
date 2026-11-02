@@ -134,6 +134,15 @@ A proposta ganhou a mudança 20 (Regra 7, nunca desenhar uma sequência) e a mud
 O Dennis aprovou as duas em 2 de novembro, e elas estão feitas no branch filho, em 11 commits.
 A seção 7 da proposta dá o veredito das 14 regras, e a linha R7c do inventário mudou para "muda".
 
+## 3.8 Estado em 2 de novembro de 2026: experimento fechado, merges à espera do "junta"
+
+A seção 7 de `experimento.md` tem a conclusão em cinco frases; a seção 9 tem o experimento de áudio mínimo.
+Os dois PRs esperam a palavra do Dennis para o merge: o #82 no branch da investigação e depois o #81 no main.
+
+A próxima sessão começa pela segunda rodada do experimento, listada na seção 8 de `experimento.md`.
+Ela tem a ordem invertida, as mudanças 20 a 22 medidas, e o áudio com esforço e recordação.
+Antes disso, atualizar o plugin instalado para a versão nova das skills.
+
 ## 4. O que já está decidido
 
 - A clear-listen entra no plugin `dc`, ao lado da clear-read. O Dennis confirmou em 1 de novembro, e ela já está no `plugin.json`, no README e no CLAUDE.md.
