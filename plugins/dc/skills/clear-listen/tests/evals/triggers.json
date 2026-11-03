@@ -1,0 +1,82 @@
+[
+  {
+    "query": "acabei de ler o guia sobre o cache http que vc fez ontem, mas to indo pro trabalho de bike agora. quero ouvir isso no caminho, consegue fazer uma versão em áudio de uns 10 min?",
+    "should_trigger": true
+  },
+  {
+    "query": "faz um podcast disso com dois apresentadores, um explicando e outro perguntando, sobre esse artigo do simon willison de prompt injection que te mandei",
+    "should_trigger": true
+  },
+  {
+    "query": "resumo em áudio de 3 minutos do guia de ontem pra eu revisar antes da daily",
+    "should_trigger": true
+  },
+  {
+    "query": "I need a voice-over script for a 2 minute internal explainer on how our new feature flag service works, it'll be read by ElevenLabs. source is the README below",
+    "should_trigger": true
+  },
+  {
+    "query": "narra esse texto pra mim com a voz do rafael, é o guia sobre o AI act que publicamos semana passada",
+    "should_trigger": true
+  },
+  {
+    "query": "turn the attached onboarding doc (docs/onboarding.md) into something my team can listen to during commute, like 3 short episodes",
+    "should_trigger": true
+  },
+  {
+    "query": "tenho que gravar uma explicação falada de 5 min sobre como funciona o nosso pipeline de deploy pros novos devs. escreve o texto que eu vou ler em voz alta, do jeito que fica fácil de acompanhar ouvindo",
+    "should_trigger": true
+  },
+  {
+    "query": "prepara o roteiro pro eleven v4 da versão narrada, modo A, do guia do artigo da anthropic sobre agentes",
+    "should_trigger": true
+  },
+  {
+    "query": "my mom is losing her sight and wants to hear the weekly family newsletter instead of reading it. can you rewrite this week's so it works read aloud by her phone?",
+    "should_trigger": true
+  },
+  {
+    "query": "esse áudio que vc gerou ficou difícil de acompanhar, eu me perdi na parte 2. reescreve o roteiro pra ficar mais fácil de ouvir",
+    "should_trigger": true
+  },
+  {
+    "query": "explica pra mim como funciona o cache http, tô lendo no celular no metrô",
+    "should_trigger": false
+  },
+  {
+    "query": "transcreve esse áudio da reunião de ontem (reuniao-sprint.m4a) e me dá os action items",
+    "should_trigger": false
+  },
+  {
+    "query": "qual voz do elevenlabs em pt-br é melhor pra narração, rafael ou guilherme? só quero saber a diferença entre elas",
+    "should_trigger": false
+  },
+  {
+    "query": "reescreve esse email pro meu chefe pra ficar mais claro, tá muito confuso e longo",
+    "should_trigger": false
+  },
+  {
+    "query": "write the README for our audio processing library, it resamples wav files and normalizes loudness to -16 LUFS",
+    "should_trigger": false
+  },
+  {
+    "query": "o player de áudio do guia não tá carregando o mp3 no celular, olha o html e vê o que tá errado na tag audio",
+    "should_trigger": false
+  },
+  {
+    "query": "me recomenda 3 podcasts bons sobre engenharia de IA em português",
+    "should_trigger": false
+  },
+  {
+    "query": "faz um resumo escrito de 5 bullets desse episódio de podcast, aqui está a transcrição",
+    "should_trigger": false
+  },
+  {
+    "query": "quanto custa em créditos gerar 12 minutos de áudio no eleven v4? faz a conta pra mim",
+    "should_trigger": false
+  },
+  {
+    "query": "cria os slides da apresentação que vou dar na sexta sobre o cache http, 8 slides, com speaker notes curtas",
+    "should_trigger": false
+  }
+]

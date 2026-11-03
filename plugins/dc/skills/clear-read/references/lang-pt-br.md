@@ -4,9 +4,38 @@ Read this file when the reader's language is Portuguese.
 It adds what is specific to Portuguese on top of the eleven rules in SKILL.md.
 The lint keeps its own copy of these words in `LANG_PACKS["pt"]` in `scripts/lint_clear_read.py`. The two are maintained by hand, so when you change one, change the other.
 
-## The legal basis
+## The standard behind the rules
+
+The international plain-language standard is ISO 24495-1:2023, "Plain language, Part 1: Governing principles and guidelines".
+It is neutral about language, so it is the base of every pack.
+The Brazilian edition and the Brazilian law below are applications of it.
+
+It defines plain language by what the reader can do, not by sentence length or word choice.
+The wording, structure and design are so clear that intended readers can easily find what they need, understand what they find, and use that information.
+The definition comes from the International Plain Language Federation, and the ISO adopted it.
+
+The standard has four principles, and each one is a check the skill already runs.
+
+| Principle of ISO 24495-1 | What the reader can do | Where the skill carries it |
+|---|---|---|
+| Relevant | Receive what they need, at the depth they need | Rule 8 (calibrate the depth to what the reader knows) and "Who you are writing for" in SKILL.md |
+| Findable | Find it without reading everything | Rule 1 (message headings, the goal first, one topic per block) |
+| Understandable | Understand it on the first read | Rules 2, 5 and 10 (short sentences, plain meaning before the term, plain words) |
+| Usable | Act on it | Rule 11 (procedures) and the cold-reader tests in `references/tests.md` |
+
+Clause 5.2.2 of the standard asks the writer to "introduce new information by building on information readers already know".
+Rule 6 carries that as the opening line "Você já sabe que... Agora...".
+
+Source: [ISO 24495-1:2023 at iso.org](https://www.iso.org/standard/78907.html).
+
+## How Brazil applies it
+
+Brazil applies the standard in two documents.
+The Associação Brasileira de Normas Técnicas (ABNT) published the Brazilian edition on 25 July 2024, as the norma brasileira (NBR) ABNT NBR ISO 24495-1:2024.
+It is an identical adoption of the ISO, so it adds no rule of its own.
 
 Brazil has a plain-language law: Lei 15.263, de 14 de novembro de 2025, the Política Nacional de Linguagem Simples.
+The law does not cite the ISO, but it shares its goal: a text the reader can find, understand and use.
 Its article 5 lists the writing techniques.
 The skill already carries most of them, so the table says where each one lives.
 
@@ -24,8 +53,8 @@ The skill already carries most of them, so the table says where each one lives.
 | XII. redigir frases preferencialmente na voz ativa | Rule 2 (active voice, present tense) |
 | XIII. evitar frases intercaladas | Rule 2, and the lint rule `inserted-clause` |
 | XIV. evitar o uso de substantivos no lugar de verbos | Rule 2, and the lint rule `hidden-verb` |
-| XV. evitar redundâncias e palavras desnecessárias | Rule 8 (cut empty words) |
-| XVI. evitar palavras imprecisas | Rule 8 (name the real thing) |
+| XV. evitar redundâncias e palavras desnecessárias | Rule 9 (no ornament that does not serve a concept) and Rule 2 (the verb, not a noun made from it) |
+| XVI. evitar palavras imprecisas | Rule 5 (one word for one meaning) and Rule 10 (plain words, exact terms kept) |
 | XVIII. testar com o público-alvo se a mensagem está compreensível | `references/tests.md` (the cold-reader tests) |
 
 Source: [Lei 15.263/2025 at the Senado](https://legis.senado.leg.br/norma/41699861/publicacao/41699940).
@@ -87,11 +116,18 @@ Give the plain meaning first, then the English term in parentheses, the first ti
 
 ## Markers the lint looks for, in Portuguese
 
+The first six rows are the fixed labels of the method (Rule 10), and each has one form per language.
+A label in another language is a foreign word in the reader's text. So the lint flags "Key point:" in a Portuguese text as the problem `label-in-wrong-language`.
+
 | Marker | Portuguese form |
 |---|---|
 | The key-point line that closes a section | "Ponto-chave:" |
 | The legend line under a visual | "Como ler:" |
 | The line that limits an analogy | "Onde a analogia falha:" |
+| The line that opens the counter-pattern after a problem | "O que funciona:" |
+| The first line of a section that builds on another | "Você já sabe que... Agora..." |
+| The opening section of a text outside the reader's field (Rule 8) | "O que saber antes de ler" |
+| An empty word (Rule 9) | "crucial", "robusto", "poderoso", "impecável", "holístico", "a nível de", "abordagem", "aspecto", "paradigma", "sinergia", "alavancar": the lint warns `empty-word`; say the fact or cut the word |
 | A label with a number | "Passo 3", "Etapa 2", "Conceito 1" (each one followed by its name) |
 
 ## Common slips in Portuguese, and the fix

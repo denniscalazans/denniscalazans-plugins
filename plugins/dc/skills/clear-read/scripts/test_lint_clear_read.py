@@ -650,6 +650,231 @@ class AnalogyNeedsItsLimit(unittest.TestCase):
         self.assertIn("analogy-without-limit", ids(report.findings), report.render())
 
 
+    def test_pt_e_como_plus_verb_is_an_analogy(self):
+        text = ("## Mostrar o trabalho\n\n"
+                "Fazer deploy é como mostrar o trabalho para a turma inteira, então todo erro aparece de uma vez.\n\n"
+                "Ponto-chave: fim.\n")
+        report = run_on_text(text, lang="pt")
+        hits = [f for f in report.findings if f.rule == "analogy-without-limit"]
+        self.assertEqual(len(hits), 1, report.render())
+        self.assertIn("Onde a analogia falha", hits[0].message)
+
+    def test_pt_e_como_plus_verb_with_its_limit_passes(self):
+        text = ("## Mostrar o trabalho\n\n"
+                "Fazer deploy é como mostrar o trabalho para a turma inteira.\n\n"
+                "Onde a analogia falha: a turma esquece, mas o log do deploy fica.\n\n"
+                "Ponto-chave: fim.\n")
+        report = run_on_text(text, lang="pt")
+        self.assertNotIn("analogy-without-limit", ids(report.findings), report.render())
+
+    def test_pt_e_como_qualquer_is_a_comparison_not_an_analogy(self):
+        text = "## Um servidor\n\nEste servidor é como qualquer outro da fila, então nada muda.\n\nPonto-chave: fim.\n"
+        report = run_on_text(text, lang="pt")
+        self.assertNotIn("analogy-without-limit", ids(report.findings), report.render())
+
+
+class LabelsFollowTheReaderLanguage(unittest.TestCase):
+    """The five fixed labels are written in the reader's language (Rule 10).
+
+    A label in another language is a foreign word in the reader's text."""
+
+    PT_WITH_ENGLISH_LABEL = (
+        "## O cache responde primeiro, então o banco descansa\n\n"
+        "Um cache de leitura é um depósito rápido que fica na frente do banco de dados. "
+        "Quando o aplicativo pede um valor, o cache responde se tiver esse valor.\n\n"
+        "Key point: o cache responde à maioria das leituras, então o banco só vê as faltas.\n"
+    )
+
+    def test_pt_text_with_key_point_in_english_is_a_problem(self):
+        report = run_on_text(self.PT_WITH_ENGLISH_LABEL)
+        self.assertEqual(report.lang, "pt", report.render())
+        hits = [f for f in report.findings if f.rule == "label-in-wrong-language"]
+        self.assertEqual(len(hits), 1, report.render())
+        self.assertEqual(hits[0].level, "problem")
+        self.assertIn("Key point:", hits[0].message)
+        self.assertIn("Ponto-chave:", hits[0].message)
+        self.assertEqual(report.exit_code, 1)
+
+    def test_en_text_with_portuguese_label_is_a_problem(self):
+        text = ("## The cache answers first\n\n"
+                "```mermaid\nflowchart LR\nA[App] --> B[Cache]\n```\n\n"
+                "Como ler: each arrow is one request, from the app to whoever answers it.\n\n"
+                "So the cache sees every read before the database sees any.\n\n"
+                "Key point: the cache answers first.\n")
+        report = run_on_text(text, lang="en")
+        hits = [f for f in report.findings if f.rule == "label-in-wrong-language"]
+        self.assertEqual(len(hits), 1, report.render())
+        self.assertIn("How to read:", hits[0].message)
+
+    def test_every_fixed_label_is_caught_in_pt_text(self):
+        for label in ("Key point:", "Where the analogy fails:", "What works:", "How to read:",
+                      "You already know that"):
+            text = (self.PT_WITH_ENGLISH_LABEL.replace("Key point:", "Ponto-chave:")
+                    + f"\n{label} o cache guarda uma cópia. Agora, o prazo de validade.\n")
+            report = run_on_text(text, lang="pt")
+            self.assertIn("label-in-wrong-language", ids(report.findings), (label, report.render()))
+
+    def test_bold_label_is_still_caught(self):
+        text = self.PT_WITH_ENGLISH_LABEL.replace("Key point:", "**Key point:**")
+        report = run_on_text(text, lang="pt")
+        self.assertIn("label-in-wrong-language", ids(report.findings), report.render())
+
+    def test_quoted_mention_of_a_label_is_not_a_use(self):
+        text = ("## Os rótulos têm uma forma por língua\n\n"
+                "Os cinco rótulos fixos têm uma forma em cada língua, então o leitor nunca encontra uma palavra estrangeira.\n\n"
+                "- \"Key point\" e \"Ponto-chave\"\n"
+                "- \"How to read\" e \"Como ler\"\n\n"
+                "A skill escreve o rótulo \"Key point:\" em inglês, e a lint avisa quando ele aparece em português.\n\n"
+                "Ponto-chave: um rótulo na língua errada é uma palavra estrangeira no texto do leitor.\n")
+        report = run_on_text(text, lang="pt")
+        self.assertNotIn("label-in-wrong-language", ids(report.findings), report.render())
+
+    def test_labels_in_the_reader_language_pass(self):
+        for text, lang in ((CLEAN_PT, "pt"), (CLEAN_MD, "en")):
+            report = run_on_text(text, lang=lang)
+            self.assertNotIn("label-in-wrong-language", ids(report.findings), report.render())
+
+    def test_fallback_language_skips_the_check(self):
+        report = run_on_text("## Título\n\nPonto-chave: ok.\n")
+        self.assertEqual(report.lang, "en")
+        self.assertNotIn("label-in-wrong-language", ids(report.findings), report.render())
+
+    def test_every_pack_names_the_same_six_labels(self):
+        keys = [set(pack["labels"]) for pack in lint.LANG_PACKS.values()]
+        self.assertEqual(len(keys[0]), 6)
+        for k in keys[1:]:
+            self.assertEqual(k, keys[0])
+
+
+class SourcesNeedRoleThenName(unittest.TestCase):
+    """Role before name, and the name right after (Rule 5).
+
+    "Mayer mostrou" is a name without a role, so the reader does not know who Mayer is.
+    "Um pesquisador mostrou" is a role without a name, so the reader asks "which researcher?".
+    Both are warnings. The strong form gives the role first and the name in the same or
+    the next sentence: "Um estudo mostrou que X. O estudo é de Richard Mayer, de 2002."
+    """
+
+    STRONG_PT = ("Um estudo com alunos de ciências mostrou que ensinar os termos antes da lição ajuda. "
+                 "O estudo é de Richard Mayer, de 2002, e está na lista de fontes.")
+
+    def _rules(self, text, lang):
+        report = run_on_text(text, lang=lang)
+        return report, [f for f in report.findings if f.rule in ("name-before-role", "authority-without-name")]
+
+    def test_pt_name_before_role_warns(self):
+        report, hits = self._rules("Mayer mostrou que ensinar os termos antes ajuda.", "pt")
+        self.assertEqual([f.rule for f in hits], ["name-before-role"], report.render())
+        self.assertEqual(hits[0].level, "warning")
+        self.assertIn("Mayer mostrou", hits[0].message)
+        self.assertEqual(report.exit_code, 0)
+
+    def test_en_name_before_role_warns(self):
+        report, hits = self._rules("Mayer showed that teaching the terms first helps.", "en")
+        self.assertEqual([f.rule for f in hits], ["name-before-role"], report.render())
+        self.assertIn("Mayer showed", hits[0].message)
+
+    def test_two_names_and_a_full_name_are_one_finding_each(self):
+        for text, lang, phrase in (
+            ("Mayer e Moreno mostraram que o exemplo ajuda.", "pt", "Mayer e Moreno mostraram"),
+            ("Richard Mayer found that the example helps.", "en", "Richard Mayer found"),
+            ("Em 2002, Mayer demonstrou que o exemplo ajuda.", "pt", "Mayer demonstrou"),
+        ):
+            report, hits = self._rules(text, lang)
+            self.assertEqual(len(hits), 1, (text, report.render()))
+            self.assertEqual(hits[0].rule, "name-before-role")
+            self.assertIn(phrase, hits[0].message)
+
+    def test_pt_role_without_name_warns(self):
+        for text in ("Um pesquisador mostrou que ensinar os termos antes ajuda.",
+                     "Estudos mostram que ensinar os termos antes ajuda.",
+                     "Segundo a pesquisa, ensinar os termos antes ajuda."):
+            report, hits = self._rules(text, "pt")
+            self.assertEqual([f.rule for f in hits], ["authority-without-name"], (text, report.render()))
+            self.assertEqual(hits[0].level, "warning")
+            self.assertEqual(report.exit_code, 0)
+
+    def test_en_role_without_name_warns(self):
+        for text in ("Studies show that teaching the terms first helps.",
+                     "A researcher found that teaching the terms first helps.",
+                     "According to research, teaching the terms first helps."):
+            report, hits = self._rules(text, "en")
+            self.assertEqual([f.rule for f in hits], ["authority-without-name"], (text, report.render()))
+
+    def test_strong_form_passes(self):
+        report, hits = self._rules(self.STRONG_PT, "pt")
+        self.assertEqual(hits, [], report.render())
+        en = ("A study with science students showed that teaching the terms before the lesson helps. "
+              "The study is by Richard Mayer, from 2002, and it is in the source list.")
+        report, hits = self._rules(en, "en")
+        self.assertEqual(hits, [], report.render())
+
+    def test_role_and_name_in_the_same_sentence_pass(self):
+        for text, lang in (("O pesquisador Richard Mayer mostrou que o exemplo ajuda.", "pt"),
+                           ("Um estudo de Mayer, de 2002, mostrou que o exemplo ajuda.", "pt"),
+                           ("A researcher, Richard Mayer, showed that the example helps.", "en"),
+                           ("The 2002 study by Mayer found that the example helps.", "en")):
+            report, hits = self._rules(text, lang)
+            self.assertEqual(hits, [], (text, report.render()))
+
+    def test_role_in_the_sentence_before_the_name_passes(self):
+        text = ("Richard Mayer é um pesquisador de psicologia da educação. "
+                "Mayer mostrou que ensinar os termos antes da lição ajuda.")
+        report, hits = self._rules(text, "pt")
+        self.assertEqual(hits, [], report.render())
+
+    def test_year_or_link_counts_as_a_source(self):
+        for text, lang in (("Um estudo de 2002 mostrou que o exemplo ajuda.", "pt"),
+                           ("Estudos mostram que o exemplo ajuda ([fonte](https://example.org/mayer)).", "pt"),
+                           ("Studies show that the example helps, see https://example.org/mayer for the data.", "en")):
+            report, hits = self._rules(text, lang)
+            self.assertEqual(hits, [], (text, report.render()))
+
+    def test_name_two_sentences_later_is_too_late(self):
+        text = ("Um estudo mostrou que o exemplo ajuda. "
+                "Ele usou alunos de ciências. "
+                "O estudo é de Richard Mayer, de 2002.")
+        report, hits = self._rules(text, "pt")
+        self.assertEqual([f.rule for f in hits], ["authority-without-name"], report.render())
+        self.assertIn("Um estudo mostrou", hits[0].message)
+
+    def test_name_in_the_first_sentence_of_the_next_block_counts(self):
+        text = ("Um estudo mostrou que o exemplo ajuda.\n\n"
+                "O estudo é de Richard Mayer, de 2002, e está na lista de fontes.\n")
+        report, hits = self._rules(text, "pt")
+        self.assertEqual(hits, [], report.render())
+
+    def test_common_sentence_starters_are_not_names(self):
+        for text, lang in (("Isso mostrou que o cache estava lento.", "pt"),
+                           ("Testes mostraram que o cache estava lento.", "pt"),
+                           ("Ele mostrou o resultado para a equipe.", "pt"),
+                           ("Ninguém mostrou o resultado para a equipe.", "pt"),
+                           ("This showed that the cache was slow.", "en"),
+                           ("Tests showed that the cache was slow.", "en"),
+                           ("Nothing showed up in the logs.", "en"),
+                           ("Profiling showed that the cache was slow.", "en")):
+            report, hits = self._rules(text, lang)
+            self.assertEqual(hits, [], (text, report.render()))
+
+    def test_tools_in_the_present_tense_are_not_sources(self):
+        for text, lang in (("O Git mostra o diff antes do commit.", "pt"),
+                           ("A Tabela 2 mostra o resultado de cada rodada.", "pt"),
+                           ("GitHub shows the diff before the commit.", "en")):
+            report, hits = self._rules(text, lang)
+            self.assertEqual(hits, [], (text, report.render()))
+
+    def test_acronyms_and_labels_are_not_names(self):
+        for text, lang in (("A OMS mostrou que lavar as mãos ajuda.", "pt"),
+                           ("P1 showed the gap in the first week.", "en")):
+            report, hits = self._rules(text, lang)
+            self.assertNotIn("name-before-role", [f.rule for f in hits], (text, report.render()))
+
+    def test_clean_fixtures_stay_clean(self):
+        for text, lang in ((CLEAN_PT, "pt"), (CLEAN_MD, "en")):
+            report, hits = self._rules(text, lang)
+            self.assertEqual(hits, [], report.render())
+
+
 class HiddenVerbsWarn(unittest.TestCase):
     """A verb beats a noun made from a verb ("perform an analysis", "realizar a verificação")."""
 
@@ -831,6 +1056,157 @@ class CommandLine(unittest.TestCase):
             code = lint.main(["/nonexistent/file.md"])
         self.assertEqual(code, 1)
         self.assertIn("cannot read", out.getvalue())
+
+
+class SkillBodySize(unittest.TestCase):
+    """The body of SKILL.md stays short enough to survive a context compaction.
+
+    Anthropic's skill guidance puts the part of a skill that
+    survives a compaction at about 5,000 tokens, about 3,600 words. The clear-read body was
+    5,129 words before the November 2026 changes and 6,509 after them. Change 18b moved the lint
+    lists to references/lint.md and shortened the closing section, to about 6,090 words;
+    changes 17 and 18 (attribution examples, the sixth label, coherence fixes) brought it
+    to about 6,250, and changes 20 and 21 (visuals and ten page habits that are method,
+    added on 2 November 2026) add about 800 more. The ceiling is
+    7,100. Getting near 3,600 needs a decision by the maintainer about what else
+    leaves the body: candidates are the per-medium spacing list in Rule 1 (about 150
+    words), the phone and HTML details of Rule 7 (about 120), and the pack paragraph of
+    Rule 10 (about 110)."""
+
+    MAX_WORDS = 7100
+
+    def test_skill_md_word_count_is_under_the_ceiling(self):
+        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "SKILL.md")
+        with open(path, encoding="utf-8") as f:
+            words = len(f.read().split())
+        self.assertLess(words, self.MAX_WORDS,
+                        f"SKILL.md has {words} words (ceiling {self.MAX_WORDS}). Move a block to references/, do not delete it.")
+
+    def test_lint_reference_lists_every_finding(self):
+        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "references", "lint.md")
+        with open(path, encoding="utf-8") as f:
+            text = f.read()
+        for needle in ("label-in-wrong-language", "Rule 10", "check_mermaid", "eight kinds"):
+            self.assertIn(needle, text, f"references/lint.md should mention {needle!r}")
+        import re as _re
+        kinds = set(_re.findall(r"^\s{4}([a-z][a-z-]+)\s{2,}", lint.__doc__, flags=_re.M)) - {"language"}
+        for kind in kinds:
+            self.assertIn(f"`{kind}`", text, f"references/lint.md should list the kind {kind}")
+
+
+class SixthLabelBeforeReading(unittest.TestCase):
+    """Change 18: "What to know before reading" / "O que saber antes de ler" is a fixed label."""
+
+    def test_english_heading_in_portuguese_text_is_a_problem(self):
+        text = ("# Como um genérico prova que é equivalente\n\n## What to know before reading\n\n"
+                "O princípio ativo é a substância que faz efeito. Ele é a parte que importa.\n\n"
+                "Ponto-chave: o princípio ativo decide a comparação.\n")
+        report = lint.lint_text(text, "sample.md", lang="pt") if hasattr(lint, "lint_text") else None
+        if report is None:
+            self.skipTest("lint_text helper not available")
+        self.assertIn("label-in-wrong-language", [f.rule for f in report.findings], report.render())
+
+    def test_portuguese_heading_in_portuguese_text_passes(self):
+        text = ("# Como um genérico prova que é equivalente\n\n## O que saber antes de ler\n\n"
+                "O princípio ativo é a substância que faz efeito. Ele é a parte que importa.\n\n"
+                "Ponto-chave: o princípio ativo decide a comparação.\n")
+        report = lint.lint_text(text, "sample.md", lang="pt") if hasattr(lint, "lint_text") else None
+        if report is None:
+            self.skipTest("lint_text helper not available")
+        self.assertNotIn("label-in-wrong-language", [f.rule for f in report.findings], report.render())
+
+
+class AttributionInTheThread(unittest.TestCase):
+    """Change 17: Rule 5 asks for the attribution woven into the sentence, BBC style."""
+
+    def test_rule_5_names_the_news_report_shape_and_the_source(self):
+        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "SKILL.md")
+        with open(path, encoding="utf-8") as f:
+            rule = f.read().split("### Rule 5", 1)[1].split("\n### ", 1)[0]
+        self.assertIn("the way a news report does", rule)
+        self.assertIn("Attribution first", rule)
+        self.assertNotIn("O estudo é de Richard Mayer, de 2002, e está na lista de fontes", rule,
+                         "the old strong example put the attribution in a note after the claim")
+
+
+class EvidenceMapIsComplete(unittest.TestCase):
+    """Change 11: every rule has a row in the evidence map, and the map is well formed."""
+
+    def test_check_research_basis_passes(self):
+        import subprocess, sys
+        here = os.path.dirname(os.path.abspath(__file__))
+        skill = os.path.join(here, "..")
+        run = subprocess.run([sys.executable, os.path.join(here, "check_research_basis.py"), skill],
+                             capture_output=True, text=True)
+        self.assertEqual(run.returncode, 0, run.stdout + run.stderr)
+
+
+class SequenceAsDiagram(unittest.TestCase):
+    """Change 20: a Mermaid flowchart that is one chain of boxes warns (Rule 7)."""
+
+    def chain(self, body):
+        return CLEAN_PT.replace("Ponto-chave: o cache responde à maioria das leituras, então o banco só vê as faltas.",
+                                "```mermaid\n" + body + "\n```\n\nComo ler: cada caixa é um passo.\nO fluxo vai do pedido à resposta.\n\nPonto-chave: o cache responde à maioria das leituras, então o banco só vê as faltas.")
+
+    def test_four_nodes_in_a_row_warn(self):
+        report = run_on_text(self.chain("flowchart TD\n  A[Pedido] --> B[Cache]\n  B --> C[Banco]\n  C --> D[Resposta]"), lang="pt")
+        self.assertIn("sequence-as-diagram", ids(report.findings), report.render())
+        self.assertEqual([f.level for f in report.findings if f.rule == "sequence-as-diagram"], ["warning"])
+
+    def test_graph_lr_chain_with_labels_warns(self):
+        report = run_on_text(self.chain("graph LR\n  A(Pedido) -->|vai| B(Cache) --> C(Banco)"), lang="pt")
+        self.assertIn("sequence-as-diagram", ids(report.findings), report.render())
+
+    def test_a_branch_does_not_warn(self):
+        report = run_on_text(self.chain("flowchart TD\n  A[Pedido] --> B{Tem no cache?}\n  B --> C[Responde]\n  B --> D[Busca no banco]"), lang="pt")
+        self.assertNotIn("sequence-as-diagram", ids(report.findings), report.render())
+
+    def test_two_nodes_do_not_warn(self):
+        report = run_on_text(self.chain("flowchart LR\n  A[Pedido] --> B[Resposta]"), lang="pt")
+        self.assertNotIn("sequence-as-diagram", ids(report.findings), report.render())
+
+    def test_html_pre_mermaid_chain_warns(self):
+        html_doc = ("<h1>Cache</h1><p>Um cache guarda uma cópia.</p><pre class=\"mermaid\">flowchart TD\n A --> B\n B --> C\n C --> D</pre>"
+                    "<p>Como ler: cada caixa é um passo.<br>O fluxo vai do pedido à resposta.</p><p>Ponto-chave: o cache responde primeiro.</p>")
+        report = run_on_text(html_doc, name="sample.html", lang="pt")
+        self.assertIn("sequence-as-diagram", ids(report.findings), report.render())
+
+
+class DoubleNegativesWarn(unittest.TestCase):
+    """Change 21g: say what is; a double negative warns (Rule 2)."""
+
+    def test_pt_double_negative_warns(self):
+        text = CLEAN_PT.replace("Caso contrário, o cache busca o valor no banco e guarda uma cópia.", "Não há nenhum caso em que o cache deixe de guardar uma cópia.")
+        report = run_on_text(text, lang="pt")
+        self.assertIn("double-negative", ids(report.findings), report.render())
+
+    def test_pt_single_negation_passes(self):
+        text = CLEAN_PT.replace("Caso contrário, o cache busca o valor no banco e guarda uma cópia.", "O cache não apaga o arquivo original.")
+        report = run_on_text(text, lang="pt")
+        self.assertNotIn("double-negative", ids(report.findings), report.render())
+
+    def test_en_double_negative_warns(self):
+        text = "# The cache\n\nA read cache sits in front of the database.\nDo not fail to set a time to live on each copy.\n\nKey point: the cache answers first.\n"
+        report = run_on_text(text, lang="en")
+        self.assertIn("double-negative", ids(report.findings), report.render())
+
+
+class EmptyWordsWarn(unittest.TestCase):
+    """Change 21i: evaluative and meta-concept words that carry no fact warn (Rule 9)."""
+
+    def test_pt_empty_words_warn_once_each(self):
+        text = CLEAN_PT.replace("Caso contrário, o cache busca o valor no banco e guarda uma cópia.", "O cache é uma abordagem robusta e crucial, robusta mesmo.")
+        report = run_on_text(text, lang="pt")
+        hits = [f for f in report.findings if f.rule == "empty-word"]
+        self.assertEqual(len(hits), 3, report.render())
+
+    def test_pt_clean_text_has_none(self):
+        self.assertNotIn("empty-word", ids(run_on_text(CLEAN_PT, lang="pt").findings))
+
+    def test_en_empty_words_warn(self):
+        text = "# The cache\n\nA read cache sits in front of the database.\nIt is a robust approach at the level of the service.\n\nKey point: the cache answers first.\n"
+        report = run_on_text(text, lang="en")
+        self.assertEqual(len([f for f in report.findings if f.rule == "empty-word"]), 3, report.render())
 
 
 if __name__ == "__main__":

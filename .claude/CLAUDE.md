@@ -2,6 +2,26 @@
 
 A Claude Code plugin marketplace containing personal skills and agents.
 
+## Public repository: what never goes in
+
+This repository is public: it is a Claude Code marketplace. Everything committed here, including history, branches and pull request pages, can be read by anyone.
+
+Never commit personal material:
+
+- conversation records, transcripts, decisions or quotes of the maintainer;
+- answers, measurements or notes from the maintainer's own reading or listening;
+- names of the maintainer's employer, colleagues or family, and private links (artifacts, flows, documents);
+- copies of private project instructions, playbooks or personal knowledge bases;
+- working folders of an investigation (guides, handoffs, proposals, experiment logs and answers).
+
+Research stays, written impersonally: studies checked at the source, sources, standards, and evidence maps go in `plugins/<plugin>/references/pesquisa/` or inside the skill. What the skills need goes inside the skill: rules, tests, evals, golden examples. Working records stay in private storage outside this repository.
+
+Everything inside `plugins/<plugin>/` ships to every machine that installs the plugin. Installed copies change only when the version changes.
+
+So removing a file that already went out in a release always cuts a new version: merge without `[skip ci]`, or bump the version by hand. Otherwise every installed copy keeps the file.
+
+Only housekeeping that removes nothing already released (wording in tests or references, moves of unreleased files) is merged with `[skip ci]` in the merge commit title, so the Version Release workflow does not run.
+
 ## Architecture
 
 The repo is a **marketplace** — a registry of **plugins**, each containing **skills** and/or **agents**.
@@ -42,7 +62,7 @@ npm run test:scripts
 
 | Plugin | Description | Skills | Agents |
 |--------|-------------|--------|--------|
-| `dc` | Brain round trip: decode messy input, stress-test plans, distill insights, write clean markdown | `brief`, `grill`, `distill`, `writing`, `plain-language`, `clear-read` | `strategic-thinking-partner` |
+| `dc` | Brain round trip: decode messy input, stress-test plans, distill insights, write clean markdown | `brief`, `grill`, `distill`, `writing`, `plain-language`, `clear-read`, `clear-listen` | `strategic-thinking-partner` |
 | `forge` | Codebase support: task lifecycle, investigation, adversarial implementation pipeline | `start`, `investigate`, `implement`, `finish` | `forge-investigator`, `forge-challenger`, `forge-planner`, `forge-generator`, `forge-evaluator` |
 | `integrations` | External service connectors | `figma-api`, `op` | — |
 | `code-quality` | SonarQube-driven code quality workflows via MCP | `sonar-status`, `sonar-issues`, `sonar-fix`, `sonar-verify`, `sonar-triage`, `sonar-rule`, `sonar-setup`, `sonar-env` | `code-quality-agent` |

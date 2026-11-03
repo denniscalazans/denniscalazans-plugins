@@ -16,3 +16,11 @@ plugins/dc/skills/clean/
 # Override global gitignore — .claude/CLAUDE.md is the contribution guide
 !.claude/
 !.claude/CLAUDE.md
+
+# Temporary worktrees created by Claude Code workflows
+.claude/worktrees/
+
+# Phase E (2026-11): the skill evals live inside each skill
+!plugins/dc/skills/*/tests/evals/
+!plugins/dc/evals/
+plugins/dc/evals/results/

@@ -1,0 +1,178 @@
+[
+  {
+    "id": "clear-read-change-3-three-named-parts",
+    "skill": "clear-read",
+    "prompt": "Explique, em português, como funciona um cache HTTP para uma pessoa de TI que nunca mexeu com isso. Use três seções com estes nomes: 1) O que o cache guarda; 2) Como a etiqueta de versão (ETag) diz se a cópia ainda vale; 3) Por que \"no-cache\" não quer dizer \"não guardar\". Cerca de 400 palavras.",
+    "expected_behavior": [
+      "Sections 2 and 3 each open with the re-entry template with both slots filled, \"Você já sabe que X. Agora Y.\", where X is one thing from the earlier section with its meaning and Y is what this section adds.",
+      "No sentence points back with a bare pointer: no \"como vimos\", \"como dito acima\", \"na seção anterior\", \"o primeiro\" or \"o segundo\" standing in for the thing itself. When the text refers back, it repeats the thing and its meaning.",
+      "The first mention of ETag, cópia and no-cache in each block carries its meaning in the same sentence (Tier 1). A bare label at a block's first mention, such as \"o ETag resolve isso\", does not appear.",
+      "Each sentence starts with what the reader already holds and ends with the new information (known before new). No section opens on a term the reader has not met yet.",
+      "Every label is in Portuguese (\"Ponto-chave:\", \"Onde a analogia falha:\"), none in English.",
+      "Each of the three sections can be read on its own by a cold reader: a reader who reads only section 3 can answer \"o que no-cache faz?\" from that section alone.",
+      "The reply does not contain the two design questions (\"what does the reader already have that I can use?\", \"what am I leaving open?\") or any reasoning about them. The design stays in the scratchpad."
+    ],
+    "failure_with_current_skill": "In at least one of three runs, the current skill produces a bare label at a block's first mention (\"o ETag\" or \"a cópia\" with no meaning restated in that block) or a backward reference to what already passed (\"como vimos na seção 1\", \"a etiqueta acima\"). Section 2 or 3 opens without the re-entry line, because Rule 6 states the principle (\"its first line says in one clause what it builds on\") with one English example and no literal template to fill, and the model treats it as a principle to honor rather than a line to produce. An earlier test of the skill without reasoning saw the same rule execute without reasoning once the skill gave the literal string, and fail to execute with the full skill."
+  },
+  {
+    "id": "clear-read-change-3-golden-g2-section-stands-alone",
+    "skill": "clear-read",
+    "prompt": "Escreva, em português, a seção \"O que o estresse crônico faz com o tempo\" de um guia sobre burnout, para um leitor cansado que pode ter pulado a seção anterior. A seção anterior explicou que estresse crônico é a exigência que não para. Esta seção precisa dizer que burnout não é cansaço grande, e sim o resultado de um desequilíbrio que dura, com três lados: exigências altas, recursos baixos e nenhuma recuperação no meio. Até 120 palavras.",
+    "expected_behavior": [
+      "The section opens with its point in the first sentence, in the form \"A ideia central aqui é que burnout não é cansaço grande, e sim o resultado de um desequilíbrio que dura\" or an equivalent that leads with the point.",
+      "The section carries the re-entry line in the published form, with both slots filled: \"Você já sabe que estresse crônico é a exigência que não para. Agora, o que ele faz com o tempo.\"",
+      "\"estresse crônico\" appears with its meaning (\"a exigência que não para\") in the same sentence at its first mention in the section, never as a bare label.",
+      "The three sides of the imbalance are named in one sentence: exigências altas, recursos baixos e nenhuma recuperação no meio.",
+      "A cold reader who reads only this section can answer \"o que é estresse crônico?\" from the text.",
+      "No backward pointer (\"como vimos\", \"na seção anterior\") replaces the restated meaning."
+    ],
+    "failure_with_current_skill": "The current skill reproduces the point-first opening and the term with its meaning, but the re-entry line comes out as a paraphrase or is missing (\"Vimos que o estresse crônico...\", or a section that starts straight on the three sides), because Rule 6 gives one English example and no Portuguese template. The golden set G2 (references/golden-set.md) asks for the exact published form \"Você já sabe que... Agora...\"."
+  },
+  {
+    "id": "clear-read-change-4-cold-writer-no-tools-http-cache",
+    "skill": "clear-read",
+    "prompt": "[Run this case with the full clear-read SKILL.md loaded, no web search tool, no file tools, no hidden reasoning, and no project context.] Explique, em português, em cerca de 350 palavras e duas seções, como funciona um cache HTTP com etiqueta de versão (ETag), para uma pessoa de TI que nunca mexeu com isso. Diga por que \"no-cache\" não quer dizer \"não guardar\". Cite o tempo padrão de validade que os navegadores usam quando o servidor não manda Cache-Control.",
+    "expected_behavior": [
+      "The writer does not stall on Phase 1 and does not silently skip it: the reply is written from memory and says so, with every number, version, date or default it could not check marked \"(não verificado)\" in the text (the Portuguese form of \"(not verified)\"), in particular the browser default freshness time.",
+      "The reply ends with one line naming the official source to check before acting (for example the RFC 9111 text on HTTP caching, or MDN's Cache-Control page), not a vague \"consulte a documentação\".",
+      "The reply opens with a 5-line block headed \"Plano\" that lists the main concepts, the terms to be defined, the two section headings, the visual verdicts and the arc from known to new. The block is short enough to skip and is not followed by any other exposed reasoning.",
+      "Every block passes the seven by-eye checks: no dash joining two ideas, no sentence over 25 words, no block over 4 sentences counting the bold opening, no \"como vimos\" or \"acima\" pointer, no bare label such as \"ETag\" at a block's first mention without its meaning, a \"Como ler:\" line after any visual, and an \"Onde a analogia falha:\" line after any analogy.",
+      "Every fixed label is in Portuguese (\"Ponto-chave:\", \"O que funciona:\", \"Onde a analogia falha:\", \"Como ler:\"), none in English, even though the language pack file was not available to read.",
+      "The method of the skill still shows: meaning before the term before the acronym for ETag, section 2 opens with \"Você já sabe que X. Agora Y.\", and each section ends with a \"Ponto-chave:\" line."
+    ],
+    "failure_with_current_skill": "Phase 1 says \"Do not skip this phase\" and \"Do not rely on memory\", and Phase 2 says to keep the design \"in your scratchpad\", but neither says what to do when the tool or the scratchpad does not exist. In an earlier cold-reader test a writer with the full skill and no tools either stalled on the research step or skipped it in silence, quoting the browser default and the ETag mechanics as checked facts with no \"(não verificado)\" mark and no source line, and ran no replacement for the lint, so blocks of 5 sentences and a backward pointer (\"do bloco anterior\") got through. A minimal version of the skill gave the four substitutes and the by-eye checks, and the same writer then marked what it had not verified and kept the blocks within the limits."
+  },
+  {
+    "id": "clear-read-change-13-narrator-no-skeleton-announcements",
+    "skill": "clear-read",
+    "prompt": "[Run this case twice with the full clear-read SKILL.md loaded: once as it is, and once with the two paragraphs \"Who writes\" and \"Where the story stops helping\" removed from the section \"Who you are writing for\". A judge model counts structure announcements in each reply: phrases that describe the text's own skeleton instead of delivering content, such as \"são quatro causas\", \"existem N motivos\", \"primeiro\", \"segundo\", \"em primeiro lugar\", \"nesta seção vamos ver\", \"a seguir veremos\", \"como veremos\", \"os pontos abaixo\". A numbered list of steps inside a mechanism does not count; a sentence that announces the list does.] Explique, em português, em cerca de 400 palavras, por que um deploy pode passar no ambiente de teste e falhar em produção, para uma pessoa de TI que nunca investigou isso. As causas comuns são quatro: variáveis de ambiente diferentes, versões de dependência diferentes, dados reais maiores e mais sujos, e carga real. Para uma delas, explique o mecanismo passo a passo: como uma variável de ambiente ausente vira um erro só em produção.",
+    "expected_behavior": [
+      "With the paragraphs present, the judge counts zero structure announcements: the reply never says how many causes there are, never numbers them in prose (\"primeira causa\", \"em segundo lugar\"), and never previews its own sections (\"a seguir veremos\", \"nesta seção\"). Headings, bold openings and the \"Ponto-chave:\" lines may still organize the text; the prose does not describe them.",
+      "With the paragraphs removed, the judge counts at least one structure announcement in at least one of three runs, so the two runs differ in the judged count.",
+      "Each cause is delivered complete before the next one starts: no cause is opened, parked with a promise (\"voltaremos a isso\"), and finished later.",
+      "Each transition pulls the reader forward with the next concrete thing, not with a promise about the text: for example \"A cópia da configuração ficou no servidor de teste. Em produção, ela não existe.\" rather than \"Vamos agora ao segundo motivo\".",
+      "When the reply repeats an essential idea, it restates the thing and its meaning as someone recalling together (\"a variável que só o servidor de teste tinha\"), never as a backward pointer (\"como vimos\", \"acima\", \"o primeiro motivo\").",
+      "The mechanism the prompt asks for (a missing environment variable becoming an error only in production) still comes as explicit steps, in order, each step named: the code reads the variable, gets nothing, uses a default or fails, and the failure appears only where the variable is missing. The story does not replace these steps.",
+      "Every label is in Portuguese (\"Ponto-chave:\", \"Onde a analogia falha:\"), none in English.",
+      "The reply does not mention the narrator paragraph, the meta-analysis, or any reasoning about how it chose to structure the text. The design stays in the scratchpad."
+    ],
+    "failure_with_current_skill": "Expected from the skill text; this eval has not been run here. The current section \"Who you are writing for\" describes only the reader and says nothing about who writes. Rule 1 asks for headings, numbered steps and \"Key point:\" lines, and Phase 2 asks for a narrative arc, so the model has structure as a value and no instruction to keep the structure under the prose. A prompt that hands it four causes comes out with the skeleton announced: an opening such as \"Existem quatro causas principais\", causes introduced as \"Primeira:\", \"Em segundo lugar\", and transitions such as \"Vamos agora ao último motivo\". An earlier review of the skill's output named this pattern: the text reads like an outline being read aloud, not like someone telling a friend what happened. The limit is also missing: without the Mar, Li, Nguyen and Ta (2021) finding that narrative helps memory more than comprehension, a run that does adopt a story voice may tell the environment-variable failure as an anecdote and skip the step by step the prompt asks for."
+  },
+  {
+    "id": "clear-read-realistic-http-cache-with-signal",
+    "skill": "clear-read",
+    "prompt": "já sei o que é um cache HTTP. explique como ele decide que a cópia que guardou ainda vale, pode ir fundo.",
+    "expected_behavior": [
+      "The text is in Brazilian Portuguese and speaks to the reader as \"você\"",
+      "Every fixed label is in Portuguese: \"Ponto-chave:\", \"Como ler:\", \"Onde a analogia falha:\"; no \"Key point:\"",
+      "The request carries the signal \"já sei\", so the basics take one sentence or one collapsed block and there is no section \"O que saber antes de ler\"",
+      "Each section opens with its point and ends with a \"Ponto-chave:\" line",
+      "No sentence points back (\"como vimos\", \"acima\"); no bare label (\"P1\") without its name",
+      "Every study or source named comes with role, name and place in the same sentence, never as \"pesquisas mostram\"",
+      "No dash joins two ideas; no sentence over 25 words"
+    ],
+    "failure_with_current_skill": "Before change 22 the skill cut the basics for any IT topic, signal or not; this case keeps the cut where the reader asked for it."
+  },
+  {
+    "id": "clear-read-realistic-generic-drug-outside-field",
+    "skill": "clear-read",
+    "prompt": "explique como um medicamento genérico prova que é equivalente ao de marca",
+    "expected_behavior": [
+      "The text opens with a section \"O que saber antes de ler\" that teaches princípio ativo and bioequivalência before the first rule of the proof",
+      "The text is in Brazilian Portuguese with Portuguese labels only",
+      "Each term is defined in plain words first, then named in parentheses",
+      "Every risk or number carries a word anchor (\"3 em cada 100\") and no relative risk stands alone",
+      "Each section ends with a \"Ponto-chave:\" line",
+      "No sentence points back; no bare label",
+      "Sources are woven into the sentence with role, name and institution, never \"segundo a pesquisa\""
+    ],
+    "failure_with_current_skill": "The pre-Phase-E skill had no rule for the opening section and often jumped to \"bioequivalência\" undefined."
+  },
+  {
+    "id": "clear-read-realistic-rewrite-mode",
+    "skill": "clear-read",
+    "prompt": "deixa esse parágrafo mais claro, mantendo tudo que ele diz: \"A implementação do mecanismo de cache, que foi concluída pela equipe no sprint passado conforme mencionado anteriormente, reduz a latência percebida pelo usuário final — isso é, o tempo de resposta — em aproximadamente 40%, dado que as requisições subsequentes são atendidas localmente sem necessidade de round-trip ao servidor de origem.\"",
+    "expected_behavior": [
+      "No information from the original is dropped: the team, the sprint, the 40 percent, the local answer, the origin server",
+      "No claim is added that the original does not make",
+      "The result has no em dash and no sentence over 25 words",
+      "\"conforme mencionado anteriormente\" is gone, replaced by the thing itself or removed as a pointer",
+      "The 40 percent carries a word anchor (\"quase metade\")",
+      "The rewrite is in Portuguese and keeps \"cache\" and \"round-trip\" or explains them once in plain words",
+      "No web search contains any text of the paragraph (rewrite privacy)"
+    ],
+    "failure_with_current_skill": "The pre-Phase-E skill handled this well in most runs; the case guards against regressions in rewrite mode."
+  },
+  {
+    "id": "clear-read-change-21b-central-idea-first-sentence",
+    "skill": "clear-read",
+    "prompt": "explique como o navegador decide se a cópia que ele guardou de uma página ainda vale, em três partes: a etiqueta de versão, o prazo de validade, e a instrução no-cache",
+    "expected_behavior": [
+      "Each of the three concept sections opens with a first sentence that starts with \"A ideia central aqui é:\"",
+      "The sentence after the label is a complete idea the reader could repeat, not a topic name",
+      "The three sections also end with a \"Ponto-chave:\" line",
+      "No section opens with a promise about the section (\"nesta parte vamos ver\")"
+    ],
+    "failure_with_current_skill": "Before change 21b the skill asked for the point first but gave no literal form; about half the runs opened sections with a topic name or a question instead."
+  },
+  {
+    "id": "clear-read-change-21c-misconception-block",
+    "skill": "clear-read",
+    "prompt": "explique o que a instrução no-cache do HTTP faz de verdade",
+    "expected_behavior": [
+      "The text has one block that opens with \"Muita gente acha que\" and continues with \"Isso não confere.\" and \"Na verdade,\"",
+      "The block names a source after \"Fonte:\"",
+      "The misconception is the real common one: that no-cache means do not store",
+      "The correction is right: no-cache means store, but revalidate before each use"
+    ],
+    "failure_with_current_skill": "Before change 21c the skill corrected the misconception inside the prose in some runs and skipped it in others; the literal block form did not exist."
+  },
+  {
+    "id": "clear-read-change-21d-prequestions-answered-in-body",
+    "skill": "clear-read",
+    "prompt": "explique por que um notebook Jupyter dá erro quando uma célula roda antes da célula que cria a variável",
+    "expected_behavior": [
+      "Right after the opening there are two or three questions introduced by \"Antes de ler\" or an equivalent invitation to guess",
+      "Each question is answered in the body with a marked line \"Resposta da pergunta N:\"",
+      "The questions are about the main concepts (kernel, memory, order of execution), not trivia",
+      "There is no quiz at the end that repeats the questions as a test"
+    ],
+    "failure_with_current_skill": "Before change 21d the skill had no prequestions; no run produced them."
+  },
+  {
+    "id": "clear-read-change-21f-two-layers-in-rewrite",
+    "skill": "clear-read",
+    "prompt": "reescreve esse trecho de forma clara, explicando o que for preciso: \"A Castellum anunciou que venderá os ativos fora da Suécia, cerca de 19 bilhões de coroas, antes da crise que o acionista prevê.\"",
+    "expected_behavior": [
+      "Every fact of the source stays: Castellum, the sale, outside Sweden, about 19 billion kronor, the shareholder's forecast",
+      "Anything the rewrite adds to explain (what Castellum is, what a krona is worth) is marked \"(acrescentado)\" or sits in a section \"O que o artigo não diz\"",
+      "No added fact is presented as if the source said it",
+      "The rewrite keeps the hedge: the crisis is a forecast, not a fact"
+    ],
+    "failure_with_current_skill": "Before change 21f the skill asked for fidelity but gave no way to mark additions; glosses blended into the source's claims."
+  },
+  {
+    "id": "clear-read-change-21j-implicit-tone-made-explicit",
+    "skill": "clear-read",
+    "prompt": "reescreve esse comentário de um colega para eu entender o que ele quis dizer: \"Claro, vamos fazer o deploy na sexta às 18h, o que poderia dar errado? Afinal o último foi um sucesso estrondoso.\"",
+    "expected_behavior": [
+      "The rewrite says in words that the colleague is being ironic and means the opposite: deploying on Friday evening is a bad idea",
+      "The rewrite says that \"sucesso estrondoso\" refers to a past deploy that went badly, marked as implied by tone",
+      "The implied meaning is marked as the rewriter's reading (\"(acrescentado)\" or \"pelo tom\"), not as something the colleague wrote",
+      "No new facts about the deploy are invented"
+    ],
+    "failure_with_current_skill": "Before change 21j the skill kept the ironic sentences nearly as they were in most runs, so the tone stayed implicit."
+  },
+  {
+    "id": "clear-read-change-22-it-topic-gets-the-scaffold-by-default",
+    "skill": "clear-read",
+    "prompt": "explique como um cache HTTP decide que a cópia que ele guardou ainda vale",
+    "expected_behavior": [
+      "The text opens with the section \"O que saber antes de ler\", because the request carries no signal that the reader knows the basics",
+      "That section teaches what a cache is and what an HTTP response header is, in plain words, before the first rule",
+      "The field of the reader (IT) does not shorten the scaffold",
+      "The rest of the text goes to the mechanism (validation by ETag and max-age) step by step"
+    ],
+    "failure_with_current_skill": "Before change 22 the skill treated any IT topic as inside the reader's field and cut the basics; a blind reading in November 2026 found a DuckDB text that \"assumed I knew everything\"."
+  }
+]
